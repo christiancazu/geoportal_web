@@ -1,0 +1,28 @@
+{
+  "name": "veox_unat_geoportal_web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "nuxt.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/veox_unat/veox_unat_geoportal_web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nuxt": "^2.8.1"
+  },
+  "devDependencies": {
+    "node-sass": "^4.12.0",
+    "pug": "^2.0.3",
+    "pug-plain-loader": "^1.0.0",
+    "sass-loader": "^7.1.0"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/veox_unat/veox_unat_geoportal_web/issues"
+  },
+  "homepage": "https://gitlab.com/veox_unat/veox_unat_geoportal_web#readme"
+}
