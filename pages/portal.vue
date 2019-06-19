@@ -20,21 +20,30 @@
 
 <script>
 export default {
-  head() {
+  head() {  
     return {
-      script: [
-        { src: "https://js.arcgis.com/3.28compact/" },
-        { src: "js/config/appmap.js" }
+     bodyAttrs: {
+      class: 'cmv flat'
+      },
+    titleTemplate: 'test',
+    script: [
+        {
+          src: 'js/scriptOnLoad.js',
+          type: "text/javascript"
+        },
+        {
+          src: "https://js.arcgis.com/3.28compact/",
+          type: "text/javascript"
+        },
+        {
+          src: 'js/config/app.js',
+          type: "text/javascript"
+        }
       ],
       link: [
-        {
-          rel: "stylesheet",
-          href: "https://js.arcgis.com/3.28compact/esri/css/esri.css"
-        },
-        {
-          rel: "stylesheet",
-          href: "https://use.fontawesome.com/releases/v5.4.0/css/all.css"
-        },
+        { rel: 'favicon', href: 'favicon.ico' },
+        { rel: 'stylesheet', href: 'https://js.arcgis.com/3.28compact/esri/css/esri.css' },
+        { rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.4.0/css/all.css' },
         { rel: "stylesheet", href: "css/app.css" }
       ]
     };
