@@ -6,8 +6,6 @@
           li Menu 01
         a(href="")
           li Hola
-        a(href="")
-          li Gaaaaa
     #mapid
 </template>
 
