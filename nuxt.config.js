@@ -14,15 +14,7 @@ export default {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [{
-        rel: 'stylesheet',
-        href: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.css'
-      },
-      {
-        rel: 'stylesheet',
-        href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
-      },
-    ],
+    link: [],
     script: [{
         src: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
         type: "text/javascript"
@@ -35,7 +27,10 @@ export default {
   },
   css: [
     '~/assets/css/bootstrap.min.css',
+    '~/assets/css/main.css',
   ],
   plugins: [],
-  modules: []
+  modules: [
+    '@nuxtjs/font-awesome',
+  ]
 }

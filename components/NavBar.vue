@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="navbar navbar-inverse navbar-static-top"
+    class="navbar navbar-inverse navbar-static-top navbar-fixed-top mb-0"
     role="navigation"
   >
     <div class="container">
@@ -19,7 +19,7 @@
         <a
           class="navbar-brand"
           href="#"
-        >Geoprtal</a>
+        >Geoportal</a>
       </div>
       <div class="collapse navbar-collapse Menu">
         <ul class="nav navbar-nav">
@@ -34,14 +34,14 @@
               class="dropdown-toggle"
               data-toggle="dropdown"
             >
-              <i class="far fa-user-circle"></i>
+              <img src="icon/user-circle-regular.svg"/>
               <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
-              <li><a href="#">Something else here</a></li>
-              <li><a href="#">Separated link</a></li>
+              <li><a href="#">Administrar</a></li>
+              <li><a href="#">Mi Perfil</a></li>
+              <li><a href="#">Cerrar Sesión</a></li>
+              <li><a href="#">Reportar</a></li>
             </ul>
           </li>
         </ul>

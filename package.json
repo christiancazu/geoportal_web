@@ -13,6 +13,7 @@
   "author": "veox",
   "license": "ISC",
   "dependencies": {
+    "@nuxtjs/font-awesome": "^1.0.4",
     "nuxt": "^2.8.1"
   },
   "devDependencies": {
