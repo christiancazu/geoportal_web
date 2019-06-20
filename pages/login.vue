@@ -1,5 +1,41 @@
 <template>
-  <div class="layout-default">
+  <div class="row">
+    <div class="col-xs-24 col-sm-8 col-md-6 col-lg-6 col-center">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title font-weight-bold">Iniciar Sesión</h3>
+        </div>
+        <div class="panel-body">
+
+          <form action="">
+            <div class="form-group">
+              <label class="font-weight-bold">Usuario</label>
+              <input
+                type="text"
+                class="form-control"
+              >
+            </div>
+            <div class="form-group">
+              <label class="font-weight-bold">contraseña</label>
+              <input
+                type="password"
+                class="form-control"
+              >
+            </div>
+          </form>
+        </div>
+        <div class="panel-footer text-right">
+          <button
+            type="button"
+            class="btn btn-default"
+          >Cancelar</button>
+          <button
+            type="button"
+            class="btn btn-success"
+          ><i class="fa fa-save"></i>
+            Ingresar</button>
+        </div>
+        <!-- <div class="layout-default">
     <section class="hero is-fullheight is-medium is-primary is-bold">
       <div class="hero-body">
         <div class="container">
@@ -48,6 +84,10 @@
         </div>
       </div>
     </section>
+  </div> -->
+      </div>
+    </div>
+
   </div>
 
 </template>
@@ -56,6 +96,10 @@
 export default {};
 </script>
 
-<style lang="sass" scoped>
-
+<style scoped>
+.col-center {
+  margin: 0 auto;
+  margin-top: 2.5rem;
+  float: none;
+}
 </style>

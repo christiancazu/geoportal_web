@@ -1,13 +1,15 @@
 <template>
   <div class="init">
-    <NavBar />
+    <NavBar v-if="!isLoginPage" />
     <div class="container-fluid height-100">
       <div class="row height-100">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 border-right height-100">
-          <Information />
-          <PanelTask v-if="!isPortalPage" />
+        <div
+          v-if="!isPortalPage"
+          class="col-xs-6 col-sm-6 col-md-6 col-lg-6 border-right height-100"
+        >
+          <PanelUser />
         </div>
-        <div class="col-xs-24 col-sm-18 col-md-18 col-lg-18">
+        <div :class="[!isLoginPage ? 'col-sm-18 col-md-18 col-lg-18' : '', 'col-xs-24']">
           <nuxt />
         </div>
       </div>
@@ -16,13 +18,11 @@
 </template>
 <script>
 import NavBar from '@/components/NavBar.vue'
-import Information from '@/components/Information.vue'
-import PanelTask from '@/components/PanelTask.vue'
+import PanelUser from '@/components/PanelUser.vue'
 export default {
   components: {
     NavBar,
-    Information,
-    PanelTask
+    PanelUser
   },
 
   data () {
@@ -32,7 +32,13 @@ export default {
 
   computed: {
     isPortalPage: function () {
-      return this.$route.name === 'portal'
+      const name = this.$route.name
+      return name === 'portal' || name === 'login'
+    },
+
+    isLoginPage: function () {
+      const name = this.$route.name
+      return name === 'login'
     }
   },
 
