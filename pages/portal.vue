@@ -1,32 +1,18 @@
 <template>
   <section>
-    <div class="cmv flat">
-      <div class="appHeader">
-        <img class="headerLogo" alt="logo" src="images/rocket-logo.png">
-        <div class="headerTitle">
-          <span id="headerTitleSpan">Configurable Map Viewer</span>
-          <div id="subHeaderTitleSpan" class="subHeaderTitle">make it your own</div>
-        </div>
-        <div class="search">
-          <div id="geocodeDijit"></div>
-        </div>
-        <div class="headerLinks">
-          <div id="helpDijit"></div>
-        </div>
-      </div>
-    </div>
+    <div id="helpDijit"></div>
   </section>
 </template>
 
 <script>
 export default {
-  head() {  
+  head () {
     return {
-     bodyAttrs: {
-      class: 'cmv flat'
+      bodyAttrs: {
+        class: 'cmv flat'
       },
-    titleTemplate: 'test',
-    script: [
+      titleTemplate: 'test',
+      script: [
         {
           src: 'js/scriptOnLoad.js',
           type: "text/javascript"
@@ -48,7 +34,7 @@ export default {
       ]
     };
   },
-  mounted() {
+  mounted () {
     var s = window.location.search,
       q = s.match(/locale=([^&]*)/i);
     var locale = q && q.length > 0 ? q[1] : null;
@@ -61,4 +47,10 @@ export default {
 </script>
 
 <style scoped>
+  #helpDijit {
+    position: absolute;
+    z-index: 1;
+    bottom: 0px;
+    padding: 10px;
+  }
 </style>
