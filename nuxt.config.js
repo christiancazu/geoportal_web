@@ -29,7 +29,9 @@ export default {
     '~/assets/css/bootstrap.min.css',
     '~/assets/css/main.css',
   ],
-  plugins: [],
+  plugins: [
+    '~/plugins/element-ui',
+  ],
   modules: [
     '@nuxtjs/font-awesome',
   ]

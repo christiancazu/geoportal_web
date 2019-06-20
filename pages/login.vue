@@ -1,93 +1,93 @@
 <template>
   <div class="row">
     <div class="col-xs-24 col-sm-8 col-md-6 col-lg-6 col-center">
+
+      <!-- <div> -->
+
+      <!-- Nav tabs -->
       <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title font-weight-bold">Iniciar Sesión</h3>
+        <div class="panel-heading pb-0">
+          <ul
+            class="nav nav-tabs  nav-justified"
+            role="tablist"
+          >
+            <li
+              role="presentation"
+              class="active"
+            ><a
+                href="#home"
+                aria-controls="home"
+                role="tab"
+                data-toggle="tab"
+                class="font-weight-bold"
+              >Iniciar Sesión</a></li>
+            <li role="presentation"><a
+                href="#profile"
+                aria-controls="profile"
+                role="tab"
+                data-toggle="tab"
+                class="font-weight-bold"
+              >Registrarse</a></li>
+          </ul>
         </div>
+
+        <!-- Tab panes -->
         <div class="panel-body">
-
-          <form action="">
-            <div class="form-group">
-              <label class="font-weight-bold">Usuario</label>
-              <input
-                type="text"
-                class="form-control"
+          <div class="tab-content">
+            <div
+              role="tabpanel"
+              class="tab-pane fade in active"
+              id="home"
+            >
+              <form
+                action=""
+                class="py-4"
               >
-            </div>
-            <div class="form-group">
-              <label class="font-weight-bold">contraseña</label>
-              <input
-                type="password"
-                class="form-control"
-              >
-            </div>
-          </form>
-        </div>
-        <div class="panel-footer text-right">
-          <button
-            type="button"
-            class="btn btn-default"
-          >Cancelar</button>
-          <button
-            type="button"
-            class="btn btn-success"
-          ><i class="fa fa-save"></i>
-            Ingresar</button>
-        </div>
-        <!-- <div class="layout-default">
-    <section class="hero is-fullheight is-medium is-primary is-bold">
-      <div class="hero-body">
-        <div class="container">
-          <div class="columns is-centered">
-            <article class="card is-rounded">
-              <div class="card-content">
-                <h1 class="title">
-
-                  <img
-                    src="https://placeholdit.imgix.net/~text?txtsize=13&txt=150%C3%9750&w=150&h=50"
-                    alt="logo"
-                    width="200"
-                  >
-                </h1>
-                <p class="control has-icon">
+                <div class="form-group">
+                  <label class="font-weight-bold">Usuario</label>
                   <input
-                    class="input"
-                    type="email"
-                    placeholder="Email"
+                    type="text"
+                    class="form-control"
                   >
-                  <i class="fa fa-envelope"></i>
-                </p>
-                <p class="control has-icon">
+                </div>
+                <div class="form-group">
+                  <label class="font-weight-bold">contraseña</label>
                   <input
-                    class="input"
                     type="password"
-                    placeholder="Password"
+                    class="form-control"
                   >
-                  <i class="fa fa-lock"></i>
-                </p>
-                <p class="control">
-                  <label class="checkbox">
-                    <input type="checkbox">
-                    Remember me
-                  </label>
-                </p>
-                <p class="control">
-                  <button class="button is-primary is-medium is-fullwidth">
-                    <i class="fa fa-user"></i>
-                    Login
-                  </button>
-                </p>
+                </div>
+              </form>
+              <div class="content-center">
+                <button
+                  type="button"
+                  class="btn"
+                >
+                  cancelar
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                >
+                  Ingresar
+                </button>
               </div>
-            </article>
+              <p class="text-center">
+                <a href="">
+                  Olvidaste tu contraseña
+                </a>
+              </p>
+            </div>
+            <div
+              role="tabpanel"
+              class="tab-pane fade "
+              id="profile"
+            >Register</div>
           </div>
         </div>
-      </div>
-    </section>
-  </div> -->
+
       </div>
     </div>
-
   </div>
 
 </template>
@@ -101,5 +101,22 @@ export default {};
   margin: 0 auto;
   margin-top: 2.5rem;
   float: none;
+}
+
+.pb-0 {
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  border-bottom: 0px;
+}
+
+.content-center {
+  padding: 1.2rem 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  margin: 0px 0.2rem;
 }
 </style>
