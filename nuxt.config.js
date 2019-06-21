@@ -29,13 +29,15 @@ export default {
     '~/assets/css/bootstrap.min.css',
     '~/assets/css/main.css',
   ],
-  
-  loading: { color: '#fff' },
+
+  loading: {
+    color: '#fff'
+  },
 
   plugins: [
-    // '~/plugins/element-ui',
+    '~/plugins/element-ui',
   ],
   modules: [
-    // '@nuxtjs/font-awesome',
+    '@nuxtjs/font-awesome',
   ]
 }

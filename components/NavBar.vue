@@ -44,7 +44,12 @@
             </a>
             <ul class="dropdown-menu">
               <li><a href="#">Administrar</a></li>
-              <li><a href="#">Mi Perfil</a></li>
+              <li>
+                <nuxt-link
+                  to="/profile"
+                  exact
+                >Mi Perfil</nuxt-link>
+              </li>
               <li><a href="#">Cerrar Sesión</a></li>
               <li><a href="#">Reportar</a></li>
             </ul>

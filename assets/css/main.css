@@ -1,6 +1,15 @@
 html {
   height: 100vh;
 }
+
+label {
+  font-weight: bolder;
+}
+.col-center {
+  margin: 0 auto;
+  margin-top: 2.5rem;
+  float: none;
+}
 .mt-3 {
   margin-top: 1rem;
 }
