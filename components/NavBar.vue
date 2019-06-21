@@ -3,7 +3,7 @@
     class="navbar navbar-inverse navbar-static-top navbar-fixed-top mb-0"
     role="navigation"
   >
-    <div class="container">
+    <div class="container-fluid">
       <div class="navbar-header">
         <button
           type="button"
