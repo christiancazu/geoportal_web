@@ -16,14 +16,19 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a
+        <nuxt-link
+          to="/portal"
           class="navbar-brand"
-          href="#"
-        >Geoportal</a>
+          exact
+        >Geoportal</nuxt-link>
       </div>
       <div class="collapse navbar-collapse Menu">
         <ul class="nav navbar-nav">
-          <li><a href="#">Gestión</a></li>
+          <li>
+            <nuxt-link
+              to="/"
+              exact
+            >Gestión</nuxt-link>
           <li><a href="#">Ayuda</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -34,7 +39,7 @@
               class="dropdown-toggle"
               data-toggle="dropdown"
             >
-              <img src="icon/user-circle-regular.svg"/>
+              <img src="icon/user-circle-regular.svg" />
               <b class="caret"></b>
             </a>
             <ul class="dropdown-menu">

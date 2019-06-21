@@ -1,28 +1,35 @@
-<template lang="pug">
-  section
-    .left-panel 
-      ul
-        a(href="")
-          li Menu 01
-        a(href="")
-          li Hola
-    #mapid
+<template>
+  <div>
+    <div class="container-fluid height-100">
+      <div class="row height-100">
+        <div
+          class="col-xs-6 col-sm-6 col-md-6 col-lg-6 border-right height-100"
+        >
+          <PanelUser />
+        </div>
+        <div class="col-xs-24 col-sm-18 col-md-18 col-lg-18">
+          <nuxt />
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
-
-
 <script>
+import NavBar from '@/components/NavBar.vue'
+import PanelUser from '@/components/PanelUser.vue'
+
 export default {
-  mounted() {
+  components: {
+    NavBar,
+    PanelUser
+  },
+
+  mounted () {
 
   }
 };
 </script>
 
 <style lang="css" scoped>
-/** ESTILOS DEL MAAPA**/
 
-#mapid {
-  width: 1005;
-  height: 500px;
-}
 </style>

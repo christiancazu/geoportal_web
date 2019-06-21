@@ -7,6 +7,9 @@ html {
 .mb-0 {
   margin-bottom: 0px;
 }
+.ma-0{
+  margin: 0px;
+}
 
 .border-right {
   border-right: 1px solid #e6e6e6;

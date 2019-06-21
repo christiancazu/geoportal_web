@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row ma-0">
     <div class="col-xs-24 col-sm-8 col-md-6 col-lg-6 col-center">
 
       <!-- <div> -->
@@ -8,7 +8,7 @@
       <div class="panel panel-default">
         <div class="panel-heading pb-0">
           <ul
-            class="nav nav-tabs  nav-justified"
+            class="nav nav-tabs nav-justified"
             role="tablist"
           >
             <li
