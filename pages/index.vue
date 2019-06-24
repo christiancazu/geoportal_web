@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <PanelUser />
+
+  <!-- <div>
     <div class="container-fluid height-100">
       <div class="row height-100">
         <div
@@ -12,15 +14,13 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 <script>
-import NavBar from '@/components/NavBar.vue'
 import PanelUser from '@/components/PanelUser.vue'
 
 export default {
   components: {
-    NavBar,
     PanelUser
   },
 
@@ -31,5 +31,4 @@ export default {
 </script>
 
 <style lang="css" scoped>
-
 </style>
