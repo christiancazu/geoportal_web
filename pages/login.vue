@@ -1,8 +1,6 @@
 <template>
   <div class="row ma-0">
     <div class="col-xs-24 col-sm-14 col-md-14 col-lg-14 col-center">
-      <!-- <div> -->
-
       <!-- Nav tabs -->
       <div class="panel panel-default">
         <div class="panel-heading pb-0">
@@ -32,16 +30,10 @@
         <div class="panel-body" style="min-height:240px;">
           <div class="tab-content" style="min-height: 240px">
             <div role="tabpanel" class="tab-pane fade in active" id="home">
-              <!-- login -->
               <Login/>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="profile">
               <FormRegister/>
-
-              <!-- <div class="btn-back-next text-center">
-                <button type="button" class="btn" @click="back">Regresar</button>
-                <button type="button" class="btn btn-success" @click="next">Siguiente</button>
-              </div>-->
             </div>
           </div>
         </div>

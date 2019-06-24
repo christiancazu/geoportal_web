@@ -82,7 +82,7 @@
     </div>
     <div class="content-center">
       <button type="button" class="btn">cancelar</button>
-      <button type="button" class="btn btn-success">Ingresar</button>
+      <button type="button" class="btn btn-success">Registrar</button>
     </div>
   </div>
 </template>
@@ -95,12 +95,5 @@ export default {
 };
 </script>
 <style lang="css">
-.content-center {
-  padding: 1.2rem 0px;
-  display: flex;
-  justify-content: center;
-}
-.btn {
-  margin: 0px 0.2rem;
-}
+
 </style>
