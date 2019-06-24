@@ -14,15 +14,15 @@ export default {
         content: process.env.npm_package_description || ''
       }
     ],
-    link: [],
-    script: [{
-        src: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js",
-        type: "text/javascript"
-      },
-      {
-        src: 'bootstrapJS/bootstrap.min.js',
-        type: "text/javascript"
-      }
+    link: [{
+      rel: 'stylesheet',
+      href: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.css'
+    }],
+    script: [
+      { src: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.js' }, 
+      { src: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", type: "text/javascript" },
+      { src: 'bootstrapJS/bootstrap.min.js', type: "text/javascript" },
+      { src: 'js/leaflet.wms.js' }
     ],
   },
   css: [
