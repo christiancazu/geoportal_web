@@ -26,8 +26,7 @@ export default {
     ],
   },
   css: [
-    '~/assets/css/bootstrap.min.css',
-    '~/assets/css/main.css',
+    '~/assets/scss/app.scss'
   ],
 
   loading: {

@@ -26,8 +26,15 @@ label {
 .pb-0 {
   padding-bottom: 0px;
 }
-.pa-0{
-  padding: 0px;
+.pa-0 {
+  padding: 0px !important;
+}
+.pt-3 {
+  padding-top: 16px;
+}
+.py-1 {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .border-right {

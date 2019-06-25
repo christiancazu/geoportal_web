@@ -53,18 +53,52 @@
       >
         <li class="sidebar-brand">
           <a
+            v-if="panel === 1"
             id="menu-toggle"
             href="#"
-          >Menu<span
+          >Menu
+            <span
               id="main_icon"
               class="glyphicon glyphicon-align-justify"
-            ></span></a>
+            ></span>
+          </a>
+          <a
+            v-if="panel === 2"
+            id="menu-toggle"
+          >
+            <span
+              class="title"
+              @click="panel = 1"
+            >
+              <i
+                class="fa fa-angle-double-left"
+                aria-hidden="true"
+              ></i>
+              Portal
+            </span>
+            <span
+              id="main_icon"
+              class="glyphicon glyphicon-align-justify"
+            ></span>
+          </a>
         </li>
       </ul>
       <ul
         class="sidebar-nav"
         id="sidebar"
       >
+        <div
+          v-if="panel === 1"
+          class="panel-body text-center"
+        >
+          <img
+            src="https://bulma.io/images/placeholders/128x128.png"
+            alt=""
+            class="img-circle"
+          >
+          <h3>Maribel</h3>
+          <p>Administrador</p>
+        </div>
         <!-- vista 1 -->
         <div v-if="panel === 1">
           <div
@@ -72,22 +106,45 @@
             :key="i"
             class="panel panel-default mb-0"
           >
-            <div class="panel-heading">
-              <span class="panel-title">{{ item.name }}</span>
-              <button
-                class="btn btn-success btn-xs pull-right"
-                type="button"
-                data-toggle="collapse"
-                :data-target="`#${item.id}`"
-                aria-expanded="false"
-                :aria-controls="`${item.id}`"
-              >Abrir</button>
+            <div
+              class="panel-heading"
+              @click="openPanelPortal(item)"
+            >
+              <nuxt-link
+                v-if="!item.subItems.length"
+                to="/"
+                class="panel-title"
+                exact
+              >{{ item.name }}</nuxt-link>
+              <div v-else>
+                <span class="panel-title">{{ item.name }}</span>
+                <button
+                  class="btn btn-success btn-xs pull-right"
+                  type="button"
+                  data-toggle="collapse"
+                  :data-target="`#${item.id}`"
+                  aria-expanded="false"
+                  :aria-controls="`${item.id}`"
+                >Abrir</button>
+              </div>
             </div>
             <div class="panel-body pa-0">
               <div
                 :id="`${item.id}`"
                 class="veoxportal-contenido collapse"
-              >Elementos</div>
+              >
+                <div
+                  v-for="(subItem, j) in item.subItems"
+                  :key="j"
+                >
+                  <nuxt-link
+                    to="/"
+                    class="panel-title"
+                    exact
+                  >{{ subItem.name }}
+                  </nuxt-link>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -100,8 +157,14 @@
             class="panel panel-default mb-0"
           >
             <div class="panel-heading">
-              <span class="panel-title">{{ item.name }}</span>
-              <button
+              <span
+                class="panel-title"
+                data-toggle="collapse"
+                :data-target="`#${item.id}`"
+                aria-expanded="false"
+                :aria-controls="`${item.id}`"
+              >{{ item.name }}</span>
+              <!-- <button
                 class="btn btn-success btn-xs pull-right"
                 type="button"
                 id="btnGreen"
@@ -109,7 +172,7 @@
                 :data-target="`#${item.id}`"
                 aria-expanded="false"
                 :aria-controls="`${item.id}`"
-              >Abrir</button>
+              >Abrir</button> -->
             </div>
             <div class="panel-body pa-0">
               <div
@@ -119,6 +182,17 @@
             </div>
           </div>
         </div>
+
+        <div class="panel panel-default mb-0">
+          <div class="panel-heading">
+            <span class="panel-title">Reportar</span>
+          </div>
+        </div>
+        <div class="panel panel-default mb-0">
+          <div class="panel-heading">
+            <span class="panel-title">Cerrar Sesion</span>
+          </div>
+        </div>
       </ul>
     </div>
 
@@ -126,7 +200,7 @@
     <div id="page-content-wrapper">
       <!-- Keep all page content within the page-content inset div! -->
       <div class="page-content inset">
-        <button @click="showitem">toogle</button>
+        test
         <!-- <div class="row">
           <div class="col-md-12">
             <p class="well lead">An Experiment using the sidebar template from startbootstrap.com which I integrated in my website (<a href="http://animeshmanglik.name">animeshmanglik.name</a>)</p>
@@ -148,44 +222,57 @@ export default {
         {
           name: 'Mi perfil',
           id: 'myProfile',
-          to: { name: 'profile' },
+          to: '/profile',
           icon: '',
           subItems: []
         },
         {
           name: 'Gestión de Usuarios',
           id: 'userManagement',
-          to: { name: 'userManagement' },
+          to: '/',
           icon: '',
-          subItems: []
+          subItems: [
+            { name: 'Usuarios' },
+            { name: 'Usuarios Pendientes' },
+
+          ]
         },
         {
           name: 'Gestión de Capas',
           id: 'capasManagement',
-          to: { name: 'capasManagement' },
+          to: '/',
           icon: 'capasManagement',
-          subItems: []
+          subItems: [
+            { name: 'Capas' },
+            { name: 'Capas Pendientes' },
+            { name: 'Capas Rechazadas' }
+          ]
         },
         {
           name: 'GeoPortal',
           id: 'geoPortal',
-          to: { name: 'geoPortal' },
+          to: '/portal',
           icon: '',
-          subItems: []
+          subItems: [],
+          openPanel: 'true'
         },
         {
           name: 'Estado de Datos',
           id: 'stateData',
-          to: { name: 'stateData' },
+          to: '/',
           icon: '',
-          subItems: []
+          subItems: [
+            { name: 'Copias de seguridad' },
+            { name: 'Copias de seguridad' },
+
+          ]
         }
       ],
 
       itemsPortal: [
         {
           name: 'Capas',
-          id: 'capas'
+          id: 'capas',
         },
         {
           name: 'Buscar por Coordenadas',
@@ -211,16 +298,16 @@ export default {
     }
   },
   mounted () {
-    $("#menu-toggle").click(function (e) {
+    $("#main_icon").click(function (e) {
       e.preventDefault();
       $("#wrapper").toggleClass("active");
     });
   },
 
   methods: {
-    openPanelPortal () {
-      console.log('panel portal')
-      this.panel = 2
+    openPanelPortal (item) {
+      if (item.openPanel)
+        this.panel = 2
     },
 
     showitem () {
@@ -232,9 +319,8 @@ export default {
 </script>
 
 <style lang="css" >
-.panel {
-  border: none;
-  border-radius: 0px;
+.title .fa {
+  display: inherit;
 }
 
 #wrapper {
@@ -338,11 +424,11 @@ export default {
   background: none;
 }
 
-/* #main_icon {
-    float: right;
-    padding-right: 65px;
-    padding-top: 20px;
-  } */
+#main_icon {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
 /* .sub_icon {
     float: right;
     padding-right: 65px;
@@ -371,14 +457,14 @@ export default {
     transition: all 0.4s ease 0s;
   }
   #sidebar-wrapper {
-    left: 70px;
+    left: 0px;
   }
   #wrapper.active {
-    padding-left: 150px;
+    padding-left: 200px;
   }
   #wrapper.active #sidebar-wrapper {
     left: 150px;
-    width: 150px;
+    width: 200px;
     transition: all 0.4s ease 0s;
   }
 }
