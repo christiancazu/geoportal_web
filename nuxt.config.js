@@ -26,7 +26,7 @@ export default {
     ],
   },
   css: [
-    '~/assets/scss/app.scss'
+    '~/assets/sass/app.scss'
   ],
 
   loading: {
