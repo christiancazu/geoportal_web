@@ -1,90 +1,108 @@
 <template>
-  <div class="container pt-3">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Todas las tareas</h3>
-      </div>
-      <!-- <div>
-        <input
-          type="text"
-          value="test"
+  <el-card shadow="always">
+    <div
+      class="space-between"
+      slot="header"
+    >
+      <p class="mt-1 mb-0 font-weight-bold">Usuarios</p>
+        <el-button
+        size="mini"
+          type="primary"
+          icon="el-icon-plus"
+        >Nuevo Usuario</el-button>
+    </div>
+    <el-container direction="vertical">
+      <el-row :gutter="20">
+        <el-col
+          :span="8"
+          :offset="16"
         >
-      </div> -->
+          <div>
+            <el-input
+              v-model="search"
+              prefix-icon="el-icon-search"
+              size="small"
+              placeholder="Search"
+            />
+          </div>
+        </el-col>
+      </el-row>
+    </el-container>
+    <el-container>
       <el-table
-        :data="tableData"
+        :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
         style="width: 100%"
-        size="medium"
       >
         <el-table-column
-          align="center"
-          label="Fecha"
-          class-name="py-1"
-        >
-          <template slot-scope="scope">
-            <i class="el-icon-time"></i>
-            <span style="margin-left: 10px">{{ scope.row.date }}</span>
-          </template>
-        </el-table-column>
+          label="Date"
+          prop="date"
+        />
         <el-table-column
-          class-name="py-1"
-          align="center"
-          label="Nombre"
-        >
-          <template slot-scope="scope">
-            <p class="ma-0">Name: {{ scope.row.name }}</p>
-          </template>
-        </el-table-column>
+          label="Name"
+          prop="name"
+        />
         <el-table-column
-          class-name="py-1"
+          label="Actions"
           align="center"
-          label="Operaciones"
         >
           <template slot-scope="scope">
             <el-button
-              size="mini"
+              circle
+              icon="el-icon-edit"
+              size="small"
+              type="primary"
               @click="handleEdit(scope.$index, scope.row)"
-            >Editar</el-button>
+            />
             <el-button
-              size="mini"
+              size="small"
+              circle
               type="danger"
+              icon="el-icon-delete"
               @click="handleDelete(scope.$index, scope.row)"
-            >Eliminar</el-button>
+            />
           </template>
         </el-table-column>
       </el-table>
-    </div>
-  </div>
+    </el-container>
+  </el-card>
 </template>
 
 <script>
 export default {
   data () {
     return {
+      search: '',
       tableData: [{
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
         date: '2016-05-02',
         name: 'Tom',
         address: 'No. 189, Grove St, Los Angeles'
       }, {
         date: '2016-05-04',
-        name: 'Tom',
+        name: 'John',
         address: 'No. 189, Grove St, Los Angeles'
       }, {
         date: '2016-05-01',
-        name: 'Tom',
+        name: 'Morgan',
+        address: 'No. 189, Grove St, Los Angeles'
+      }, {
+        date: '2016-05-03',
+        name: 'Jessy',
         address: 'No. 189, Grove St, Los Angeles'
       }]
+
     }
   },
+
+  created () {
+    console.log(this.$route)
+  },
+
   methods: {
     handleEdit (index, row) {
-      console.log(index, row);
+      console.log(index, row)
     },
     handleDelete (index, row) {
-      console.log(index, row);
+      console.log(index, row)
     }
   }
 }

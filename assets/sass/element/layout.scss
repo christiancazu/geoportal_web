@@ -1,0 +1,41 @@
+// .el-footer {
+//   border-top: solid 1px #e6e6e6;
+//   position: absolute;
+//   background-color: #fafafa;
+//   color: #333;
+//   text-align: center;
+//   line-height: 32px;
+//   bottom: 0;
+//   width: 100%;
+// }
+
+.el-aside {
+  overflow: hidden;
+  &__adjust-width {
+    text-align: left;
+    min-width: 250px;
+    max-width: -moz-fit-content;
+    max-width: -webkit-fit-content;
+  }
+}
+
+.el-main {
+  background-color: #fafafa;
+}
+
+.el-header {
+  padding: 0px 0px;
+}
+
+.adjust-popper {
+  .el-menu--popup {
+    min-width: 100px;
+    max-width: -moz-fit-content;
+    max-width: -webkit-fit-content;
+  }
+}
+
+// card
+.el-card__header {
+  padding: 15px 20px !important;
+}

@@ -26,7 +26,8 @@ export default {
     ],
   },
   css: [
-    '~/assets/sass/app.scss'
+    '~/assets/sass/app.scss',
+    'element-ui/lib/theme-chalk/index.css',
   ],
 
   loading: {
