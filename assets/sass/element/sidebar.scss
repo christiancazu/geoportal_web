@@ -1,9 +1,13 @@
-.el-submenu__title {
-  height: none !important;
-  line-height: 10px !important;
-  border: 1px solid red;
+.el-menu{
+  height: 100% !important;
 }
 
-.el-menu--collapse, .height-100 {
-  height: 100% !important;
+.menu-item-absoluted-b {
+  position: absolute !important;
+  bottom: 0px;
+  width: 100% !important;
+
+  &:hover {
+    width: 100% !important;
+  }
 }

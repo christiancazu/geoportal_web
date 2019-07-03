@@ -67,13 +67,25 @@
           <i class="el-icon-menu" />
           <span>Reportar</span>
         </el-menu-item>
-        <el-menu-item index="6" :route="{ path: '/' }">
+        <el-menu-item
+          index="6"
+          :route="{ path: '/' }"
+        >
           <i class="el-icon-document" />
           <span>Cerrar Sesión</span>
         </el-menu-item>
-        <el-menu-item @click="isCollapse = !isCollapse">
-          <i v-if="isCollapse" class="el-icon-d-arrow-right" />
-          <i v-else class="el-icon-d-arrow-left" />
+        <el-menu-item
+          @click="isCollapse = !isCollapse"
+          class="menu-item-absoluted-b"
+        >
+          <i
+            v-if="isCollapse"
+            class="el-icon-d-arrow-right"
+          />
+          <i
+            v-else
+            class="el-icon-d-arrow-left"
+          />
           <span>Ocultar</span>
         </el-menu-item>
       </el-menu>
