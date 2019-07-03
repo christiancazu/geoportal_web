@@ -5,10 +5,8 @@
       mode="horizontal"
       menu-trigger="click"
       :router="true"
+      style="z-index:1;"
     >
-      <el-menu-item index="1">
-        Portal
-      </el-menu-item>
       <el-submenu
         index="2"
         style="float: right"

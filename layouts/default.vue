@@ -1,16 +1,20 @@
 <template>
-  <div id="app" style="height:100vh;">
-    <el-container direction="vertical" style="min-height:100%">
-      <el-header>
+  <div
+    id="app"
+    style="height:100vh;"
+  >
+    <el-container
+      direction="vertical"
+      style="min-height:100%"
+    >
+      <el-header class="px-0">
         <NavBar />
       </el-header>
       <el-container>
         <SideBar />
-        <el-container>
-          <el-main>
-            <nuxt />
-          </el-main>
-        </el-container>
+        <el-main>
+          <nuxt />
+        </el-main>
       </el-container>
     </el-container>
   </div>
