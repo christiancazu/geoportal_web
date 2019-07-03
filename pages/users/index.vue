@@ -35,7 +35,7 @@
       >
         <el-table-column
           label="Date"
-          prop="date"
+          prop="date" 
         />
         <el-table-column
           label="Name"
@@ -44,7 +44,7 @@
         <el-table-column
           label="Actions"
           align="center"
-        >
+        > 
           <template slot-scope="scope">
             <el-button
               circle
