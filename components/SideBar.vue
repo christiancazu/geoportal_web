@@ -9,35 +9,64 @@
         class="el-menu-vertical-demo"
         :router="true"
       >
-        <el-submenu
+        <el-menu-item
           index="1"
+          :route="{ path: '/profile' }"
         >
+          <i class="el-icon-menu" />
+          <span>Perfil</span>
+        </el-menu-item>
+        <el-submenu index="2">
           <div slot="title">
             <i class="el-icon-s-custom" />
             <span slot="title">Gestión de usuarios</span>
           </div>
           <el-menu-item
             :route="{ path: '/users' }"
-            index="1-1"
+            index="2-1"
           >
             usuarios
           </el-menu-item>
           <el-menu-item
-            index="1-2"
+            index="2-2"
             :route="{ path: '/register' }"
           >
-            Usuarios pendientes 
+            Usuarios pendientes
+          </el-menu-item>
+        </el-submenu>
+        <el-submenu index="3">
+          <div slot="title">
+            <i class="el-icon-s-custom" />
+            <span slot="title">Gestión de Capas</span>
+          </div>
+          <el-menu-item
+            :route="{ path: '/layers' }"
+            index="3-1"
+          >
+            Capas
+          </el-menu-item>
+          <el-menu-item
+            index="3-2"
+            :route="{ path: '/pendingLayers' }"
+          >
+            Capas pendientes
           </el-menu-item>
         </el-submenu>
         <el-menu-item
-          index="2"
+          :route="{ path: '/geovisor' }"
+          index="4"
+        >
+          <i class="el-icon-menu" />
+          <span>Geoportal</span>
+        </el-menu-item>
+        <el-menu-item
+          index="5"
+          :route="{ path: '/report' }"
         >
           <i class="el-icon-menu" />
           <span>Reportar</span>
         </el-menu-item>
-        <el-menu-item
-          index="3"
-        >
+        <el-menu-item index="6" :route="{ path: '/' }">
           <i class="el-icon-document" />
           <span>Cerrar Sesión</span>
         </el-menu-item>
@@ -47,10 +76,10 @@
 </template>
 
 <style>
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
-    min-width: 100px;
-    min-height: 100vh;
-  }
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  min-width: 100px;
+  min-height: 100vh;
+}
 </style>
 
 <script>
@@ -70,7 +99,7 @@ export default {
           iconClass: '',
           subMenu: [
             { name: 'Usuarios', path: '/users' },
-            { name: 'Usuarios Pendientes', path: '/users' }
+            { name: 'Usuarios Pendientes', path: '/pendingUsers' }
           ]
         },
         {
@@ -78,14 +107,15 @@ export default {
           iconClass: '',
           subMenu: [
             { name: 'Capas', path: '/layers' },
-            { name: 'Capas Pendientes', path: '/layers' }
+            { name: 'Capas Pendientes', path: '/pendingLayers' }
           ]
         },
         {
           name: 'Estado de Datos',
           iconClass: '',
           subMenu: [
-            { name: 'Copias de Seguridad', path: '/layers' },
+            { name: 'Copias de Seguridad', path: '/backups' },
+            { name: 'Crear', path: '/createBackups' },
           ]
         }
       ]
