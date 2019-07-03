@@ -15,12 +15,20 @@ export default {
       }
     ],
     link: [{
-      rel: 'stylesheet',
-      href: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.css'
-    }],
-    script: [
-      { src: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.js' },
-      { src: 'js/leaflet.wms.js' }
+        rel: 'stylesheet',
+        href: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.css'
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css?family=Material+Icons'
+      }
+    ],
+    script: [{
+        src: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.js'
+      },
+      {
+        src: 'js/leaflet.wms.js'
+      }
     ],
   },
   css: [

@@ -13,7 +13,6 @@
   "author": "veox",
   "license": "ISC",
   "dependencies": {
-    "@material-ui/icons": "^4.2.1",
     "@nuxtjs/font-awesome": "^1.0.4",
     "element-ui": "^2.9.1",
     "nuxt": "^2.8.1"
