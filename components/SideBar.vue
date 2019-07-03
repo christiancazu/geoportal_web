@@ -1,13 +1,14 @@
 <template>
-  <div>
+  <div class="background-neutro">
     <el-aside
       width=""
       class="el-aside__adjust-width"
     >
       <el-menu
         default-active="1"
-        class="el-menu-vertical-demo"
+        class="el-menu-vertical-demo height-100"
         :router="true"
+        :collapse="isCollapse"
       >
         <el-menu-item
           index="1"
@@ -22,14 +23,14 @@
             <span slot="title">Gestión de usuarios</span>
           </div>
           <el-menu-item
-            :route="{ path: '/users' }"
+            :route="{ path: '/managementUsers/users' }"
             index="2-1"
           >
             usuarios
           </el-menu-item>
           <el-menu-item
             index="2-2"
-            :route="{ path: '/register' }"
+            :route="{ path: '/managementUsers/pendingUsers' }"
           >
             Usuarios pendientes
           </el-menu-item>
@@ -40,14 +41,14 @@
             <span slot="title">Gestión de Capas</span>
           </div>
           <el-menu-item
-            :route="{ path: '/layers' }"
+            :route="{ path: '/managementLayers/layers' }"
             index="3-1"
           >
             Capas
           </el-menu-item>
           <el-menu-item
             index="3-2"
-            :route="{ path: '/pendingLayers' }"
+            :route="{ path: '/managementLayers/pendingLayers' }"
           >
             Capas pendientes
           </el-menu-item>
@@ -70,6 +71,11 @@
           <i class="el-icon-document" />
           <span>Cerrar Sesión</span>
         </el-menu-item>
+        <el-menu-item @click="isCollapse = !isCollapse">
+          <i v-if="isCollapse" class="el-icon-d-arrow-right" />
+          <i v-else class="el-icon-d-arrow-left" />
+          <span>Ocultar</span>
+        </el-menu-item>
       </el-menu>
     </el-aside>
   </div>
@@ -78,7 +84,6 @@
 <style>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   min-width: 100px;
-  min-height: 100vh;
 }
 </style>
 
@@ -86,7 +91,7 @@
 export default {
   data () {
     return {
-      isCollapse: false,
+      isCollapse: true,
 
       menu: [
         {

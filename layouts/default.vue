@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <el-container direction="vertical">
+  <div id="app" style="height:100vh;">
+    <el-container direction="vertical" style="min-height:100%">
       <el-header>
         <NavBar />
       </el-header>
@@ -10,9 +10,6 @@
           <el-main>
             <nuxt />
           </el-main>
-          <el-footer height="32px">
-            <p>footer</p>
-          </el-footer>
         </el-container>
       </el-container>
     </el-container>
