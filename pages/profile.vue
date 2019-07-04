@@ -130,11 +130,15 @@
                     label="Región"
                     prop="name"
                   >
-                    <el-input
-                      v-model="form.name"
-                      type="text"
-                      autocomplete="off"
-                    />
+                     <el-select v-model="form.region" @change="onChangeRegion" filterable value-key="id" placeholder="Select">
+                      <el-option
+                        v-for="item in regiones"
+                        :key="item.id"
+                        :label="item.nombre"
+                        :value="item"
+                        >
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col
@@ -145,11 +149,15 @@
                     label="Provincia"
                     prop="lastName"
                   >
-                    <el-input
-                      v-model="form.lastName"
-                      type="text"
-                      autocomplete="off"
-                    />
+                    <el-select v-model="form.provincia" value-key="id" filterable placeholder="Select">
+                      <el-option
+                      v-if="form.region"
+                        v-for="item in form.region.provincias"
+                        :key="item.id"
+                        :label="item.nombre"
+                        :value="item">
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col
@@ -160,11 +168,15 @@
                     label="Distrito"
                     prop="lastName"
                   >
-                    <el-input
-                      v-model="form.lastName"
-                      type="text"
-                      autocomplete="off"
-                    />
+                    <el-select v-model="form.distrito" value-key="id" filterable placeholder="Select">
+                      <el-option
+                        v-if="form.provincia"
+                        v-for="item in form.provincia.distritos"
+                        :key="item.id"
+                        :label="item.nombre"
+                        :value="item">
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -211,8 +223,14 @@ export default {
 
   data () {
     return {
+      abc: '',
+      regiones: [],
+      
       imageUrl: '',
       form: {
+        region: '',
+        provincia: '',
+        distrito: '',
         email: null,
         pass: null
       },
@@ -231,6 +249,18 @@ export default {
     }
   },
 
+  computed: {
+    provincias: function () {
+      const regionId = this.form.region.id
+      let provincias = this.regiones.find(region => region.id = regionId )
+      return provincias || []
+    }
+  },
+
+  created() {
+    this.getRegiones()
+  },
+
   methods: {
     submitForm (e) {
       e.preventDefault()
@@ -243,6 +273,16 @@ export default {
         }
       })
     },
+
+    async getRegiones(){
+      let { data } = await this.$axios.get(`http://192.168.1.117:8000/api/region/obtener_todo/`)
+      this.regiones = data
+    },
+
+    onChangeRegion(item){
+      console.log('item', item)
+    },
+
 
     handleAvatarSuccess (res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);

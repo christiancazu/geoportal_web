@@ -13,7 +13,10 @@
   "author": "veox",
   "license": "ISC",
   "dependencies": {
+    "@nuxtjs/auth": "^4.8.1",
+    "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/font-awesome": "^1.0.4",
+    "@nuxtjs/toast": "^3.2.1",
     "element-ui": "^2.9.1",
     "nuxt": "^2.8.1"
   },

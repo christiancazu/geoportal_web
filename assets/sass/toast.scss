@@ -1,0 +1,22 @@
+.app-toast-container {
+  // font-family: 'Roboto'
+}
+
+.app-toastt {
+  &.success {
+    background: var(--color-success) !important;
+  }
+
+  &.info {
+    background: var(--color-info) !important;
+  }
+
+  &.error {
+    background: var(--color-danger) !important;
+  }
+
+  a.v-btn {
+    color: white !important;
+    text-decoration: none !important;
+  }
+}

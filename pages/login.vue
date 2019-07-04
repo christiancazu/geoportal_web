@@ -5,13 +5,16 @@
         shadow="always"
         :body-style="{ padding:'0px' }"
       >
-        <el-card shadow="never" class="border-none" >
+        <el-card
+          shadow="never"
+          class="border-none"
+        >
           <div slot="header">
             <label>Iniciar Sesión</label>
           </div>
           <div>
             <el-form
-              ref="form"
+              ref="formLogin"
               label-position="top"
               status-icon
               :model="form"
@@ -31,13 +34,13 @@
               </el-form-item>
               <el-form-item
                 label="Contraseña"
-                prop="pass"
+                prop="password"
               >
                 <el-input
-                  v-model="form.pass"
+                  v-model="form.password"
                   type="password"
                   autocomplete="off"
-                  :rules="rules2.pass"
+                  :rules="rules2.password"
                 />
               </el-form-item>
               <el-form-item class="text-xs-center mb-0">
@@ -65,14 +68,15 @@ export default {
 
   data () {
     return {
+      processingForm: true,
 
       form: {
         email: null,
-        pass: null
+        password: null
       },
 
       rules2: {
-        pass: [
+        password: [
           { required: true },
           { min: 6, message: 'The password can not be less than 6 digits', trigger: 'change' }
         ],
@@ -85,21 +89,47 @@ export default {
     }
   },
 
-  created(){
-    console.log(this.$route)
+  created () {
+    // console.log(this.$route)
   },
 
   methods: {
-    submitForm (e) {
-      e.preventDefault()
-      this.$refs.form.validate((valid) => {
+    submitForm () {
+      this.$refs.formLogin.validate((valid) => {
         if (valid) {
+
           console.log('submit!')
+          this.login()
         } else {
           console.log('error submit!!')
           return false
         }
       })
+    },
+
+    async login () {
+      this.processingForm = true
+
+      try {
+        this.$toast.info('Ingresando ...')
+
+        await this.$auth.loginWith('local', {
+          data: {
+            username: this.form.email,
+            password: this.form.password
+          }
+        })
+
+        this.$toast.success(`Bienvenido ${this.user.name}`)
+        this.$router.push('/')
+        this.showDrawerIfNeeded({ currentBreakpoint: this.$vuetify.breakpoint.name })
+      } catch (error) {
+        this.$toast.error('Error al ingresar')
+        if (!error.response) return
+        this.error = error.response.data || null
+      } finally {
+        this.processingForm = false
+      }
     }
   }
 

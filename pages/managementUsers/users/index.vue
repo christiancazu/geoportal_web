@@ -5,11 +5,12 @@
       slot="header"
     >
       <p class="mt-1 mb-0 font-weight-bold">Usuarios</p>
-        <el-button
+      <el-button
         size="mini"
-          type="primary"
-          icon="el-icon-plus"
-        >Nuevo Usuario</el-button>
+        type="primary"
+        icon="el-icon-plus"
+        @click="replaceShowModalAddUser({ show: true })"
+      >Nuevo Usuario</el-button>
     </div>
     <el-container direction="vertical">
       <el-row :gutter="20">
@@ -29,13 +30,14 @@
       </el-row>
     </el-container>
     <el-container>
+      <p>{{ showModalAddUser }}</p>
       <el-table
         :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
         style="width: 100%"
       >
         <el-table-column
           label="Date"
-          prop="date" 
+          prop="date"
         />
         <el-table-column
           label="Name"
@@ -44,7 +46,7 @@
         <el-table-column
           label="Actions"
           align="center"
-        > 
+        >
           <template slot-scope="scope">
             <el-button
               circle
@@ -68,6 +70,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
   data () {
     return {
@@ -93,11 +97,20 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState({
+      showModalAddUser: state => state.modals.showModalAddUser
+    })
+  },
+
   created () {
     console.log(this.$route)
   },
 
   methods: {
+    ...mapActions({
+      replaceShowModalAddUser: 'modals/replaceShowModalAddUser'
+    }),
     handleEdit (index, row) {
       console.log(index, row)
     },

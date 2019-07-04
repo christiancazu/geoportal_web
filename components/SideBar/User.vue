@@ -99,6 +99,7 @@
     </el-menu-item>
     <el-menu-item
       index="6"
+      @click="$auth.logout()"
       :route="{ path: '/' }"
     >
       <i class="material-icons">

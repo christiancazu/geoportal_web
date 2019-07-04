@@ -41,9 +41,66 @@ export default {
   },
 
   plugins: [
+    '~/plugins/axios',
     '~/plugins/element-ui',
   ],
+
   modules: [
     '@nuxtjs/font-awesome',
-  ]
+    '@nuxtjs/toast',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
+  ],
+
+  axios: {
+    // See https://github.com/nuxt-community/axios-module#options
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://sgc-api.zajerperu.com/api' : 'http://127.0.0.1:8000/api'
+  },
+
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      callback: '/login',
+      home: '/'
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: 'login',
+            method: 'post',
+            propertyName: 'token'
+            
+          },
+          logout: {
+            url: 'logout',
+            method: 'post'
+          },
+          user: {
+            url: 'user',
+            method: 'get',
+            propertyName: 'data'
+          }
+        }
+      }
+    }
+  },
+
+  router: {
+    middleware: ['auth']
+  },
+
+  toast: {
+    position: "top-right",
+    className: 'app-toast',
+    // duration: 3000,
+    action: {
+      text: 'Cerrar',
+      onClick: (e, toastObject) => {
+        toastObject.goAway(0)
+      }
+    }
+  }
+
 }
