@@ -15,19 +15,25 @@ export default {
       }
     ],
     link: [{
-      rel: 'stylesheet',
-      href: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.css'
-    }],
-    script: [
-      { src: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.js' }, 
-      { src: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", type: "text/javascript" },
-      { src: 'bootstrapJS/bootstrap.min.js', type: "text/javascript" },
-      { src: 'js/leaflet.wms.js' }
+        rel: 'stylesheet',
+        href: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.css'
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css?family=Material+Icons'
+      }
+    ],
+    script: [{
+        src: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.js'
+      },
+      {
+        src: 'js/leaflet.wms.js'
+      }
     ],
   },
   css: [
-    '~/assets/css/bootstrap.min.css',
-    '~/assets/css/main.css',
+    '~/assets/sass/app.scss',
+    'element-ui/lib/theme-chalk/index.css',
   ],
 
   loading: {
@@ -35,9 +41,66 @@ export default {
   },
 
   plugins: [
-    // '~/plugins/element-ui',
+    '~/plugins/axios',
+    '~/plugins/element-ui',
   ],
+
   modules: [
-    // '@nuxtjs/font-awesome',
-  ]
+    '@nuxtjs/font-awesome',
+    '@nuxtjs/toast',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
+  ],
+
+  axios: {
+    // See https://github.com/nuxt-community/axios-module#options
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://sgc-api.zajerperu.com/api' : 'http://127.0.0.1:8000/api'
+  },
+
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      callback: '/login',
+      home: '/'
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: 'login',
+            method: 'post',
+            propertyName: 'token'
+            
+          },
+          logout: {
+            url: 'logout',
+            method: 'post'
+          },
+          user: {
+            url: 'user',
+            method: 'get',
+            propertyName: 'data'
+          }
+        }
+      }
+    }
+  },
+
+  router: {
+    middleware: ['auth']
+  },
+
+  toast: {
+    position: "top-right",
+    className: 'app-toast',
+    // duration: 3000,
+    action: {
+      text: 'Cerrar',
+      onClick: (e, toastObject) => {
+        toastObject.goAway(0)
+      }
+    }
+  }
+
 }

@@ -1,56 +1,51 @@
 <template>
-  <nav
-    class="navbar navbar-inverse navbar-static-top navbar-fixed-top mb-0"
-    role="navigation"
-  >
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button
-          type="button"
-          class="navbar-toggle"
-          data-toggle="collapse"
-          data-target=".Menu"
+  <div>
+    <el-menu
+      class="el-menu-demo"
+      mode="horizontal"
+      menu-trigger="click"
+      :router="true"
+      style="z-index:1;"
+    >
+      <el-submenu
+        index="2"
+        style="float: right"
+        popper-class="adjust-popper"
+      >
+        <template slot="title">
+          Carol
+          <i class="fa fa-user-circle-o fa-2x" />
+        </template>
+        <el-menu-item index="2-1">
+          Profile
+        </el-menu-item>
+        <el-menu-item index="2-2">
+          Settings
+        </el-menu-item>
+        <el-menu-item
+          index="2-3"
+          :route="{
+            name: 'login'
+          }"
         >
-          <span class="sr-only">Menu</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <nuxt-link
-          to="/portal"
-          class="navbar-brand"
-          exact
-        >Geoportal</nuxt-link>
-      </div>
-      <div class="collapse navbar-collapse Menu">
-        <ul class="nav navbar-nav">
-          <li>
-            <nuxt-link
-              to="/"
-              exact
-            >Gestión</nuxt-link>
-          <li><a href="#">Ayuda</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Configuración</a></li>
-          <li class="dropdown">
-            <a
-              href="#"
-              class="dropdown-toggle"
-              data-toggle="dropdown"
-            >
-              <img src="icon/user-circle-regular.svg" />
-              <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Administrar</a></li>
-              <li><a href="#">Mi Perfil</a></li>
-              <li><a href="#">Cerrar Sesión</a></li>
-              <li><a href="#">Reportar</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+          Log Out
+        </el-menu-item>
+      </el-submenu>
+    </el-menu>
+  </div>
 </template>
+<script>
+export default {
+  data () {
+    return {
+      activeIndex: '1',
+      activeIndex2: '1'
+    }
+  },
+  methods: {
+    handleSelect (key, keyPath) {
+      console.log(key, keyPath)
+    }
+  }
+}
+</script>

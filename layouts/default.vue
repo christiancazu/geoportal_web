@@ -1,14 +1,31 @@
 <template>
-  <div class="init">
-    <NavBar />
-      <nuxt />
+  <div
+    id="app"
+    style="height:100vh;"
+  >
+    <el-container
+      direction="vertical"
+      style="min-height:100%"
+    >
+      <el-header class="px-0">
+        <NavBar />
+      </el-header>
+      <el-container>
+        <SideBar />
+        <el-main>
+          <nuxt />
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 <script>
 import NavBar from '@/components/NavBar.vue'
+import SideBar from '@/components/SideBar.vue'
 export default {
   components: {
     NavBar,
+    SideBar
   },
 
   data () {

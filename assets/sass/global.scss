@@ -1,0 +1,85 @@
+html {
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-top: 0px;
+}
+
+.background-neutro {
+  background-color: #fafafa;
+}
+
+.font-weight-bold {
+  font-weight: 700 !important;
+}
+
+label {
+  padding-bottom: 0px !important;
+  font-weight: bolder;
+  line-height: 20px !important;
+}
+
+.label-text {
+  vertical-align: middle;
+  font-size: 14px;
+  color: #606266;
+  line-height: 20px;
+  box-sizing: border-box;
+}
+.space-between{
+  display: flex;
+  justify-content: space-between;
+}
+ 
+.border-none {
+  border: none !important;
+}
+
+// .clearfix:before,
+//   .clearfix:after {
+//     display: table;
+//     content: "";
+//   }
+//   .clearfix:after {
+//     clear: both
+//   }
+
+.el-divider--horizontal {
+  margin: 0px !important;
+}
+
+// upload image
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 128px;
+  height: 128px;
+  line-height: 128px !important;
+  text-align: center;
+}
+.avatar {
+  width: 128px;
+  height: 128px;
+  display: block;
+}
+
+.content-center {
+  display: flex;
+  justify-content: center;
+}

@@ -1,122 +1,137 @@
 <template>
-  <div class="row ma-0">
-    <div class="col-xs-24 col-sm-8 col-md-6 col-lg-6 col-center">
-
-      <!-- <div> -->
-
-      <!-- Nav tabs -->
-      <div class="panel panel-default">
-        <div class="panel-heading pb-0">
-          <ul
-            class="nav nav-tabs nav-justified"
-            role="tablist"
-          >
-            <li
-              role="presentation"
-              class="active"
-            ><a
-                href="#home"
-                aria-controls="home"
-                role="tab"
-                data-toggle="tab"
-                class="font-weight-bold"
-              >Iniciar Sesión</a></li>
-            <li role="presentation"><a
-                href="#profile"
-                aria-controls="profile"
-                role="tab"
-                data-toggle="tab"
-                class="font-weight-bold"
-              >Registrarse</a></li>
-          </ul>
-        </div>
-
-        <!-- Tab panes -->
-        <div class="panel-body">
-          <div class="tab-content">
-            <div
-              role="tabpanel"
-              class="tab-pane fade in active"
-              id="home"
+  <div>
+    <el-container style="justify-content: center">
+      <el-card
+        shadow="always"
+        :body-style="{ padding:'0px' }"
+      >
+        <el-card
+          shadow="never"
+          class="border-none"
+        >
+          <div slot="header">
+            <label>Iniciar Sesión</label>
+          </div>
+          <div>
+            <el-form
+              ref="formLogin"
+              label-position="top"
+              status-icon
+              :model="form"
+              :rules="rules2"
+              label-width="120px"
+              class="demo-ruleForm"
             >
-              <form
-                action=""
-                class="py-4"
+              <el-form-item
+                prop="email"
+                label="Nombre de Usuario"
+                :rules="rules2.email"
               >
-                <div class="form-group">
-                  <label class="font-weight-bold">Usuario</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                  >
-                </div>
-                <div class="form-group">
-                  <label class="font-weight-bold">contraseña</label>
-                  <input
-                    type="password"
-                    class="form-control"
-                  >
-                </div>
-              </form>
-              <div class="content-center">
-                <button
-                  type="button"
-                  class="btn"
-                >
-                  cancelar
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-success"
+                <el-input
+                  v-model="form.email"
+                  type="email"
+                />
+              </el-form-item>
+              <el-form-item
+                label="Contraseña"
+                prop="password"
+              >
+                <el-input
+                  v-model="form.password"
+                  type="password"
+                  autocomplete="off"
+                  :rules="rules2.password"
+                />
+              </el-form-item>
+              <el-form-item class="text-xs-center mb-0">
+                <el-button
+                  type="primary"
+                  @click="submitForm"
                 >
                   Ingresar
-                </button>
-              </div>
-              <p class="text-center">
-                <a href="">
-                  Olvidaste tu contraseña
-                </a>
-              </p>
-            </div>
-            <div
-              role="tabpanel"
-              class="tab-pane fade "
-              id="profile"
-            >Register</div>
+                </el-button>
+              </el-form-item>
+            </el-form>
           </div>
+        </el-card>
+        <el-divider style="margin: 0px;" />
+        <div class="label-text pa-3">¿No tienes cuenta?
+          <nuxt-link to="/register">Registrate</nuxt-link>
         </div>
-
-      </div>
-    </div>
+      </el-card>
+    </el-container>
   </div>
-
 </template>
 
 <script>
-export default {};
+export default {
+
+  data () {
+    return {
+      processingForm: true,
+
+      form: {
+        email: null,
+        password: null
+      },
+
+      rules2: {
+        password: [
+          { required: true },
+          { min: 6, message: 'The password can not be less than 6 digits', trigger: 'change' }
+        ],
+        email: [
+          { required: true, message: 'Please input email address', trigger: 'blur' },
+          { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+        ]
+
+      }
+    }
+  },
+
+  created () {
+    // console.log(this.$route)
+  },
+
+  methods: {
+    submitForm () {
+      this.$refs.formLogin.validate((valid) => {
+        if (valid) {
+
+          console.log('submit!')
+          this.login()
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+
+    async login () {
+      this.processingForm = true
+
+      try {
+        this.$toast.info('Ingresando ...')
+
+        await this.$auth.loginWith('local', {
+          data: {
+            username: this.form.email,
+            password: this.form.password
+          }
+        })
+
+        this.$toast.success(`Bienvenido ${this.user.name}`)
+        this.$router.push('/')
+        this.showDrawerIfNeeded({ currentBreakpoint: this.$vuetify.breakpoint.name })
+      } catch (error) {
+        this.$toast.error('Error al ingresar')
+        if (!error.response) return
+        this.error = error.response.data || null
+      } finally {
+        this.processingForm = false
+      }
+    }
+  }
+
+}
 </script>
-
-<style scoped>
-.col-center {
-  margin: 0 auto;
-  margin-top: 2.5rem;
-  float: none;
-}
-
-.pb-0 {
-  padding-bottom: 0px;
-  padding-left: 0px;
-  padding-right: 0px;
-  border-bottom: 0px;
-}
-
-.content-center {
-  padding: 1.2rem 0px;
-  display: flex;
-  justify-content: center;
-}
-
-.btn {
-  margin: 0px 0.2rem;
-}
-</style>
