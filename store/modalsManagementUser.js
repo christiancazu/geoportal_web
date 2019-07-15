@@ -1,9 +1,12 @@
 import {
-  REPLACE_SHOW_MODAL_ADD_USER
+  REPLACE_SHOW_MODAL_ADD_USER,
+  REPLACE_SHOW_MODAL_EDIT_USER,
+  REPLACE_SHOW_MODAL_DELETE_USER
 } from '../types/mutation-types'
 
 export const state = () => ({
   showModalAddUser: false,
+  showModalEditUser: false,
   showModalDeleteUser: false
 })
 
@@ -24,9 +27,9 @@ export const mutations = {
     state.showModalAddUser = show
   },
   [REPLACE_SHOW_MODAL_EDIT_USER](state, { show }) {
-    state.showModalAddUser = show
+    state.showModalEditUser = show
   },
   [REPLACE_SHOW_MODAL_DELETE_USER](state, { show }) {
-    state.showModalAddUser = show
+    state.showModalDeleteUser = show
   }
 }
