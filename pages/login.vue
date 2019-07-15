@@ -121,10 +121,9 @@ export default {
         })
 
         this.$toast.success(`Bienvenido ${this.user.name}`)
-        this.$router.push('/')
-        this.showDrawerIfNeeded({ currentBreakpoint: this.$vuetify.breakpoint.name })
+        this.$router.push('/geovisor')
       } catch (error) {
-        this.$toast.error('Error al ingresar')
+        // this.$toast.error('Erlocalror al ingresar')
         if (!error.response) return
         this.error = error.response.data || null
       } finally {

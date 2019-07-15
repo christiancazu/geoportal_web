@@ -7,7 +7,7 @@
   >
     <el-menu-item>
       <img
-        src="/img/unat.jpg"
+        src="/image/default_avatar.png"
         alt=""
         style="height:35px;"
       >
