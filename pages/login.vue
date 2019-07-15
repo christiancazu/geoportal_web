@@ -78,11 +78,11 @@ export default {
       rules2: {
         password: [
           { required: true },
-          { min: 6, message: 'The password can not be less than 6 digits', trigger: 'change' }
+          { min: 4, message: 'The password can not be less than 6 digits', trigger: 'change' }
         ],
         email: [
           { required: true, message: 'Please input email address', trigger: 'blur' },
-          { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+          // { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
         ]
 
       }
