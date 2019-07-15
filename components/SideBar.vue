@@ -28,38 +28,6 @@ export default {
   data () {
     return {
       isCollapse: false,
-
-      menu: [
-        {
-          name: 'Perfil',
-          path: '/profile',
-          iconClass: ''
-        },
-        {
-          name: 'Gestión de usuarios',
-          iconClass: '',
-          subMenu: [
-            { name: 'Usuarios', path: '/users' },
-            { name: 'Usuarios Pendientes', path: '/pendingUsers' }
-          ]
-        },
-        {
-          name: 'Gestión de Capas',
-          iconClass: '',
-          subMenu: [
-            { name: 'Capas', path: '/layers' },
-            { name: 'Capas Pendientes', path: '/pendingLayers' }
-          ]
-        },
-        {
-          name: 'Estado de Datos',
-          iconClass: '',
-          subMenu: [
-            { name: 'Copias de Seguridad', path: '/backups' },
-            { name: 'Crear', path: '/createBackups' },
-          ]
-        }
-      ]
     }
   },
   methods: {
