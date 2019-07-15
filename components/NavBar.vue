@@ -1,51 +1,42 @@
 <template>
-  <div>
-    <el-menu
+  <!-- <div> -->
+    <!-- <el-menu
       class="el-menu-demo"
       mode="horizontal"
       menu-trigger="click"
       :router="true"
       style="z-index:1;"
     >
-      <el-submenu
-        index="2"
-        style="float: right"
-        popper-class="adjust-popper"
-      >
+      <el-menu-item index="1"> -->
+        <img src="/image/unat.png" style="max-height:100%;" alt="">
+        <!-- <el-image style="height: 60px" src="/image/unat.jpg" fit="contain"></el-image> -->
+      <!-- </el-menu-item> -->
+      <!-- <el-submenu index="2" style="float: right" popper-class="adjust-popper">
         <template slot="title">
           Carol
           <i class="fa fa-user-circle-o fa-2x" />
         </template>
-        <el-menu-item index="2-1">
-          Profile
-        </el-menu-item>
-        <el-menu-item index="2-2">
-          Settings
-        </el-menu-item>
-        <el-menu-item
-          index="2-3"
-          :route="{
+        <el-menu-item index="2-1">Profile</el-menu-item>
+        <el-menu-item index="2-2">Settings</el-menu-item>
+        <el-menu-item index="2-3" :route="{
             name: 'login'
-          }"
-        >
-          Log Out
-        </el-menu-item>
-      </el-submenu>
-    </el-menu>
-  </div>
+          }">Log Out</el-menu-item>
+      </el-submenu> -->
+    <!-- </el-menu> -->
+  <!-- </div> -->
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
-      activeIndex: '1',
-      activeIndex2: '1'
-    }
+      activeIndex: "1",
+      activeIndex2: "1"
+    };
   },
   methods: {
-    handleSelect (key, keyPath) {
-      console.log(key, keyPath)
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
     }
   }
-}
+};
 </script>

@@ -54,7 +54,7 @@ export default {
 
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: process.env.NODE_ENV === 'production' ? 'https://sgc-api.zajerperu.com/api' : 'http://127.0.0.1:8000/api'
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://127.0.0.1:8000/api'
   },
 
   auth: {
@@ -71,7 +71,7 @@ export default {
             url: 'login',
             method: 'post',
             propertyName: 'token'
-            
+
           },
           logout: {
             url: 'logout',
@@ -94,7 +94,7 @@ export default {
   toast: {
     position: "top-right",
     className: 'app-toast',
-    // duration: 3000,
+    duration: 3000,
     action: {
       text: 'Cerrar',
       onClick: (e, toastObject) => {
