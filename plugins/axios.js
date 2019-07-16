@@ -3,6 +3,17 @@ import Vue from 'vue'
 export default ({ $axios, redirect }) => {
   $axios.onRequest((config) => {
     // console.log('Making request to ' + config.url)
+
+  })
+
+  $axios.onResponse((response) => {
+    const code = response.status
+    const status = !response.data.status
+    const message = response.data.message
+
+    if (code === 200 && status) {
+      Vue.prototype.$toasted.info(message)
+    }
   })
 
   $axios.onError((error) => {
