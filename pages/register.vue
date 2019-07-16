@@ -70,13 +70,13 @@
               <!-- password_2 -->
               <el-form-item
                 label="Repita Contraseña"
-                prop="password_confirmation"
+                prop="passwordConfirmation"
               >
                 <el-input
-                  v-model="form.password_confirmation"
+                  v-model="form.passwordConfirmation"
                   type="password"
                   autocomplete="off"
-                  :rules="rules.password_confirmation"
+                  :rules="rules.passwordConfirmation"
                 />
               </el-form-item>
             </el-col>
@@ -98,7 +98,7 @@
               <el-row :gutter="10">
                 <el-col
                   :xs="24"
-                  :sm="12"
+                  :sm="8"
                 >
                   <!-- name -->
                   <el-form-item
@@ -114,15 +114,31 @@
                 </el-col>
                 <el-col
                   :xs="24"
-                  :sm="12"
+                  :sm="8"
                 >
                   <!-- lasname -->
                   <el-form-item
-                    label="Apellidos"
+                    label="Apellido"
                     prop="lastName"
                   >
                     <el-input
                       v-model="form.lastName"
+                      type="text"
+                      autocomplete="off"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col
+                  :xs="24"
+                  :sm="8"
+                >
+                  <!-- lasname -->
+                  <el-form-item
+                    label="Segundo apellido"
+                    prop="lastNameAditional"
+                  >
+                    <el-input
+                      v-model="form.lastNameAditional"
                       type="text"
                       autocomplete="off"
                     />
@@ -201,6 +217,8 @@
                   type="textarea"
                   :rows="3"
                   autocomplete="off"
+                  :maxlength="300"
+                  :show-word-limit="true"
                 />
               </el-form-item>
             </el-col>
@@ -230,10 +248,10 @@ export default {
         subject: null,
         name: '',
         lastName: '',
-        lastNameAditional:'',
+        lastNameAditional: '',
         institute: '',
         password: '',
-        password_confirmation: ''
+        passwordConfirmation: ''
       },
 
       rules: {
@@ -241,34 +259,42 @@ export default {
           required: true,
           message: "El nombre de usuario es requerido"
         }],
+        name: [{
+          required: true,
+          message: "El nombre es requerido"
+        }],
+        lastName: [{
+          required: true,
+          message: "El nombre es requerido"
+        }],
         password: [{
           required: true,
+          min: 6,
           message: "La contraseña es requerida"
-        }
-        ],
-        password_confirmation: [{
+        }],
+        passwordConfirmation: [{
           required: true,
           validator: (rule, value, callback) => {
-            if(value !== this.form.password) {
+            if (value !== this.form.password) {
               return callback(new Error('La contraseña no coincide'))
             }
             callback()
           }
-        }
-        ],
-
-        email: [
-          {
-            required: true,
-            message: "Please input email address",
-            trigger: "blur"
-          },
-          {
-            type: "email",
-            message: "Please input correct email address",
-            trigger: ["blur", "change"]
-          }
-        ]
+        }],
+        email: [{
+          required: true,
+          pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+          message: 'El correo electrónico debe ser válido'
+        }],
+        subject: [{
+          required: true,
+          min: 150,
+          message: 'Detalle el motivo para acceder al Geoportal UNAT'
+        }],
+        institute: [{
+          required: true,
+          message: 'La institución es requerida'
+        }]
       }
     };
   },

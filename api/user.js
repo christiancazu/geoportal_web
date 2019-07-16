@@ -9,7 +9,7 @@ export default $axios => ({
 
   create(payload = {}) {
     return $axios({
-      url: `user/register/`,
+      url: `register/`,
       method: 'POST',
       data: payload.data || {}
     })
