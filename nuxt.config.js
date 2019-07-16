@@ -42,6 +42,7 @@ export default {
 
   plugins: [
     '~/plugins/axios',
+    '~/plugins/api',
     '~/plugins/element-ui',
   ],
 
@@ -101,9 +102,9 @@ export default {
   toast: {
     position: "top-right",
     className: 'app-toast',
-    duration: 3000,
+    duration: 4000,
     action: {
-      text: 'Cerrar',
+      text: 'X',
       onClick: (e, toastObject) => {
         toastObject.goAway(0)
       }
