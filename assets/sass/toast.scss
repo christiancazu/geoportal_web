@@ -1,5 +1,9 @@
 .app-toast-container {
-  // font-family: 'Roboto'
+  font-family: 'Roboto'
+}
+.toasted-container.top-right {
+  top: 0% !important;
+  right: 1.29rem !important;
 }
 
 .app-toastt {
