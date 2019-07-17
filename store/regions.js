@@ -65,6 +65,7 @@ export const actions = {
   },
 
   replaceDistricts ({ commit }, payload) {
+    console.log(payload)
     commit('REPLACE_DISTRICTS', payload)
   }
 }

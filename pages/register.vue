@@ -27,15 +27,15 @@
               >
                 <el-upload
                   class="avatar-uploader"
-                  action="https://jsonplaceholder.typicode.com/posts/"
+                  action=""
+                  :http-request="launchUploadAvatar"
                   :show-file-list="false"
                   name="image"
-                  :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
                 >
                   <img
-                    v-if="imageUrl"
-                    :src="imageUrl"
+                    v-if="imageSelected"
+                    :src="imageSelected"
                     class="avatar"
                   />
                   <i
@@ -180,6 +180,7 @@
                   <el-form-item
                     label="Provincia"
                     prop="province"
+                    ref="province"
                   >
                     <el-select
                       v-model="form.province"
@@ -204,10 +205,11 @@
                   <!-- distrito -->
                   <el-form-item
                     label="Distrito"
-                    prop="district"
+                    prop="districtId"
+                    ref="districtId"
                   >
                     <el-select
-                      v-model="form.district"
+                      v-model="form.districtId"
                       value-key="id"
                       filterable
                       placeholder="Select"
@@ -216,7 +218,7 @@
                         v-for="item in districts"
                         :key="item.id"
                         :label="item.name"
-                        :value="item"
+                        :value="item.id"
                       ></el-option>
                     </el-select>
                   </el-form-item>
@@ -235,7 +237,7 @@
               </el-form-item>
               <!-- objetivo -->
               <el-form-item
-                label="Objetivo"
+                label="¿Porque desea usar el Geoportal?"
                 prop="subject"
               >
                 <el-input
@@ -268,7 +270,8 @@ export default {
   auth: false,
   data () {
     return {
-      imageUrl: "",
+      imageSelected: "",
+
       form: {
         username: '',
         email: '',
@@ -279,7 +282,10 @@ export default {
         lastNameAditional: '',
         institute: '',
         password: '',
-        passwordConfirmation: ''
+        passwordConfirmation: '',
+        districtId: null,
+        region: null,
+        province: null
       },
 
       rules: {
@@ -322,7 +328,29 @@ export default {
         institute: [{
           required: true,
           message: 'La institución es requerida'
-        }]
+        }],
+        region: [{
+          required: true,
+          message: 'Seleccione su región'
+        }],
+        province: [{
+          required: true,
+          validator: (rule, value, callback) => {
+            if (!this.form.region) {
+              return callback(new Error('Seleccione su Provincia'))
+            }
+            callback()
+          }
+        }],
+        districtId: [{
+          required: true,
+          validator: (rule, value, callback) => {
+            if (!this.form.province) {
+              return callback(new Error('Seleccione su Distrito'))
+            }
+            callback()
+          }
+        }],
       }
     };
   },
@@ -335,11 +363,10 @@ export default {
       loadingProvinces: state => state.regions.loadingProvinces,
       districts: state => state.regions.districts,
       loadingDistricts: state => state.regions.loadingDistricts,
-    })
+    }),
   },
 
   created () {
-    console.log('test')
     this.getRegions()
   },
 
@@ -354,6 +381,7 @@ export default {
     }),
 
     submitForm (e) {
+      console.log(e)
       e.preventDefault();
       this.$refs.form.validate(valid => {
         if (valid) {
@@ -363,7 +391,15 @@ export default {
     },
 
     register () {
-      const data = this.form
+      const formData = new FormData()
+
+      let keys = Object.keys(this.form)
+      keys.forEach(val => {
+        formData.append(val, this.form[val])
+      })
+
+      const data = formData
+
       return new Promise((resolve, reject) => {
         this.$userAPI.create({ data })
           .then(response => {
@@ -372,12 +408,13 @@ export default {
       })
     },
 
-    handleAvatarSuccess (res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+    launchUploadAvatar (option) {
+      this.imageUSelected = URL.createObjectURL(option.file);
+      this.form.image = option.file
     },
 
     beforeAvatarUpload (file) {
-      const isJPG = file.type === "image/jpeg";
+      const isJPG = file.type === "image/png" || file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isJPG) {
@@ -389,26 +426,27 @@ export default {
       return isJPG && isLt2M;
     },
 
-    onchangeRegions () {
+    onchangeRegions (region) {
       const params = {
-        id: this.form.region.id
+        id: region.id
       }
-      this.form.province = ''
-      this.form.district = ''
+      this.replaceProvinces({ provinces: null })
+      this.replaceDistricts({ districts: null })
+      this.$refs.province.resetField()
+      this.$refs.districtId.resetField()
 
       this.getProvinces({ params })
     },
-    onchangeProvinces () {
+
+    onchangeProvinces (province) {
       const params = {
-        id: this.form.province.id
+        id: province.id
       }
-      this.form.district = ''
 
+      this.replaceDistricts({ districts: null })
+      this.$refs.districtId.resetField()
       this.getDistricts({ params })
-    },
-    onchangeDistricts () {
-
-    },
+    }
   }
 };
 </script>
