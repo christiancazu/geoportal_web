@@ -156,11 +156,20 @@
                     label="Región"
                     prop="region"
                   >
-                    <el-input
-                      v-model="form.regionId"
-                      type="text"
-                      autocomplete="off"
-                    />
+                    <el-select
+                      v-model="form.region"
+                      value-key="id"
+                      filterable
+                      placeholder="Select"
+                      @change="onchangeRegions"
+                    >
+                      <el-option
+                        v-for="item in regions"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item"
+                      ></el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col
@@ -172,11 +181,20 @@
                     label="Provincia"
                     prop="province"
                   >
-                    <el-input
+                    <el-select
                       v-model="form.province"
-                      type="text"
-                      autocomplete="off"
-                    />
+                      value-key="id"
+                      filterable
+                      placeholder="Select"
+                      @change="onchangeProvinces"
+                    >
+                      <el-option
+                        v-for="item in provinces"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item"
+                      ></el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col
@@ -188,11 +206,19 @@
                     label="Distrito"
                     prop="district"
                   >
-                    <el-input
+                    <el-select
                       v-model="form.district"
-                      type="text"
-                      autocomplete="off"
-                    />
+                      value-key="id"
+                      filterable
+                      placeholder="Select"
+                    >
+                      <el-option
+                        v-for="item in districts"
+                        :key="item.id"
+                        :label="item.name"
+                        :value="item"
+                      ></el-option>
+                    </el-select>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -236,6 +262,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
   auth: false,
   data () {
@@ -299,7 +327,32 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState({
+      regions: state => state.regions.regions,
+      loadingRegions: state => state.regions.loadingRegions,
+      provinces: state => state.regions.provinces,
+      loadingProvinces: state => state.regions.loadingProvinces,
+      districts: state => state.regions.districts,
+      loadingDistricts: state => state.regions.loadingDistricts,
+    })
+  },
+
+  created () {
+    console.log('test')
+    this.getRegions()
+  },
+
   methods: {
+    ...mapActions({
+      getRegions: 'regions/getRegions',
+      getProvinces: 'regions/getProvinces',
+      getDistricts: 'regions/getDistricts',
+      replaceRegions: 'regions/replaceRegions',
+      replaceProvinces: 'regions/replaceProvinces',
+      replaceDistricts: 'regions/replaceDistricts',
+    }),
+
     submitForm (e) {
       e.preventDefault();
       this.$refs.form.validate(valid => {
@@ -322,6 +375,7 @@ export default {
     handleAvatarSuccess (res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
+
     beforeAvatarUpload (file) {
       const isJPG = file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
@@ -333,7 +387,28 @@ export default {
         this.$message.error("La imagen excede los 2MB!");
       }
       return isJPG && isLt2M;
-    }
+    },
+
+    onchangeRegions () {
+      const params = {
+        id: this.form.region.id
+      }
+      this.form.province = ''
+      this.form.district = ''
+
+      this.getProvinces({ params })
+    },
+    onchangeProvinces () {
+      const params = {
+        id: this.form.province.id
+      }
+      this.form.district = ''
+
+      this.getDistricts({ params })
+    },
+    onchangeDistricts () {
+
+    },
   }
 };
 </script>

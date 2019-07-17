@@ -79,11 +79,11 @@ export default {
       rules: {
         email: [{
           required: true,
-          message: 'El correo electrónico debe ser válido'
+          message: 'Ingrese su nombre de usuario'
         }],
         password: [{
           required: true,
-          message: "La contraseña es requerida"
+          message: "Ingrese su contraseña"
         }]
       }
     }
