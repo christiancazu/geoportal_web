@@ -1,5 +1,7 @@
 /* Color del tema */
-$--color-primary: teal;
+$--color-primary: #7f5ae7;
 
 /* Ubicación de la fuente, obligatoria */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@import "~element-ui/packages/theme-chalk/src/index";

@@ -1,12 +1,18 @@
 <template>
-  <div id="app" style="height:100vh;">
-    <el-container direction="vertical" style="min-height:100%">
-      <!-- <el-header class="px-0 text-xs-center">
+  <div
+    id="app"
+    style="height:100vh;"
+  >
+    <el-container
+      direction="vertical"
+      style="min-height:100%"
+    >
+      <el-header class="px-0 theme-purple-pink ">
         <NavBar />
-      </el-header> -->
+      </el-header>
       <!-- <el-divider /> -->
       <el-container>
-        <SideBar v-if="loggedIn"/>
+        <SideBar v-if="loggedIn" />
         <el-main :class="isGeovisor ? 'pa-0' : ''">
           <nuxt />
         </el-main>
@@ -24,7 +30,7 @@ export default {
     SideBar
   },
 
-  data() {
+  data () {
     return {};
   },
 
@@ -33,13 +39,13 @@ export default {
       loggedIn: state => state.auth.loggedIn
     }),
 
-    isGeovisor: function() {
+    isGeovisor: function () {
       const name = this.$route.name
       return name === 'geovisor'
     }
   },
 
-  created() {
+  created () {
   }
 };
 </script>

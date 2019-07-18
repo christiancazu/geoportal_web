@@ -18,7 +18,7 @@
   }
 }
 
-.el-main {
+.el-main, .theme-purple-pink {
   // background: #c31432;  /* fallback for old browsers */
   background: linear-gradient(to right, rgb(195, 20, 50), rgb(36, 11, 54));
 // background: -webkit-linear-gradient(to right, #240b36, #c31432);  /* Chrome 10-25, Safari 5.1-6 */
@@ -41,4 +41,42 @@
 // card
 .el-card__header {
   padding: 15px 20px !important;
+}
+
+.hover-remove {
+  .el-menu-item:hover {
+    background: transparent !important;
+  }
+}
+
+.el-menu.el-menu--horizontal {
+  border: none !important;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+.container-fluid {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="theme-purple">
     <el-container direction="vertical">
       <el-row
         :gutter="10"
