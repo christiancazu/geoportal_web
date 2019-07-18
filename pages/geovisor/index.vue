@@ -1,16 +1,22 @@
 <template>
-    <div id="map" class="map"></div>
+  <div
+    id="map"
+    class="map"
+  ></div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
-  data() {
+  data () {
     return {
       map: null,
       tileLayer: null
     };
   },
 
-  mounted() {
+  mounted () {
+    this.replaceShowPanelGeovisor({ show: true })
+
     this.initMap();
     // var mymap = L.map('mapid').setView([51.505, -0.09], 13);
 
@@ -22,12 +28,15 @@ export default {
     // }).addTo(mymap);
   },
 
-  created() {
-    // console.log(this)
+  created () {
   },
 
   methods: {
-    initMap() {
+    ...mapActions({
+      replaceShowPanelGeovisor: 'sidebar/replaceShowPanelGeovisor'
+    }),
+
+    initMap () {
       var latlng = L.latLng(-16.39, -71.53);
       this.map = L.map("map").setView(latlng, 5);
 

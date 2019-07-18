@@ -1,7 +1,7 @@
 <template>
   <el-menu
     default-active="1"
-    class="el-menu-vertical-demo height-100"
+    class="el-menu-vertical-demo"
     :router="true"
     :collapse="isCollapse"
   >
@@ -80,6 +80,7 @@
       </el-menu-item>
     </el-submenu>
     <el-menu-item
+      @click="replaceShowPanelGeovisor({ show: true })"
       :route="{ path: '/geovisor' }"
       index="4"
     >
@@ -124,8 +125,11 @@
   </el-menu>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
+  props: {
+  },
+
   data () {
     return {
       isCollapse: false,
@@ -134,12 +138,14 @@ export default {
 
   computed: {
     ...mapState({
-      user: state => state.auth.user
-    }),
+      user: state => state.auth.user,
+    })
+  },
 
-    url: function(){
-      console.log(this.$axios)
-    }
+  methods: {
+    ...mapActions({
+      replaceShowPanelGeovisor: 'sidebar/replaceShowPanelGeovisor'
+    })
   },
 }
 </script>

@@ -4,7 +4,7 @@
       <!-- <el-header class="px-0 text-xs-center">
         <NavBar />
       </el-header> -->
-      <el-divider />
+      <!-- <el-divider /> -->
       <el-container>
         <SideBar v-if="loggedIn"/>
         <el-main :class="isGeovisor ? 'pa-0' : ''">

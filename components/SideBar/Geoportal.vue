@@ -5,7 +5,9 @@
     :router="true"
     :collapse="isCollapse"
   >
-    <el-menu-item>
+    <el-menu-item
+      @click="replaceShowPanelGeovisor({ show: false })"
+    >
       <i class="el-icon-arrow-left font-weight-bold" />
       <span class="font-weight-bold">GEOVISOR UNAT</span>
     </el-menu-item>
@@ -110,11 +112,19 @@
   </el-menu>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
       isCollapse: false,
     }
   },
+
+  methods: {
+    ...mapActions({
+      replaceShowPanelGeovisor: 'sidebar/replaceShowPanelGeovisor'
+    })
+  }
+
 }
 </script>

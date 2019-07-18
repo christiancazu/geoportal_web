@@ -1,13 +1,5 @@
 export default $axios => ({
-  index(payload = {}) {
-    return $axios({
-      url: `asistencia/obtener_resumen/`,
-      method: 'GET',
-      params: payload.params || {}
-    })
-  },
-
-  create(payload = {}) {
+    create(payload = {}) {
     return $axios({
       url: `register/`,
       method: 'POST',
