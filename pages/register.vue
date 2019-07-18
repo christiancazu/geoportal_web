@@ -1,25 +1,37 @@
 <template>
   <div>
-    <el-container style="justify-content: center">
-      <el-card shadow="always">
-        <div slot="header">
-          <label>Registro</label>
-        </div>
-        <el-form
-          ref="form"
-          label-position="top"
-          status-icon
-          :model="form"
-          :rules="rules"
-          label-width="120px"
-          class="demo-ruleForm"
-          @submit.prevent="submitForm"
+    <el-container direction="vertical">
+      <el-row
+        :gutter="10"
+        style="display: flex;
+    justify-content: center;"
+      >
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="12"
+          :lg="8"
+          :xl="8"
         >
-          <el-row :gutter="10">
-            <el-col
-              :xs="24"
-              :sm="10"
+          <el-card shadow="always">
+            <div
+              slot="header"
+              class="text-xs-center"
             >
+              <label>REGISTRATE</label>
+            </div>
+
+            <el-form
+              ref="form"
+              label-position="top"
+              status-icon
+              :model="form"
+              :rules="rules"
+              label-width="120px"
+              class="demo-ruleForm"
+              @submit.prevent="submitForm"
+            >
+
               <!-- image -->
               <el-form-item
                 label="Imagen de Perfil"
@@ -43,8 +55,8 @@
                     class="el-icon-plus avatar-uploader-icon"
                   ></i>
                 </el-upload>
-                <!-- username -->
               </el-form-item>
+              <!-- username -->
               <el-form-item
                 label="Nombre de Usuario"
                 prop="username"
@@ -69,7 +81,7 @@
               </el-form-item>
               <!-- password_2 -->
               <el-form-item
-                label="Repita Contraseña"
+                label="Repita contraseña"
                 prop="passwordConfirmation"
               >
                 <el-input
@@ -79,11 +91,6 @@
                   :rules="rules.passwordConfirmation"
                 />
               </el-form-item>
-            </el-col>
-            <el-col
-              :xs="24"
-              :sm="14"
-            >
               <!-- email -->
               <el-form-item
                 label="Correo Electrónico"
@@ -249,16 +256,16 @@
                   :show-word-limit="true"
                 />
               </el-form-item>
-            </el-col>
-          </el-row>
-          <el-form-item class="text-xs-center mb-0">
-            <el-button
-              type="primary"
-              @click="submitForm"
-            >Registrarse</el-button>
-          </el-form-item>
-        </el-form>
-      </el-card>
+              <el-form-item class="text-xs-center mb-0">
+                <el-button
+                  type="primary"
+                  @click="submitForm"
+                >Registrarse</el-button>
+              </el-form-item>
+            </el-form>
+          </el-card>
+        </el-col>
+      </el-row>
     </el-container>
   </div>
 </template>
