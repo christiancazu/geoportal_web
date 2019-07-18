@@ -1,6 +1,9 @@
 <template>
   <div>
-    <el-container style="justify-content: center">
+    <el-container
+      class="container-fluid"
+      style="justify-content: center"
+    >
       <el-card
         shadow="always"
         :body-style="{ padding:'0px' }"

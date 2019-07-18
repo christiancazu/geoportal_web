@@ -1,10 +1,13 @@
 <template>
   <el-container
     direction="horizontal"
-    class="container"
+    class="container pt-1"
     style="justify-content: space-between;"
   >
-    <div class="hover-remove mt-1" @click="$router.push('/')">
+    <div
+      class="hover-remove mt-1"
+      @click="$router.push('/')"
+    >
       <img
         class="el-menu-item"
         src="/image/unat_blanco.png"
@@ -12,7 +15,6 @@
         alt=""
       >
     </div>
-    <!-- <div class="container"> -->
     <el-menu
       class="el-menu-demo hover-remove"
       mode="horizontal"
@@ -21,17 +23,16 @@
       style="z-index:1; float: right;"
       backgroundColor="transparent"
     >
-      <el-menu-item activeTextColor="#ffffff">
-        <template slot="title">Contacto</template>
-      </el-menu-item>
       <el-menu-item>
         <template slot="title">Quienes somos</template>
       </el-menu-item>
       <el-menu-item>
         <template slot="title">Componentes</template>
       </el-menu-item>
+      <el-menu-item active-text-color="#ffffff">
+        <template slot="title">Contacto</template>
+      </el-menu-item>
     </el-menu>
-    <!-- </div> -->
   </el-container>
 </template>
 <script>
