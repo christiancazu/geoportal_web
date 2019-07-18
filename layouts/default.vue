@@ -1,9 +1,9 @@
 <template>
   <div id="app" style="height:100vh;">
     <el-container direction="vertical" style="min-height:100%">
-      <el-header class="px-0 text-xs-center">
+      <!-- <el-header class="px-0 text-xs-center">
         <NavBar />
-      </el-header>
+      </el-header> -->
       <el-divider />
       <el-container>
         <SideBar v-if="loggedIn"/>
@@ -39,7 +39,8 @@ export default {
     }
   },
 
-  created() {}
+  created() {
+  }
 };
 </script>
 <style>

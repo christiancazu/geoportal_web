@@ -11,7 +11,7 @@
         alt=""
         style="height:35px;"
       >
-      <span class="font-weight-bold">Carol <em style="font-size:12px; font-weight: 200;"> (Admin) </em></span>
+      <span class="font-weight-bold">{{ user.name }} <em style="font-size:12px; font-weight: 200;"> (Admin) </em></span>
     </el-menu-item>
     <el-divider />
     <el-menu-item
@@ -124,10 +124,21 @@
   </el-menu>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   data () {
     return {
       isCollapse: false,
+    }
+  },
+
+  computed: {
+    ...mapState({
+      user: state => state.auth.user
+    }),
+
+    url: function(){
+      console.log(this.$axios)
     }
   },
 }

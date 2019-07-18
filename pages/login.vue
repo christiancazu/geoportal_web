@@ -18,14 +18,15 @@
               label-position="top"
               status-icon
               :model="form"
-              :rules="rules2"
+              :rules="rules"
               label-width="120px"
               class="demo-ruleForm"
+              @submit.native.prevent="submitForm"
             >
               <el-form-item
                 prop="email"
                 label="Nombre de Usuario"
-                :rules="rules2.email"
+                :rules="rules.email"
               >
                 <el-input
                   v-model="form.email"
@@ -40,7 +41,7 @@
                   v-model="form.password"
                   type="password"
                   autocomplete="off"
-                  :rules="rules2.password"
+                  :rules="rules.password"
                 />
               </el-form-item>
               <el-form-item class="text-xs-center mb-0">
@@ -75,16 +76,15 @@ export default {
         password: null
       },
 
-      rules2: {
-        password: [
-          { required: true },
-          { min: 6, message: 'The password can not be less than 6 digits', trigger: 'change' }
-        ],
-        email: [
-          { required: true, message: 'Please input email address', trigger: 'blur' },
-          { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
-        ]
-
+      rules: {
+        email: [{
+          required: true,
+          message: 'Ingrese su nombre de usuario'
+        }],
+        password: [{
+          required: true,
+          message: "Ingrese su contraseña"
+        }]
       }
     }
   },

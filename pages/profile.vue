@@ -79,7 +79,7 @@
                       <el-option
                         v-for="item in regiones"
                         :key="item.id"
-                        :label="item.nombre"
+                        :label="item.name"
                         :value="item"
                       ></el-option>
                     </el-select>
@@ -95,9 +95,9 @@
                     >
                       <el-option
                         v-if="form.region"
-                        v-for="item in form.region.provincias"
+                        v-for="item in form.region.provinces"
                         :key="item.id"
-                        :label="item.nombre"
+                        :label="item.name"
                         :value="item"
                       ></el-option>
                     </el-select>
@@ -113,9 +113,9 @@
                     >
                       <el-option
                         v-if="form.provincia"
-                        v-for="item in form.provincia.distritos"
+                        v-for="item in form.provincia.districts"
                         :key="item.id"
-                        :label="item.nombre"
+                        :label="item.name"
                         :value="item"
                       ></el-option>
                     </el-select>
@@ -141,6 +141,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -208,9 +209,9 @@ export default {
 
     async getRegiones() {
       let { data } = await this.$axios.get(
-        `http://192.168.1.117:8000/api/region/obtener_todo/`
+        `http://192.168.1.105:8080/geoportal/api/region/`
       );
-      this.regiones = data;
+      this.regiones = data.data;
     },
 
     onChangeRegion(item) {
