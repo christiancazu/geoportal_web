@@ -13,12 +13,8 @@
 
       </div>
     </div>
-    <div class="container">
-      <h2 class="text-xs-center">COMPONENTES</h2>
-      <div>
+    <Components />
 
-      </div>
-    </div>
     <div class="theme-purple-pink">
       <Contact />
     </div>
@@ -28,6 +24,7 @@
 </template>
 <script>
 import Banner from '@/components/web/Banner.vue'
+import Components from '@/components/web/Components.vue'
 import Contact from '@/components/web/Contact.vue'
 import Footer from '@/components/web/Footer.vue'
 export default {
@@ -35,7 +32,8 @@ export default {
   components: {
     Banner,
     Contact,
-    Footer
+    Footer,
+    Components
   },
 
   mounted () { }

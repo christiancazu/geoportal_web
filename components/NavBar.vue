@@ -32,6 +32,16 @@
       <el-menu-item active-text-color="#ffffff">
         <template slot="title">Contacto</template>
       </el-menu-item>
+      <el-menu-item
+        index="4"
+        active-text-color="#ffffff"
+        :route="{ path: 'login' }"
+      >
+        <template slot="title">Iniciar Sesión</template>
+      </el-menu-item>
+      <!-- <el-menu-item active-text-color="#ffffff">
+        <template slot="title">Registrarse</template>
+      </el-menu-item> -->
     </el-menu>
   </el-container>
 </template>

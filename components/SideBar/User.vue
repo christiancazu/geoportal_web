@@ -100,6 +100,7 @@
     </el-menu-item>
     <el-menu-item
       index="6"
+      :active="false"
       @click="$auth.logout()"
       :route="{ path: '/' }"
     >

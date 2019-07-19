@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="theme-purple-pink" style="height: 100%">
     <el-container
       class="container-fluid"
       style="justify-content: center"
