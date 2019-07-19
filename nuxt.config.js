@@ -20,6 +20,10 @@ export default {
     },
     {
       rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet'
+    },
+    {
+      rel: 'stylesheet',
       href: 'https://fonts.googleapis.com/css?family=Material+Icons'
     }
     ],

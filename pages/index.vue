@@ -1,17 +1,42 @@
 <template>
-  <el-card shadow="always">
-    Pagina de inicio del geoportal
-    <div class="label-text pa-3">
-      <nuxt-link to="/login">Iniciar Sesión</nuxt-link>
+  <div class="website-geoportal">
+    <Banner />
+    <div class="container text-xs-center">
+      <h2>¿QUIENES SOMOS?</h2>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate sapiente soluta tenetur obcaecati consequuntur repellat libero, saepe et accusamus culpa distinctio impedit quibusdam illo ullam veniam veritatis voluptatibus provident adipisci.
+      </p>
+      <p>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Architecto ipsam culpa ipsa accusamus atque sequi necessitatibus reiciendis similique. Repellat asperiores, fugit nisi unde fuga numquam quos quia dolore sint. Explicabo?
+      </p>
+      <div>
+
+      </div>
     </div>
-  </el-card>
+    <Components />
+
+    <div class="theme-purple-pink">
+      <Contact />
+    </div>
+    <Footer />
+
+  </div>
 </template>
 <script>
+import Banner from '@/components/web/Banner.vue'
+import Components from '@/components/web/Components.vue'
+import Contact from '@/components/web/Contact.vue'
+import Footer from '@/components/web/Footer.vue'
 export default {
   auth: false,
-  components: {},
+  components: {
+    Banner,
+    Contact,
+    Footer,
+    Components
+  },
 
-  mounted() {}
+  mounted () { }
 };
 </script>
 

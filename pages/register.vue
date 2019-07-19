@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-fluid theme-purple-pink">
     <el-container direction="vertical">
       <el-row
         :gutter="10"

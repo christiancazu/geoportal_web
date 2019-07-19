@@ -40,16 +40,6 @@ label {
 .border-none {
   border: none !important;
 }
-
-// .clearfix:before,
-//   .clearfix:after {
-//     display: table;
-//     content: "";
-//   }
-//   .clearfix:after {
-//     clear: both
-//   }
-
 .el-divider--horizontal {
   margin: 0px !important;
 }
@@ -82,4 +72,14 @@ label {
 .content-center {
   display: flex;
   justify-content: center;
+}
+
+.el-image{
+  height: 100% !important;
+    width: 100% !important;
+}
+
+.el-row {
+  margin: 0 auto;
+  display: flex;
 }

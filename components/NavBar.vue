@@ -1,40 +1,60 @@
 <template>
-  <!-- <div> -->
-    <!-- <el-menu
-      class="el-menu-demo"
+  <el-container
+    direction="horizontal"
+    class="container pt-1"
+    style="justify-content: space-between;"
+  >
+    <div
+      class="hover-remove mt-1"
+      @click="$router.push('/')"
+    >
+      <img
+        class="el-menu-item"
+        src="/image/unat_blanco.png"
+        style="max-height:100%;"
+        alt=""
+      >
+    </div>
+    <el-menu
+      class="el-menu-demo hover-remove"
       mode="horizontal"
       menu-trigger="click"
       :router="true"
-      style="z-index:1;"
+      style="z-index:1; float: right;"
+      backgroundColor="transparent"
     >
-      <el-menu-item index="1"> -->
-        <img src="/image/unat.png" style="max-height:100%;" alt="">
-        <!-- <el-image style="height: 60px" src="/image/unat.jpg" fit="contain"></el-image> -->
-      <!-- </el-menu-item> -->
-      <!-- <el-submenu index="2" style="float: right" popper-class="adjust-popper">
-        <template slot="title">
-          Carol
-          <i class="fa fa-user-circle-o fa-2x" />
-        </template>
-        <el-menu-item index="2-1">Profile</el-menu-item>
-        <el-menu-item index="2-2">Settings</el-menu-item>
-        <el-menu-item index="2-3" :route="{
-            name: 'login'
-          }">Log Out</el-menu-item>
-      </el-submenu> -->
-    <!-- </el-menu> -->
-  <!-- </div> -->
+      <el-menu-item>
+        <template slot="title">Quienes somos</template>
+      </el-menu-item>
+      <el-menu-item>
+        <template slot="title">Componentes</template>
+      </el-menu-item>
+      <el-menu-item active-text-color="#ffffff">
+        <template slot="title">Contacto</template>
+      </el-menu-item>
+      <el-menu-item
+        index="4"
+        active-text-color="#ffffff"
+        :route="{ path: 'login' }"
+      >
+        <template slot="title">Iniciar Sesión</template>
+      </el-menu-item>
+      <!-- <el-menu-item active-text-color="#ffffff">
+        <template slot="title">Registrarse</template>
+      </el-menu-item> -->
+    </el-menu>
+  </el-container>
 </template>
 <script>
 export default {
-  data() {
+  data () {
     return {
       activeIndex: "1",
       activeIndex2: "1"
     };
   },
   methods: {
-    handleSelect(key, keyPath) {
+    handleSelect (key, keyPath) {
       console.log(key, keyPath);
     }
   }
