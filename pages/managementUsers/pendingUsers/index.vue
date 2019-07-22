@@ -10,6 +10,7 @@
           size="mini"
           type="primary"
           icon="el-icon-plus"
+          @click="replaceShowModalAddUser({ show: true })"
         >Nuevo Usuario</el-button>
       </div>
       <el-container direction="vertical">
@@ -66,11 +67,18 @@
         </el-table>
       </el-container>
     </el-card>
+
+    <ModalAddUser />
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import ModalAddUser from '@/pages/managementUsers/users/ModalAddUser.vue'
 export default {
+  components: {
+    ModalAddUser
+  },
   data () {
     return {
       search: '',
@@ -96,10 +104,15 @@ export default {
   },
 
   created () {
-    console.log(this.$route)
+    // console.log(this.$route)
   },
 
   methods: {
+    ...mapActions({
+      replaceShowModalAddUser: 'modalsManagementUser/replaceShowModalAddUser',
+      replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
+      replaceShowModalDeleteUser: 'modalsManagementUser/replaceShowModalDeleteUser',
+    }),
     handleEdit (index, row) {
       console.log(index, row)
     },

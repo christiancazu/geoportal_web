@@ -382,7 +382,6 @@ export default {
       getRegions: 'regions/getRegions',
       getProvinces: 'regions/getProvinces',
       getDistricts: 'regions/getDistricts',
-      replaceRegions: 'regions/replaceRegions',
       replaceProvinces: 'regions/replaceProvinces',
       replaceDistricts: 'regions/replaceDistricts',
     }),
