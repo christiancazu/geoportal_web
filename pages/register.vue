@@ -388,7 +388,6 @@ export default {
     }),
 
     submitForm (e) {
-      console.log(e)
       e.preventDefault();
       this.$refs.form.validate(valid => {
         if (valid) {
@@ -416,7 +415,7 @@ export default {
     },
 
     launchUploadAvatar (option) {
-      this.imageUSelected = URL.createObjectURL(option.file);
+      this.imageSelected = URL.createObjectURL(option.file);
       this.form.image = option.file
     },
 

@@ -1,70 +1,72 @@
 <template>
-  <el-card shadow="always">
-    <div
-      class="space-between"
-      slot="header"
-    >
-      <p class="mt-1 mb-0 font-weight-bold">Usuarios</p>
+  <div class="ma-3">
+    <el-card shadow="always">
+      <div
+        class="space-between"
+        slot="header"
+      >
+        <p class="mt-1 mb-0 font-weight-bold">Usuarios</p>
         <el-button
-        size="mini"
+          size="mini"
           type="primary"
           icon="el-icon-plus"
         >Nuevo Usuario</el-button>
-    </div>
-    <el-container direction="vertical">
-      <el-row :gutter="20">
-        <el-col
-          :span="8"
-          :offset="16"
+      </div>
+      <el-container direction="vertical">
+        <el-row :gutter="20">
+          <el-col
+            :span="8"
+            :offset="16"
+          >
+            <div>
+              <el-input
+                v-model="search"
+                prefix-icon="el-icon-search"
+                size="small"
+                placeholder="Search"
+              />
+            </div>
+          </el-col>
+        </el-row>
+      </el-container>
+      <el-container>
+        <el-table
+          :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          style="width: 100%"
         >
-          <div>
-            <el-input
-              v-model="search"
-              prefix-icon="el-icon-search"
-              size="small"
-              placeholder="Search"
-            />
-          </div>
-        </el-col>
-      </el-row>
-    </el-container>
-    <el-container>
-      <el-table
-        :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-        style="width: 100%"
-      >
-        <el-table-column
-          label="Date"
-          prop="date" 
-        />
-        <el-table-column
-          label="Name"
-          prop="name"
-        />
-        <el-table-column
-          label="Actions"
-          align="center"
-        > 
-          <template slot-scope="scope">
-            <el-button
-              circle
-              icon="el-icon-edit"
-              size="small"
-              type="primary"
-              @click="handleEdit(scope.$index, scope.row)"
-            />
-            <el-button
-              size="small"
-              circle
-              type="danger"
-              icon="el-icon-delete"
-              @click="handleDelete(scope.$index, scope.row)"
-            />
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-container>
-  </el-card>
+          <el-table-column
+            label="Date"
+            prop="date"
+          />
+          <el-table-column
+            label="Name"
+            prop="name"
+          />
+          <el-table-column
+            label="Actions"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <el-button
+                circle
+                icon="el-icon-edit"
+                size="small"
+                type="primary"
+                @click="handleEdit(scope.$index, scope.row)"
+              />
+              <el-button
+                size="small"
+                circle
+                type="danger"
+                icon="el-icon-delete"
+                @click="handleDelete(scope.$index, scope.row)"
+              />
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-container>
+    </el-card>
+  </div>
 </template>
 
 <script>

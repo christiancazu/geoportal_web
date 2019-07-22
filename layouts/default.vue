@@ -7,9 +7,6 @@
       direction="vertical"
       style="min-height:100%"
     >
-      <el-header height="76px" class="px-0 theme-purple-pink ">
-        <NavBar />
-      </el-header>
       <el-container>
         <SideBar v-if="loggedIn" />
         <el-main class="pa-0">
@@ -21,11 +18,9 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import NavBar from "@/components/NavBar.vue";
 import SideBar from "@/components/SideBar.vue";
 export default {
   components: {
-    NavBar,
     SideBar
   },
 

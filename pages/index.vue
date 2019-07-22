@@ -1,5 +1,11 @@
 <template>
   <div class="website-geoportal">
+    <el-header
+      height="76px"
+      class="px-0 theme-purple-pink "
+    >
+      <NavBar />
+    </el-header>
     <Banner />
     <div class="container text-xs-center">
       <h2>¿QUIENES SOMOS?</h2>
@@ -23,6 +29,7 @@
   </div>
 </template>
 <script>
+import NavBar from "@/components/NavBar.vue";
 import Banner from '@/components/web/Banner.vue'
 import Components from '@/components/web/Components.vue'
 import Contact from '@/components/web/Contact.vue'
@@ -30,6 +37,7 @@ import Footer from '@/components/web/Footer.vue'
 export default {
   auth: false,
   components: {
+    NavBar,
     Banner,
     Contact,
     Footer,
