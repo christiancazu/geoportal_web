@@ -1,15 +1,9 @@
 <template>
   <div>
-    <!-- Form -->
-    <!-- <el-button
-      type="text"
-      @click="dialogFormVisible = true"
-    >open a Form nested Dialog</el-button> -->
-
     <el-dialog
       title="Registrar nuevo usuario"
       top="2vh"
-      :visible.sync="showModalAddUser"
+      :visible.sync="showModalEditUser"
     >
       <el-form
         ref="form"
@@ -293,7 +287,7 @@
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="replaceShowModalAddUser({ show: false })">Cancel</el-button>
+        <el-button @click="replaceShowModalEditUser({ show: false })">Cancel</el-button>
         <el-button
           type="primary"
           native-type="submit"
@@ -394,8 +388,8 @@ export default {
     };
   },
 
-   watch: {
-    showModalAddUser: function(newState, oldState) {
+  watch: {
+    showModalEditUser: function(newState, oldState) {
       if(!newState) {
         this.$refs.form.resetFields()
         return false
@@ -413,12 +407,12 @@ export default {
       loadingDistricts: state => state.regions.loadingDistricts,
     }),
 
-    showModalAddUser: {
+    showModalEditUser: {
       get () {
-        return this.$store.state.modalsManagementUser.showModalAddUser
+        return this.$store.state.modalsManagementUser.showModalEditUser
       },
       set (value) {
-        this.replaceShowModalAddUser({ show: value })
+        this.replaceShowModalEditUser({ show: value })
       }
     }
   },
@@ -429,7 +423,7 @@ export default {
 
   methods: {
     ...mapActions({
-      replaceShowModalAddUser: 'modalsManagementUser/replaceShowModalAddUser',
+      replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
       getRegions: 'regions/getRegions',
       getProvinces: 'regions/getProvinces',
       getDistricts: 'regions/getDistricts',
@@ -445,7 +439,7 @@ export default {
             const { status } = response.data
             if (status) {
               this.$refs.form.resetFields()
-              this.replaceShowModalAddUser({ show: false })
+              this.replaceShowModalEditUser({ show: false })
               this.getUsers()
 
             }
