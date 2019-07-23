@@ -1,272 +1,244 @@
 <template>
   <div class="container-fluid theme-purple-pink">
-    <el-container direction="vertical">
-      <el-row
-        :gutter="10"
-        style="display: flex;
-    justify-content: center;"
+    <el-row class="content-center">
+      <el-col
+        :sm="12"
+        :md="8"
       >
-        <el-col
-          :xs="24"
-          :sm="12"
-          :md="12"
-          :lg="8"
-          :xl="8"
-        >
-          <el-card shadow="always">
-            <div
-              slot="header"
+        <el-card shadow="always">
+          <div
+            slot="header"
+            class="text-xs-center"
+          >
+            <label>REGISTRATE</label>
+          </div>
+          <el-form
+            ref="form"
+            label-position="top"
+            status-icon
+            :model="form"
+            :rules="rules"
+            label-width="120px"
+            class="demo-ruleForm"
+            @submit.prevent="submitForm"
+          >
+
+            <!-- image -->
+            <el-form-item
+              label="Imagen de Perfil"
               class="text-xs-center"
             >
-              <label>REGISTRATE</label>
-            </div>
-
-            <el-form
-              ref="form"
-              label-position="top"
-              status-icon
-              :model="form"
-              :rules="rules"
-              label-width="120px"
-              class="demo-ruleForm"
-              @submit.prevent="submitForm"
+              <el-upload
+                class="avatar-uploader"
+                action=""
+                :http-request="launchUploadAvatar"
+                :show-file-list="false"
+                name="image"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img
+                  v-if="imageSelected"
+                  :src="imageSelected"
+                  class="avatar"
+                />
+                <i
+                  v-else
+                  class="el-icon-plus avatar-uploader-icon"
+                ></i>
+              </el-upload>
+            </el-form-item>
+            <!-- username -->
+            <el-form-item
+              label="Nombre de Usuario"
+              prop="username"
             >
-
-              <!-- image -->
-              <el-form-item
-                label="Imagen de Perfil"
-                class="text-xs-center"
-              >
-                <el-upload
-                  class="avatar-uploader"
-                  action=""
-                  :http-request="launchUploadAvatar"
-                  :show-file-list="false"
-                  name="image"
-                  :before-upload="beforeAvatarUpload"
+              <el-input
+                v-model="form.username"
+                type="text"
+                autocomplete="off"
+              />
+            </el-form-item>
+            <!-- password_1 -->
+            <el-form-item
+              label="contraseña"
+              prop="password"
+            >
+              <el-input
+                v-model="form.password"
+                type="password"
+                autocomplete="off"
+                :rules="rules.password"
+              />
+            </el-form-item>
+            <!-- password_2 -->
+            <el-form-item
+              label="Repita contraseña"
+              prop="passwordConfirmation"
+            >
+              <el-input
+                v-model="form.passwordConfirmation"
+                type="password"
+                autocomplete="off"
+                :rules="rules.passwordConfirmation"
+              />
+            </el-form-item>
+            <!-- email -->
+            <el-form-item
+              label="Correo Electrónico"
+              prop="email"
+            >
+              <el-input
+                v-model="form.email"
+                type="text"
+                autocomplete="off"
+              />
+            </el-form-item>
+            <el-row :gutter="10">
+              <el-col :md="8">
+                <!-- name -->
+                <el-form-item
+                  label="Nombres"
+                  prop="name"
                 >
-                  <img
-                    v-if="imageSelected"
-                    :src="imageSelected"
-                    class="avatar"
+                  <el-input
+                    v-model="form.name"
+                    type="text"
+                    autocomplete="off"
                   />
-                  <i
-                    v-else
-                    class="el-icon-plus avatar-uploader-icon"
-                  ></i>
-                </el-upload>
-              </el-form-item>
-              <!-- username -->
-              <el-form-item
-                label="Nombre de Usuario"
-                prop="username"
-              >
-                <el-input
-                  v-model="form.username"
-                  type="text"
-                  autocomplete="off"
-                />
-              </el-form-item>
-              <!-- password_1 -->
-              <el-form-item
-                label="contraseña"
-                prop="password"
-              >
-                <el-input
-                  v-model="form.password"
-                  type="password"
-                  autocomplete="off"
-                  :rules="rules.password"
-                />
-              </el-form-item>
-              <!-- password_2 -->
-              <el-form-item
-                label="Repita contraseña"
-                prop="passwordConfirmation"
-              >
-                <el-input
-                  v-model="form.passwordConfirmation"
-                  type="password"
-                  autocomplete="off"
-                  :rules="rules.passwordConfirmation"
-                />
-              </el-form-item>
-              <!-- email -->
-              <el-form-item
-                label="Correo Electrónico"
-                prop="email"
-              >
-                <el-input
-                  v-model="form.email"
-                  type="text"
-                  autocomplete="off"
-                />
-              </el-form-item>
-              <el-row :gutter="10">
-                <el-col
-                  :xs="24"
-                  :sm="8"
+                </el-form-item>
+              </el-col>
+              <el-col :md="8">
+                <!-- lasname -->
+                <el-form-item
+                  label="Apellido"
+                  prop="lastName"
                 >
-                  <!-- name -->
-                  <el-form-item
-                    label="Nombres"
-                    prop="name"
-                  >
-                    <el-input
-                      v-model="form.name"
-                      type="text"
-                      autocomplete="off"
-                    />
-                  </el-form-item>
-                </el-col>
-                <el-col
-                  :xs="24"
-                  :sm="8"
+                  <el-input
+                    v-model="form.lastName"
+                    type="text"
+                    autocomplete="off"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :md="8">
+                <!-- lasname -->
+                <el-form-item
+                  label="Segundo apellido"
+                  prop="lastNameAditional"
                 >
-                  <!-- lasname -->
-                  <el-form-item
-                    label="Apellido"
-                    prop="lastName"
-                  >
-                    <el-input
-                      v-model="form.lastName"
-                      type="text"
-                      autocomplete="off"
-                    />
-                  </el-form-item>
-                </el-col>
-                <el-col
-                  :xs="24"
-                  :sm="8"
-                >
-                  <!-- lasname -->
-                  <el-form-item
-                    label="Segundo apellido"
-                    prop="lastNameAditional"
-                  >
-                    <el-input
-                      v-model="form.lastNameAditional"
-                      type="text"
-                      autocomplete="off"
-                    />
-                  </el-form-item>
-                </el-col>
-              </el-row>
+                  <el-input
+                    v-model="form.lastNameAditional"
+                    type="text"
+                    autocomplete="off"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
 
-              <el-row :gutter="10">
-                <el-col
-                  :xs="24"
-                  :sm="8"
+            <el-row :gutter="10">
+              <el-col :md="8">
+                <!-- region -->
+                <el-form-item
+                  label="Región"
+                  prop="region"
                 >
-                  <!-- region -->
-                  <el-form-item
-                    label="Región"
-                    prop="region"
+                  <el-select
+                    v-model="form.region"
+                    value-key="id"
+                    filterable
+                    placeholder="Select"
+                    @change="onchangeRegions"
                   >
-                    <el-select
-                      v-model="form.region"
-                      value-key="id"
-                      filterable
-                      placeholder="Select"
-                      @change="onchangeRegions"
-                    >
-                      <el-option
-                        v-for="item in regions"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col
-                  :xs="24"
-                  :sm="8"
+                    <el-option
+                      v-for="item in regions"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :md="8">
+                <!-- porvincia -->
+                <el-form-item
+                  label="Provincia"
+                  prop="province"
+                  ref="province"
                 >
-                  <!-- porvincia -->
-                  <el-form-item
-                    label="Provincia"
-                    prop="province"
-                    ref="province"
+                  <el-select
+                    v-model="form.province"
+                    value-key="id"
+                    filterable
+                    placeholder="Select"
+                    @change="onchangeProvinces"
                   >
-                    <el-select
-                      v-model="form.province"
-                      value-key="id"
-                      filterable
-                      placeholder="Select"
-                      @change="onchangeProvinces"
-                    >
-                      <el-option
-                        v-for="item in provinces"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col
-                  :xs="24"
-                  :sm="8"
+                    <el-option
+                      v-for="item in provinces"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :md="8">
+                <!-- distrito -->
+                <el-form-item
+                  label="Distrito"
+                  prop="districtId"
+                  ref="districtId"
                 >
-                  <!-- distrito -->
-                  <el-form-item
-                    label="Distrito"
-                    prop="districtId"
-                    ref="districtId"
+                  <el-select
+                    v-model="form.districtId"
+                    value-key="id"
+                    filterable
+                    placeholder="Select"
                   >
-                    <el-select
-                      v-model="form.districtId"
-                      value-key="id"
-                      filterable
-                      placeholder="Select"
-                    >
-                      <el-option
-                        v-for="item in districts"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id"
-                      ></el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <!-- instituto -->
-              <el-form-item
-                label="Institución"
-                prop="institute"
-              >
-                <el-input
-                  v-model="form.institute"
-                  type="text"
-                  autocomplete="off"
-                />
-              </el-form-item>
-              <!-- objetivo -->
-              <el-form-item
-                label="¿Porque desea usar el Geoportal?"
-                prop="subject"
-              >
-                <el-input
-                  v-model="form.subject"
-                  type="textarea"
-                  :rows="3"
-                  autocomplete="off"
-                  :maxlength="300"
-                  :show-word-limit="true"
-                />
-              </el-form-item>
-              <el-form-item class="text-xs-center mb-0">
-                <el-button
-                  type="primary"
-                  @click="submitForm"
-                >Registrarse</el-button>
-              </el-form-item>
-            </el-form>
-          </el-card>
-        </el-col>
-      </el-row>
-    </el-container>
+                    <el-option
+                      v-for="item in districts"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <!-- instituto -->
+            <el-form-item
+              label="Institución"
+              prop="institute"
+            >
+              <el-input
+                v-model="form.institute"
+                type="text"
+                autocomplete="off"
+              />
+            </el-form-item>
+            <!-- objetivo -->
+            <el-form-item
+              label="¿Porque desea usar el Geoportal?"
+              prop="subject"
+            >
+              <el-input
+                v-model="form.subject"
+                type="textarea"
+                :rows="3"
+                autocomplete="off"
+                :maxlength="300"
+                :show-word-limit="true"
+              />
+            </el-form-item>
+            <el-form-item class="text-xs-center mb-0">
+              <el-button
+                type="primary"
+                @click="submitForm"
+              >Registrarse</el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -455,3 +427,5 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+</style>
