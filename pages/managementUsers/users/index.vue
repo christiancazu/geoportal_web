@@ -14,10 +14,11 @@
         >Nuevo Usuario</el-button>
       </div>
       <el-container direction="vertical">
-        <el-row :gutter="20">
+        <el-row type="flex" justify="end" :gutter="10">
           <el-col
-            :span="8"
-            :offset="16"
+          :xs="24"
+          :sm="8"
+          :md="8"
           >
             <div>
               <el-input
@@ -31,18 +32,25 @@
         </el-row>
       </el-container>
       <el-container>
-        <p>{{ showModalAddUser }}</p>
         <el-table
-          :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          :data="users.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%"
         >
           <el-table-column
-            label="Date"
-            prop="date"
+            label="Nombre"
+            prop="name"
           />
           <el-table-column
-            label="Name"
-            prop="name"
+            label="Apellidos"
+            prop="lastName"
+          />
+          <el-table-column
+            label="Correo Electrónico"
+            prop="email"
+          />
+          <el-table-column
+            label="Rol"
+            prop="userType.name"
           />
           <el-table-column
             label="Actions"
@@ -68,14 +76,19 @@
         </el-table>
       </el-container>
     </el-card>
+
+    <ModalAddUser />
   </div>
 
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-
+import ModalAddUser from '@/components/users/ModalAddUser.vue'
 export default {
+  components:{
+    ModalAddUser
+  },
   data () {
     return {
       search: '',
@@ -102,17 +115,26 @@ export default {
 
   computed: {
     ...mapState({
-      showModalAddUser: state => state.modals.showModalAddUser
+      showModalAddUser: state => state.modals.showModalAddUser,
+      users: state => state.users.users
     })
+  },
+  mounted() {
+    this.getUsers()
+    
   },
 
   created () {
-    console.log(this.$route)
+    // console.log(this.$route)
+    // this.getUsers()
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddUser: 'modals/replaceShowModalAddUser'
+      replaceShowModalAddUser: 'modalsManagementUser/replaceShowModalAddUser',
+      replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
+      replaceShowModalDeleteUser: 'modalsManagementUser/replaceShowModalDeleteUser',
+      getUsers: 'users/getUsers',
     }),
     handleEdit (index, row) {
       console.log(index, row)

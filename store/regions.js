@@ -8,11 +8,11 @@ import {
 } from '../types/mutation-types'
 
 export const state = () => ({
-  regions: null,
+  regions: [],
   loadingRegions: false,
-  provinces: null,
+  provinces: [],
   loadingProvinces: false,
-  districts: null,
+  districts: [],
   loadingDistricts: false,
 })
 
@@ -65,7 +65,6 @@ export const actions = {
   },
 
   replaceDistricts ({ commit }, payload) {
-    console.log(payload)
     commit('REPLACE_DISTRICTS', payload)
   }
 }

@@ -21,11 +21,12 @@
         class="demo-ruleForm"
         @submit.prevent="submitForm"
       >
-        <el-row :gutter="10">
-          <el-col
-            :xs="12"
-            :md="12"
-          >
+        <el-row
+          :gutter="10"
+          align="bottom"
+          justify="center"
+        >
+          <el-col :md="12">
             <!-- image -->
             <el-form-item
               label="Imagen de Perfil"
@@ -51,10 +52,7 @@
               </el-upload>
             </el-form-item>
           </el-col>
-          <el-col
-            :xs="12"
-            :md="12"
-          >
+          <el-col :md="12">
             <!-- username -->
             <el-form-item
               label="Nombre de Usuario"
@@ -78,14 +76,26 @@
                 autocomplete="off"
               />
             </el-form-item>
+            <el-form-item label="Tipo de Usuario">
+              <el-select
+                v-model="form.userType"
+                value-key="id"
+                filterable
+                placeholder="Select"
+              >
+                <el-option
+                  v-for="item in []"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
           </el-col>
         </el-row>
 
         <el-row :gutter="10">
-          <el-col
-            :xs="12"
-            :md="12"
-          >
+          <el-col :md="12">
             <!-- password_1 -->
             <el-form-item
               label="contraseña"
@@ -99,10 +109,7 @@
               />
             </el-form-item>
           </el-col>
-          <el-col
-            :xs="12"
-            :md="12"
-          >
+          <el-col :md="12">
             <!-- password_2 -->
             <el-form-item
               label="Confirmar contraseña"
@@ -272,6 +279,15 @@
             :show-word-limit="true"
           />
         </el-form-item>
+        <!-- <el-form-item class="text-xs-right mt-3 mb-0">
+          <el-button
+            type="primary"
+            native-type="submits"
+            @click.prevent="submitForm"
+          >
+            Ingresar
+          </el-button>
+        </el-form-item> -->
       </el-form>
       <span
         slot="footer"
@@ -280,7 +296,8 @@
         <el-button @click="replaceShowModalAddUser({ show: false })">Cancel</el-button>
         <el-button
           type="primary"
-          @click="replaceShowModalAddUser({ show: false })"
+          native-type="submit"
+          @click.prevent="submitForm"
         >Confirm</el-button>
       </span>
     </el-dialog>
@@ -295,16 +312,20 @@ export default {
       dialogTableVisible: false,
       dialogFormVisible: false,
       form: {
+        username: '',
+        email: '',
+        image: '',
+        subject: null,
         name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        lastName: '',
+        lastNameAditional: '',
+        institute: '',
+        password: '',
+        passwordConfirmation: '',
+        districtId: null,
+        region: null,
+        province: null
       },
-      formLabelWidth: '120px',
 
       rules: {
         username: [{
@@ -340,7 +361,7 @@ export default {
         }],
         subject: [{
           required: true,
-          min: 150,
+          min: 10,
           message: 'Detalle el motivo para acceder al Geoportal UNAT'
         }],
         institute: [{
@@ -382,7 +403,16 @@ export default {
       loadingProvinces: state => state.regions.loadingProvinces,
       districts: state => state.regions.districts,
       loadingDistricts: state => state.regions.loadingDistricts,
-    })
+    }),
+
+    showModalAddUser: {
+      get () {
+        return this.$store.state.modalsManagementUser.showModalAddUser
+      },
+      set (value) {
+        this.replaceShowModalAddUser({ show: value })
+      }
+    }
   },
 
   created () {
@@ -397,11 +427,41 @@ export default {
       getDistricts: 'regions/getDistricts',
       replaceProvinces: 'regions/replaceProvinces',
       replaceDistricts: 'regions/replaceDistricts',
-
+      getUsers: 'users/getUsers',
     }),
 
     submitForm () {
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.createUser().then(response => {
+            const { status } = response.data
+            if (status) {
+              this.$refs.form.resetFields()
+              this.replaceShowModalAddUser({ show: false })
+              this.getUsers()
 
+            }
+          })
+        }
+      })
+    },
+
+    createUser () {
+      const formData = new FormData()
+
+      let keys = Object.keys(this.form)
+      keys.forEach(val => {
+        formData.append(val, this.form[val])
+      })
+
+      const data = formData
+
+      return new Promise((resolve, reject) => {
+        this.$userAPI.create({ data })
+          .then(response => {
+            resolve(response)
+          }).catch(error => reject(error))
+      })
     },
 
     launchUploadAvatar (option) {

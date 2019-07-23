@@ -14,10 +14,11 @@
         >Nuevo Usuario</el-button>
       </div>
       <el-container direction="vertical">
-        <el-row :gutter="20">
+        <el-row type="flex" justify="end" :gutter="10">
           <el-col
-            :span="8"
-            :offset="16"
+          :xs="24"
+          :sm="8"
+          :md="8"
           >
             <div>
               <el-input
@@ -68,13 +69,18 @@
       </el-container>
     </el-card>
 
+    <ModalAddUser />
   </div>
+
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+import ModalAddUser from '@/components/users/ModalAddUser.vue'
 export default {
-  
+  components:{
+    ModalAddUser
+  },
   data () {
     return {
       search: '',
@@ -99,8 +105,14 @@ export default {
     }
   },
 
+  computed: {
+    ...mapState({
+      showModalAddUser: state => state.modals.showModalAddUser
+    })
+  },
+
   created () {
-    // console.log(this.$route)
+    this.getUsers()
   },
 
   methods: {
@@ -108,6 +120,7 @@ export default {
       replaceShowModalAddUser: 'modalsManagementUser/replaceShowModalAddUser',
       replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
       replaceShowModalDeleteUser: 'modalsManagementUser/replaceShowModalDeleteUser',
+      getUsers: 'users/getUsers',
     }),
     handleEdit (index, row) {
       console.log(index, row)

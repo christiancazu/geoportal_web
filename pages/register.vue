@@ -22,7 +22,6 @@
             class="demo-ruleForm"
             @submit.prevent="submitForm"
           >
-
             <!-- image -->
             <el-form-item
               label="Imagen de Perfil"
@@ -231,6 +230,7 @@
             </el-form-item>
             <el-form-item class="text-xs-center mb-0">
               <el-button
+                native-type="submit"
                 type="primary"
                 @click="submitForm"
               >Registrarse</el-button>
@@ -378,7 +378,7 @@ export default {
       const data = formData
 
       return new Promise((resolve, reject) => {
-        this.$userAPI.create({ data })
+        this.$userAPI.register({ data })
           .then(response => {
             resolve(response)
           }).catch(error => reject(error))
