@@ -79,7 +79,13 @@ label {
     width: 100% !important;
 }
 
-.el-row {
-  margin: 0 auto;
-  display: flex;
+.el-select {
+  width: 100% !important;
+}
+
+.el-slider__marks {
+  div:nth-child(2) {
+    width: 55px;
+    text-align: right;
+  }
 }

@@ -5,13 +5,13 @@
         class="space-between"
         slot="header"
       >
-        <p class="mt-1 mb-0 font-weight-bold">Usuarios</p>
+        <p class="mt-1 mb-0 font-weight-bold">Mapas Base</p>
         <el-button
           size="mini"
           type="primary"
           icon="el-icon-plus"
-          @click="replaceShowModalAddUser({ show: true })"
-        >Nuevo Usuario</el-button>
+          @click="replaceShowModalAddBaseMap({ show: true })"
+        >Nuevo Mapa Base</el-button>
       </div>
       <el-container direction="vertical">
         <el-row
@@ -37,7 +37,7 @@
       </el-container>
       <el-container>
         <el-table
-          :data="users.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          :data="baseMaps.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%"
         >
           <el-table-column
@@ -45,16 +45,12 @@
             prop="name"
           />
           <el-table-column
-            label="Apellidos"
-            prop="lastName"
+            label="URL"
+            prop="url"
           />
           <el-table-column
-            label="Correo Electrónico"
-            prop="email"
-          />
-          <el-table-column
-            label="Rol"
-            prop="userType.name"
+            label="Autor"
+            prop="author"
           />
           <el-table-column
             label="Actions"
@@ -81,26 +77,21 @@
       </el-container>
     </el-card>
 
-    <ModalAddUser />
-    <ModalEditUser />
-    <ModalDeleteUser />
+    <ModalAddBaseMap />
   </div>
 
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import ModalAddUser from '@/components/users/ModalAddUser.vue'
-import ModalEditUser from '@/components/users/ModalEditUser.vue'
-import ModalDeleteUser from '@/components/users/ModalDeleteUser.vue'
+import ModalAddBaseMap from '@/components/layers/ModalAddBaseMap.vue'
 export default {
   components: {
-    ModalAddUser,
-    ModalEditUser,
-    ModalDeleteUser
+    ModalAddBaseMap,
   },
   data () {
     return {
+     
       search: '',
       tableData: [{
         date: '2016-05-02',
@@ -125,26 +116,21 @@ export default {
 
   computed: {
     ...mapState({
-      showModalAddUser: state => state.modals.showModalAddUser,
-      users: state => state.users.users
+      showModalAddBaseMap: state => state.modalsManagementLayer.showModalAddBaseMap,
+      baseMaps: state => state.baseMaps.baseMaps
     })
-  },
-  mounted () {
-    this.getUsers()
-
   },
 
   created () {
-    // console.log(this.$route)
-    // this.getUsers()
+    this.getBaseMaps()
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddUser: 'modalsManagementUser/replaceShowModalAddUser',
-      replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
-      replaceShowModalDeleteUser: 'modalsManagementUser/replaceShowModalDeleteUser',
-      getUsers: 'users/getUsers',
+      replaceShowModalAddBaseMap: 'modalsManagementLayer/replaceShowModalAddBaseMap',
+      replaceShowModalEditUser: 'modalsManagementLayer/replaceShowModalEditUser',
+      replaceShowModalDeleteUser: 'modalsManagementLayer/replaceShowModalDeleteUser',
+      getBaseMaps: 'baseMaps/getBaseMaps',
     }),
     handleEdit (index, row) {
       this.replaceShowModalEditUser({ show: true })

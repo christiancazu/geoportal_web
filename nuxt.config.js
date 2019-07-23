@@ -38,6 +38,7 @@ export default {
   css: [
     '~/assets/sass/app.scss',
     'element-ui/lib/theme-chalk/index.css',
+    'element-ui/lib/theme-chalk/display.css'
   ],
 
   loading: {
@@ -60,7 +61,7 @@ export default {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     // baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.105:8080/geoportal/api/'
-    baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.130:8300/geoportal/api/'
+     baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.130:8300/geoportal/api/'
   },
 
   auth: {
@@ -86,7 +87,7 @@ export default {
 
           },
           logout: {
-            url: 'logout',
+            url: 'user/logout/',
             method: 'post'
           },
           user: {
@@ -100,7 +101,7 @@ export default {
   },
 
   router: {
-    middleware: ['auth']
+    // middleware: ['auth']
   },
 
   toast: {

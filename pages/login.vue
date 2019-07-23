@@ -33,7 +33,7 @@
               >
                 <el-input
                   v-model="form.email"
-                  type="email"
+                  type="text"
                 />
               </el-form-item>
               <el-form-item
@@ -50,7 +50,8 @@
               <el-form-item class="text-xs-center mb-0">
                 <el-button
                   type="primary"
-                  @click="submitForm"
+                  native-type="submit"
+                  @click.prevent="submitForm"
                 >
                   Ingresar
                 </el-button>
@@ -93,7 +94,6 @@ export default {
   },
 
   created () {
-    // console.log(this.$route)
   },
 
   methods: {
