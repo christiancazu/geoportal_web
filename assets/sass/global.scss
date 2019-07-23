@@ -82,3 +82,10 @@ label {
 .el-select {
   width: 100% !important;
 }
+
+.el-slider__marks {
+  div:nth-child(2) {
+    width: 55px;
+    text-align: right;
+  }
+}

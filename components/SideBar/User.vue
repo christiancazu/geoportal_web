@@ -47,6 +47,12 @@
         <span slot="title">Gestión de Capas</span>
       </div>
       <el-menu-item
+        :route="{ path: '/managementLayers/baseMap' }"
+        index="3-1"
+      >
+        Mapas Base
+      </el-menu-item>
+      <el-menu-item
         :route="{ path: '/managementLayers/layers' }"
         index="3-1"
       >
