@@ -20,34 +20,7 @@ export const actions = {
     } finally {
       commit('REPLACE_LOADING_WMS_SERVICES', { loading: false })
     }
-  },
-
-  async getAuthorServicesWMS ({ commit }, payload) {
-    commit('REPLACE_LOADING_WMS_SERVICES', { loading: true })
-
-    try {
-      const { data } = await this.$WMSServiceAPI.index(payload)
-      commit('REPLACE_WMS_SERVICES', { WMSServices: data.data })
-    } catch (error) {
-      if (!error.response) return
-    } finally {
-      commit('REPLACE_LOADING_WMS_SERVICES', { loading: false })
-    }
-  },
-
-  async getCategoryServicesWMS ({ commit }, payload) {
-    commit('REPLACE_LOADING_WMS_SERVICES', { loading: true })
-
-    try {
-      const { data } = await this.$WMSServiceAPI.index(payload)
-      commit('REPLACE_WMS_SERVICES', { WMSServices: data.data })
-    } catch (error) {
-      if (!error.response) return
-    } finally {
-      commit('REPLACE_LOADING_WMS_SERVICES', { loading: false })
-    }
   }
-
 }
 
 export const mutations = {

@@ -1,10 +1,4 @@
 <template>
-  <div>
-    <el-dialog
-      title="Registrar Servicio WMS"
-      top="2vh"
-      :visible.sync="showModalAddWMSService"
-    >
       <el-form
         ref="form"
         label-position="top"
@@ -15,7 +9,6 @@
         class="demo-ruleForm"
         @submit.prevent="submitForm"
       >
-
         <!-- name -->
         <el-form-item
           label="Nombres"
@@ -38,79 +31,6 @@
             autocomplete="off"
           />
         </el-form-item>
-
-        <el-row :gutter="10">
-          <el-col
-            :xs="24"
-            :sm="12"
-          >
-            <!-- region -->
-            <el-form-item
-              label="Región"
-              prop="region"
-            >
-              <el-container>
-                <el-select
-                  v-model="form.region"
-                  value-key="id"
-                  filterable
-                  placeholder="Select"
-                  @change="onchangeRegions"
-                >
-                  <el-option
-                    v-for="item in regions"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item"
-                  ></el-option>
-                </el-select>
-                <el-button
-                  icon="el-icon-circle-plus"
-                  circle
-                  type="text"
-                  class="pa-0 pl-1 ma-0"
-                  style="font-size: 1.7rem;"
-                ></el-button>
-              </el-container>
-            </el-form-item>
-
-          </el-col>
-          <el-col
-            :xs="24"
-            :sm="12"
-          >
-            <!-- porvincia -->
-            <el-form-item
-              label="Provincia"
-              prop="province"
-              ref="province"
-            >
-              <el-container>
-                <el-select
-                  v-model="form.region"
-                  value-key="id"
-                  filterable
-                  placeholder="Select"
-                  @change="onchangeRegions"
-                >
-                  <el-option
-                    v-for="item in regions"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item"
-                  ></el-option>
-                </el-select>
-                <el-button
-                  icon="el-icon-circle-plus"
-                  circle
-                  type="text"
-                  class="pa-0 pl-1 ma-0"
-                  style="font-size: 1.7rem;"
-                ></el-button>
-              </el-container>
-            </el-form-item>
-          </el-col>
-        </el-row>
 
         <el-row
           :gutter="10"
@@ -159,25 +79,16 @@
             </el-form-item>
           </el-col>
         </el-row>
-
       </el-form>
-      <span
-        slot="footer"
-        class="dialog-footer"
-      >
-        <el-button @click="replaceShowModalAddWMSService({ show: false })">Cancel</el-button>
-        <el-button
-          type="primary"
-          native-type="submit"
-          @click.prevent="submitForm"
-        >Confirm</el-button>
-      </span>
-    </el-dialog>
-  </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import BasePopover from '@/components/base/BasePopover.vue'
 export default {
+  components: {
+    BasePopover
+  },
+
   data () {
     return {
       imageSelected: '',
@@ -201,6 +112,7 @@ export default {
 
   watch: {
     showModalAddWMSService: function (newState, oldState) {
+      
       if (!newState) {
         this.$refs.form.resetFields()
         return false
@@ -320,5 +232,4 @@ export default {
 };
 </script>
 <style lang="scss">
-
 </style>

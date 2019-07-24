@@ -1,14 +1,7 @@
 <template>
-  <div>
-    <el-dialog
-      title="Registrar Servicio WMS"
-      top="2vh"
-      :z-index="zIndex"
-      :visible.sync="showModalAddWMSService"
-      class="dialog_services"
-    >
+  <BasePopover title="Agregar Author">
+    <template v-slot:content>
       <el-form
-        :disabled="isDisabled"
         ref="form"
         label-position="top"
         status-icon
@@ -41,85 +34,6 @@
             autocomplete="off"
           />
         </el-form-item>
-
-        <el-row :gutter="10">
-          <el-col
-            :xs="24"
-            :sm="12"
-          >
-            <!-- region -->
-            <el-form-item
-              label="Región"
-              prop="region"
-            >
-              <el-container>
-                <el-select
-                  v-model="form.region"
-                  value-key="id"
-                  filterable
-                  placeholder="Select"
-                  @change="onchangeRegions"
-                >
-                  <el-option
-                    v-for="item in regions"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item"
-                  ></el-option>
-                </el-select>
-
-                <!-- POPOUP -->
-                <BasePopover
-                  title="Agregar Author"
-                  @on-change-zindex="onChangeZindex"
-                >
-                  <template v-slot:content>
-                    <PopoverAddWMSAuthor />
-                  </template>
-                  <template v-slot:activate>
-                    <el-button
-                      icon="el-icon-circle-plus"
-                      circle
-                      type="text"
-                      class="pa-0 pl-1 ma-0"
-                      style="font-size: 1.7rem;"
-                    ></el-button>
-                  </template>
-                </BasePopover>
-              </el-container>
-            </el-form-item>
-
-          </el-col>
-          <el-col
-            :xs="24"
-            :sm="12"
-          >
-            <!-- porvincia -->
-            <el-form-item
-              label="Provincia"
-              prop="province"
-              ref="province"
-            >
-              <el-container>
-                <el-select
-                  v-model="form.region"
-                  value-key="id"
-                  filterable
-                  placeholder="Select"
-                  @change="onchangeRegions"
-                >
-                  <el-option
-                    v-for="item in regions"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item"
-                  ></el-option>
-                </el-select>
-                <PopoverAddWMSCategory />
-              </el-container>
-            </el-form-item>
-          </el-col>
-        </el-row>
 
         <el-row
           :gutter="10"
@@ -170,37 +84,28 @@
         </el-row>
 
       </el-form>
-      <span
-        slot="footer"
-        class="dialog-footer"
-      >
-        <el-button @click="replaceShowModalAddWMSService({ show: false })">Cancel</el-button>
-        <el-button
-          type="primary"
-          native-type="submit"
-          @click.prevent="submitForm"
-        >Confirm</el-button>
-      </span>
-    </el-dialog>
-
-  </div>
+    </template>
+    <template v-slot:activate>
+      <el-button
+        icon="el-icon-circle-plus"
+        circle
+        type="text"
+        class="pa-0 pl-1 ma-0"
+        style="font-size: 1.7rem;"
+      ></el-button>
+    </template>
+  </BasePopover>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
 import BasePopover from '@/components/base/BasePopover.vue'
-import PopoverAddWMSAuthor from '@/components/WMSServices/PopoverAddWMSAuthor.vue'
-import PopoverAddWMSCategory from '@/components/WMSServices/PopoverAddWMSCategory.vue'
 export default {
   components: {
-    BasePopover,
-    PopoverAddWMSAuthor,
-    PopoverAddWMSCategory
+    BasePopover
   },
 
   data () {
     return {
-      zIndex: 3003,
-      isDisabled: false,
       imageSelected: '',
       dialogTableVisible: false,
       dialogFormVisible: false,
@@ -222,9 +127,6 @@ export default {
 
   watch: {
     showModalAddWMSService: function (newState, oldState) {
-      if (newState) {
-        const element = document.querySelector('.dialog_services')
-      }
       if (!newState) {
         this.$refs.form.resetFields()
         return false
@@ -266,25 +168,6 @@ export default {
       replaceDistricts: 'regions/replaceDistricts',
       getWMSServices: 'WMSServices/getWMSServices',
     }),
-
-    onChangeZindex (val) {
-      const element = document.querySelector('.dialog_services .el-dialog')
-      const element2 = document.querySelector('.popover_author')
-
-      console.log(val, 'val')
-      if (val) {
-        this.isDisabled = val
-        // element.style.visibility = 'hidden'
-        // element2.style.visibility = 'visible'
-        // this.zIndex = this.zIndex - 3
-      } else {
-        this.isDisabled = val
-
-        // this.zIndex = this.zIndex + 1
-        // element.style.visibility = 'visible'
-        // this.replaceShowModalAddWMSService({ show: true })
-      }
-    },
 
     submitForm () {
       this.$refs.form.validate((valid) => {
