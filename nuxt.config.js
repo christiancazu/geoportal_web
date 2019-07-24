@@ -37,7 +37,6 @@ export default {
   },
   css: [
     '~/assets/sass/app.scss',
-    'element-ui/lib/theme-chalk/index.css',
     'element-ui/lib/theme-chalk/display.css'
   ],
 
