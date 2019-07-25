@@ -10,7 +10,7 @@
     @submit.prevent="submitFormWMSCategory"
   >
     <!-- image -->
-    <el-form-item label="Imagen de Perfil" class="text-xs-center">
+    <el-form-item label="Imagen" class="text-xs-center">
       <el-upload
         class="avatar-uploader"
         action
@@ -28,7 +28,7 @@
       <el-input v-model="form.name" type="text" autocomplete="off" />
     </el-form-item>
 
-    <el-form-item label="¿Porque desea usar el Geoportal?" prop="subject">
+    <el-form-item label="Descripción">
       <el-input
         v-model="form.description"
         type="textarea"
@@ -38,8 +38,13 @@
         :show-word-limit="true"
       />
     </el-form-item>
-    <el-form-item class="text-xs-center mb-0">
-      <el-button native-type="submit" type="primary" @click="submitFormWMSCategory">Registrarse</el-button>
+    <el-form-item class="text-xs-right mb-0">
+      <el-button>Cancel</el-button>
+      <el-button
+        native-type="submit"
+        type="primary"
+        @click.prevent="submitFormWMSCategory"
+      >Registrar</el-button>
     </el-form-item>
   </el-form>
 </template>

@@ -1,18 +1,18 @@
 <template>
   <el-form
-    ref="form"
+    ref="formWMSAuthor"
     label-position="top"
     status-icon
     :model="form"
     :rules="rules"
     label-width="120px"
     class="demo-ruleForm"
-    @submit.prevent="submitForm"
+    @submit.prevent="submitFormWMSAuthor"
   >
     <el-row :gutter="10">
       <el-col :md="10">
         <!-- image -->
-        <el-form-item label="Imagen de Perfil" class="text-xs-center">
+        <el-form-item label="Imagen" class="text-xs-center">
           <el-upload
             class="avatar-uploader"
             action
@@ -33,21 +33,30 @@
         </el-form-item>
 
         <!-- weburl -->
-        <el-form-item label="URL" prop="lastName">
-          <el-input v-model="form.lastName" type="text" autocomplete="off" />
+        <el-form-item label="URL">
+          <el-input v-model="form.webUrl" type="text" autocomplete="off" />
         </el-form-item>
       </el-col>
     </el-row>
 
-    <el-form-item label="¿Porque desea usar el Geoportal?" prop="subject">
+    <el-form-item label="Descripción">
       <el-input
-        v-model="form.subject"
+        v-model="form.description"
         type="textarea"
         :rows="3"
         autocomplete="off"
         :maxlength="300"
         :show-word-limit="true"
       />
+    </el-form-item>
+
+    <el-form-item class="text-xs-right mb-0">
+      <el-button>Cancel</el-button>
+      <el-button
+        native-type="submit"
+        type="primary"
+        @click.prevent="submitFormWMSAuthor"
+      >Registrarse</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -74,30 +83,26 @@ export default {
     };
   },
 
-  created() {},
-
   methods: {
     ...mapActions({
-      replaceShowModalAddWMSService:
-        "modalsWMSServices/replaceShowModalAddWMSService"
+      getWMSAuthors: "WMSAuthor/getWMSAuthors"
     }),
 
-    submitForm() {
-      this.$refs.form.validate(valid => {
+    submitFormWMSAuthor() {
+      this.$refs.formWMSAuthor.validate(valid => {
         if (valid) {
-          this.createUser().then(response => {
+          this.createWMSAuthor().then(response => {
             const { status } = response.data;
             if (status) {
-              this.$refs.form.resetFields();
-              this.replaceShowModalAddWMSService({ show: false });
-              this.getWMSServices();
+              this.$refs.formWMSAuthor.resetFields();
+              this.getWMSAuthors();
             }
           });
         }
       });
     },
 
-    createUser() {
+    createWMSAuthor() {
       const formData = new FormData();
 
       let keys = Object.keys(this.form);
@@ -105,11 +110,9 @@ export default {
         formData.append(val, this.form[val]);
       });
 
-      const data = formData;
-
       return new Promise((resolve, reject) => {
-        this.$userAPI
-          .create({ data })
+        this.$WMSAuthorAPI
+          .create({ data: formData })
           .then(response => {
             resolve(response);
           })

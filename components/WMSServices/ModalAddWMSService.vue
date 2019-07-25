@@ -3,7 +3,6 @@
     <el-dialog
       title="Registrar Servicio WMS"
       top="2vh"
-      :z-index="zIndex"
       :visible.sync="showModalAddWMSService"
       class="dialog_services"
     >
@@ -22,24 +21,18 @@
           <el-input v-model="form.name" type="text" autocomplete="off" />
         </el-form-item>
         <!-- weburl -->
-        <el-form-item label="Apellido" prop="lastName">
-          <el-input v-model="form.lastName" type="text" autocomplete="off" />
+        <el-form-item label="URL">
+          <el-input v-model="form.webUrl" type="text" autocomplete="off" />
         </el-form-item>
 
         <el-row :gutter="10">
           <el-col :xs="24" :sm="12">
             <!-- region -->
-            <el-form-item label="Región" prop="region">
+            <el-form-item label="Autores" prop="author">
               <el-container>
-                <el-select
-                  v-model="form.region"
-                  value-key="id"
-                  filterable
-                  placeholder="Select"
-                  @change="onchangeRegions"
-                >
+                <el-select v-model="form.authorId" value-key="id" filterable placeholder="Select">
                   <el-option
-                    v-for="item in regions"
+                    v-for="item in WMSAuthors"
                     :key="item.id"
                     :label="item.name"
                     :value="item"
@@ -70,17 +63,11 @@
           </el-col>
           <el-col :xs="24" :sm="12">
             <!-- porvincia -->
-            <el-form-item label="Provincia" prop="province" ref="province">
+            <el-form-item label="Categorias" prop="Categories">
               <el-container>
-                <el-select
-                  v-model="form.region"
-                  value-key="id"
-                  filterable
-                  placeholder="Select"
-                  @change="onchangeRegions"
-                >
+                <el-select v-model="form.categoryId" value-key="id" filterable placeholder="Select">
                   <el-option
-                    v-for="item in regions"
+                    v-for="item in WMSCategories"
                     :key="item.id"
                     :label="item.name"
                     :value="item"
@@ -112,9 +99,9 @@
 
         <el-row :gutter="10" align="bottom" justify="center">
           <el-col :md="12">
-            <el-form-item label="¿Porque desea usar el Geoportal?" prop="subject">
+            <el-form-item label="Descripción" prop="description">
               <el-input
-                v-model="form.subject"
+                v-model="form.description"
                 type="textarea"
                 :rows="3"
                 autocomplete="off"
@@ -125,7 +112,7 @@
           </el-col>
           <el-col :md="12">
             <!-- image -->
-            <el-form-item label="Imagen de Perfil" class="text-xs-center">
+            <el-form-item label="Imagen de Servicio" class="text-xs-center">
               <el-upload
                 class="avatar-uploader"
                 action
@@ -162,11 +149,7 @@ export default {
 
   data() {
     return {
-      zIndex: 3003,
-      isDisabled: false,
       imageSelected: "",
-      dialogTableVisible: false,
-      dialogFormVisible: false,
       form: {
         name: "",
         description: "",
@@ -187,9 +170,6 @@ export default {
 
   watch: {
     showModalAddWMSService: function(newState, oldState) {
-      if (newState) {
-        const element = document.querySelector(".dialog_services");
-      }
       if (!newState) {
         this.$refs.form.resetFields();
         return false;
@@ -199,12 +179,11 @@ export default {
 
   computed: {
     ...mapState({
-      regions: state => state.regions.regions,
-      loadingRegions: state => state.regions.loadingRegions,
-      provinces: state => state.regions.provinces,
-      loadingProvinces: state => state.regions.loadingProvinces,
-      districts: state => state.regions.districts,
-      loadingDistricts: state => state.regions.loadingDistricts
+      WMSAuthors: state => state.WMSAuthors.WMSAuthors,
+      loadingWMSAuthors: state => state.WMSAuthors.loadingWMSAuthors,
+      WMSCategories: state => state.WMSCategories.WMSCategories,
+      loadingWMSCategories: state => state.WMSCategories.loadingWMSCategories,
+      WMSServices: state => state.WMSServices.WMSServices
     }),
 
     showModalAddWMSService: {
@@ -218,44 +197,27 @@ export default {
   },
 
   created() {
-    this.getRegions();
+    this.getWMSCategories();
+    this.getWMSAuthors();
   },
 
   methods: {
     ...mapActions({
       replaceShowModalAddWMSService:
         "modalsWMSServices/replaceShowModalAddWMSService",
-      getRegions: "regions/getRegions",
-      getProvinces: "regions/getProvinces",
-      getDistricts: "regions/getDistricts",
-      replaceProvinces: "regions/replaceProvinces",
-      replaceDistricts: "regions/replaceDistricts",
+      getWMSCategories: "WMSCategories/getWMSCategories",
+      getWMSAuthors: "WMSAuthors/getWMSAuthors",
       getWMSServices: "WMSServices/getWMSServices"
     }),
 
     onChangeZindex(val) {
-      const element = document.querySelector(".dialog_services .el-dialog");
-      const element2 = document.querySelector(".popover_author");
-
-      console.log(val, "val");
-      if (val) {
-        this.isDisabled = val;
-        // element.style.visibility = 'hidden'
-        // element2.style.visibility = 'visible'
-        // this.zIndex = this.zIndex - 3
-      } else {
-        this.isDisabled = val;
-
-        // this.zIndex = this.zIndex + 1
-        // element.style.visibility = 'visible'
-        // this.replaceShowModalAddWMSService({ show: true })
-      }
+      // console.log(val, "val");
     },
 
     submitForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.createUser().then(response => {
+          this.createWMSService().then(response => {
             const { status } = response.data;
             if (status) {
               this.$refs.form.resetFields();
@@ -267,7 +229,7 @@ export default {
       });
     },
 
-    createUser() {
+    createWMSService() {
       const formData = new FormData();
 
       let keys = Object.keys(this.form);
@@ -278,7 +240,7 @@ export default {
       const data = formData;
 
       return new Promise((resolve, reject) => {
-        this.$userAPI
+        this.$WMSServiceAPI
           .create({ data })
           .then(response => {
             resolve(response);
