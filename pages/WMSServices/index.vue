@@ -40,16 +40,16 @@
             prop="name"
           />
           <el-table-column
-            label="Apellidos"
-            prop="lastName"
+            label="Web ULR"
+            prop="webUrl"
           />
           <el-table-column
-            label="Correo Electrónico"
-            prop="email"
+            label="Categoría"
+            prop="category.name"
           />
           <el-table-column
-            label="Rol"
-            prop="userType.name"
+            label="Autor"
+            prop="author.name"
           />
           <el-table-column
             label="Actions"
