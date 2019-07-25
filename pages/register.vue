@@ -232,7 +232,7 @@
               <el-button
                 native-type="submit"
                 type="primary"
-                @click="submitForm"
+                @click.prevent="submitForm"
               >Registrarse</el-button>
             </el-form-item>
           </el-form>

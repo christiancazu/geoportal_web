@@ -88,12 +88,12 @@
                 </el-select>
                 <!-- POPOUP -->
                 <BasePopover
-                  title="Agregar Author"
+                  title="Agregar Categoria"
                   placement="left"
                   @on-change-zindex="onChangeZindex"
                 >
                   <template v-slot:content>
-                    <PopoverAddWMSAuthor />
+                    <PopoverAddWMSCategory />
                   </template>
                   <template v-slot:activate>
                     <el-button

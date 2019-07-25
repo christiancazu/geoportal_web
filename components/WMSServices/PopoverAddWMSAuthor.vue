@@ -53,24 +53,16 @@
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
-import BasePopover from "@/components/base/BasePopover.vue";
 export default {
-  components: {
-    BasePopover
-  },
-
   data() {
     return {
       imageSelected: "",
-      dialogTableVisible: false,
-      dialogFormVisible: false,
       form: {
         name: "",
         description: "",
         webUrl: "",
         image: ""
       },
-
       rules: {
         name: [
           {
@@ -82,49 +74,12 @@ export default {
     };
   },
 
-  watch: {
-    showModalAddWMSService: function(newState, oldState) {
-      if (!newState) {
-        this.$refs.form.resetFields();
-        return false;
-      }
-    }
-  },
-
-  computed: {
-    ...mapState({
-      regions: state => state.regions.regions,
-      loadingRegions: state => state.regions.loadingRegions,
-      provinces: state => state.regions.provinces,
-      loadingProvinces: state => state.regions.loadingProvinces,
-      districts: state => state.regions.districts,
-      loadingDistricts: state => state.regions.loadingDistricts
-    }),
-
-    showModalAddWMSService: {
-      get() {
-        return this.$store.state.modalsWMSServices.showModalAddWMSService;
-      },
-      set(value) {
-        this.replaceShowModalAddWMSService({ show: value });
-      }
-    }
-  },
-
-  created() {
-    this.getRegions();
-  },
+  created() {},
 
   methods: {
     ...mapActions({
       replaceShowModalAddWMSService:
-        "modalsWMSServices/replaceShowModalAddWMSService",
-      getRegions: "regions/getRegions",
-      getProvinces: "regions/getProvinces",
-      getDistricts: "regions/getDistricts",
-      replaceProvinces: "regions/replaceProvinces",
-      replaceDistricts: "regions/replaceDistricts",
-      getWMSServices: "WMSServices/getWMSServices"
+        "modalsWMSServices/replaceShowModalAddWMSService"
     }),
 
     submitForm() {
@@ -178,28 +133,6 @@ export default {
         this.$message.error("La imagen excede los 2MB!");
       }
       return isJPG && isLt2M;
-    },
-
-    onchangeRegions(region) {
-      const params = {
-        id: region.id
-      };
-      this.replaceProvinces({ provinces: null });
-      this.replaceDistricts({ districts: null });
-      this.$refs.province.resetField();
-      this.$refs.districtId.resetField();
-
-      this.getProvinces({ params });
-    },
-
-    onchangeProvinces(province) {
-      const params = {
-        id: province.id
-      };
-
-      this.replaceDistricts({ districts: null });
-      this.$refs.districtId.resetField();
-      this.getDistricts({ params });
     }
   }
 };
