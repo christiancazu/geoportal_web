@@ -63,7 +63,7 @@
           </el-col>
           <el-col :xs="24" :sm="12">
             <!-- porvincia -->
-            <el-form-item label="Categorias" prop="Categories">
+            <el-form-item label="Categorías" prop="Categories">
               <el-container>
                 <el-select v-model="form.categoryId" value-key="id" filterable placeholder="Select">
                   <el-option
@@ -75,7 +75,7 @@
                 </el-select>
                 <!-- POPOUP -->
                 <BasePopover
-                  title="Agregar Categoria"
+                  title="Agregar Categoría"
                   placement="left"
                   @on-change-zindex="onChangeZindex"
                 >
