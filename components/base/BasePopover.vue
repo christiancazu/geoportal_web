@@ -8,6 +8,7 @@
       :title="title"
       @show="showPopover"
       @hide="hidePopover"
+      :visible-arrow="false"
     >
       <slot name="content" />
 

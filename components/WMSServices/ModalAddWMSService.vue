@@ -8,7 +8,6 @@
       class="dialog_services"
     >
       <el-form
-        :disabled="isDisabled"
         ref="form"
         label-position="top"
         status-icon
@@ -18,40 +17,19 @@
         class="demo-ruleForm"
         @submit.prevent="submitForm"
       >
-
         <!-- name -->
-        <el-form-item
-          label="Nombres"
-          prop="name"
-        >
-          <el-input
-            v-model="form.name"
-            type="text"
-            autocomplete="off"
-          />
+        <el-form-item label="Nombres" prop="name">
+          <el-input v-model="form.name" type="text" autocomplete="off" />
         </el-form-item>
         <!-- weburl -->
-        <el-form-item
-          label="Apellido"
-          prop="lastName"
-        >
-          <el-input
-            v-model="form.lastName"
-            type="text"
-            autocomplete="off"
-          />
+        <el-form-item label="Apellido" prop="lastName">
+          <el-input v-model="form.lastName" type="text" autocomplete="off" />
         </el-form-item>
 
         <el-row :gutter="10">
-          <el-col
-            :xs="24"
-            :sm="12"
-          >
+          <el-col :xs="24" :sm="12">
             <!-- region -->
-            <el-form-item
-              label="Región"
-              prop="region"
-            >
+            <el-form-item label="Región" prop="region">
               <el-container>
                 <el-select
                   v-model="form.region"
@@ -71,6 +49,7 @@
                 <!-- POPOUP -->
                 <BasePopover
                   title="Agregar Author"
+                  placement="right"
                   @on-change-zindex="onChangeZindex"
                 >
                   <template v-slot:content>
@@ -88,18 +67,10 @@
                 </BasePopover>
               </el-container>
             </el-form-item>
-
           </el-col>
-          <el-col
-            :xs="24"
-            :sm="12"
-          >
+          <el-col :xs="24" :sm="12">
             <!-- porvincia -->
-            <el-form-item
-              label="Provincia"
-              prop="province"
-              ref="province"
-            >
+            <el-form-item label="Provincia" prop="province" ref="province">
               <el-container>
                 <el-select
                   v-model="form.region"
@@ -115,22 +86,33 @@
                     :value="item"
                   ></el-option>
                 </el-select>
-                <PopoverAddWMSCategory />
+                <!-- POPOUP -->
+                <BasePopover
+                  title="Agregar Author"
+                  placement="left"
+                  @on-change-zindex="onChangeZindex"
+                >
+                  <template v-slot:content>
+                    <PopoverAddWMSAuthor />
+                  </template>
+                  <template v-slot:activate>
+                    <el-button
+                      icon="el-icon-circle-plus"
+                      circle
+                      type="text"
+                      class="pa-0 pl-1 ma-0"
+                      style="font-size: 1.7rem;"
+                    ></el-button>
+                  </template>
+                </BasePopover>
               </el-container>
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-row
-          :gutter="10"
-          align="bottom"
-          justify="center"
-        >
+        <el-row :gutter="10" align="bottom" justify="center">
           <el-col :md="12">
-            <el-form-item
-              label="¿Porque desea usar el Geoportal?"
-              prop="subject"
-            >
+            <el-form-item label="¿Porque desea usar el Geoportal?" prop="subject">
               <el-input
                 v-model="form.subject"
                 type="textarea"
@@ -143,53 +125,34 @@
           </el-col>
           <el-col :md="12">
             <!-- image -->
-            <el-form-item
-              label="Imagen de Perfil"
-              class="text-xs-center"
-            >
+            <el-form-item label="Imagen de Perfil" class="text-xs-center">
               <el-upload
                 class="avatar-uploader"
-                action=""
+                action
                 :http-request="launchUploadAvatar"
                 :show-file-list="false"
                 name="image"
                 :before-upload="beforeAvatarUpload"
               >
-                <img
-                  v-if="imageSelected"
-                  :src="imageSelected"
-                  class="avatar"
-                />
-                <i
-                  v-else
-                  class="el-icon-plus avatar-uploader-icon"
-                ></i>
+                <img v-if="imageSelected" :src="imageSelected" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
           </el-col>
         </el-row>
-
       </el-form>
-      <span
-        slot="footer"
-        class="dialog-footer"
-      >
+      <span slot="footer" class="dialog-footer">
         <el-button @click="replaceShowModalAddWMSService({ show: false })">Cancel</el-button>
-        <el-button
-          type="primary"
-          native-type="submit"
-          @click.prevent="submitForm"
-        >Confirm</el-button>
+        <el-button type="primary" native-type="submit" @click.prevent="submitForm">Confirm</el-button>
       </span>
     </el-dialog>
-
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
-import BasePopover from '@/components/base/BasePopover.vue'
-import PopoverAddWMSAuthor from '@/components/WMSServices/PopoverAddWMSAuthor.vue'
-import PopoverAddWMSCategory from '@/components/WMSServices/PopoverAddWMSCategory.vue'
+import { mapState, mapActions } from "vuex";
+import BasePopover from "@/components/base/BasePopover.vue";
+import PopoverAddWMSAuthor from "@/components/WMSServices/PopoverAddWMSAuthor.vue";
+import PopoverAddWMSCategory from "@/components/WMSServices/PopoverAddWMSCategory.vue";
 export default {
   components: {
     BasePopover,
@@ -197,37 +160,39 @@ export default {
     PopoverAddWMSCategory
   },
 
-  data () {
+  data() {
     return {
       zIndex: 3003,
       isDisabled: false,
-      imageSelected: '',
+      imageSelected: "",
       dialogTableVisible: false,
       dialogFormVisible: false,
       form: {
-        name: '',
-        description: '',
-        webUrl: '',
-        image: '',
+        name: "",
+        description: "",
+        webUrl: "",
+        image: ""
       },
 
       rules: {
-        name: [{
-          required: true,
-          message: "El nombre es requerido"
-        }]
+        name: [
+          {
+            required: true,
+            message: "El nombre es requerido"
+          }
+        ]
       }
     };
   },
 
   watch: {
-    showModalAddWMSService: function (newState, oldState) {
+    showModalAddWMSService: function(newState, oldState) {
       if (newState) {
-        const element = document.querySelector('.dialog_services')
+        const element = document.querySelector(".dialog_services");
       }
       if (!newState) {
-        this.$refs.form.resetFields()
-        return false
+        this.$refs.form.resetFields();
+        return false;
       }
     }
   },
@@ -239,46 +204,47 @@ export default {
       provinces: state => state.regions.provinces,
       loadingProvinces: state => state.regions.loadingProvinces,
       districts: state => state.regions.districts,
-      loadingDistricts: state => state.regions.loadingDistricts,
+      loadingDistricts: state => state.regions.loadingDistricts
     }),
 
     showModalAddWMSService: {
-      get () {
-        return this.$store.state.modalsWMSServices.showModalAddWMSService
+      get() {
+        return this.$store.state.modalsWMSServices.showModalAddWMSService;
       },
-      set (value) {
-        this.replaceShowModalAddWMSService({ show: value })
+      set(value) {
+        this.replaceShowModalAddWMSService({ show: value });
       }
     }
   },
 
-  created () {
-    this.getRegions()
+  created() {
+    this.getRegions();
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddWMSService: 'modalsWMSServices/replaceShowModalAddWMSService',
-      getRegions: 'regions/getRegions',
-      getProvinces: 'regions/getProvinces',
-      getDistricts: 'regions/getDistricts',
-      replaceProvinces: 'regions/replaceProvinces',
-      replaceDistricts: 'regions/replaceDistricts',
-      getWMSServices: 'WMSServices/getWMSServices',
+      replaceShowModalAddWMSService:
+        "modalsWMSServices/replaceShowModalAddWMSService",
+      getRegions: "regions/getRegions",
+      getProvinces: "regions/getProvinces",
+      getDistricts: "regions/getDistricts",
+      replaceProvinces: "regions/replaceProvinces",
+      replaceDistricts: "regions/replaceDistricts",
+      getWMSServices: "WMSServices/getWMSServices"
     }),
 
-    onChangeZindex (val) {
-      const element = document.querySelector('.dialog_services .el-dialog')
-      const element2 = document.querySelector('.popover_author')
+    onChangeZindex(val) {
+      const element = document.querySelector(".dialog_services .el-dialog");
+      const element2 = document.querySelector(".popover_author");
 
-      console.log(val, 'val')
+      console.log(val, "val");
       if (val) {
-        this.isDisabled = val
+        this.isDisabled = val;
         // element.style.visibility = 'hidden'
         // element2.style.visibility = 'visible'
         // this.zIndex = this.zIndex - 3
       } else {
-        this.isDisabled = val
+        this.isDisabled = val;
 
         // this.zIndex = this.zIndex + 1
         // element.style.visibility = 'visible'
@@ -286,46 +252,47 @@ export default {
       }
     },
 
-    submitForm () {
-      this.$refs.form.validate((valid) => {
+    submitForm() {
+      this.$refs.form.validate(valid => {
         if (valid) {
           this.createUser().then(response => {
-            const { status } = response.data
+            const { status } = response.data;
             if (status) {
-              this.$refs.form.resetFields()
-              this.replaceShowModalAddWMSService({ show: false })
-              this.getWMSServices()
-
+              this.$refs.form.resetFields();
+              this.replaceShowModalAddWMSService({ show: false });
+              this.getWMSServices();
             }
-          })
+          });
         }
-      })
+      });
     },
 
-    createUser () {
-      const formData = new FormData()
+    createUser() {
+      const formData = new FormData();
 
-      let keys = Object.keys(this.form)
+      let keys = Object.keys(this.form);
       keys.forEach(val => {
-        formData.append(val, this.form[val])
-      })
+        formData.append(val, this.form[val]);
+      });
 
-      const data = formData
+      const data = formData;
 
       return new Promise((resolve, reject) => {
-        this.$userAPI.create({ data })
+        this.$userAPI
+          .create({ data })
           .then(response => {
-            resolve(response)
-          }).catch(error => reject(error))
-      })
+            resolve(response);
+          })
+          .catch(error => reject(error));
+      });
     },
 
-    launchUploadAvatar (option) {
+    launchUploadAvatar(option) {
       this.imageSelected = URL.createObjectURL(option.file);
-      this.form.image = option.file
+      this.form.image = option.file;
     },
 
-    beforeAvatarUpload (file) {
+    beforeAvatarUpload(file) {
       const isJPG = file.type === "image/png" || file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -338,28 +305,28 @@ export default {
       return isJPG && isLt2M;
     },
 
-    onchangeRegions (region) {
+    onchangeRegions(region) {
       const params = {
         id: region.id
-      }
-      this.replaceProvinces({ provinces: null })
-      this.replaceDistricts({ districts: null })
-      this.$refs.province.resetField()
-      this.$refs.districtId.resetField()
+      };
+      this.replaceProvinces({ provinces: null });
+      this.replaceDistricts({ districts: null });
+      this.$refs.province.resetField();
+      this.$refs.districtId.resetField();
 
-      this.getProvinces({ params })
+      this.getProvinces({ params });
     },
 
-    onchangeProvinces (province) {
+    onchangeProvinces(province) {
       const params = {
         id: province.id
-      }
+      };
 
-      this.replaceDistricts({ districts: null })
-      this.$refs.districtId.resetField()
-      this.getDistricts({ params })
+      this.replaceDistricts({ districts: null });
+      this.$refs.districtId.resetField();
+      this.getDistricts({ params });
     }
-  },
+  }
 };
 </script>
 <style lang="scss">
