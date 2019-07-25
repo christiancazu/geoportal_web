@@ -86,9 +86,19 @@
       </el-menu-item>
     </el-submenu>
     <el-menu-item
+      index="4"
+      :active="false"
+      :route="{ path: '/WMSServices' }"
+    >
+      <i class="el-icon-map-location">
+
+      </i>
+      <span>Servicios</span>
+    </el-menu-item>
+    <el-menu-item
       @click="replaceShowPanelGeovisor({ show: true })"
       :route="{ path: '/geovisor' }"
-      index="4"
+      index="5"
     >
       <i class="material-icons">
         public
@@ -96,7 +106,7 @@
       <span>Geoportal</span>
     </el-menu-item>
     <el-menu-item
-      index="5"
+      index="6"
       :route="{ path: '/report' }"
     >
       <i class="material-icons">
@@ -105,7 +115,7 @@
       <span>Reportar</span>
     </el-menu-item>
     <el-menu-item
-      index="6"
+      index="7"
       :active="false"
       @click="$auth.logout()"
       :route="{ path: '/' }"
