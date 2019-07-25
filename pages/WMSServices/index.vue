@@ -6,7 +6,7 @@
         type="primary"
         icon="el-icon-plus"
         @click="replaceShowModalAddWMSService({ show: true })"
-      >Nuevo Usuario</el-button>
+      >Nuevo Servicio WMS</el-button>
     </template>
 
     <template v-slot:content>
