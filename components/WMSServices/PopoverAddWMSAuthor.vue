@@ -99,7 +99,7 @@ export default {
 
   methods: {
     ...mapActions({
-      getWMSAuthors: "WMSAuthor/getWMSAuthors",
+      getWMSAuthors: "WMSAuthors/getWMSAuthors",
       replaceShowModalAddWMSAuthor:
         "modalsWMSServices/replaceShowModalAddWMSAuthor"
     }),
@@ -111,6 +111,7 @@ export default {
             const { status } = response.data;
             if (status) {
               this.$refs.formWMSAuthor.resetFields();
+              this.replaceShowModalAddWMSAuthor({ show: false });
               this.getWMSAuthors();
             }
           });
