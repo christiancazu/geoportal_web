@@ -1,11 +1,6 @@
 <template>
-  <div>
-    <el-dialog
-      title="Registrar Servicio WMS"
-      top="2vh"
-      :visible.sync="showModalAddWMSService"
-      class="dialog_services"
-    >
+  <BaseModal title="Registrar Servicios WMS" :show-modal="showModalAddWMSService">
+    <template v-slot:content>
       <el-form
         ref="form"
         label-position="top"
@@ -40,7 +35,7 @@
                 </el-select>
 
                 <!-- POPOUP -->
-                <BasePopover
+                <!-- <BasePopover
                   title="Agregar Author"
                   placement="right"
                   @on-change-zindex="onChangeZindex"
@@ -48,16 +43,17 @@
                   <template v-slot:content>
                     <PopoverAddWMSAuthor />
                   </template>
-                  <template v-slot:activate>
-                    <el-button
-                      icon="el-icon-circle-plus"
-                      circle
-                      type="text"
-                      class="pa-0 pl-1 ma-0"
-                      style="font-size: 1.7rem;"
-                    ></el-button>
-                  </template>
-                </BasePopover>
+                <template v-slot:activate>-->
+                <el-button
+                  icon="el-icon-circle-plus"
+                  circle
+                  type="text"
+                  class="pa-0 pl-1 ma-0"
+                  style="font-size: 1.7rem;"
+                  @click="replaceShowModalAddWMSAuthor({ show:true })"
+                ></el-button>
+                <!-- </template>
+                </BasePopover>-->
               </el-container>
             </el-form-item>
           </el-col>
@@ -74,7 +70,7 @@
                   ></el-option>
                 </el-select>
                 <!-- POPOUP -->
-                <BasePopover
+                <!-- <BasePopover
                   title="Agregar Categoría"
                   placement="left"
                   @on-change-zindex="onChangeZindex"
@@ -82,16 +78,17 @@
                   <template v-slot:content>
                     <PopoverAddWMSCategory />
                   </template>
-                  <template v-slot:activate>
+                  <template v-slot:activate> -->
                     <el-button
                       icon="el-icon-circle-plus"
                       circle
                       type="text"
                       class="pa-0 pl-1 ma-0"
                       style="font-size: 1.7rem;"
+                      @click="replaceShowModalAddWMSCategory({ show: true })"
                     ></el-button>
-                  </template>
-                </BasePopover>
+                  <!-- </template>
+                </BasePopover> -->
               </el-container>
             </el-form-item>
           </el-col>
@@ -128,20 +125,27 @@
           </el-col>
         </el-row>
       </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="replaceShowModalAddWMSService({ show: false })">Cancel</el-button>
-        <el-button type="primary" native-type="submit" @click.prevent="submitForm">Confirm</el-button>
-      </span>
-    </el-dialog>
-  </div>
+    </template>
+    <template v-slot:actions>
+      <el-button @click="replaceShowModalAddWMSService({ show: false })">Cancel</el-button>
+      <el-button type="primary" native-type="submit" @click.prevent="submitForm">Confirm</el-button>
+    </template>
+    <template v-slot:modals>
+      <PopoverAddWMSAuthor />
+      <PopoverAddWMSCategory />
+    </template>
+  </BaseModal>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+
+import BaseModal from "@/components/base/BaseModal.vue";
 import BasePopover from "@/components/base/BasePopover.vue";
 import PopoverAddWMSAuthor from "@/components/WMSServices/PopoverAddWMSAuthor.vue";
 import PopoverAddWMSCategory from "@/components/WMSServices/PopoverAddWMSCategory.vue";
 export default {
   components: {
+    BaseModal,
     BasePopover,
     PopoverAddWMSAuthor,
     PopoverAddWMSCategory
@@ -174,6 +178,10 @@ export default {
         this.$refs.form.resetFields();
         return false;
       }
+      if (newState) {
+        this.getWMSCategories();
+        this.getWMSAuthors();
+      }
     }
   },
 
@@ -196,18 +204,17 @@ export default {
     }
   },
 
-  created() {
-    this.getWMSCategories();
-    this.getWMSAuthors();
-  },
-
   methods: {
     ...mapActions({
       replaceShowModalAddWMSService:
         "modalsWMSServices/replaceShowModalAddWMSService",
+      replaceShowModalAddWMSAuthor:
+        "modalsWMSServices/replaceShowModalAddWMSAuthor",
       getWMSCategories: "WMSCategories/getWMSCategories",
       getWMSAuthors: "WMSAuthors/getWMSAuthors",
-      getWMSServices: "WMSServices/getWMSServices"
+      getWMSServices: "WMSServices/getWMSServices",
+      replaceShowModalAddWMSCategory:
+        "modalsWMSServices/replaceShowModalAddWMSCategory"
     }),
 
     onChangeZindex(val) {

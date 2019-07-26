@@ -1,58 +1,69 @@
 <template>
-  <el-form
-    ref="formWMSCategory"
-    label-position="top"
-    status-icon
-    :model="form"
-    :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm"
-    @submit.prevent="submitFormWMSCategory"
+  <BaseModal
+    title="Registrar Servicios WMS"
+    :show-modal="showModalAddWMSCategory"
+    :append-to-body="true"
   >
-    <!-- image -->
-    <el-form-item label="Imagen" class="text-xs-center">
-      <el-upload
-        class="avatar-uploader"
-        action
-        :http-request="launchUploadAvatar"
-        :show-file-list="false"
-        name="image"
-        :before-upload="beforeAvatarUpload"
+    <template v-slot:content>
+      <el-form
+        ref="formWMSCategory"
+        label-position="top"
+        status-icon
+        :model="form"
+        :rules="rules"
+        label-width="120px"
+        class="demo-ruleForm"
+        @submit.prevent="submitFormWMSCategory"
       >
-        <img v-if="imageSelected" :src="imageSelected" class="avatar" />
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-      </el-upload>
-    </el-form-item>
-    <!-- name -->
-    <el-form-item label="Nombre" prop="name">
-      <el-input v-model="form.name" type="text" autocomplete="off" />
-    </el-form-item>
+        <!-- image -->
+        <el-form-item label="Imagen" class="text-xs-center">
+          <el-upload
+            class="avatar-uploader"
+            action
+            :http-request="launchUploadAvatar"
+            :show-file-list="false"
+            name="image"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="imageSelected" :src="imageSelected" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
+        <!-- name -->
+        <el-form-item label="Nombre" prop="name">
+          <el-input v-model="form.name" type="text" autocomplete="off" />
+        </el-form-item>
 
-    <el-form-item label="Descripción">
-      <el-input
-        v-model="form.description"
-        type="textarea"
-        :rows="3"
-        autocomplete="off"
-        :maxlength="300"
-        :show-word-limit="true"
-      />
-    </el-form-item>
-    <el-form-item class="text-xs-right mb-0">
-      <el-button>Cancel</el-button>
+        <el-form-item label="Descripción">
+          <el-input
+            v-model="form.description"
+            type="textarea"
+            :rows="3"
+            autocomplete="off"
+            :maxlength="300"
+            :show-word-limit="true"
+          />
+        </el-form-item>
+      </el-form>
+    </template>
+    <template v-slot:actions>
+      <el-button @click="replaceShowModalAddWMSCategory({ show: false })">Cancel</el-button>
       <el-button
         native-type="submit"
         type="primary"
         @click.prevent="submitFormWMSCategory"
       >Registrar</el-button>
-    </el-form-item>
-  </el-form>
+    </template>
+  </BaseModal>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+import BaseModal from "@/components/base/BaseModal.vue";
+
 import BasePopover from "@/components/base/BasePopover.vue";
 export default {
   components: {
+    BaseModal,
     BasePopover
   },
 
@@ -76,9 +87,22 @@ export default {
     };
   },
 
+  computed: {
+    showModalAddWMSCategory: {
+      get() {
+        return this.$store.state.modalsWMSServices.showModalAddWMSCategory;
+      },
+      set(value) {
+        this.replaceShowModalAddWMSCategory({ show: value });
+      }
+    }
+  },
+
   methods: {
     ...mapActions({
-      getWMSCategories: "WMSCategories/getWMSCategories"
+      getWMSCategories: "WMSCategories/getWMSCategories",
+      replaceShowModalAddWMSCategory:
+        "modalsWMSServices/replaceShowModalAddWMSCategory"
     }),
 
     submitFormWMSCategory() {

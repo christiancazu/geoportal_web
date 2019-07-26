@@ -1,68 +1,71 @@
 <template>
-  <el-form
-    ref="formWMSAuthor"
-    label-position="top"
-    status-icon
-    :model="form"
-    :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm"
-    @submit.prevent="submitFormWMSAuthor"
-  >
-    <el-row :gutter="10">
-      <el-col :md="10">
-        <!-- image -->
-        <el-form-item label="Imagen" class="text-xs-center">
-          <el-upload
-            class="avatar-uploader"
-            action
-            :http-request="launchUploadAvatar"
-            :show-file-list="false"
-            name="image"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img v-if="imageSelected" :src="imageSelected" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-          </el-upload>
-        </el-form-item>
-      </el-col>
-      <el-col :md="14">
-        <!-- name -->
-        <el-form-item label="Nombre" prop="name">
-          <el-input v-model="form.name" type="text" autocomplete="off" />
-        </el-form-item>
+  <BaseModal title="Agregar Autor" :show-modal="showModalAddWMSAuthor" :append-to-body="true">
+    <template v-slot:content>
+      <el-form
+        ref="formWMSAuthor"
+        label-position="top"
+        status-icon
+        :model="form"
+        :rules="rules"
+        label-width="120px"
+        class="demo-ruleForm"
+        @submit.prevent="submitFormWMSAuthor"
+      >
+        <el-row :gutter="10">
+          <el-col :md="10">
+            <!-- image -->
+            <el-form-item label="Imagen" class="text-xs-center">
+              <el-upload
+                class="avatar-uploader"
+                action
+                :http-request="launchUploadAvatar"
+                :show-file-list="false"
+                name="image"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="imageSelected" :src="imageSelected" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+          <el-col :md="14">
+            <!-- name -->
+            <el-form-item label="Nombre" prop="name">
+              <el-input v-model="form.name" type="text" autocomplete="off" />
+            </el-form-item>
 
-        <!-- weburl -->
-        <el-form-item label="URL">
-          <el-input v-model="form.webUrl" type="text" autocomplete="off" />
+            <!-- weburl -->
+            <el-form-item label="URL">
+              <el-input v-model="form.webUrl" type="text" autocomplete="off" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-form-item label="Descripción">
+          <el-input
+            v-model="form.description"
+            type="textarea"
+            :rows="3"
+            autocomplete="off"
+            :maxlength="300"
+            :show-word-limit="true"
+          />
         </el-form-item>
-      </el-col>
-    </el-row>
-
-    <el-form-item label="Descripción">
-      <el-input
-        v-model="form.description"
-        type="textarea"
-        :rows="3"
-        autocomplete="off"
-        :maxlength="300"
-        :show-word-limit="true"
-      />
-    </el-form-item>
-
-    <el-form-item class="text-xs-right mb-0">
-      <el-button>Cancel</el-button>
-      <el-button
-        native-type="submit"
-        type="primary"
-        @click.prevent="submitFormWMSAuthor"
-      >Registrarse</el-button>
-    </el-form-item>
-  </el-form>
+      </el-form>
+    </template>
+    <template v-slot:actions>
+      <el-button @click="replaceShowModalAddWMSAuthor({ show: false })">Cancel</el-button>
+      <el-button type="primary" native-type="submit" @click.prevent="submitFormWMSAuthor">Confirm</el-button>
+    </template>
+  </BaseModal>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+import BaseModal from "@/components/base/BaseModal.vue";
 export default {
+  components: {
+    BaseModal
+  },
   data() {
     return {
       imageSelected: "",
@@ -83,9 +86,22 @@ export default {
     };
   },
 
+  computed: {
+    showModalAddWMSAuthor: {
+      get() {
+        return this.$store.state.modalsWMSServices.showModalAddWMSAuthor;
+      },
+      set(value) {
+        this.replaceShowModalAddWMSAuthor({ show: value });
+      }
+    }
+  },
+
   methods: {
     ...mapActions({
-      getWMSAuthors: "WMSAuthor/getWMSAuthors"
+      getWMSAuthors: "WMSAuthor/getWMSAuthors",
+      replaceShowModalAddWMSAuthor:
+        "modalsWMSServices/replaceShowModalAddWMSAuthor"
     }),
 
     submitFormWMSAuthor() {
