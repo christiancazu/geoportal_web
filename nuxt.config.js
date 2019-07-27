@@ -20,11 +20,14 @@ export default {
     },
     {
       rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet'
+      href: 'https://fonts.googleapis.com/css?family=Montserrat:300,400,700&display=swap" rel="stylesheet'
     },
     {
       rel: 'stylesheet',
       href: 'https://fonts.googleapis.com/css?family=Material+Icons'
+    }, {
+      rel: 'stylesheet',
+      href: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.4/css/bootstrap.min.css'
     }
     ],
     script: [{
@@ -60,7 +63,7 @@ export default {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     // baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.105:8080/geoportal/api/'
-     baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.130:8300/geoportal/api/'
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.130:8300/geoportal/api/'
   },
 
   auth: {
