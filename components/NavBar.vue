@@ -1,61 +1,48 @@
 <template>
-  <el-container
-    direction="horizontal"
-    class="container pt-1"
-    style="justify-content: space-between;"
-  >
-    <div
-      class="hover-remove mt-1"
-      @click="$router.push('/')"
-    >
-      <img
-        class="el-menu-item"
-        src="/image/unat_blanco.png"
-        style="max-height:100%;"
-        alt=""
-      >
+  <div class="navWrapper">
+    <div id="menu" :class="{ active: isActive }">
+      <el-menu mode="horizontal" @select="handleSelect" :router="true">
+        <el-menu-item id="logo" index="/" :route="{ name: 'Root'}">
+          <div class="logo-header">
+            <div id="logo">
+              <img class="el-menu-item" src="/image/unat_blanco.png" style="max-height:100%;" alt />
+            </div>
+          </div>
+        </el-menu-item>
+        <el-menu-item index="1" :route="{ path: '/' }">Hello</el-menu-item>
+        <el-menu-item index="2" :route="{ path: '/' }">Projects</el-menu-item>
+        <el-menu-item index="3" :route="{ path: '/' }">About</el-menu-item>
+        <el-menu-item index="4" :route="{ path: '/' }">Contact</el-menu-item>
+      </el-menu>
     </div>
-    <el-menu
-      class="el-menu-demo hover-remove"
-      mode="horizontal"
-      menu-trigger="click"
-      :router="true"
-      style="z-index:1; float: right;"
-      backgroundColor="transparent"
-    >
-      <el-menu-item>
-        <template slot="title">Quienes somos</template>
-      </el-menu-item>
-      <el-menu-item>
-        <template slot="title">Componentes</template>
-      </el-menu-item>
-      <el-menu-item active-text-color="#ffffff">
-        <template slot="title">Contacto</template>
-      </el-menu-item>
-      <el-menu-item
-        index="4"
-        active-text-color="#ffffff"
-        :route="{ path: 'login' }"
-      >
-        <template slot="title">Iniciar Sesión</template>
-      </el-menu-item>
-      <!-- <el-menu-item active-text-color="#ffffff">
-        <template slot="title">Registrarse</template>
-      </el-menu-item> -->
-    </el-menu>
-  </el-container>
+    <div id="toggle" @click="select()">
+      <div class="span" id="top" :class="{ active: isActive }"></div>
+      <div class="span" id="middle" :class="{ active: isActive }"></div>
+      <div class="span" id="bottom" :class="{ active: isActive }"></div>
+    </div>
+  </div>
 </template>
+
 <script>
+// import Logo from '@/components/Logo'
+
 export default {
-  data () {
+  components: {
+    // Logo
+  },
+
+  data() {
     return {
-      activeIndex: "1",
-      activeIndex2: "1"
+      activeIndex: "/hello",
+      isActive: false
     };
   },
   methods: {
-    handleSelect (key, keyPath) {
+    handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    select: function() {
+      this.isActive = !this.isActive;
     }
   }
 };

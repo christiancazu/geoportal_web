@@ -1,3 +1,29 @@
+.el-menu-item {
+  padding: 5px 35px;
+}
+
+@mixin sm-menu {
+  .el-menu--horizontal .el-menu-item {
+    text-align: center;
+    float: none;
+    display: block;
+    height: 100%;
+    width: 100%;
+    border-top: 1px solid #EAEAEB;
+    font-size: 18px;
+  }
+}
+
+// .app-wrapper {
+//   position: relative;
+//   height: 100%;
+//   width: 100%;
+// }
+// .main-container {
+//   text-align: center;
+//   margin-top: 400px;
+//   min-height: 50vh;
+// }
 html {
   min-height: 100%;
   box-sizing: border-box;
@@ -36,7 +62,7 @@ label {
   display: flex;
   justify-content: space-between;
 }
- 
+
 .border-none {
   border: none !important;
 }
