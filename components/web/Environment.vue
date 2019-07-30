@@ -8,11 +8,11 @@
         <div class="pb-4">
           <button
             type="button"
-            class="btn btn-outline-primary btn-inverse rounded-pill btn-lg ma-3 text-mayus"
+            class=" text-14 btn btn-outline-primary btn-inverse rounded-pill btn-lg ma-3 text-mayus"
           >Manual de Usuario</button>
           <button
             type="button"
-            class="btn-default rounded-pill btn-lg ma-3 text-mayus"
+            class=" text-14 btn-default rounded-pill btn-lg ma-3 text-mayus"
           >Ir al Geoportal</button>
         </div>
       </div>
