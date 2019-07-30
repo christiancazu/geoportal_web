@@ -1,65 +1,49 @@
 <template>
-  <div class="container contact text-xs-center">
-    <h2 class="pt-5 ma-0">CONTACTO</h2>
-    <el-row class="py-4">
-      <el-col
-        :xs="24"
-        :sm="12"
-      >
-        <ul class="pl-0">
-          <li>
-            <i class="el-icon-location-information"></i>
-            <span>Avenida #502</span>
-          </li>
-          <li>
-            <i class="el-icon-phone-outline">
-            </i>
-            <span>054 7896455</span>
-          </li>
-          <li>
-            <i class="el-icon-message">
-            </i>
-            <span>info@geoportal.com.pe</span>
-          </li>
-        </ul>
-      </el-col>
-      <el-col
-        :xs="24"
-        :sm="12"
-        class="text-xs-center"
-      >
-        <div
-          class="hover-remove mt-1"
-          @click="$router.push('/')"
-        >
-          <img
-            class="el-menu-item"
-            src="/image/unat_blanco.png"
-            style="max-height:100%;"
-            alt=""
-          >
+  <section id="contact" class="py-5 text-center" style="background: #f8f9fc;">
+    <div class="container">
+      <div class="row">
+        <div class="offset-md-3 col-md-6">
+          <h6 class="text-mayus my-2 title-link">Contacto</h6>
+          <h2 class="text-mayus my-3">Envianos un Mensaje</h2>
+          <el-form label-position="top" ref="form" :model="form" label-width="120px">
+            <el-form-item>
+              <el-input placeholder="Nombre" v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-input placeholder="Email" v-model="form.email"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-input placeholder="Mensaje" type="textarea" v-model="form.message"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary">Enviar</el-button>
+            </el-form-item>
+          </el-form>
         </div>
-        <ul class="flat-socials pl-0">
-          <li class="facebook">
-            <i class="fa fa-facebook"></i>
-          </li>
-          <li class="twitter">
-            <i class="fa fa-twitter"></i>
-          </li>
-          <li class="google-plus">
-            <i class="fa fa-google-plus"></i>
-          </li>
-          <li class="linkedin">
-            <i class="fa fa-linkedin"></i>
-          </li>
-          <li class="youtube">
-            <i class="fa fa-youtube-play"></i>
-          </li>
-        </ul>
-      </el-col>
-    </el-row>
-  </div>
+      </div>
+    </div>
+  </section>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      form: {
+        name: "",
+        email: "",
+        message: ""
+      }
+    };
+  }
+};
+</script>
 
-<style>
+<style lang="scss">
+// #contact {
+//   background: url(http://demo.epic-webdesign.com/tf-epic-launch/v4/images/luna-image3.jpg)
+//     top center no-repeat;
+//   background-size: cover;
+//   padding: 70px 0;
+//   min-height: 746px;
+// }
 </style>

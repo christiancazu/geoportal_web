@@ -20,7 +20,7 @@ export default {
     },
     {
       rel: 'stylesheet',
-      href: 'https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet'
+      href: 'https://fonts.googleapis.com/css?family=Open+Sans|Poppins|Roboto&display=swap" rel="stylesheet'
     },
     {
       rel: 'stylesheet',

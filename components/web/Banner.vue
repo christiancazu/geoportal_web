@@ -1,33 +1,15 @@
 <template>
-  <div class="bolck">
-    <el-carousel height="70vh">
-      <el-carousel-item
-        v-for="item in 2"
-        :key="item"
-      >
-        <el-image
-          fit="cover"
-          src="http://www.blog-geographica.com/wp-content/uploads/2016/09/Geoportal-Proyecto-Alboran.jpg"
-        ></el-image>
-      </el-carousel-item>
-    </el-carousel>
-  </div>
+  <section id="home">
+    <div class="jumbotron jumbotron-fluid h-100">
+      <div class="container h-100 align-middle text-center">
+        <h1 class="display-4 text-mayus">"Geoportal Tayacaja”</h1>
+        <p
+          class="lead"
+        >Aplicación de modelos de análisis territorial y adaptación al cambio climático con tecnología Smart Environment</p>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style>
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 18px;
-  opacity: 0.75;
-  line-height: 300px;
-  margin: 0;
-}
-
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
-}
 </style>

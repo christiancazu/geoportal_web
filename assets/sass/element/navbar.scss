@@ -1,87 +1,86 @@
-#v-app {
+.text-mayus {
+  text-transform: uppercase;
+}
+// navbar
+.bg-dark{
+  background-color: transparent !important;
+  -webkit-transition: background-color 1000ms linear;
+  -ms-transition: background-color 1000ms linear;
+  transition: background-color 1000ms linear;
 
-  .logo-header {
-    padding-left: 15px;
-    padding-right: 50px;
-    z-index: 100;
+  li a{
+    color: #fff !important;
+    font-size: 15px !important;
+    line-height: 30px !important;
+    padding: 10px 20px!important;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    letter-spacing: 1px;
   }
+}
 
-  .navWrapper {
-    width: 100%;
-    position: fixed;
-    top: 0;
+.opaque {
+  background-color: rgba(34,34,34, 0.95)!important;
+  padding: 10px 0;
+  transition: all 1s ease-in-out 0s;
+}
+
+.bg-black{
+  height: 100vh;
+}
+
+.bg-mobile{
+  background-color: #000000c9 !important;
+  -webkit-transition: background-color 1000ms linear;
+  -ms-transition: background-color 1000ms linear;
+  transition: background-color 1000ms linear;
+}
+// home
+#home {
+  height: 95vh;
+  width: 100%;
+  background: url(http://demo.epic-webdesign.com/tf-epic-launch/v4/images/luna-heroimage.jpg)
+    top center no-repeat;
+  background-size: cover;
+  padding: 180px 0;
+  position: relative;
+
+  &:before {
+    content: '';
+	  position: absolute;
+	  top: 0;
+	  right: 0;
+	  bottom: 0;
+    left: 0;
+  // background: linear-gradient(to right, rgb(195, 20, 50), rgb(36, 11, 54));
+  background: #412383;
+    opacity: 0.6;
   }
+}
+.jumbotron {
+  background-color: transparent;
+  color: white;
+  position: relative;
+}
 
-  #logo.el-menu-item.is-active {
-    border-bottom-color: transparent;
+.title-link {
+  color: $color-text;
+}
+.title-link-invert {
+  color: #8d909a;
+}
+
+  .text-16 {
+    font-size: 1.15rem;
+    line-height: 24px;
+    color: #8d909a;
   }
-
-  #toggle {
-    position: absolute;
-    right: 20px;
-    top: 14px;
-    z-index: 999;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    float: right;
-    transition: all .3s ease-out;
-    visibility: hidden;
-    opacity: 0;
+  .text-14 {
+    font-size: 1rem;
+    line-height: 20px;
+    color: #8d909a;
   }
-
-  #toggle .span {
-    border-radius: 10px;
-    background: $nav-toggle-color;
-    transition: all 0.3s ease-out;
-    backface-visibility: hidden;
-  }
-
-  #top.span.active {
-    transform: rotate(45deg) translateX(3px) translateY(5px);
-  }
-
-  #middle.span.active {
-    opacity: 0;
-  }
-
-  #bottom.span.active {
-    transform: rotate(-45deg) translateX(8px) translateY(-10px);
-  }
-
-  @media only screen and (max-width: $screen-md-min) {
-
-    .logo-header {
-      padding: 0;
-    }
-
-    #toggle {
-      visibility: visible;
-      opacity: 1;
-      margin-top: 6px;
-    }
-
-    #toggle .span {
-      height: 4px;
-      margin: 5px 0;
-      transition: all .3s ease-out;
-      backface-visibility: visible;
-      visibility: visible;
-      opacity: 1;
-    }
-
-    #menu .el-menu-item {
-      display: none;
-    }
-
-    #menu.active {
-      margin: 70px 0;
-      visibility: visible;
-      opacity: 0.98;
-      transition: all .5s ease-out;
-
-      @include sm-menu;
-    }
-  }
-
+// about
+.mh-90 {
+  min-height: 90px;
 }

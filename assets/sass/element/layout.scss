@@ -12,7 +12,10 @@
 }
 
 .el-header {
+  display: inline-flex;
   padding: 0px 0px;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .adjust-popper {
