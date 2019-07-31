@@ -176,7 +176,6 @@ export default {
     }),
 
     submitForm () {
-      console.log(this.rangeZoom)
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.createBaseMap().then(response => {

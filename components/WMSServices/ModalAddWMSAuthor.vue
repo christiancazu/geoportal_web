@@ -1,5 +1,10 @@
 <template>
-  <BaseModal title="Agregar Autor" :show-modal="showModalAddWMSAuthor" :append-to-body="true">
+  <BaseModal
+    title="Agregar Autor"
+    :show-modal="showModalAddWMSAuthor"
+    :append-to-body="true"
+    @action-modal="replaceShowModalAddWMSAuthor"
+  >
     <template v-slot:content>
       <el-form
         ref="formWMSAuthor"
@@ -14,7 +19,10 @@
         <el-row :gutter="10">
           <el-col :md="10">
             <!-- image -->
-            <el-form-item label="Imagen" class="text-xs-center">
+            <el-form-item
+              label="Imagen"
+              class="text-xs-center"
+            >
               <el-upload
                 class="avatar-uploader"
                 action
@@ -23,20 +31,38 @@
                 name="image"
                 :before-upload="beforeAvatarUpload"
               >
-                <img v-if="imageSelected" :src="imageSelected" class="avatar" />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                <img
+                  v-if="imageSelected"
+                  :src="imageSelected"
+                  class="avatar"
+                />
+                <i
+                  v-else
+                  class="el-icon-plus avatar-uploader-icon"
+                ></i>
               </el-upload>
             </el-form-item>
           </el-col>
           <el-col :md="14">
             <!-- name -->
-            <el-form-item label="Nombre" prop="name">
-              <el-input v-model="form.name" type="text" autocomplete="off" />
+            <el-form-item
+              label="Nombre"
+              prop="name"
+            >
+              <el-input
+                v-model="form.name"
+                type="text"
+                autocomplete="off"
+              />
             </el-form-item>
 
             <!-- weburl -->
             <el-form-item label="URL">
-              <el-input v-model="form.webUrl" type="text" autocomplete="off" />
+              <el-input
+                v-model="form.webUrl"
+                type="text"
+                autocomplete="off"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -55,7 +81,11 @@
     </template>
     <template v-slot:actions>
       <el-button @click="replaceShowModalAddWMSAuthor({ show: false })">Cancel</el-button>
-      <el-button type="primary" native-type="submit" @click.prevent="submitFormWMSAuthor">Confirm</el-button>
+      <el-button
+        type="primary"
+        native-type="submit"
+        @click.prevent="submitFormWMSAuthor"
+      >Confirm</el-button>
     </template>
   </BaseModal>
 </template>
@@ -66,7 +96,7 @@ export default {
   components: {
     BaseModal
   },
-  data() {
+  data () {
     return {
       imageSelected: "",
       form: {
@@ -88,10 +118,10 @@ export default {
 
   computed: {
     showModalAddWMSAuthor: {
-      get() {
+      get () {
         return this.$store.state.modalsWMSServices.showModalAddWMSAuthor;
       },
-      set(value) {
+      set (value) {
         this.replaceShowModalAddWMSAuthor({ show: value });
       }
     }
@@ -104,7 +134,7 @@ export default {
         "modalsWMSServices/replaceShowModalAddWMSAuthor"
     }),
 
-    submitFormWMSAuthor() {
+    submitFormWMSAuthor () {
       this.$refs.formWMSAuthor.validate(valid => {
         if (valid) {
           this.createWMSAuthor().then(response => {
@@ -119,7 +149,7 @@ export default {
       });
     },
 
-    createWMSAuthor() {
+    createWMSAuthor () {
       const formData = new FormData();
 
       let keys = Object.keys(this.form);
@@ -137,12 +167,12 @@ export default {
       });
     },
 
-    launchUploadAvatar(option) {
+    launchUploadAvatar (option) {
       this.imageSelected = URL.createObjectURL(option.file);
       this.form.image = option.file;
     },
 
-    beforeAvatarUpload(file) {
+    beforeAvatarUpload (file) {
       const isJPG = file.type === "image/png" || file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 

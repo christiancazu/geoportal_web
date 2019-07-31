@@ -3,12 +3,15 @@
     <el-dialog
       :title="title"
       center
-      :visible.sync="showModal"
+      :visible.sync="showModalNow"
       :append-to-body="appendToBody"
     >
       <slot name="content" />
 
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <slot name="actions" />
       </span>
 
@@ -33,6 +36,22 @@ export default {
       type: Boolean,
       default: false
     }
-  }
+  },
+
+  computed: {
+    showModalNow: {
+      get () {
+        return this.showModal
+      },
+      set (value) {
+        this.$emit('action-modal', { show: value })
+      }
+    }
+  },
+
+  methods: {
+
+  },
 };
 </script>
+

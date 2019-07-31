@@ -1,5 +1,9 @@
 <template>
-  <BaseModal title="Registrar Servicios WMS" :show-modal="showModalAddWMSService">
+  <BaseModal
+    title="Registrar Servicios WMS"
+    :show-modal="showModalAddWMSService"
+    @action-modal="replaceShowModalAddWMSService"
+  >
     <template v-slot:content>
       <el-form
         ref="form"
@@ -12,20 +16,42 @@
         @submit.prevent="submitForm"
       >
         <!-- name -->
-        <el-form-item label="Nombres" prop="name">
-          <el-input v-model="form.name" type="text" autocomplete="off" />
+        <el-form-item
+          label="Nombres"
+          prop="name"
+        >
+          <el-input
+            v-model="form.name"
+            type="text"
+            autocomplete="off"
+          />
         </el-form-item>
         <!-- weburl -->
         <el-form-item label="URL">
-          <el-input v-model="form.webUrl" type="text" autocomplete="off" />
+          <el-input
+            v-model="form.webUrl"
+            type="text"
+            autocomplete="off"
+          />
         </el-form-item>
 
         <el-row :gutter="10">
-          <el-col :xs="24" :sm="12">
+          <el-col
+            :xs="24"
+            :sm="12"
+          >
             <!-- region -->
-            <el-form-item label="Autores" prop="author">
+            <el-form-item
+              label="Autores"
+              prop="author"
+            >
               <el-container>
-                <el-select v-model="form.authorId" value-key="id" filterable placeholder="Select">
+                <el-select
+                  v-model="form.authorId"
+                  value-key="id"
+                  filterable
+                  placeholder="Select"
+                >
                   <el-option
                     v-for="item in WMSAuthors"
                     :key="item.id"
@@ -33,17 +59,6 @@
                     :value="item"
                   ></el-option>
                 </el-select>
-
-                <!-- POPOUP -->
-                <!-- <BasePopover
-                  title="Agregar Author"
-                  placement="right"
-                  @on-change-zindex="onChangeZindex"
-                >
-                  <template v-slot:content>
-                    <PopoverAddWMSAuthor />
-                  </template>
-                <template v-slot:activate>-->
                 <el-button
                   icon="el-icon-circle-plus"
                   circle
@@ -52,16 +67,25 @@
                   style="font-size: 1.7rem;"
                   @click="replaceShowModalAddWMSAuthor({ show:true })"
                 ></el-button>
-                <!-- </template>
-                </BasePopover>-->
               </el-container>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12">
+          <el-col
+            :xs="24"
+            :sm="12"
+          >
             <!-- porvincia -->
-            <el-form-item label="Categorías" prop="Categories">
+            <el-form-item
+              label="Categorías"
+              prop="Categories"
+            >
               <el-container>
-                <el-select v-model="form.categoryId" value-key="id" filterable placeholder="Select">
+                <el-select
+                  v-model="form.categoryId"
+                  value-key="id"
+                  filterable
+                  placeholder="Select"
+                >
                   <el-option
                     v-for="item in WMSCategories"
                     :key="item.id"
@@ -69,34 +93,29 @@
                     :value="item"
                   ></el-option>
                 </el-select>
-                <!-- POPOUP -->
-                <!-- <BasePopover
-                  title="Agregar Categoría"
-                  placement="left"
-                  @on-change-zindex="onChangeZindex"
-                >
-                  <template v-slot:content>
-                    <PopoverAddWMSCategory />
-                  </template>
-                  <template v-slot:activate> -->
-                    <el-button
-                      icon="el-icon-circle-plus"
-                      circle
-                      type="text"
-                      class="pa-0 pl-1 ma-0"
-                      style="font-size: 1.7rem;"
-                      @click="replaceShowModalAddWMSCategory({ show: true })"
-                    ></el-button>
-                  <!-- </template>
-                </BasePopover> -->
+                <el-button
+                  icon="el-icon-circle-plus"
+                  circle
+                  type="text"
+                  class="pa-0 pl-1 ma-0"
+                  style="font-size: 1.7rem;"
+                  @click="replaceShowModalAddWMSCategory({ show: true })"
+                ></el-button>
               </el-container>
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-row :gutter="10" align="bottom" justify="center">
+        <el-row
+          :gutter="10"
+          align="bottom"
+          justify="center"
+        >
           <el-col :md="12">
-            <el-form-item label="Descripción" prop="description">
+            <el-form-item
+              label="Descripción"
+              prop="description"
+            >
               <el-input
                 v-model="form.description"
                 type="textarea"
@@ -109,7 +128,10 @@
           </el-col>
           <el-col :md="12">
             <!-- image -->
-            <el-form-item label="Imagen de Servicio" class="text-xs-center">
+            <el-form-item
+              label="Imagen de Servicio"
+              class="text-xs-center"
+            >
               <el-upload
                 class="avatar-uploader"
                 action
@@ -118,8 +140,15 @@
                 name="image"
                 :before-upload="beforeAvatarUpload"
               >
-                <img v-if="imageSelected" :src="imageSelected" class="avatar" />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                <img
+                  v-if="imageSelected"
+                  :src="imageSelected"
+                  class="avatar"
+                />
+                <i
+                  v-else
+                  class="el-icon-plus avatar-uploader-icon"
+                ></i>
               </el-upload>
             </el-form-item>
           </el-col>
@@ -128,11 +157,15 @@
     </template>
     <template v-slot:actions>
       <el-button @click="replaceShowModalAddWMSService({ show: false })">Cancel</el-button>
-      <el-button type="primary" native-type="submit" @click.prevent="submitForm">Confirm</el-button>
+      <el-button
+        type="primary"
+        native-type="submit"
+        @click.prevent="submitForm"
+      >Confirm</el-button>
     </template>
     <template v-slot:modals>
-      <PopoverAddWMSAuthor />
-      <PopoverAddWMSCategory />
+      <ModalAddWMSAuthor />
+      <ModalAddWMSCategory />
     </template>
   </BaseModal>
 </template>
@@ -141,17 +174,17 @@ import { mapState, mapActions } from "vuex";
 
 import BaseModal from "@/components/base/BaseModal.vue";
 import BasePopover from "@/components/base/BasePopover.vue";
-import PopoverAddWMSAuthor from "@/components/WMSServices/PopoverAddWMSAuthor.vue";
-import PopoverAddWMSCategory from "@/components/WMSServices/PopoverAddWMSCategory.vue";
+import ModalAddWMSAuthor from "@/components/WMSServices/ModalAddWMSAuthor.vue";
+import ModalAddWMSCategory from "@/components/WMSServices/ModalAddWMSCategory.vue";
 export default {
   components: {
     BaseModal,
     BasePopover,
-    PopoverAddWMSAuthor,
-    PopoverAddWMSCategory
+    ModalAddWMSAuthor,
+    ModalAddWMSCategory
   },
 
-  data() {
+  data () {
     return {
       imageSelected: "",
       form: {
@@ -173,7 +206,7 @@ export default {
   },
 
   watch: {
-    showModalAddWMSService: function(newState, oldState) {
+    showModalAddWMSService: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         return false;
@@ -195,10 +228,10 @@ export default {
     }),
 
     showModalAddWMSService: {
-      get() {
+      get () {
         return this.$store.state.modalsWMSServices.showModalAddWMSService;
       },
-      set(value) {
+      set (value) {
         this.replaceShowModalAddWMSService({ show: value });
       }
     }
@@ -217,11 +250,11 @@ export default {
         "modalsWMSServices/replaceShowModalAddWMSCategory"
     }),
 
-    onChangeZindex(val) {
+    onChangeZindex (val) {
       // console.log(val, "val");
     },
 
-    submitForm() {
+    submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.createWMSService().then(response => {
@@ -236,7 +269,7 @@ export default {
       });
     },
 
-    createWMSService() {
+    createWMSService () {
       const formData = new FormData();
 
       let keys = Object.keys(this.form);
@@ -256,12 +289,12 @@ export default {
       });
     },
 
-    launchUploadAvatar(option) {
+    launchUploadAvatar (option) {
       this.imageSelected = URL.createObjectURL(option.file);
       this.form.image = option.file;
     },
 
-    beforeAvatarUpload(file) {
+    beforeAvatarUpload (file) {
       const isJPG = file.type === "image/png" || file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -274,7 +307,7 @@ export default {
       return isJPG && isLt2M;
     },
 
-    onchangeRegions(region) {
+    onchangeRegions (region) {
       const params = {
         id: region.id
       };
@@ -286,7 +319,7 @@ export default {
       this.getProvinces({ params });
     },
 
-    onchangeProvinces(province) {
+    onchangeProvinces (province) {
       const params = {
         id: province.id
       };
