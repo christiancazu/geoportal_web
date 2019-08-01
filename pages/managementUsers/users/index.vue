@@ -1,18 +1,14 @@
 <template>
-  <div class="ma-3">
-    <el-card shadow="always">
-      <div
-        class="space-between"
-        slot="header"
-      >
-        <p class="mt-1 mb-0 font-weight-bold">Usuarios</p>
-        <el-button
-          size="mini"
-          type="primary"
-          icon="el-icon-plus"
-          @click="replaceShowModalAddUser({ show: true })"
-        >Nuevo Usuario</el-button>
-      </div>
+  <BasePage title="Usuarios">
+    <template v-slot:itemsActions>
+      <el-button
+        size="mini"
+        type="primary"
+        icon="el-icon-plus"
+        @click="replaceShowModalAddUser({ show: true })"
+      >Nuevo Usuario</el-button>
+    </template>
+    <template v-slot:content>
       <el-container direction="vertical">
         <el-row
           type="flex"
@@ -34,8 +30,6 @@
             </div>
           </el-col>
         </el-row>
-      </el-container>
-      <el-container>
         <el-table
           :data="users.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%"
@@ -79,23 +73,24 @@
           </el-table-column>
         </el-table>
       </el-container>
-    </el-card>
-
-    <ModalAddUser />
-    <ModalEditUser />
-    <ModalDeleteUser />
-  </div>
-
+    </template>
+    <template v-slot:modals>
+      <ModalAddUser />
+      <ModalEditUser />
+      <ModalDeleteUser />
+    </template>
+  </BasePage>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-
+import BasePage from '@/components/base/BasePage.vue'
 import ModalAddUser from '@/components/users/ModalAddUser.vue'
 import ModalEditUser from '@/components/users/ModalEditUser.vue'
 import ModalDeleteUser from '@/components/users/ModalDeleteUser.vue'
 export default {
   components: {
+    BasePage,
     ModalAddUser,
     ModalEditUser,
     ModalDeleteUser
