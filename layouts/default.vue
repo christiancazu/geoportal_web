@@ -3,16 +3,15 @@
     id="app"
     style="height:100vh;"
   >
-    <el-container
-      direction="vertical"
-      style="min-height:100%"
-    >
-      <el-container>
-        <SideBar v-if="loggedIn" />
-        <el-main class="pa-0">
-          <nuxt />
-        </el-main>
-      </el-container>
+    <!-- <el-container>
+      <SideBar v-if="loggedIn" />
+      <el-main>Principal</el-main>
+    </el-container> -->
+    <el-container style="min-height:100%">
+      <SideBar v-if="loggedIn" />
+      <el-main class="pa-0">
+        <nuxt />
+      </el-main>
     </el-container>
   </div>
 </template>
@@ -25,7 +24,12 @@ export default {
   },
 
   data () {
-    return {};
+    return {
+      data: {
+        width: 0,
+        height: 0
+      }
+    };
   },
 
   computed: {
@@ -33,13 +37,24 @@ export default {
       loggedIn: state => state.auth.loggedIn
     }),
 
-    isGeovisor: function () {
-      const name = this.$route.name
-      return name === 'geovisor' || name === "index"
+    innerWidth: function () {
+      return this.data
     }
+  },
+  mounted () {
+    window.addEventListener('resize', this.handleResize)
+    this.handleResize();
   },
 
   created () {
+
+  },
+
+  methods: {
+    handleResize () {
+      let width = window.innerWidth;
+      this.data.height = window.innerHeight;
+    }
   }
 };
 </script>

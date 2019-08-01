@@ -4,6 +4,7 @@
     class="el-menu-vertical-demo"
     :router="true"
     :collapse="isCollapse"
+    style="height:100%"
   >
     <el-menu-item>
       <img
@@ -18,33 +19,34 @@
       index="1"
       :route="{ path: '/profile' }"
     >
-      <i class="el-icon-user-solid" />
+      <i class="fas fa-user"></i>
       <span>Perfil</span>
     </el-menu-item>
-    <el-submenu index="2">
-      <div slot="title">
-        <i class="material-icons">
-          supervised_user_circle
-        </i>
-        <span slot="title">Gestión de usuarios</span>
-      </div>
-      <el-menu-item
-        :route="{ path: '/managementUsers/users' }"
-        index="2-1"
-      >
-        usuarios
-      </el-menu-item>
-      <el-menu-item
-        index="2-2"
-        :route="{ path: '/managementUsers/pendingUsers' }"
-      >
-        Usuarios pendientes
-      </el-menu-item>
-    </el-submenu>
+    <transition name="el-zoom-in-top">
+
+      <el-submenu index="2">
+        <template slot="title">
+          <i class="fas fa-users"></i><span slot="title">Gestión de usuarios</span>
+        </template>
+        <el-menu-item
+          :route="{ path: '/managementUsers/users' }"
+          index="2-1"
+        >
+          usuarios
+        </el-menu-item>
+        <el-menu-item
+          index="2-2"
+          :route="{ path: '/managementUsers/pendingUsers' }"
+        >
+          Usuarios pendientes
+        </el-menu-item>
+
+      </el-submenu>
+    </transition>
+
     <el-submenu index="3">
       <div slot="title">
-        <i class="material-icons">layers</i>
-        <span slot="title">Gestión de Capas</span>
+        <i class="fas fa-layer-group"></i><span slot="title">Gestión de Capas</span>
       </div>
       <el-menu-item
         :route="{ path: '/managementLayers/baseMap' }"
@@ -67,10 +69,7 @@
     </el-submenu>
     <el-submenu index="4">
       <div slot="title">
-        <i class="material-icons">
-          streetview
-        </i>
-        <span slot="title">Gestión de Datos</span>
+        <i class="fas fa-database"></i><span slot="title">Gestión de Datos</span>
       </div>
       <el-menu-item
         :route="{ path: '/managementLayers/layers' }"
@@ -90,45 +89,23 @@
       :active="false"
       :route="{ path: '/WMSServices' }"
     >
-      <i class="el-icon-map-location">
-
-      </i>
-      <span>Servicios</span>
+      <i class="fas fa-users-cog"></i><span>Servicios</span>
     </el-menu-item>
     <el-menu-item
       @click="replaceShowPanelGeovisor({ show: true })"
       :route="{ path: '/geovisor' }"
       index="5"
     >
-      <i class="material-icons">
-        public
-      </i>
-      <span>Geoportal</span>
-    </el-menu-item>
-    <el-menu-item
-      index="6"
-      :route="{ path: '/report' }"
-    >
-      <i class="material-icons">
-        info
-      </i>
-      <span>Reportar</span>
+      <i class="fas fa-globe"></i><span>Geoportal</span>
     </el-menu-item>
     <el-menu-item
       index="7"
       :active="false"
       @click="$auth.logout()"
       :route="{ path: '/' }"
-    >
-      <i class="material-icons">
-        power_settings_new
-      </i>
-      <span>Cerrar Sesión</span>
+    ><i class="fas fa-power-off"></i><span>Cerrar Sesión</span>
     </el-menu-item>
-    <el-menu-item
-      @click="isCollapse = !isCollapse"
-      class="menu-item-absoluted-b"
-    >
+    <el-menu-item @click="isCollapse = !isCollapse">
       <i
         v-if="isCollapse"
         class="el-icon-d-arrow-right"
@@ -166,3 +143,9 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
+</style>

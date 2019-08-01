@@ -1,11 +1,3 @@
-.el-aside {
-  height: 100vh !important;
-  overflow: hidden;
-  &__adjust-width {
-    max-width: -moz-fit-content;
-    max-width: -webkit-fit-content;
-  }
-}
 
 .theme-purple-pink {
   background: linear-gradient(to right, rgb(195, 20, 50), rgb(36, 11, 54));
