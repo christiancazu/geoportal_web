@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    default-active="1"
+    :default-active="$route.path"
     class="el-menu-vertical-demo"
     :router="true"
     :collapse="isCollapse"
@@ -16,7 +16,7 @@
     </el-menu-item>
     <el-divider />
     <el-menu-item
-      index="1"
+      index="/profile"
       :route="{ path: '/profile' }"
     >
       <i class="fas fa-user"></i>
@@ -24,18 +24,18 @@
     </el-menu-item>
     <transition name="el-zoom-in-top">
 
-      <el-submenu index="2">
+      <el-submenu index="" :class="{ 'is-active': managementUser }">
         <template slot="title">
           <i class="fas fa-users"></i><span slot="title">Gestión de usuarios</span>
         </template>
         <el-menu-item
           :route="{ path: '/managementUsers/users' }"
-          index="2-1"
+          index="/managementUsers/users"
         >
           usuarios
         </el-menu-item>
         <el-menu-item
-          index="2-2"
+          index="/managementUsers/pendingUsers"
           :route="{ path: '/managementUsers/pendingUsers' }"
         >
           Usuarios pendientes
@@ -50,51 +50,50 @@
       </div>
       <el-menu-item
         :route="{ path: '/managementLayers/baseMap' }"
-        index="3-1"
+        index="/managementLayers/baseMap"
       >
         Mapas Base
       </el-menu-item>
       <el-menu-item
         :route="{ path: '/managementLayers/layers' }"
-        index="3-1"
+        index="/managementLayers/layers"
       >
         Capas
       </el-menu-item>
       <el-menu-item
-        index="3-2"
+        index="/managementLayers/pendingLayers"
         :route="{ path: '/managementLayers/pendingLayers' }"
       >
         Capas pendientes
       </el-menu-item>
     </el-submenu>
-    <el-submenu index="4">
+    <el-submenu  index="4">
       <div slot="title">
         <i class="fas fa-database"></i><span slot="title">Gestión de Datos</span>
       </div>
       <el-menu-item
         :route="{ path: '/managementLayers/layers' }"
-        index="3-1"
+        index="/managementLayers/layers"
       >
         Copias de Seguridad
       </el-menu-item>
       <el-menu-item
-        index="3-2"
+        index="/managementLayers/pendingLayers"
         :route="{ path: '/managementLayers/pendingLayers' }"
       >
         Crear Copia de Seguridad
       </el-menu-item>
     </el-submenu>
     <el-menu-item
-      index="4"
+      index="/WMSServices"
       :active="false"
       :route="{ path: '/WMSServices' }"
     >
       <i class="fas fa-users-cog"></i><span>Servicios</span>
     </el-menu-item>
     <el-menu-item
-      @click="replaceShowPanelGeovisor({ show: true })"
       :route="{ path: '/geovisor' }"
-      index="5"
+      index="/geovisor"
     >
       <i class="fas fa-globe"></i><span>Geoportal</span>
     </el-menu-item>
@@ -133,7 +132,10 @@ export default {
   computed: {
     ...mapState({
       user: state => state.auth.user,
-    })
+    }),
+    managementUser: function() {
+      return this.$route.name === 'managementUsers-users' || this.$route.name === 'managementUsers-pendingUsers'
+    }
   },
 
   methods: {
