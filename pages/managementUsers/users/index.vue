@@ -90,6 +90,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+
 import ModalAddUser from '@/components/users/ModalAddUser.vue'
 import ModalEditUser from '@/components/users/ModalEditUser.vue'
 import ModalDeleteUser from '@/components/users/ModalDeleteUser.vue'
