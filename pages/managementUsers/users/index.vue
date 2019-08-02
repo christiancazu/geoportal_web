@@ -48,8 +48,16 @@
           />
           <el-table-column
             label="Rol"
-            prop="userType.name"
-          />
+            prop="tag"
+          >
+            <template slot-scope="scope">
+              <el-tag
+                type="primary"
+                disable-transitions
+              >{{scope.row.userType.id === 'AD' ? 'Admin': 'Usuario' }}
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             label="Actions"
             align="center"
@@ -72,6 +80,14 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination
+          small
+          background
+          layout="prev, pager, next"
+          :total="50"
+          @current-change="current_change"
+        >
+        </el-pagination>
       </el-container>
     </template>
     <template v-slot:modals>
@@ -98,6 +114,8 @@ export default {
   data () {
     return {
       search: '',
+      pagesize: 10,
+      currentPage: 1,
       tableData: [{
         date: '2016-05-02',
         name: 'Tom',
@@ -123,7 +141,11 @@ export default {
     ...mapState({
       showModalAddUser: state => state.modals.showModalAddUser,
       users: state => state.users.users
-    })
+    }),
+
+    user2: function () {
+      return this.$store.state.users.users
+    }
   },
   mounted () {
     this.getUsers()
@@ -149,7 +171,11 @@ export default {
     handleDelete (index, row) {
       this.replaceShowModalDeleteUser({ show: true })
       console.log(index, row)
-    }
+    },
+
+    current_change: function (currentPage) {
+      this.currentPage = currentPage;
+    },
   }
 }
 </script>

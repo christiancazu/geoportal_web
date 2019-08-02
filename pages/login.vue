@@ -1,6 +1,6 @@
 <template>
   <div
-    class="theme-purple-pink"
+    class="theme-purple-pink p-4"
     style="height: 100%"
   >
     <el-container
