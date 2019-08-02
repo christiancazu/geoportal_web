@@ -1,5 +1,5 @@
 <template>
-  <BasePage title=" Servicios Externos WMS ">
+  <BasePage title="Servicios Externos WMS">
     <template v-slot:itemsActions>
       <el-button
         size="mini"
@@ -93,7 +93,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-
 import BasePage from '@/components/base/BasePage.vue'
 import ModalAddWMSService from '@/components/WMSServices/ModalAddWMSService.vue'
 export default {

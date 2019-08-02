@@ -5,6 +5,7 @@
       center
       :visible.sync="showModalNow"
       :append-to-body="appendToBody"
+      :width="$breakpoint.xs ? '100%' : '50%'"
     >
       <slot name="content" />
 
@@ -47,6 +48,10 @@ export default {
         this.$emit('action-modal', { show: value })
       }
     }
+  },
+
+  mounted() {
+    console.log(this.$break)
   },
 
   methods: {

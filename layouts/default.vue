@@ -16,7 +16,7 @@
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import SideBar from "@/components/SideBar.vue";
 export default {
   components: {
@@ -25,10 +25,6 @@ export default {
 
   data () {
     return {
-      data: {
-        width: 0,
-        height: 0
-      }
     };
   },
 
@@ -36,10 +32,6 @@ export default {
     ...mapState({
       loggedIn: state => state.auth.loggedIn
     }),
-
-    innerWidth: function () {
-      return this.data
-    }
   },
   mounted () {
     window.addEventListener('resize', this.handleResize)
@@ -47,13 +39,17 @@ export default {
   },
 
   created () {
-    console.log(this.$route)
   },
 
   methods: {
+    ...mapActions({
+      replaceBreakpoints: 'modalsManagementUser/replaceBreakpoints'
+    }),
     handleResize () {
-      let width = window.innerWidth;
-      this.data.height = window.innerHeight;
+      let width = window.innerWidth
+      let height = window.innerHeight
+      let data = this.$breakpoint(width, height)
+      // this.replaceBreakpoints({ data })
     }
   }
 };

@@ -5,6 +5,7 @@
     :router="true"
     :collapse="isCollapse"
     style="height:100%"
+    unique-opened
   >
     <el-menu-item>
       <img
@@ -12,7 +13,11 @@
         alt=""
         style="height:35px;"
       >
-      <span class="font-weight-bold">{{ user.name }} <em style="font-size:12px; font-weight: 200;"> (Admin) </em></span>
+      <span class="font-weight-bold">{{ user.name }}
+        <el-badge
+          class="mark"
+          :value="user.userType.id === 'AD' ? 'ADMIN' : ''"
+        /></span>
     </el-menu-item>
     <el-divider />
     <el-menu-item
@@ -24,7 +29,11 @@
     </el-menu-item>
     <transition name="el-zoom-in-top">
 
-      <el-submenu index="" :class="{ 'is-active': managementUser }">
+      <el-submenu
+        index="2"
+        active-text-color="#7f5ae7"
+        activeTextColor="#7f5ae7"
+      >
         <template slot="title">
           <i class="fas fa-users"></i><span slot="title">Gestión de usuarios</span>
         </template>
@@ -32,7 +41,7 @@
           :route="{ path: '/managementUsers/users' }"
           index="/managementUsers/users"
         >
-          usuarios
+          Usuarios
         </el-menu-item>
         <el-menu-item
           index="/managementUsers/pendingUsers"
@@ -67,21 +76,15 @@
         Capas pendientes
       </el-menu-item>
     </el-submenu>
-    <el-submenu  index="4">
+    <el-submenu index="4">
       <div slot="title">
         <i class="fas fa-database"></i><span slot="title">Gestión de Datos</span>
       </div>
       <el-menu-item
-        :route="{ path: '/managementLayers/layers' }"
-        index="/managementLayers/layers"
+        :route="{ path: '/managementData/backups' }"
+        index="/managementData/backups"
       >
         Copias de Seguridad
-      </el-menu-item>
-      <el-menu-item
-        index="/managementLayers/pendingLayers"
-        :route="{ path: '/managementLayers/pendingLayers' }"
-      >
-        Crear Copia de Seguridad
       </el-menu-item>
     </el-submenu>
     <el-menu-item
@@ -104,6 +107,7 @@
       :route="{ path: '/' }"
     ><i class="fas fa-power-off"></i><span>Cerrar Sesión</span>
     </el-menu-item>
+    <el-divider />
     <el-menu-item @click="isCollapse = !isCollapse">
       <i
         v-if="isCollapse"
@@ -132,10 +136,11 @@ export default {
   computed: {
     ...mapState({
       user: state => state.auth.user,
-    }),
-    managementUser: function() {
-      return this.$route.name === 'managementUsers-users' || this.$route.name === 'managementUsers-pendingUsers'
-    }
+    })
+  },
+
+  mounted () {
+    console.log(this)
   },
 
   methods: {

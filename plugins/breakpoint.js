@@ -1,7 +1,6 @@
 import Vue from 'vue'
-
+const data = {}
 Vue.prototype.$breakpoint = (width, height) => {
-    const data = {}
     data.xs = width < 600
     data.sm = width > 600 && width < 960 
     data.md = width > 960 && width < 1264
@@ -11,3 +10,5 @@ Vue.prototype.$breakpoint = (width, height) => {
     data.width = height
     return data
 }
+
+Vue.prototype.break = data
