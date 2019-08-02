@@ -67,12 +67,6 @@ export default {
       callback: '/login',
       home: '/geovisor'
     },
-    refresh_token: {
-      prefix: '_refresh_token.',
-      options: {
-
-      }
-    },
     strategies: {
       local: {
         endpoints: {
@@ -96,7 +90,7 @@ export default {
   },
 
   router: {
-    middleware: ['auth']
+    // middleware: ['auth']
   },
 
   toast: {

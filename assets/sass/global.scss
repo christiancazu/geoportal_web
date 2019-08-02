@@ -100,7 +100,14 @@ label {
   vertical-align: middle;
 }
 
-//el menu item 
+//el menu item
 .el-submenu .el-menu-item {
   padding-left: 3.3rem !important;
+}
+
+.el-dialog__header {
+  padding-bottom: 15px !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  padding-top: 15px !important;
 }

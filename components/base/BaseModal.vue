@@ -1,23 +1,18 @@
 <template>
   <div>
     <el-dialog
+      class="testtttt"
       :title="title"
-      center
       :visible.sync="showModalNow"
       :append-to-body="appendToBody"
-      :width="$breakpoint.xs ? '100%' : '50%'"
     >
       <slot name="content" />
 
-      <span
-        slot="footer"
-        class="dialog-footer"
-      >
+      <template slot="footer">
         <slot name="actions" />
-      </span>
+      </template>
 
       <slot name="modals" />
-
     </el-dialog>
   </div>
 </template>
@@ -41,22 +36,30 @@ export default {
 
   computed: {
     showModalNow: {
-      get () {
-        return this.showModal
+      get() {
+        return this.showModal;
       },
-      set (value) {
-        this.$emit('action-modal', { show: value })
+      set(value) {
+        this.$emit("action-modal", { show: value });
       }
     }
   },
 
   mounted() {
-    console.log(this.$break)
+    console.log(this.$break);
   },
 
-  methods: {
-
-  },
+  methods: {}
 };
 </script>
-
+<style lang="scss">
+$color-danger: #ff3547;
+$color-success: #00c851;
+$color-info: #33b5e5;
+.danger {
+  background: $color-danger;
+}
+.info {
+  background: $color-info;
+}
+</style>

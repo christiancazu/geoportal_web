@@ -7,7 +7,7 @@
     style="height:100%"
     unique-opened
   >
-    <el-menu-item>
+    <el-menu-item v-if="user">
       <img
         src="/image/default_avatar.png"
         alt=""
