@@ -90,7 +90,7 @@ export default {
   },
 
   router: {
-    // middleware: ['auth']
+    middleware: ['auth']
   },
 
   toast: {
@@ -104,5 +104,4 @@ export default {
       }
     }
   }
-
 }

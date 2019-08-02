@@ -8,8 +8,8 @@
       <el-main>Principal</el-main>
     </el-container> -->
     <el-container style="min-height:100%">
-      <!-- <SideBar v-if="loggedIn" /> -->
-      <SideBar />
+      <SideBar v-if="loggedIn" />
+      <!-- <SideBar /> -->
       <el-main class="pa-0">
         <nuxt />
       </el-main>
@@ -50,7 +50,7 @@ export default {
       let width = window.innerWidth
       let height = window.innerHeight
       let data = this.$breakpoint(width, height)
-      console.log(data, 'data')
+      // console.log(data, 'data')
       // this.replaceBreakpoints({ data })
     }
   }

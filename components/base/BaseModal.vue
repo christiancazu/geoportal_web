@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-dialog
-      class="testtttt"
       :title="title"
       :visible.sync="showModalNow"
       :append-to-body="appendToBody"
+      top="2vh"
     >
       <slot name="content" />
 
