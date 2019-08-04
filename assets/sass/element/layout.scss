@@ -1,18 +1,6 @@
-.el-aside {
-  height: 100vh !important;
-  overflow: hidden;
-  &__adjust-width {
-    max-width: -moz-fit-content;
-    max-width: -webkit-fit-content;
-  }
-}
 
 .theme-purple-pink {
   background: #64001D;
-}
-
-.el-header {
-  padding: 0px 0px;
 }
 
 .adjust-popper {
@@ -38,32 +26,11 @@
   border: none !important;
 }
 
-.container {
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
+.mark {
+  padding: 0px !important;
+  background-color:  transparent !important;
 }
-@media (min-width: 768px) {
-  .container {
-    width: 750px;
-  }
-}
-@media (min-width: 992px) {
-  .container {
-    width: 970px;
-  }
-}
-@media (min-width: 1200px) {
-  .container {
-    width: 1170px;
-  }
-}
-.container-fluid {
-  display: block;
-  flex: 1;
-  flex-basis: auto;
-  overflow: auto;
-  box-sizing: border-box;
-  padding: 20px;
+
+button:focus {
+  outline: 0px !important;
 }

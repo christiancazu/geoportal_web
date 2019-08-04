@@ -1,3 +1,4 @@
+
 html {
   min-height: 100%;
   box-sizing: border-box;
@@ -36,7 +37,7 @@ label {
   display: flex;
   justify-content: space-between;
 }
- 
+
 .border-none {
   border: none !important;
 }
@@ -88,4 +89,25 @@ label {
     width: 55px;
     text-align: right;
   }
+}
+
+.fas {
+  font-size: 18px !important;
+  margin-right: 5px;
+  width: 24px;
+  text-align: center;
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+//el menu item
+.el-submenu .el-menu-item {
+  padding-left: 3.3rem !important;
+}
+
+.el-dialog__header {
+  padding-bottom: 15px !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+  padding-top: 15px !important;
 }

@@ -1,67 +1,58 @@
 <template>
-  <div class="theme-purple-pink" style="height: 100%">
+  <div
+    class="theme-purple-pink p-4"
+    style="height: 100%"
+  >
     <el-container
       class="container-fluid"
       style="justify-content: center"
     >
-      <el-card
-        shadow="always"
-        :body-style="{ padding:'0px' }"
-      >
-        <el-card
-          shadow="never"
-          class="border-none"
-        >
-          <div slot="header">
-            <label>Iniciar Sesión</label>
-          </div>
-          <div>
-            <el-form
-              ref="formLogin"
-              label-position="top"
-              status-icon
-              :model="form"
-              :rules="rules"
-              label-width="120px"
-              class="demo-ruleForm"
-              @submit.native.prevent="submitForm"
+      <el-card shadow="always">
+        <div class="text-xs-center" slot="header">
+          <label>Iniciar Sesión</label>
+        </div>
+        <div>
+          <el-form
+            ref="formLogin"
+            label-position="top"
+            status-icon
+            :model="form"
+            :rules="rules"
+            label-width="120px"
+            class="demo-ruleForm"
+            @submit.native.prevent="submitForm"
+          >
+            <el-form-item
+              prop="email"
+              label="Nombre de Usuario"
+              :rules="rules.email"
             >
-              <el-form-item
-                prop="email"
-                label="Nombre de Usuario"
-                :rules="rules.email"
+              <el-input
+                v-model="form.email"
+                type="text"
+              />
+            </el-form-item>
+            <el-form-item
+              label="Contraseña"
+              prop="password"
+            >
+              <el-input
+                v-model="form.password"
+                type="password"
+                autocomplete="off"
+                :rules="rules.password"
+              />
+            </el-form-item>
+            <el-form-item class="text-xs-center mb-0">
+              <el-button
+                type="primary"
+                native-type="submit"
+                @click.prevent="submitForm"
               >
-                <el-input
-                  v-model="form.email"
-                  type="text"
-                />
-              </el-form-item>
-              <el-form-item
-                label="Contraseña"
-                prop="password"
-              >
-                <el-input
-                  v-model="form.password"
-                  type="password"
-                  autocomplete="off"
-                  :rules="rules.password"
-                />
-              </el-form-item>
-              <el-form-item class="text-xs-center mb-0">
-                <el-button
-                  type="primary"
-                  native-type="submit"
-                  @click.prevent="submitForm"
-                >
-                  Ingresar
-                </el-button>
-              </el-form-item>
-            </el-form>
-          </div>
-        </el-card>
-        <el-divider style="margin: 0px;" />
-        <div class="label-text pa-3">¿No tienes cuenta?
-          <nuxt-link to="/register">Registrate</nuxt-link>
+                Ingresar
+              </el-button>
+            </el-form-item>
+          </el-form>
         </div>
       </el-card>
     </el-container>

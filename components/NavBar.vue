@@ -1,62 +1,96 @@
 <template>
-  <el-container
-    direction="horizontal"
-    class="container pt-1"
-    style="justify-content: space-between;"
-  >
-    <div
-      class="hover-remove mt-1"
-      @click="$router.push('/')"
-    >
-      <img
-        class="el-menu-item"
-        src="/image/unat_blanco.png"
-        style="max-height:100%;"
-        alt=""
+  <nav id="nav-fixed" class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark text-mayus">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <div @click="$router.push('/')">
+          <img class="el-menu-item px-0" src="/image/unat_blanco.png" style="max-height:100%;" alt />
+        </div>
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
       >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto text-xs-center">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Nosotros</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Smart Enviroment</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="#">Contacto</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="#">Iniciar Sesión</a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <el-menu
-      class="el-menu-demo hover-remove"
-      mode="horizontal"
-      menu-trigger="click"
-      :router="true"
-      style="z-index:1; float: right;"
-      backgroundColor="transparent"
-    >
-      <el-menu-item>
-        <template slot="title">Quienes somos</template>
-      </el-menu-item>
-      <el-menu-item>
-        <template slot="title">Componentes</template>
-      </el-menu-item>
-      <el-menu-item active-text-color="#ffffff">
-        <template slot="title">Contacto</template>
-      </el-menu-item>
-      <el-menu-item
-        index="4"
-        active-text-color="#ffffff"
-        :route="{ path: 'login' }"
-      >
-        <template slot="title">Iniciar Sesión</template>
-      </el-menu-item>
-      <!-- <el-menu-item active-text-color="#ffffff">
-        <template slot="title">Registrarse</template>
-      </el-menu-item> -->
-    </el-menu>
-  </el-container>
+  </nav>
 </template>
 <script>
+// import Logo from '@/components/Logo'
+
 export default {
-  data () {
+  components: {
+    // Logo
+  },
+
+  data() {
     return {
-      activeIndex: "1",
-      activeIndex2: "1"
+      activeIndex: "/hello",
+      isActive: false
     };
   },
+
+  mounted() {
+    if (window.scrollY > 100) {
+        $("#nav-fixed").addClass("opaque");
+      }
+    $("#navbarSupportedContent").on("shown.bs.collapse	", function(e) {
+      $("#nav-fixed").addClass("bg-mobile");
+      $("#navbarSupportedContent").addClass("bg-black");
+    });
+
+    $("#navbarSupportedContent").on("hide.bs.collapse", function(e) {
+      $("#nav-fixed").removeClass("bg-mobile");
+      $("#navbarSupportedContent").removeClass("bg-black");
+    });
+
+    /* ========================================================== */
+    /*   Navigation Background Color                              */
+    /* ========================================================== */
+
+    $(window).on("scroll", function(e) {
+      if ($(this).scrollTop() > 100) {
+        $("#nav-fixed").addClass("opaque");
+      } else {
+        $("#nav-fixed").removeClass("opaque");
+      }
+    });
+  },
   methods: {
-    handleSelect (key, keyPath) {
+    handleSelect(key, keyPath) {
       console.log(key, keyPath);
+    },
+    select: function() {
+      this.isActive = !this.isActive;
+
+      const element = document.querySelector(".el-header");
+      element.style.display = "block";
+      console.log(element, this.isActive);
     }
   }
 };
 </script>
+<style lang="">
+</style>

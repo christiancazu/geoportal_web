@@ -1,12 +1,6 @@
 <template>
-  <div class="background-neutro">
-    <el-aside
-      width=""
-      class="el-aside__adjust-width"
-    >
-      <MenuGeoportal v-if="showPanelGeovisor" />
-      <MenuUser v-else />
-    </el-aside>
+  <div>
+    <MenuUser />
   </div>
 </template>
 
@@ -39,7 +33,7 @@ export default {
     })
   },
   methods: {
-    
+
   }
 }
 </script>

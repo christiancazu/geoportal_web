@@ -1,6 +1,6 @@
 <template>
-  <div class="ma-3">
-    <el-card shadow="always">
+  <div class="ma-4" :class="{'content-center': fitContent}" >
+    <el-card shadow="always" :class="{'fit-content': fitContent}">
       <div
         class="space-between"
         slot="header"
@@ -23,7 +23,17 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+
+    fitContent: {
+      type: Boolean,
+      default: false
     }
   }
 }
 </script>
+<style lang="scss">
+  .fit-content{
+    width: fit-content;
+  }
+</style>

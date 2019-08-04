@@ -7,6 +7,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
+  layout: 'geo',
   data () {
     return {
       map: null,
