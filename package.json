@@ -4,7 +4,7 @@
   "description": "veox_unat_geoportal_web",
   "main": "nuxt.config.js",
   "scripts": {
-    "dev": "nuxt --hostname 0.0.0.0 --port 9100"
+    "dev": "nuxt"
   },
   "repository": {
     "type": "git",

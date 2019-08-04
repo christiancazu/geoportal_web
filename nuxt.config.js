@@ -1,4 +1,5 @@
 export default {
+    // "dev": "nuxt --hostname 0.0.0.0 --port 9100"
   head: {
     title: process.env.npm_package_name || '',
     meta: [{
