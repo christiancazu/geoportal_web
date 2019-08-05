@@ -8,6 +8,13 @@ export const state = () => ({
   loadingUsers: false,
 })
 
+export const getters = {
+  isAdmin: (state, getters, rootState, rootGetters) => {
+    const user =  rootState.auth.user 
+    return user && user.userType.id === 'AD'
+  }
+}
+
 export const actions = {
   async getUsers ({ commit }, payload) {
     commit('REPLACE_LOADING_USERS', { loading: true })

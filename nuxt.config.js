@@ -1,5 +1,5 @@
 export default {
-    // "dev": "nuxt --hostname 0.0.0.0 --port 9100"
+  // "dev": "nuxt --hostname 0.0.0.0 --port 9100"
   head: {
     title: process.env.npm_package_name || '',
     meta: [{
@@ -18,7 +18,7 @@ export default {
     link: [{
       rel: 'stylesheet',
       href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
-    },{
+    }, {
       rel: 'stylesheet',
       href: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.css'
     },
@@ -28,9 +28,9 @@ export default {
     }],
     script: [{
       src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js'
-    },{
+    }, {
       src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'
-    },{
+    }, {
       src: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.js'
     },
     {
@@ -59,13 +59,13 @@ export default {
   modules: [
     '@nuxtjs/toast',
     '@nuxtjs/axios',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
   ],
 
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    //  baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.5:8000/geoportal/api/'
-    baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.130:8300/geoportal/api/'
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.102:8900/geoportal/api/'
+    //baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.130:8300/geoportal/api/'
   },
 
   auth: {
@@ -95,10 +95,11 @@ export default {
         },
       }
     },
+    plugins: ['~/plugins/auth.js']
   },
 
   router: {
-    middleware: ['auth']
+    middleware: ['auth', 'check']
   },
 
   toast: {

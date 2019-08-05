@@ -8,7 +8,10 @@
       style="justify-content: center"
     >
       <el-card shadow="always">
-        <div class="text-xs-center" slot="header">
+        <div
+          class="text-xs-center"
+          slot="header"
+        >
           <label>Iniciar Sesión</label>
         </div>
         <div>
@@ -60,6 +63,7 @@
 </template>
 
 <script>
+import { Promise } from 'q';
 export default {
 
   data () {
@@ -104,26 +108,42 @@ export default {
     async login () {
       this.processingForm = true
 
-      try {
-        this.$toast.info('Ingresando ...')
+      // try {
+      //   this.$toast.info('Ingresando ...')
 
-        await this.$auth.loginWith('local', {
+      //   await this.$auth.loginWith('local', {
+      //     data: {
+      //       username: this.form.email,
+      //       password: this.form.password
+      //     }
+      //   }).then(response => {
+      //     console.log('token', response)
+      //   })
+
+      //   this.$toast.success(`Bienvenido ${this.user.name}`)
+      //   this.$router.push('/geovisor')
+      // } catch (error) {
+      //   // this.$toast.error('Erlocalror al ingresar')
+      //   if (!error.response) return
+      //   this.error = error.response.data || null
+      // } finally {
+      //   this.processingForm = false
+      // }
+      new Promise((resolve, reject) => {
+        this.$auth.loginWith('local', {
           data: {
             username: this.form.email,
             password: this.form.password
           }
         })
+          .then(response => {
+            console.log('response', response)
+            resolve(response);
+          })
+          .catch(error => reject(error));
+      })
 
-        this.$toast.success(`Bienvenido ${this.user.name}`)
-        this.$router.push('/geovisor')
-      } catch (error) {
-        // this.$toast.error('Erlocalror al ingresar')
-        if (!error.response) return
-        this.error = error.response.data || null
-      } finally {
-        this.processingForm = false
-      }
-    }
+    },
   }
 
 }

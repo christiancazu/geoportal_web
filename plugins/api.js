@@ -1,3 +1,4 @@
+import refreshAPI from '~/api/refresh'
 import regionAPI from '~/api/region'
 import userAPI from '~/api/user'
 import layerAPI from '~/api/layer'
@@ -7,6 +8,7 @@ import WMSCategoryAPI from '~/api/WMSCategory'
 import WMSAuthorAPI from '~/api/WMSAuthor'
 
 export default (ctx, inject) => {
+  const refreshAPIWithAxios = refreshAPI(ctx.$axios)
   const regionAPIWithAxios = regionAPI(ctx.$axios)
   const userAPIWithAxios = userAPI(ctx.$axios)
   const layerAPIWithAxios = layerAPI(ctx.$axios)
@@ -15,6 +17,7 @@ export default (ctx, inject) => {
   const WMSCategoryWithAxios = WMSCategoryAPI(ctx.$axios)
   const WMSAuthorWithAxios = WMSAuthorAPI(ctx.$axios)
 
+  inject('refreshAPI', refreshAPIWithAxios)
   inject('regionAPI', regionAPIWithAxios)
   inject('userAPI', userAPIWithAxios)
   inject('layerAPI', layerAPIWithAxios)
