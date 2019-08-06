@@ -1,12 +1,6 @@
 import Vue from 'vue'
 
 Vue.prototype.$breakpoint = (width, height) => {
-    const data = {}
-    // window.addEventListener("resize", this.handleResize);
-
-
-    console.log('data',width, height)
-
     data.xs = width < 600
     data.sm = width > 600 && width < 960
     data.md = width > 960 && width < 1264

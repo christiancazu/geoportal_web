@@ -40,6 +40,14 @@
             </template>
           </el-table-column>
         </el-table>
+
+        <el-pagination
+          small
+          background
+          layout="prev, pager, next"
+          :total="50"
+          @current-change="current_change"
+        ></el-pagination>
       </el-container>
     </template>
   </BasePage>
@@ -58,6 +66,8 @@ export default {
   data() {
     return {
       search: "",
+      pagesize: 10,
+      currentPage: 1,
       tableData: [
         {
           date: "2016-05-02",
@@ -67,6 +77,36 @@ export default {
         {
           date: "2016-05-04",
           name: "John",
+          address: "No. 189, Grove St, Los Angeles"
+        },
+        {
+          date: "2016-05-04",
+          name: "John",
+          address: "No. 189, Grove St, Los Angeles"
+        },
+        {
+          date: "2016-05-04",
+          name: "Jony deep",
+          address: "No. 189, Grove St, Los Angeles"
+        },
+        {
+          date: "2016-05-01",
+          name: "Morgan",
+          address: "No. 189, Grove St, Los Angeles"
+        },
+        {
+          date: "2016-05-03",
+          name: "Jessy",
+          address: "No. 189, Grove St, Los Angeles"
+        },
+        {
+          date: "2016-05-01",
+          name: "Morgan",
+          address: "No. 189, Grove St, Los Angeles"
+        },
+        {
+          date: "2016-05-03",
+          name: "Jessy",
           address: "No. 189, Grove St, Los Angeles"
         },
         {
@@ -83,6 +123,28 @@ export default {
     };
   },
 
+  computed: {
+    dataDisplay: function(){
+      let search = this.search.toString().toLowerCase()
+      return this.tableData.filter(item => {
+        // checking description
+        if (item.date && item.date.toString().toLowerCase().includes(search)) {
+          return item
+        }
+
+        // checking hs no image
+        if (item.name && item.name.toString().toLowerCase().includes(search)) {
+          return item
+        }
+
+        // checking current tax rate
+        if (item.address && item.address.toString().toLowerCase().includes(search)) {
+          return item
+        }
+      })
+    }
+  },
+
   created() {
     console.log(this.$break);
   },
@@ -94,6 +156,47 @@ export default {
       replaceShowModalDeleteUser:
         "modalsManagementUser/replaceShowModalDeleteUser"
     }),
+
+    current_change: function (currentPage) {
+      this.currentPage = currentPage;
+    },
+
+    customsFilter (items, search, filter) {
+      search = search.toString().toLowerCase()
+      return items.filter(item => {
+        // checking description
+        if (item.description && item.description.toString().toLowerCase().includes(search)) {
+          return item
+        }
+
+        // checking hs no image
+        if (item.hs_no_image && item.hs_no_image.toString().toLowerCase().includes(search)) {
+          return item
+        }
+
+        // checking current tax rate
+        if (item.current_tax_rate && item.current_tax_rate.toString().toLowerCase().includes(search)) {
+          return item
+        }
+
+        // checking current note
+        if (item.current_note && item.current_note.toString().toLowerCase().includes(search)) {
+          return item
+        }
+
+        // checking tax uplift
+        if (item.tax_uplift && item.tax_uplift.toString().toLowerCase().includes(search)) {
+          return item
+        }
+
+        // checking updateDate
+        let updateDate = this.formatDate(item.tax_update_date)
+        if (updateDate && updateDate.toString().toLowerCase().includes(search)) {
+          return item
+        }
+      })
+    },
+
     acceptUser(item) {
       console.log(item);
     },
