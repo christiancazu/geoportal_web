@@ -1,11 +1,12 @@
 import Vue from 'vue'
-const data = {}
-Vue.prototype.$breakpoint = (width, height) => {
-    window.addEventListener("resize", (e) => {
 
-    });
-    data.w= window.innerWidth,
-    data.h= window.innerHeight,
+Vue.prototype.$breakpoint = (width, height) => {
+    const data = {}
+    // window.addEventListener("resize", this.handleResize);
+
+
+    console.log('data',width, height)
+
     data.xs = width < 600
     data.sm = width > 600 && width < 960
     data.md = width > 960 && width < 1264
@@ -13,7 +14,6 @@ Vue.prototype.$breakpoint = (width, height) => {
     data.xl = width > 1904
     data.height = width
     data.width = height
+
     return data
 }
-
-Vue.prototype.break = data

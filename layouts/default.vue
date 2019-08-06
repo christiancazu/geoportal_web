@@ -31,8 +31,8 @@ export default {
     })
   },
   mounted() {
-    window.addEventListener("resize", this.handleResize);
-    this.handleResize();
+    // window.addEventListener("resize", this.handleResize);
+    // this.handleResize();
   },
 
   created() {},
@@ -44,8 +44,8 @@ export default {
     handleResize() {
       let width = window.innerWidth;
       let height = window.innerHeight;
-      let data = this.$breakpoint(width, height);
-      // console.log(data, 'data')
+      // let data = this.$breakpoint(width, height);
+      // console.log(data, "data");
       // this.replaceBreakpoints({ data })
     }
   }

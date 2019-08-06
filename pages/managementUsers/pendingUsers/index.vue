@@ -22,12 +22,7 @@
           <el-table-column label="Name" prop="name" />
           <el-table-column label="Actions" align="center">
             <template slot-scope="scope">
-              <el-button
-                circle
-                icon="el-icon-view"
-                size="small"
-                type="info"
-              />
+              <el-button circle icon="el-icon-view" size="small" type="info" />
               <BtnConfirm
                 :item-selected="scope.row"
                 @confirmed-action="acceptUser"
@@ -89,7 +84,7 @@ export default {
   },
 
   created() {
-    // console.log(this.$route)
+    console.log(this.$break);
   },
 
   methods: {
