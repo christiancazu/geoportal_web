@@ -99,7 +99,7 @@ export default {
   },
 
   router: {
-    middleware: ['auth', 'check']
+    // middleware: ['auth', 'check']
   },
 
   toast: {

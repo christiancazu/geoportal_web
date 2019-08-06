@@ -1,11 +1,7 @@
-import axios from 'axios'
-
 export default function (ctx) {
   let loggedIn = ctx.$auth.$state.loggedIn
-  let { store } = ctx
   let app = ctx.app
   let auth = ctx.$auth
-  const prefix = auth.options.token
   if (loggedIn) {
     let tokenLocal = auth.getToken('local')
     let token = tokenLocal.replace('Bearer ', '')

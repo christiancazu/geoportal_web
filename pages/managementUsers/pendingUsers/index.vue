@@ -2,16 +2,8 @@
   <BasePage title="Usuarios pendientes de aprobación">
     <template v-slot:content>
       <el-container direction="vertical">
-        <el-row
-          type="flex"
-          justify="end"
-          :gutter="10"
-        >
-          <el-col
-            :xs="24"
-            :sm="8"
-            :md="8"
-          >
+        <el-row type="flex" justify="end" :gutter="10">
+          <el-col :xs="24" :sm="8" :md="8">
             <div>
               <el-input
                 v-model="search"
@@ -26,32 +18,29 @@
           :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%"
         >
-          <el-table-column
-            label="Date"
-            prop="date"
-          />
-          <el-table-column
-            label="Name"
-            prop="name"
-          />
-          <el-table-column
-            label="Actions"
-            align="center"
-          >
+          <el-table-column label="Date" prop="date" />
+          <el-table-column label="Name" prop="name" />
+          <el-table-column label="Actions" align="center">
             <template slot-scope="scope">
               <el-button
                 circle
-                icon="el-icon-edit"
+                icon="el-icon-view"
                 size="small"
-                type="primary"
-                @click="handleEdit(scope.$index, scope.row)"
+                type="info"
               />
-              <el-button
-                size="small"
-                circle
-                type="danger"
-                icon="el-icon-delete"
-                @click="handleDelete(scope.$index, scope.row)"
+              <BtnConfirm
+                :item-selected="scope.row"
+                @confirmed-action="acceptUser"
+                accion="accepted"
+                title="Aceptar solicitud usuario"
+                body-text="¿Esta seguro de aceptar la solicitud de usuario?"
+              />
+              <BtnConfirm
+                :item-selected="scope.row"
+                @confirmed-action="rejectUser"
+                accion="rejected"
+                title="Rechazar solicitud usuario"
+                body-text="¿Esta seguro de rechazar la solicitud de usuario?"
               />
             </template>
           </el-table-column>
@@ -62,53 +51,60 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import BasePage from '@/components/base/BasePage.vue'
+import { mapActions } from "vuex";
+import BasePage from "@/components/base/BasePage.vue";
+import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 export default {
   components: {
-    BasePage
+    BasePage,
+    BtnConfirm
   },
 
-  data () {
+  data() {
     return {
-      search: '',
-      tableData: [{
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-04',
-        name: 'John',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-01',
-        name: 'Morgan',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-03',
-        name: 'Jessy',
-        address: 'No. 189, Grove St, Los Angeles'
-      }]
-
-    }
+      search: "",
+      tableData: [
+        {
+          date: "2016-05-02",
+          name: "Tom",
+          address: "No. 189, Grove St, Los Angeles"
+        },
+        {
+          date: "2016-05-04",
+          name: "John",
+          address: "No. 189, Grove St, Los Angeles"
+        },
+        {
+          date: "2016-05-01",
+          name: "Morgan",
+          address: "No. 189, Grove St, Los Angeles"
+        },
+        {
+          date: "2016-05-03",
+          name: "Jessy",
+          address: "No. 189, Grove St, Los Angeles"
+        }
+      ]
+    };
   },
 
-  created () {
+  created() {
     // console.log(this.$route)
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddUser: 'modalsManagementUser/replaceShowModalAddUser',
-      replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
-      replaceShowModalDeleteUser: 'modalsManagementUser/replaceShowModalDeleteUser',
+      replaceShowModalAddUser: "modalsManagementUser/replaceShowModalAddUser",
+      replaceShowModalEditUser: "modalsManagementUser/replaceShowModalEditUser",
+      replaceShowModalDeleteUser:
+        "modalsManagementUser/replaceShowModalDeleteUser"
     }),
-    handleEdit (index, row) {
-      console.log(index, row)
+    acceptUser(item) {
+      console.log(item);
     },
-    handleDelete (index, row) {
-      console.log(index, row)
+    rejectUser(item) {
+      console.log(item);
     }
   }
-}
+};
 </script>
