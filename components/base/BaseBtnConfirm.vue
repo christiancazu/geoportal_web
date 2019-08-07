@@ -1,5 +1,11 @@
 <template>
-  <el-button :type="type" :icon="icon" size="small" circle @click="open" />
+  <el-button
+    :type="type"
+    :icon="icon"
+    size="small"
+    circle
+    @click="open"
+  />
 </template>
 
 <script>
@@ -20,11 +26,29 @@ export default {
     itemSelected: {
       type: Object,
       default: null
+    },
+    input: {
+      type: Boolean,
+      default: false
+    },
+    inputType: {
+      type: String,
+      default: 'text'
+    },
+    inputPlaceholder: {
+      type: String,
+      default: 'Message'
+    }
+  },
+
+  data () {
+    return {
+      valueInput: ''
     }
   },
 
   computed: {
-    type: function() {
+    type: function () {
       if (this.accion === "deleted" || this.accion === "rejected") {
         return "danger";
       } else if (this.accion === "accepted") {
@@ -33,7 +57,7 @@ export default {
         return "info";
       }
     },
-    icon: function() {
+    icon: function () {
       if (this.accion === "deleted") {
         return "el-icon-delete";
       } else if (this.accion === "accepted") {
@@ -44,7 +68,7 @@ export default {
         return "el-icon-info";
       }
     },
-    typeConfirm: function() {
+    typeConfirm: function () {
       if (this.accion === "deleted" || this.accion === "rejected") {
         return "error";
       } else if (this.accion === "accepted") {
@@ -55,20 +79,29 @@ export default {
     }
   },
 
-  mounted() {
+  mounted () {
     // console.log(this.$break);
   },
 
   methods: {
-    open() {
+    open () {
       this.$confirm(this.bodyText, this.title, {
         distinguishCancelAndClose: true,
         confirmButtonText: "Si, estoy seguro",
         cancelButtonText: "Cancelar",
         type: this.typeConfirm,
+        center: this.input,
+        showInput: this.input,
+        inputType: this.inputType,
+        inputPlaceholder: this.inputPlaceholder,
+        inputValue: this.valueInput
       })
-        .then(() => {
-          this.$emit("confirmed-action", this.itemSelected);
+        .then((value) => {
+          const data = {
+            itemSelected: this.itemSelected,
+            inputValue: value
+          }
+          this.$emit("confirmed-action", data);
         })
         .catch(() => {
           //
@@ -78,5 +111,4 @@ export default {
 };
 </script>
 <style lang="scss">
-
 </style>

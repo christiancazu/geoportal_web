@@ -5,8 +5,8 @@
       <el-main>Principal</el-main>
     </el-container>-->
     <el-container style="min-height:100%">
-      <!-- <SideBar v-if="loggedIn" /> -->
-      <SideBar />
+      <SideBar v-if="loggedIn" />
+      <!-- <SideBar /> -->
       <el-main class="pa-0">
         <nuxt />
       </el-main>

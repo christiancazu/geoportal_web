@@ -2,8 +2,16 @@
   <BasePage title="Usuarios pendientes de aprobación">
     <template v-slot:content>
       <el-container direction="vertical">
-        <el-row type="flex" justify="end" :gutter="10">
-          <el-col :xs="24" :sm="8" :md="8">
+        <el-row
+          type="flex"
+          justify="end"
+          :gutter="10"
+        >
+          <el-col
+            :xs="24"
+            :sm="8"
+            :md="8"
+          >
             <div>
               <el-input
                 v-model="search"
@@ -18,11 +26,25 @@
           :data="dataDisplay.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
         >
-          <el-table-column label="Date" prop="date" />
-          <el-table-column label="Name" prop="name" />
-          <el-table-column label="Actions" align="center">
+          <el-table-column
+            label="Date"
+            prop="date"
+          />
+          <el-table-column
+            label="Name"
+            prop="name"
+          />
+          <el-table-column
+            label="Actions"
+            align="center"
+          >
             <template slot-scope="scope">
-              <el-button circle icon="el-icon-view" size="small" type="info" />
+              <el-button
+                circle
+                icon="el-icon-view"
+                size="small"
+                type="info"
+              />
               <BtnConfirm
                 :item-selected="scope.row"
                 @confirmed-action="acceptUser"
@@ -36,6 +58,9 @@
                 accion="rejected"
                 title="Rechazar solicitud usuario"
                 body-text="¿Esta seguro de rechazar la solicitud de usuario?"
+                :input="true"
+                inputType="textarea"
+                inputPlaceholder="Observación"
               />
             </template>
           </el-table-column>
@@ -64,7 +89,7 @@ export default {
     BtnConfirm
   },
 
-  data() {
+  data () {
     return {
       search: "",
       pagesize: 10,
@@ -79,23 +104,23 @@ export default {
           date: "2016-09-04",
           name: "John",
           address: "No. 189, Grove St, Los Angeles"
-        },{
+        }, {
           date: "2016-05-04",
           name: "John",
           address: "No. 189, Grove St, Los Angeles"
-        },{
+        }, {
           date: "2016-05-04",
           name: "Maria",
           address: "No. 189, Grove St, Los Angeles"
-        },{
+        }, {
           date: "2016-05-04",
           name: "Carolina",
           address: "No. 189, Grove St, Los Angeles"
-        },{
+        }, {
           date: "2016-05-04",
           name: "John",
           address: "No. 189, Grove St, Los Angeles"
-        },{
+        }, {
           date: "2016-05-04",
           name: "John",
           address: "No. 189, Grove St, Los Angeles"
@@ -145,7 +170,7 @@ export default {
   },
 
   computed: {
-    dataDisplay: function(){
+    dataDisplay: function () {
       let search = this.search.toString().toLowerCase()
       return this.tableData.filter(item => {
         // checking description
@@ -166,7 +191,7 @@ export default {
     }
   },
 
-  created() {
+  created () {
     console.log(this.$break);
   },
 
@@ -218,10 +243,10 @@ export default {
       })
     },
 
-    acceptUser(item) {
+    acceptUser (item) {
       console.log(item);
     },
-    rejectUser(item) {
+    rejectUser (item) {
       console.log(item);
     }
   }
