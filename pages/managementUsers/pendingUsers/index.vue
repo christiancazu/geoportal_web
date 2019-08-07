@@ -15,7 +15,7 @@
           </el-col>
         </el-row>
         <el-table
-          :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          :data="dataDisplay.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
         >
           <el-table-column label="Date" prop="date" />
@@ -44,8 +44,9 @@
         <el-pagination
           small
           background
+          :page-size="pagesize"
           layout="prev, pager, next"
-          :total="50"
+          :total="dataDisplay.length"
           @current-change="current_change"
         ></el-pagination>
       </el-container>
@@ -75,6 +76,26 @@ export default {
           address: "No. 189, Grove St, Los Angeles"
         },
         {
+          date: "2016-09-04",
+          name: "John",
+          address: "No. 189, Grove St, Los Angeles"
+        },{
+          date: "2016-05-04",
+          name: "John",
+          address: "No. 189, Grove St, Los Angeles"
+        },{
+          date: "2016-05-04",
+          name: "Maria",
+          address: "No. 189, Grove St, Los Angeles"
+        },{
+          date: "2016-05-04",
+          name: "Carolina",
+          address: "No. 189, Grove St, Los Angeles"
+        },{
+          date: "2016-05-04",
+          name: "John",
+          address: "No. 189, Grove St, Los Angeles"
+        },{
           date: "2016-05-04",
           name: "John",
           address: "No. 189, Grove St, Los Angeles"
