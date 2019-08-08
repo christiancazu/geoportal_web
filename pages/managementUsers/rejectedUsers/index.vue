@@ -25,6 +25,7 @@
         <el-table
           :data="pendingRequests"
           style="width: 100%"
+          v-loading="loadingPendingRequests"
         >
           <el-table-column
             label="Name"

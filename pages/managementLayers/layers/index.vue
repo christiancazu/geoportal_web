@@ -27,6 +27,7 @@
         <el-table
           :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%"
+          v-loading="loading"
         >
           <el-table-column
             label="Date"
@@ -73,6 +74,7 @@ export default {
   data () {
     return {
       search: '',
+      loading: true,
       tableData: [{
         date: '2016-05-02',
         name: 'Tom',

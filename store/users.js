@@ -22,6 +22,8 @@ export const actions = {
     try {
       const { data } = await this.$userAPI.index(payload)
       commit('REPLACE_USERS', { users: data.data })
+      commit('REPLACE_LOADING_USERS', { loading: false })
+
     } catch (error) {
       if (!error.response) return
     } finally {

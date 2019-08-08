@@ -31,9 +31,9 @@
           </el-col>
         </el-row>
         <el-table
-          :data="users.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          :data="filteredData"
           style="width: 100%"
-          v-loading.body="loadingUsers"
+          v-loading="loadingUsers"
         >
           <el-table-column
             label="Nombre"
@@ -83,9 +83,10 @@
         </el-table>
         <el-pagination
           small
-          background
-          layout="prev, pager, next"
-          :total="50"
+          class="pt-4 text-xs-right"
+          :pager-size="100"
+          layout="prev, pager, next, sizes"
+          :total="filteredData.length"
           @current-change="current_change"
         >
         </el-pagination>
@@ -116,7 +117,6 @@ export default {
     return {
       search: '',
       pagesize: 10,
-      currentPage: 1
     }
   },
 
@@ -126,11 +126,43 @@ export default {
       loadingUsers: state => state.users.loadingUsers
     }),
 
-    user2: function () {
-      return this.$store.state.users.users
+    currentPage: {
+      get () {
+        return 1
+      },
+      set (value) {
+        console.log(value, 'val')
+      }
+    },
+
+    filteredData: function () {
+      let search = this.search.toString().toLowerCase()
+      let users = this.$store.state.users.users
+      return users.filter(item => {
+        // checking description
+        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
+          return item
+        }
+
+        // checking hs no image
+        if (item.name && item.name.toString().toLowerCase().includes(search)) {
+          return item
+        }
+
+        // checking current tax rate
+        if (item.email && item.email.toString().toLowerCase().includes(search)) {
+          return item
+        }
+      })
+    },
+
+    currentPageData: function () {
+      let index1 = (this.currentPage * 10) - 1
+      let index2 = (this.currentPage - 1) * 10
+      return filteredData.filter((entry, index) => index < index1 && index > index2)
     }
   },
-  mounted () {
+  created () {
     this.getUsers()
   },
 
@@ -151,6 +183,7 @@ export default {
     },
 
     current_change: function (currentPage) {
+      console.log('pagina', currentPage)
       this.currentPage = currentPage;
     },
   }
