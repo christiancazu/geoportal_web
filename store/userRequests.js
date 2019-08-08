@@ -18,7 +18,7 @@ export const actions = {
     commit('REPLACE_LOADING_PENDING_REQUESTS', { loading: true })
 
     try {
-      const { data } = await this.$userAPI.index(payload)
+      const { data } = await this.$userRequestAPI.getPending(payload)
       commit('REPLACE_PENDING_REQUESTS', { requests: data.data })
     } catch (error) {
       if (!error.response) return
@@ -26,12 +26,12 @@ export const actions = {
       commit('REPLACE_LOADING_PENDING_REQUESTS', { loading: false })
     }
   },
-  
+
   async getRejectedRequests ({ commit }, payload) {
     commit('REPLACE_LOADING_REJECTED_REQUESTS', { loading: true })
 
     try {
-      const { data } = await this.$userAPI.index(payload)
+      const { data } = await this.$userRequestAPI.getRejected(payload)
       commit('REPLACE_REJECTED_REQUESTS', { requests: data.data })
     } catch (error) {
       if (!error.response) return

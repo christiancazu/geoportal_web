@@ -218,10 +218,33 @@ export default {
     },
 
     acceptUser (item) {
-      console.log(item);
+      console.log(item)
+      const data = {
+        id: item.itemSelected.id
+      }
+
+      new Promise((resolve, reject) => {
+        this.$userRequestAPI.approve({ data })
+          .then(response => {
+            resolve(response)
+            this.getPendingRequests()
+          }).catch(error => reject(error))
+      })
     },
     rejectUser (item) {
+
+      const data = {
+        observation: item.inputValue.value,
+        id: item.itemSelected.id
+      }
       console.log(item);
+      new Promise((resolve, reject) => {
+        this.$userRequestAPI.rejected({ data })
+          .then(response => {
+            resolve(response)
+            this.getPendingRequests()
+          }).catch(error => reject(error))
+      })
     }
   }
 };
