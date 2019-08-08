@@ -218,7 +218,6 @@ export default {
     },
 
     acceptUser (item) {
-      console.log(item)
       const data = {
         id: item.itemSelected.id
       }
@@ -232,12 +231,10 @@ export default {
       })
     },
     rejectUser (item) {
-
       const data = {
         observation: item.inputValue.value,
         id: item.itemSelected.id
       }
-      console.log(item);
       new Promise((resolve, reject) => {
         this.$userRequestAPI.rejected({ data })
           .then(response => {

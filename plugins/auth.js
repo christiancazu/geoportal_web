@@ -1,5 +1,4 @@
 export default function ({ app }) {
-  console.log('hola')
   if (!app.$auth.loggedIn) {
     return
   }
