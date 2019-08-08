@@ -252,7 +252,7 @@ export default {
   },
 
   created () {
-    this.getRegiones();
+    // this.getRegiones();
   },
 
   methods: {
@@ -268,12 +268,12 @@ export default {
       });
     },
 
-    async getRegiones () {
-      let { data } = await this.$axios.get(
-        `http://192.168.1.105:8080/geoportal/api/region/`
-      );
-      this.regiones = data.data;
-    },
+    // async getRegiones () {
+    //   let { data } = await this.$axios.get(
+    //     `http://192.168.1.105:8080/geoportal/api/region/`
+    //   );
+    //   this.regiones = data.data;
+    // },
 
     onChangeRegion (item) {
       console.log("item", item);

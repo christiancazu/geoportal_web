@@ -46,7 +46,7 @@ export default {
   },
 
   mounted() {
-    console.log(this.$break);
+    // console.log(this.$break);
   },
 
   methods: {}
