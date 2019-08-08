@@ -23,16 +23,20 @@
           </el-col>
         </el-row>
         <el-table
-          :data="dataDisplay.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+          :data="pendingRequests"
           style="width: 100%"
         >
           <el-table-column
-            label="Date"
-            prop="date"
+            label="Name"
+            prop="name"
           />
           <el-table-column
             label="Name"
-            prop="name"
+            prop="lastName"
+          />
+          <el-table-column
+            label="Name"
+            prop="email"
           />
           <el-table-column
             label="Actions"
@@ -80,7 +84,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import BasePage from "@/components/base/BasePage.vue";
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 export default {
@@ -170,6 +174,11 @@ export default {
   },
 
   computed: {
+    ...mapState({
+      pendingRequests: state => state.userRequests.pendingRequests,
+      loadingPendingRequests: state => state.userRequests.loadingPendingRequests,
+    }),
+
     dataDisplay: function () {
       let search = this.search.toString().toLowerCase()
       return this.tableData.filter(item => {
@@ -192,11 +201,12 @@ export default {
   },
 
   created () {
-    console.log(this.$break);
+    this.getPendingRequests()
   },
 
   methods: {
     ...mapActions({
+      getPendingRequests: "userRequests/getPendingRequests",
       replaceShowModalAddUser: "modalsManagementUser/replaceShowModalAddUser",
       replaceShowModalEditUser: "modalsManagementUser/replaceShowModalEditUser",
       replaceShowModalDeleteUser:
@@ -205,42 +215,6 @@ export default {
 
     current_change: function (currentPage) {
       this.currentPage = currentPage;
-    },
-
-    customsFilter (items, search, filter) {
-      search = search.toString().toLowerCase()
-      return items.filter(item => {
-        // checking description
-        if (item.description && item.description.toString().toLowerCase().includes(search)) {
-          return item
-        }
-
-        // checking hs no image
-        if (item.hs_no_image && item.hs_no_image.toString().toLowerCase().includes(search)) {
-          return item
-        }
-
-        // checking current tax rate
-        if (item.current_tax_rate && item.current_tax_rate.toString().toLowerCase().includes(search)) {
-          return item
-        }
-
-        // checking current note
-        if (item.current_note && item.current_note.toString().toLowerCase().includes(search)) {
-          return item
-        }
-
-        // checking tax uplift
-        if (item.tax_uplift && item.tax_uplift.toString().toLowerCase().includes(search)) {
-          return item
-        }
-
-        // checking updateDate
-        let updateDate = this.formatDate(item.tax_update_date)
-        if (updateDate && updateDate.toString().toLowerCase().includes(search)) {
-          return item
-        }
-      })
     },
 
     acceptUser (item) {

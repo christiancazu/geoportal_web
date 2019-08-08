@@ -90,7 +90,7 @@ export default {
         confirmButtonText: "Si, estoy seguro",
         cancelButtonText: "Cancelar",
         type: this.typeConfirm,
-        center: this.input,
+        center: true,
         showInput: this.input,
         inputType: this.inputType,
         inputPlaceholder: this.inputPlaceholder,
