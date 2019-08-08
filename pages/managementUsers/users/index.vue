@@ -1,5 +1,5 @@
 <template>
-  <BasePage title="Usuarios">
+  <BasePage title="Usuarios Aprobados">
     <template v-slot:itemsActions>
       <el-button
         size="mini"
@@ -33,6 +33,7 @@
         <el-table
           :data="users.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%"
+          v-loading.body="loadingUsers"
         >
           <el-table-column
             label="Nombre"
@@ -115,32 +116,14 @@ export default {
     return {
       search: '',
       pagesize: 10,
-      currentPage: 1,
-      tableData: [{
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-04',
-        name: 'John',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-01',
-        name: 'Morgan',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-03',
-        name: 'Jessy',
-        address: 'No. 189, Grove St, Los Angeles'
-      }]
-
+      currentPage: 1
     }
   },
 
   computed: {
     ...mapState({
-      showModalAddUser: state => state.modals.showModalAddUser,
-      users: state => state.users.users
+      users: state => state.users.users,
+      loadingUsers: state => state.users.loadingUsers
     }),
 
     user2: function () {
@@ -149,12 +132,6 @@ export default {
   },
   mounted () {
     this.getUsers()
-
-  },
-
-  created () {
-    // console.log(this.$route)
-    // this.getUsers()
   },
 
   methods: {

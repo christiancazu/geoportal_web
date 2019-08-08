@@ -137,16 +137,7 @@ export default {
     ...mapState({
       user: state => state.auth.user,
     })
-  },
-
-  mounted () {
-  },
-
-  methods: {
-    ...mapActions({
-      replaceShowPanelGeovisor: 'sidebar/replaceShowPanelGeovisor'
-    })
-  },
+  }
 }
 </script>
 <style lang="scss">
