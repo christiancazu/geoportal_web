@@ -19,7 +19,8 @@
                 v-model="search"
                 prefix-icon="el-icon-search"
                 size="small"
-                placeholder="Search"
+                placeholder="Buscar..."
+                clearable
               />
             </div>
           </el-col>

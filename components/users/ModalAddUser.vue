@@ -40,7 +40,7 @@
 
             <!-- email -->
             <el-form-item label="Correo Electrónico" prop="email">
-              <el-input v-model="form.email" type="text" autocomplete="off" />
+              <el-input v-model="form.email" type="text" />
             </el-form-item>
             <el-form-item label="Tipo de Usuario">
               <el-select v-model="form.userType" value-key="id" filterable placeholder="Select">

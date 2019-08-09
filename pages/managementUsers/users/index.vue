@@ -25,7 +25,8 @@
                 v-model="search"
                 prefix-icon="el-icon-search"
                 size="small"
-                placeholder="Search"
+                placeholder="Buscar..."
+                clearable
               />
             </div>
           </el-col>
@@ -89,8 +90,8 @@
           layout="prev, pager, next, sizes"
           :total="filteredData.length"
           :current-page="currentPage"
-          @current-change="current_change"
-          @size-change="size_change"
+          @current-change="onChangeCurrentPage"
+          @size-change="onChangePageSize"
         >
         </el-pagination>
       </el-container>
@@ -152,6 +153,7 @@ export default {
       })
     },
   },
+
   created () {
     this.getUsers()
   },
@@ -172,10 +174,11 @@ export default {
       console.log(index, row)
     },
 
-    current_change: function (currentPage) {
+    // pagination 
+    onChangeCurrentPage: function (currentPage) {
       this.currentPage = currentPage;
     },
-    size_change: function (pagesize) {
+    onChangePageSize: function (pagesize) {
       this.pagesize = pagesize;
     },
   }
