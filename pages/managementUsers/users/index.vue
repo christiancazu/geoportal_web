@@ -31,7 +31,7 @@
           </el-col>
         </el-row>
         <el-table
-          :data="filteredData"
+          :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
           v-loading="loadingUsers"
         >
@@ -85,9 +85,12 @@
           small
           class="pt-4 text-xs-right"
           :pager-size="100"
+          :page-size="pagesize"
           layout="prev, pager, next, sizes"
           :total="filteredData.length"
+          :current-page="currentPage"
           @current-change="current_change"
+          @size-change="size_change"
         >
         </el-pagination>
       </el-container>
@@ -117,6 +120,7 @@ export default {
     return {
       search: '',
       pagesize: 10,
+      currentPage: 1
     }
   },
 
@@ -126,18 +130,10 @@ export default {
       loadingUsers: state => state.users.loadingUsers
     }),
 
-    currentPage: {
-      get () {
-        return 1
-      },
-      set (value) {
-        console.log(value, 'val')
-      }
-    },
-
     filteredData: function () {
       let search = this.search.toString().toLowerCase()
       let users = this.$store.state.users.users
+      this.currentPage = 1
       return users.filter(item => {
         // checking description
         if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
@@ -155,12 +151,6 @@ export default {
         }
       })
     },
-
-    currentPageData: function () {
-      let index1 = (this.currentPage * 10) - 1
-      let index2 = (this.currentPage - 1) * 10
-      return filteredData.filter((entry, index) => index < index1 && index > index2)
-    }
   },
   created () {
     this.getUsers()
@@ -183,8 +173,10 @@ export default {
     },
 
     current_change: function (currentPage) {
-      console.log('pagina', currentPage)
       this.currentPage = currentPage;
+    },
+    size_change: function (pagesize) {
+      this.pagesize = pagesize;
     },
   }
 }
