@@ -26,7 +26,8 @@
                 v-model="search"
                 prefix-icon="el-icon-search"
                 size="small"
-                placeholder="Search"
+                placeholder="Buscar..."
+                clearable
               />
             </div>
           </el-col>
@@ -34,6 +35,8 @@
         <el-table
           :data="WMSServices.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%"
+          lazy
+          v-loading="loadingWMSServices"
         >
           <el-table-column
             label="Nombre"
@@ -108,7 +111,8 @@ export default {
 
   computed: {
     ...mapState({
-      WMSServices: state => state.WMSServices.WMSServices
+      WMSServices: state => state.WMSServices.WMSServices,
+      loadingWMSServices: state => state.WMSServices.loadingWMSServices
     })
   },
   mounted () {

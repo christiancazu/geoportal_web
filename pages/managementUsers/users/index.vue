@@ -1,5 +1,5 @@
 <template>
-  <BasePage title="Usuarios">
+  <BasePage title="Usuarios Aprobados">
     <template v-slot:itemsActions>
       <el-button
         size="mini"
@@ -25,14 +25,16 @@
                 v-model="search"
                 prefix-icon="el-icon-search"
                 size="small"
-                placeholder="Search"
+                placeholder="Buscar..."
+                clearable
               />
             </div>
           </el-col>
         </el-row>
         <el-table
-          :data="users.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
+          v-loading="loadingUsers"
         >
           <el-table-column
             label="Nombre"
@@ -82,10 +84,14 @@
         </el-table>
         <el-pagination
           small
-          background
-          layout="prev, pager, next"
-          :total="50"
-          @current-change="current_change"
+          class="pt-4 text-xs-right"
+          :pager-size="100"
+          :page-size="pagesize"
+          layout="prev, pager, next, sizes"
+          :total="filteredData.length"
+          :current-page="currentPage"
+          @current-change="onChangeCurrentPage"
+          @size-change="onChangePageSize"
         >
         </el-pagination>
       </el-container>
@@ -115,46 +121,41 @@ export default {
     return {
       search: '',
       pagesize: 10,
-      currentPage: 1,
-      tableData: [{
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-04',
-        name: 'John',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-01',
-        name: 'Morgan',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-03',
-        name: 'Jessy',
-        address: 'No. 189, Grove St, Los Angeles'
-      }]
-
+      currentPage: 1
     }
   },
 
   computed: {
     ...mapState({
-      showModalAddUser: state => state.modals.showModalAddUser,
-      users: state => state.users.users
+      users: state => state.users.users,
+      loadingUsers: state => state.users.loadingUsers
     }),
 
-    user2: function () {
-      return this.$store.state.users.users
-    }
-  },
-  mounted () {
-    this.getUsers()
+    filteredData: function () {
+      let search = this.search.toString().toLowerCase()
+      let users = this.$store.state.users.users
+      this.currentPage = 1
+      return users.filter(item => {
+        // checking description
+        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
+          return item
+        }
 
+        // checking hs no image
+        if (item.name && item.name.toString().toLowerCase().includes(search)) {
+          return item
+        }
+
+        // checking current tax rate
+        if (item.email && item.email.toString().toLowerCase().includes(search)) {
+          return item
+        }
+      })
+    },
   },
 
   created () {
-    // console.log(this.$route)
-    // this.getUsers()
+    this.getUsers()
   },
 
   methods: {
@@ -173,8 +174,12 @@ export default {
       console.log(index, row)
     },
 
-    current_change: function (currentPage) {
+    // pagination 
+    onChangeCurrentPage: function (currentPage) {
       this.currentPage = currentPage;
+    },
+    onChangePageSize: function (pagesize) {
+      this.pagesize = pagesize;
     },
   }
 }

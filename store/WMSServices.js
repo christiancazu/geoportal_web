@@ -5,7 +5,7 @@ import {
 
 export const state = () => ({
   WMSServices: [],
-  loadingWMSServices: false,
+  loadingWMSServices: true,
 })
 
 export const actions = {

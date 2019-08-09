@@ -39,7 +39,7 @@ export default {
 
   methods: {
     ...mapActions({
-      replaceBreakpoints: "modalsManagementUser/replaceBreakpoints"
+      replaceBreakpoints: "modalsManagementUser/replaceBreakpoints",
     }),
     handleResize() {
       let width = window.innerWidth;

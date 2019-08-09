@@ -118,3 +118,14 @@ label {
   padding-bottom: 0px !important;
   padding-top: 0px !important;
 }
+
+.el-select .el-input.is-disabled .el-input__inner, .el-input.is-disabled .el-input__inner, .el-textarea.is-disabled .el-textarea__inner {
+  border:1px dotted #b3b3b3  !important;
+  background-color: transparent !important;
+  cursor: default !important;
+  color: #b3b3b3 !important;
+  user-select: none;
+}
+.el-input.is-disabled .el-input__icon, .el-pagination button:disabled {
+  cursor: default !important;
+}

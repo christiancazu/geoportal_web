@@ -25,7 +25,8 @@
                 v-model="search"
                 prefix-icon="el-icon-search"
                 size="small"
-                placeholder="Search"
+                placeholder="Buscar..."
+                clearable
               />
             </div>
           </el-col>
@@ -33,6 +34,7 @@
         <el-table
           :data="baseMaps.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%"
+          v-loading="loadingBaseMaps"
         >
           <el-table-column
             label="Nombre"
@@ -87,33 +89,14 @@ export default {
   },
   data () {
     return {
-
-      search: '',
-      tableData: [{
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-04',
-        name: 'John',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-01',
-        name: 'Morgan',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-03',
-        name: 'Jessy',
-        address: 'No. 189, Grove St, Los Angeles'
-      }]
-
+      search: ''
     }
   },
 
   computed: {
     ...mapState({
-      showModalAddBaseMap: state => state.modalsManagementLayer.showModalAddBaseMap,
-      baseMaps: state => state.baseMaps.baseMaps
+      baseMaps: state => state.baseMaps.baseMaps,
+      loadingBaseMaps: state => state.baseMaps.loadingBaseMaps
     })
   },
 

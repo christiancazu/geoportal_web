@@ -25,7 +25,8 @@
                 v-model="search"
                 prefix-icon="el-icon-search"
                 size="small"
-                placeholder="Search"
+                placeholder="Buscar..."
+                clearable
               />
             </div>
           </el-col>
@@ -33,6 +34,7 @@
         <el-table
           :data="users.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%"
+          v-loading="loading"
         >
           <el-table-column
             label="Nombre"
@@ -97,6 +99,7 @@ export default {
   },
   data () {
     return {
+      loading: true,
       search: '',
       tableData: [{
         date: '2016-05-02',

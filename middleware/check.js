@@ -1,4 +1,8 @@
 export default function (ctx) {
+  if (process.server) {
+    return
+  }
+
   let loggedIn = ctx.$auth.$state.loggedIn
   let app = ctx.app
   let auth = ctx.$auth

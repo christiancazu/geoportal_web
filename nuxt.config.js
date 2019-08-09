@@ -64,8 +64,8 @@ export default {
 
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.102:8300/geoportal/api/'
-    //baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.130:8300/geoportal/api/'
+    //baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.102:8300/geoportal/api/'
+    baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.130:8300/geoportal/api/'
   },
 
   auth: {
@@ -111,6 +111,13 @@ export default {
       onClick: (e, toastObject) => {
         toastObject.goAway(0)
       }
+    }
+  },
+
+  vue: {
+    config: {
+      productionTip: false,
+      devtools: true
     }
   }
 }
