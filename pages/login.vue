@@ -71,7 +71,7 @@ export default {
 
   data () {
     return {
-      processingForm: true,
+      processingForm: false,
 
       form: {
         email: null,
