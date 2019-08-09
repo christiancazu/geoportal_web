@@ -112,5 +112,12 @@ export default {
         toastObject.goAway(0)
       }
     }
+  },
+
+  vue: {
+    config: {
+      productionTip: false,
+      devtools: true
+    }
   }
 }

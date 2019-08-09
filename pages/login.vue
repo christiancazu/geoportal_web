@@ -31,6 +31,7 @@
               :rules="rules.email"
             >
               <el-input
+                :disabled="processingForm"
                 v-model="form.email"
                 type="text"
               />
@@ -40,6 +41,7 @@
               prop="password"
             >
               <el-input
+                :disabled="processingForm"
                 v-model="form.password"
                 type="password"
                 autocomplete="off"
@@ -48,6 +50,7 @@
             </el-form-item>
             <el-form-item class="text-xs-center mb-0">
               <el-button
+                :loading="processingForm"
                 type="primary"
                 native-type="submit"
                 @click.prevent="submitForm"
@@ -95,54 +98,30 @@ export default {
     submitForm () {
       this.$refs.formLogin.validate((valid) => {
         if (valid) {
-
-          console.log('submit!')
           this.login()
-        } else {
-          console.log('error submit!!')
-          return false
         }
       })
     },
 
     async login () {
       this.processingForm = true
-
-      // try {
-      //   this.$toast.info('Ingresando ...')
-
-      //   await this.$auth.loginWith('local', {
-      //     data: {
-      //       username: this.form.email,
-      //       password: this.form.password
-      //     }
-      //   }).then(response => {
-      //     console.log('token', response)
-      //   })
-
-      //   this.$toast.success(`Bienvenido ${this.user.name}`)
-      //   this.$router.push('/geovisor')
-      // } catch (error) {
-      //   // this.$toast.error('Erlocalror al ingresar')
-      //   if (!error.response) return
-      //   this.error = error.response.data || null
-      // } finally {
-      //   this.processingForm = false
-      // }
-      new Promise((resolve, reject) => {
-        this.$auth.loginWith('local', {
+      try {
+        this.$toast.info('Ingresando ...')
+        await this.$auth.loginWith('local', {
           data: {
             username: this.form.email,
             password: this.form.password
           }
         })
-          .then(response => {
-            console.log('response', response)
-            resolve(response);
-          })
-          .catch(error => reject(error));
-      })
-
+        this.$toast.success(`Bienvenido ${this.user.name}`)
+        this.$router.push('/geovisor')
+      } catch (error) {
+        // this.$toast.error('Erlocalror al ingresar')
+        if (!error.response) return
+        this.error = error.response.data || null
+      } finally {
+        this.processingForm = false
+      }
     },
   }
 

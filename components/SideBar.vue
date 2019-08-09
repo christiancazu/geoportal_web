@@ -10,11 +10,11 @@
     >
       <el-menu-item v-if="user">
         <img
-          src="/image/default_avatar.png"
+          :src="user.image"
           alt=""
           style="height:35px;"
         >
-        <span class="font-weight-bold">{{ user.name }}
+        <span class="font-weight-bold">{{ user.username }}
           <el-badge
             class="mark"
             :value="user.userType.id === 'AD' ? 'ADMIN' : ''"
@@ -100,12 +100,6 @@
         :route="{ path: '/WMSServices' }"
       >
         <i class="fas fa-users-cog"></i><span>Servicios</span>
-      </el-menu-item>
-      <el-menu-item
-        :route="{ path: '/geovisor' }"
-        index="/geovisor"
-      >
-        <i class="fas fa-globe"></i><span>Geoportal</span>
       </el-menu-item>
       <el-menu-item
         index="7"

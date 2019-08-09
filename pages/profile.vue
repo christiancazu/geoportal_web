@@ -4,13 +4,12 @@
     :fit-content="true"
   >
     <template v-slot:content>
-
       <el-form
         ref="form"
         label-position="top"
         status-icon
         :model="form"
-        :rules="rules2"
+        :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
       >
@@ -20,9 +19,11 @@
         >
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action
+            :disabled="processingForm"
             :show-file-list="false"
-            :on-success="handleAvatarSuccess"
+            name="image"
+            :http-request="launchUploadAvatar"
             :before-upload="beforeAvatarUpload"
           >
             <img
@@ -36,36 +37,55 @@
             ></i>
           </el-upload>
         </el-form-item>
-        <el-form-item
-          label="Nombre de Usuario"
-          prop="userName"
-        >
-          <el-input
-            v-model="form.userName"
-            type="text"
-            autocomplete="off"
-          />
-        </el-form-item>
-        <el-form-item
-          label="Correo Electrónico"
-          prop="email"
-        >
-          <el-input
-            v-model="form.email"
-            type="text"
-            autocomplete="off"
-          />
-        </el-form-item>
         <el-row :gutter="10">
           <el-col
             :xs="24"
             :sm="12"
+            :md="12"
+          >
+            <el-form-item
+              label="Nombre de Usuario"
+              prop="username"
+            >
+              <el-input
+                v-model="profile.username"
+                type="text"
+                disabled
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="24"
+            :sm="12"
+            :md="12"
+          >
+            <el-form-item
+              label="Correo Electrónico"
+              prop="email"
+            >
+              <el-input
+                disabled
+                v-model="profile.email"
+                type="text"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="10">
+          <el-col
+            :xs="24"
+            :sm="12"
+            :md="8"
           >
             <el-form-item
               label="Nombres"
               prop="name"
             >
               <el-input
+                :disabled="processingForm"
                 v-model="form.name"
                 type="text"
                 autocomplete="off"
@@ -75,41 +95,61 @@
           <el-col
             :xs="24"
             :sm="12"
+            :md="8"
           >
             <el-form-item
-              label="Apellidos"
+              label="Apellido Paterno"
               prop="lastName"
             >
               <el-input
+                :disabled="processingForm"
                 v-model="form.lastName"
                 type="text"
                 autocomplete="off"
               />
             </el-form-item>
           </el-col>
+          <el-col
+            :xs="24"
+            :sm="12"
+            :md="8"
+          >
+            <el-form-item
+              label="Apellido Materno"
+              prop="lastNameAditional"
+            >
+              <el-input
+                :disabled="processingForm"
+                v-model="form.lastNameAditional"
+                type="text"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
         </el-row>
-
         <el-row :gutter="10">
           <el-col
             :xs="24"
             :sm="8"
           >
+            <!-- regionId -->
             <el-form-item
               label="Región"
-              prop="name"
+              prop="regionId"
             >
               <el-select
-                v-model="form.region"
-                @change="onChangeRegion"
-                filterable
+                v-model="profile.regionId"
                 value-key="id"
+                filterable
+                disabled
+                :loading="loadingRegions"
                 placeholder="Select"
               >
                 <el-option
-                  v-for="item in regiones"
+                  v-for="item in regions"
                   :key="item.id"
                   :label="item.name"
-                  :value="item"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -118,22 +158,25 @@
             :xs="24"
             :sm="8"
           >
+            <!-- porvincia -->
             <el-form-item
               label="Provincia"
-              prop="lastName"
+              prop="provinceId"
+              ref="provinceId"
             >
               <el-select
-                v-model="form.provincia"
+                v-model="profile.provinceId"
                 value-key="id"
+                :loading="loadingProvinces"
                 filterable
                 placeholder="Select"
+                disabled
               >
                 <el-option
-                  v-if="form.region"
-                  v-for="item in form.region.provinces"
+                  v-for="item in provinces"
                   :key="item.id"
                   :label="item.name"
-                  :value="item"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -142,51 +185,56 @@
             :xs="24"
             :sm="8"
           >
+            <!-- distrito -->
             <el-form-item
               label="Distrito"
-              prop="lastName"
+              prop="districtId"
+              ref="districtId"
             >
               <el-select
-                v-model="form.distrito"
+                v-model="form.districtId"
                 value-key="id"
                 filterable
+                :disabled="processingForm"
+                :loading="loadingDistricts"
                 placeholder="Select"
               >
                 <el-option
-                  v-if="form.provincia"
-                  v-for="item in form.provincia.districts"
+                  v-for="item in districts"
                   :key="item.id"
                   :label="item.name"
-                  :value="item"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-form-item
           label="Institución"
-          prop="lastName"
+          prop="institute"
         >
           <el-input
-            v-model="form.lastName"
+            v-model="form.institute"
             type="text"
+            disabled
             autocomplete="off"
           />
         </el-form-item>
         <el-form-item
-          label="Institución"
-          prop="lastName"
+          label="¿Porque desea usar el Geoportal?"
+          prop="subject"
         >
           <el-input
-            v-model="form.lastName"
+            v-model="form.subject"
             type="textarea"
             :rows="3"
+            disabled
             autocomplete="off"
           />
         </el-form-item>
         <el-form-item class="text-xs-center mb-0">
           <el-button
+            :loading="processingForm"
             type="primary"
             @click="submitForm"
           >Guardar Cambios</el-button>
@@ -195,7 +243,6 @@
     </template>
   </BasePage>
 </template>
-
 <script>
 import BasePage from '@/components/base/BasePage.vue'
 import { mapState, mapActions } from 'vuex'
@@ -206,84 +253,138 @@ export default {
 
   data () {
     return {
-      abc: "",
-      regiones: [],
-
       imageUrl: "",
+      processingForm: false,
+      profile: {},
       form: {
-        region: "",
-        provincia: "",
-        distrito: "",
-        email: null,
-        pass: null
+        districtId: '',
+        name: '',
+        lastName: '',
+        lastNameAditional: '',
+        status: '',
+        institute: '',
+        subject: '',
+        imageUrl: ''
       },
 
-      rules2: {
-        pass: [
-          { required: true },
-          {
-            min: 6,
-            message: "The password can not be less than 6 digits",
-            trigger: "change"
-          }
-        ],
-        email: [
-          {
-            required: true,
-            message: "Please input email address",
-            trigger: "blur"
-          },
-          {
-            type: "email",
-            message: "Please input correct email address",
-            trigger: ["blur", "change"]
-          }
-        ]
+      rules: {
+        name: [{
+          required: true,
+          message: "El campo es requerido",
+        }],
+        lastName: [{
+          required: true,
+          message: "El campo es requerido",
+        }],
+        lastNameAditional: [{
+          required: true,
+          message: "El campo es requerido",
+        }],
+        districtId: [{
+          required: true,
+          message: "El campo es requerido",
+        }],
       }
     };
   },
 
   computed: {
-    provincias: function () {
-      const regionId = this.form.region.id;
-      let provincias = this.regiones.find(region => (region.id = regionId));
-      return provincias || [];
-    }
+    ...mapState({
+      user: state => state.auth.user,
+      regions: state => state.regions.regions,
+      loadingRegions: state => state.regions.loadingRegions,
+      provinces: state => state.regions.provinces,
+      loadingProvinces: state => state.regions.loadingProvinces,
+      districts: state => state.regions.districts,
+      loadingDistricts: state => state.regions.loadingDistricts
+    })
   },
-
+  
   created () {
-    // this.getRegiones();
+    this.getRegions()
+    this.getProfile()
   },
 
   methods: {
+    ...mapActions({
+      getUser: 'users/getUser',
+      getRegions: "regions/getRegions",
+      getProvinces: "regions/getProvinces",
+      getDistricts: "regions/getDistricts",
+    }),
+
+    getProfile () {
+      new Promise((resolve, reject) => {
+        this.$userAPI.getProfile()
+          .then(response => {
+            const { data } = response.data
+            this.setFormField(data)
+            resolve(response);
+          })
+          .catch(error => reject(error));
+      });
+    },
+
+    setFormField (data) {
+      this.profile = data
+      this.profile.email = this.user.email
+
+      this.form.name = data.name
+      this.form.lastName = data.lastName
+      this.form.lastNameAditional = data.lastNameAditional
+      this.form.status = data.status
+      this.form.districtId = data.districtId
+
+      this.form.institute = data.institute
+      this.form.subject = data.subject
+      this.imageUrl = data.image
+
+      this.getProvinces({ params: { id: data.regionId } });
+      this.getDistricts({ params: { id: data.provinceId } });
+    },
+
     submitForm (e) {
       e.preventDefault();
       this.$refs.form.validate(valid => {
         if (valid) {
-          console.log("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
+          this.processingForm = true
+          this.modifyProfile().then(response => {
+            this.getProfile()
+          })
         }
       });
     },
 
-    // async getRegiones () {
-    //   let { data } = await this.$axios.get(
-    //     `http://192.168.1.105:8080/geoportal/api/region/`
-    //   );
-    //   this.regiones = data.data;
-    // },
+    modifyProfile () {
+      const data = new FormData()
+      let keys = Object.keys(this.form);
+      keys.forEach(val => {
+        data.append(val, this.form[val]);
+      });
 
-    onChangeRegion (item) {
-      console.log("item", item);
+      return new Promise((resolve, reject) => {
+        this.$userAPI
+          .putProfile({ data })
+          .then(response => {
+            this.processingForm = false
+            this.$toast.success(`Su perfil ha sido actualizado con éxito`)
+
+            resolve(response);
+          })
+          .catch(error => {
+            this.processingForm = false
+            reject(error)
+          });
+      });
     },
 
-    handleAvatarSuccess (res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+    launchUploadAvatar (option) {
+      this.imageUrl = URL.createObjectURL(option.file);
+      this.form.imageUrl = option.file;
     },
+
     beforeAvatarUpload (file) {
-      const isJPG = file.type === "image/jpeg";
+      const isJPG = file.type === "image/png" || file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isJPG) {
