@@ -37,12 +37,11 @@ export const actions = {
   },
 
   async getUser ({ commit }, payload) {
-    console.log(payload, 'pay')
     commit('REPLACE_LOADING_USER', { loading: true })
 
     try {
       const { data } = await this.$userAPI.getUser(payload)
-      commit('REPLACE_USER', { users: data.data })
+      commit('REPLACE_USER', { user: data.data })
       commit('REPLACE_LOADING_USER', { loading: false })
 
     } catch (error) {
@@ -51,22 +50,6 @@ export const actions = {
       commit('REPLACE_LOADING_USER', { loading: false })
     }
   },
-  async getProfile ({ commit }, payload) {
-    console.log(payload, 'pay')
-    commit('REPLACE_LOADING_USER', { loading: true })
-
-    try {
-      const { data } = await this.$userAPI.getProfile(payload)
-      commit('REPLACE_USER', { users: data.data })
-      commit('REPLACE_LOADING_USER', { loading: false })
-
-    } catch (error) {
-      if (!error.response) return
-    } finally {
-      commit('REPLACE_LOADING_USER', { loading: false })
-    }
-  }
-
 }
 
 export const mutations = {
@@ -76,8 +59,8 @@ export const mutations = {
   [REPLACE_LOADING_USERS] (state, { loading }) {
     state.loadingUsers = loading
   },
-  [REPLACE_USER] (state, { users }) {
-    state.user = users
+  [REPLACE_USER] (state, { user }) {
+    state.user = user
   },
   [REPLACE_LOADING_USER] (state, { loading }) {
     state.loadingUser = loading

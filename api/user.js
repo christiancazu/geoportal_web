@@ -7,9 +7,8 @@ export default $axios => ({
     })
   },
   getUser (payload = {}) {
-    const id = this.payload.id
     return $axios({
-      url: `user/${id}/`,
+      url: `user/${payload.id}/`,
       method: 'GET',
       data: payload.data || {}
     })
@@ -29,17 +28,15 @@ export default $axios => ({
     })
   },
   update (payload = {}) {
-    const id = this.payload.id
     return $axios({
-      url: `user/${id}/`,
+      url: `user/${payload.id}/`,
       method: 'PUT',
       data: payload.data || {}
     })
   },
   delete (payload = {}) {
-    const id = this.payload.id
     return $axios({
-      url: `user/${id}/`,
+      url: `user/${payload.id}/`,
       method: 'DELETE',
       data: payload.data || {}
     })

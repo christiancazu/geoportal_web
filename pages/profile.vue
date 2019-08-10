@@ -11,6 +11,7 @@
         :model="form"
         :rules="rules"
         label-width="120px"
+        :disabled="processingForm"
         class="demo-ruleForm"
       >
         <el-form-item
@@ -209,17 +210,45 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item
-          label="Institución"
-          prop="institute"
-        >
-          <el-input
-            v-model="form.institute"
-            type="text"
-            disabled
-            autocomplete="off"
-          />
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col
+            :xs="12"
+            :sm="12"
+            :md="12"
+          >
+            <!-- instituto -->
+            <el-form-item
+              label="Institución"
+              prop="institute"
+            >
+              <el-input
+                v-model="form.institute"
+                type="text"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="12"
+            :sm="12"
+            :md="12"
+          >
+            <el-form-item
+              class="text-xs-center"
+              label="Cuenta"
+            >
+              <el-switch
+                style="display: block"
+                v-model="form.type"
+                inactive-color="#6376f7"
+                active-color="#6376f7"
+                inactive-text="Activa"
+                active-text="Inactiva"
+              >
+              </el-switch>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item
           label="¿Porque desea usar el Geoportal?"
           prop="subject"

@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <el-dialog
-      title="Registrar nuevo usuario"
-      top="2vh"
-      :visible.sync="showModalEditUser"
-    >
+  <BaseModal
+    title="Modificar datos de usuario"
+    :show-modal="showModalEditUser"
+    @action-modal="replaceShowModalEditUser"
+  >
+    <template v-slot:content>
       <el-form
         ref="form"
         label-position="top"
@@ -13,6 +13,7 @@
         :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
+        :disabled="processingForm"
         @submit.prevent="submitForm"
       >
         <el-row
@@ -25,10 +26,11 @@
             <el-form-item
               label="Imagen de Perfil"
               class="text-xs-center"
+              prop="image"
             >
               <el-upload
                 class="avatar-uploader"
-                action=""
+                action
                 :http-request="launchUploadAvatar"
                 :show-file-list="false"
                 name="image"
@@ -48,6 +50,7 @@
           </el-col>
           <el-col :md="12">
             <!-- username -->
+            <p>{{imageSelected}}</p>
             <el-form-item
               label="Nombre de Usuario"
               prop="username"
@@ -67,58 +70,10 @@
               <el-input
                 v-model="form.email"
                 type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
-            <el-form-item label="Tipo de Usuario">
-              <el-select
-                v-model="form.userType"
-                value-key="id"
-                filterable
-                placeholder="Select"
-              >
-                <el-option
-                  v-for="item in []"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="10">
-          <el-col :md="12">
-            <!-- password_1 -->
-            <el-form-item
-              label="contraseña"
-              prop="password"
-            >
-              <el-input
-                v-model="form.password"
-                type="password"
-                autocomplete="off"
-                :rules="rules.password"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :md="12">
-            <!-- password_2 -->
-            <el-form-item
-              label="Confirmar contraseña"
-              prop="passwordConfirmation"
-            >
-              <el-input
-                v-model="form.passwordConfirmation"
-                type="password"
-                autocomplete="off"
-                :rules="rules.passwordConfirmation"
               />
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row :gutter="10">
           <el-col
             :xs="24"
@@ -185,6 +140,7 @@
                 value-key="id"
                 filterable
                 placeholder="Select"
+                :loading="loadingRegions"
                 @change="onchangeRegions"
               >
                 <el-option
@@ -208,6 +164,7 @@
             >
               <el-select
                 v-model="form.province"
+                :loading="loadingProvinces"
                 value-key="id"
                 filterable
                 placeholder="Select"
@@ -236,6 +193,7 @@
                 v-model="form.districtId"
                 value-key="id"
                 filterable
+                :loading="loadingDistricts"
                 placeholder="Select"
               >
                 <el-option
@@ -248,17 +206,46 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- instituto -->
-        <el-form-item
-          label="Institución"
-          prop="institute"
-        >
-          <el-input
-            v-model="form.institute"
-            type="text"
-            autocomplete="off"
-          />
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col
+            :xs="12"
+            :sm="12"
+            :md="12"
+          >
+            <!-- instituto -->
+            <el-form-item
+              label="Institución"
+              prop="institute"
+            >
+              <el-input
+                v-model="form.institute"
+                type="text"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="12"
+            :sm="12"
+            :md="12"
+          >
+            <el-form-item
+              class="pl-4"
+              label="Privilegio"
+            >
+              <el-switch
+                class="text-xs-center"
+                style="display: block"
+                v-model="form.type"
+                inactive-color="#6376f7"
+                active-color="#6376f7"
+                inactive-text="ADMINISTRADOR"
+                active-text="USUARIO"
+              >
+              </el-switch>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <!-- objetivo -->
         <el-form-item
           label="¿Porque desea usar el Geoportal?"
@@ -273,49 +260,45 @@
             :show-word-limit="true"
           />
         </el-form-item>
-        <!-- <el-form-item class="text-xs-right mt-3 mb-0">
-          <el-button
-            type="primary"
-            native-type="submits"
-            @click.prevent="submitForm"
-          >
-            Ingresar
-          </el-button>
-        </el-form-item> -->
       </el-form>
-      <span
-        slot="footer"
-        class="dialog-footer"
-      >
-        <el-button @click="replaceShowModalEditUser({ show: false })">Cancel</el-button>
-        <el-button
-          type="primary"
-          native-type="submit"
-          @click.prevent="submitForm"
-        >Confirm</el-button>
-      </span>
-    </el-dialog>
-  </div>
+    </template>
+    <template v-slot:actions>
+      <el-button
+        :disabled="processingForm"
+        @click="replaceShowModalEditUser({ show: false })"
+      >CANCELAR</el-button>
+      <el-button
+        type="primary"
+        native-type="submit"
+        :loading="processingForm"
+        @click.prevent="submitForm"
+      >GUARDAR</el-button>
+    </template>
+  </BaseModal>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from "vuex";
+import BaseModal from "@/components/base/BaseModal.vue";
+
 export default {
+  components: {
+    BaseModal
+  },
   data () {
     return {
-      imageSelected: '',
-      dialogTableVisible: false,
-      dialogFormVisible: false,
+      imageSelected: "",
+      processingForm: false,
       form: {
-        username: '',
-        email: '',
-        image: '',
+        username: "",
+        email: "",
+        image: "",
         subject: null,
-        name: '',
-        lastName: '',
-        lastNameAditional: '',
-        institute: '',
-        password: '',
-        passwordConfirmation: '',
+        name: "",
+        lastName: "",
+        lastNameAditional: "",
+        institute: "",
+        password: "",
+        passwordConfirmation: "",
         districtId: null,
         region: null,
         province: null
@@ -343,57 +326,59 @@ export default {
           required: true,
           validator: (rule, value, callback) => {
             if (value !== this.form.password) {
-              return callback(new Error('La contraseña no coincide'))
+              return callback(new Error("La contraseña no coincide"));
             }
-            callback()
+            callback();
           }
         }],
         email: [{
           required: true,
           pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-          message: 'El correo electrónico debe ser válido'
+          message: "El correo electrónico debe ser válido"
         }],
         subject: [{
           required: true,
           min: 10,
-          message: 'Detalle el motivo para acceder al Geoportal UNAT'
+          message: "Detalle el motivo para acceder al Geoportal UNAT"
         }],
         institute: [{
           required: true,
-          message: 'La institución es requerida'
+          message: "La institución es requerida"
         }],
         region: [{
           required: true,
-          message: 'Seleccione su región'
+          message: "Seleccione su región"
         }],
         province: [{
           required: true,
           validator: (rule, value, callback) => {
             if (!this.form.region) {
-              return callback(new Error('Seleccione su Provincia'))
+              return callback(new Error("Seleccione su Provincia"));
             }
-            callback()
+            callback();
           }
         }],
         districtId: [{
           required: true,
           validator: (rule, value, callback) => {
             if (!this.form.province) {
-              return callback(new Error('Seleccione su Distrito'))
+              return callback(new Error("Seleccione su Distrito"));
             }
-            callback()
+            callback();
           }
-        }],
+        }]
       }
     };
   },
 
   watch: {
-    showModalEditUser: function(newState, oldState) {
-      if(!newState) {
+    showModalEditUser: function (newState, oldState) {
+      if (!newState) {
         this.$refs.form.resetFields()
+        this.imageSelected = ""
         return false
       }
+      this.getRegions()
     }
   },
 
@@ -404,71 +389,72 @@ export default {
       provinces: state => state.regions.provinces,
       loadingProvinces: state => state.regions.loadingProvinces,
       districts: state => state.regions.districts,
-      loadingDistricts: state => state.regions.loadingDistricts,
+      loadingDistricts: state => state.regions.loadingDistricts
     }),
 
     showModalEditUser: {
       get () {
-        return this.$store.state.modalsManagementUser.showModalEditUser
+        return this.$store.state.modalsManagementUser.showModalEditUser;
       },
       set (value) {
-        this.replaceShowModalEditUser({ show: value })
+        this.replaceShowModalEditUser({ show: value });
       }
     }
   },
 
-  created () {
-    this.getRegions()
-  },
-
   methods: {
     ...mapActions({
-      replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
-      getRegions: 'regions/getRegions',
-      getProvinces: 'regions/getProvinces',
-      getDistricts: 'regions/getDistricts',
-      replaceProvinces: 'regions/replaceProvinces',
-      replaceDistricts: 'regions/replaceDistricts',
-      getUsers: 'users/getUsers',
+      replaceShowModalEditUser: "modalsManagementUser/replaceShowModalEditUser",
+      getRegions: "regions/getRegions",
+      getProvinces: "regions/getProvinces",
+      getDistricts: "regions/getDistricts",
+      replaceProvinces: "regions/replaceProvinces",
+      replaceDistricts: "regions/replaceDistricts",
+      getUsers: "users/getUsers"
     }),
 
     submitForm () {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(valid => {
         if (valid) {
+          this.processingForm = true
           this.createUser().then(response => {
-            const { status } = response.data
+            const { status } = response.data;
             if (status) {
-              this.$refs.form.resetFields()
-              this.replaceShowModalEditUser({ show: false })
-              this.getUsers()
-
+              this.$refs.form.resetFields();
+              this.replaceShowModalEditUser({ show: false });
+              this.getUsers();
             }
-          })
+          });
         }
-      })
+      });
     },
 
     createUser () {
-      const formData = new FormData()
-
-      let keys = Object.keys(this.form)
+      const formData = new FormData();
+      let keys = Object.keys(this.form);
       keys.forEach(val => {
-        formData.append(val, this.form[val])
+        formData.append(val, this.form[val]);
       })
 
-      const data = formData
-
+      const data = formData;
       return new Promise((resolve, reject) => {
-        this.$userAPI.create({ data })
+        this.$userAPI
+          .create({ data })
           .then(response => {
-            resolve(response)
-          }).catch(error => reject(error))
-      })
+            this.processingForm = false
+            this.$toast.success(`El usuario se registro con éxito`)
+            resolve(response);
+          })
+          .catch(error => {
+            this.processingForm = false
+            reject(error)
+          });
+      });
     },
 
     launchUploadAvatar (option) {
       this.imageSelected = URL.createObjectURL(option.file);
-      this.form.image = option.file
+      this.form.image = option.file;
     },
 
     beforeAvatarUpload (file) {
@@ -487,24 +473,24 @@ export default {
     onchangeRegions (region) {
       const params = {
         id: region.id
-      }
-      this.replaceProvinces({ provinces: null })
-      this.replaceDistricts({ districts: null })
-      this.$refs.province.resetField()
-      this.$refs.districtId.resetField()
+      };
+      this.replaceProvinces({ provinces: null });
+      this.replaceDistricts({ districts: null });
+      this.$refs.province.resetField();
+      this.$refs.districtId.resetField();
 
-      this.getProvinces({ params })
+      this.getProvinces({ params });
     },
 
     onchangeProvinces (province) {
       const params = {
         id: province.id
-      }
+      };
 
-      this.replaceDistricts({ districts: null })
-      this.$refs.districtId.resetField()
-      this.getDistricts({ params })
+      this.replaceDistricts({ districts: null });
+      this.$refs.districtId.resetField();
+      this.getDistricts({ params });
     }
-  },
+  }
 };
 </script>

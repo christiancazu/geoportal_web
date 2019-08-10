@@ -203,12 +203,12 @@ export default {
   },
 
   created () {
-    this.getPendingRequests()
+    this.getRejectedRequests()
   },
 
   methods: {
     ...mapActions({
-      getPendingRequests: "userRequests/getPendingRequests",
+      getRejectedRequests: "userRequests/getRejectedRequests",
       replaceShowModalAddUser: "modalsManagementUser/replaceShowModalAddUser",
       replaceShowModalEditUser: "modalsManagementUser/replaceShowModalEditUser",
       replaceShowModalDeleteUser:
@@ -228,7 +228,7 @@ export default {
         this.$userRequestAPI.approve({ data })
           .then(response => {
             resolve(response)
-            this.getPendingRequests()
+            this.getRejectedRequests()
           }).catch(error => reject(error))
       })
     },
@@ -241,7 +241,7 @@ export default {
         this.$userRequestAPI.rejected({ data })
           .then(response => {
             resolve(response)
-            this.getPendingRequests()
+            this.getRejectedRequests()
           }).catch(error => reject(error))
       })
     }
