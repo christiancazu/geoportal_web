@@ -13,6 +13,7 @@
         :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
+        :disabled="processingForm"
         @submit.prevent="submitForm"
       >
         <el-row
@@ -25,6 +26,7 @@
             <el-form-item
               label="Imagen de Perfil"
               class="text-xs-center"
+              prop="image"
             >
               <el-upload
                 class="avatar-uploader"
@@ -48,6 +50,7 @@
           </el-col>
           <el-col :md="12">
             <!-- username -->
+            <p>{{imageSelected}}</p>
             <el-form-item
               label="Nombre de Usuario"
               prop="username"
@@ -68,21 +71,6 @@
                 v-model="form.email"
                 type="text"
               />
-            </el-form-item>
-            <el-form-item label="Tipo de Usuario">
-              <el-select
-                v-model="form.userType"
-                value-key="id"
-                filterable
-                placeholder="Select"
-              >
-                <el-option
-                  v-for="item in []"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -184,6 +172,7 @@
                 value-key="id"
                 filterable
                 placeholder="Select"
+                :loading="loadingRegions"
                 @change="onchangeRegions"
               >
                 <el-option
@@ -207,6 +196,7 @@
             >
               <el-select
                 v-model="form.province"
+                :loading="loadingProvinces"
                 value-key="id"
                 filterable
                 placeholder="Select"
@@ -235,6 +225,7 @@
                 v-model="form.districtId"
                 value-key="id"
                 filterable
+                :loading="loadingDistricts"
                 placeholder="Select"
               >
                 <el-option
@@ -247,17 +238,46 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- instituto -->
-        <el-form-item
-          label="Institución"
-          prop="institute"
-        >
-          <el-input
-            v-model="form.institute"
-            type="text"
-            autocomplete="off"
-          />
-        </el-form-item>
+        <el-row :gutter="10">
+          <el-col
+            :xs="12"
+            :sm="12"
+            :md="12"
+          >
+            <!-- instituto -->
+            <el-form-item
+              label="Institución"
+              prop="institute"
+            >
+              <el-input
+                v-model="form.institute"
+                type="text"
+                autocomplete="off"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="12"
+            :sm="12"
+            :md="12"
+          >
+            <el-form-item
+              class="pl-4"
+              label="Privilegio"
+            >
+              <el-switch
+                class="text-xs-center"
+                style="display: block"
+                v-model="form.type"
+                inactive-color="#6376f7"
+                active-color="#6376f7"
+                inactive-text="ADMINISTRADOR"
+                active-text="USUARIO"
+              >
+              </el-switch>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <!-- objetivo -->
         <el-form-item
           label="¿Porque desea usar el Geoportal?"
@@ -275,12 +295,16 @@
       </el-form>
     </template>
     <template v-slot:actions>
-      <el-button @click="replaceShowModalAddUser({ show: false })">Cancel</el-button>
+      <el-button
+        :disabled="processingForm"
+        @click="replaceShowModalAddUser({ show: false })"
+      >CANCELAR</el-button>
       <el-button
         type="primary"
         native-type="submit"
+        :loading="processingForm"
         @click.prevent="submitForm"
-      >Confirm</el-button>
+      >CREAR NUEVO USUARIO</el-button>
     </template>
   </BaseModal>
 </template>
@@ -295,8 +319,7 @@ export default {
   data () {
     return {
       imageSelected: "",
-      dialogTableVisible: false,
-      dialogFormVisible: false,
+      processingForm: false,
       form: {
         username: "",
         email: "",
@@ -406,8 +429,10 @@ export default {
     showModalAddUser: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
+        this.imageSelected = ""
         return false;
       }
+      this.getRegions();
     }
   },
 
@@ -431,10 +456,6 @@ export default {
     }
   },
 
-  created () {
-    this.getRegions();
-  },
-
   methods: {
     ...mapActions({
       replaceShowModalAddUser: "modalsManagementUser/replaceShowModalAddUser",
@@ -449,10 +470,10 @@ export default {
     submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          this.processingForm = true
           this.createUser().then(response => {
             const { status } = response.data;
             if (status) {
-              this.$refs.form.resetFields();
               this.replaceShowModalAddUser({ show: false });
               this.getUsers();
             }
@@ -463,21 +484,24 @@ export default {
 
     createUser () {
       const formData = new FormData();
-
       let keys = Object.keys(this.form);
       keys.forEach(val => {
         formData.append(val, this.form[val]);
-      });
+      })
 
       const data = formData;
-
       return new Promise((resolve, reject) => {
         this.$userAPI
           .create({ data })
           .then(response => {
+            this.processingForm = false
+            this.$toast.success(`El usuario se registro con éxito`)
             resolve(response);
           })
-          .catch(error => reject(error));
+          .catch(error => {
+            this.processingForm = false
+            reject(error)
+          });
       });
     },
 

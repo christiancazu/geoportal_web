@@ -42,7 +42,7 @@
           />
           <el-table-column
             label="Apellidos"
-            prop="lastName"
+            prop="fullName"
           />
           <el-table-column
             label="Correo Electrónico"
@@ -51,6 +51,7 @@
           <el-table-column
             label="Rol"
             prop="tag"
+            align="center"
           >
             <template slot-scope="scope">
               <el-tag
@@ -72,12 +73,12 @@
                 type="primary"
                 @click="handleEdit(scope.$index, scope.row)"
               />
-              <el-button
-                size="small"
-                circle
-                type="danger"
-                icon="el-icon-delete"
-                @click="handleDelete(scope.$index, scope.row)"
+              <BtnConfirm
+                :item-selected="scope.row"
+                @confirmed-action="deleteUser"
+                accion="deleted"
+                title="¿Eliminar cuenta de usuario?"
+                body-text="¿Esta seguro?, realizada la operación no se podra revertir"
               />
             </template>
           </el-table-column>
@@ -107,12 +108,14 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
+import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalAddUser from '@/components/users/ModalAddUser.vue'
 import ModalEditUser from '@/components/users/ModalEditUser.vue'
 import ModalDeleteUser from '@/components/users/ModalDeleteUser.vue'
 export default {
   components: {
     BasePage,
+    BtnConfirm,
     ModalAddUser,
     ModalEditUser,
     ModalDeleteUser
@@ -140,12 +143,10 @@ export default {
         if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
           return item
         }
-
         // checking hs no image
         if (item.name && item.name.toString().toLowerCase().includes(search)) {
           return item
         }
-
         // checking current tax rate
         if (item.email && item.email.toString().toLowerCase().includes(search)) {
           return item
@@ -164,10 +165,20 @@ export default {
       replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
       replaceShowModalDeleteUser: 'modalsManagementUser/replaceShowModalDeleteUser',
       getUsers: 'users/getUsers',
+      getUser: 'users/getUser'
     }),
-    handleEdit (index, row) {
+    handleEdit (index, item) {
+      this.getUser({ id: item.id })
       this.replaceShowModalEditUser({ show: true })
-      console.log(index, row)
+    },
+    deleteUser (item) {
+      new Promise((resolve, reject) => {
+        this.$userAPI.delete({ id: item.itemSelected.id })
+          .then(response => {
+            resolve(response)
+            this.getUsers()
+          }).catch(error => reject(error))
+      })
     },
     handleDelete (index, row) {
       this.replaceShowModalDeleteUser({ show: true })

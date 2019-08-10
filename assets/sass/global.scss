@@ -110,6 +110,8 @@ label {
   padding-left: 15px !important;
   padding-right: 15px !important;
   padding-top: 15px !important;
+  border-bottom: 1px solid #EBEEF5;
+  font-weight: bold;
 }
 .el-message-box--center {
   padding-bottom: 10px !important;
@@ -117,6 +119,10 @@ label {
 .el-message-box__content {
   padding-bottom: 0px !important;
   padding-top: 0px !important;
+}
+.el-message-box__message {
+  padding-bottom: 0.7rem;
+  padding-top: 0.7rem;
 }
 
 .el-select .el-input.is-disabled .el-input__inner, .el-input.is-disabled .el-input__inner, .el-textarea.is-disabled .el-textarea__inner {
@@ -129,3 +135,8 @@ label {
 .el-input.is-disabled .el-input__icon, .el-pagination button:disabled {
   cursor: default !important;
 }
+
+.el-switch__label.is-active {
+  font-weight: bold;
+}
+
