@@ -42,19 +42,19 @@
             :route="{ path: '/managementUsers/users' }"
             index="/managementUsers/users"
           >
-            Usuarios Aprobados
+            Usuarios
           </el-menu-item>
           <el-menu-item
             index="/managementUsers/pendingUsers"
             :route="{ path: '/managementUsers/pendingUsers' }"
           >
-            Usuarios pendientes
+            Solicitudes pendientes
           </el-menu-item>
           <el-menu-item
             index="/managementUsers/rejectedUsers"
             :route="{ path: '/managementUsers/rejectedUsers' }"
           >
-            Usuarios rechazados
+            Solicitudes rechazados
           </el-menu-item>
 
         </el-submenu>

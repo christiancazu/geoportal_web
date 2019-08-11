@@ -1,5 +1,5 @@
 <template>
-  <BasePage title="Usuarios Aprobados">
+  <BasePage title="Usuarios">
     <template v-slot:itemsActions>
       <el-button
         size="mini"
