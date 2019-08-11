@@ -15,10 +15,7 @@ export default {
       content: process.env.npm_package_description || ''
     }
     ],
-    link: [{
-      rel: 'stylesheet',
-      href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
-    }, {
+    link: [ {
       rel: 'stylesheet',
       href: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.css'
     },
@@ -28,8 +25,6 @@ export default {
     }],
     script: [{
       src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js'
-    }, {
-      src: 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'
     }, {
       src: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.js'
     },
