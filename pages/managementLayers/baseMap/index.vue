@@ -41,25 +41,32 @@
             prop="name"
           />
           <el-table-column
-            label="URL"
-            prop="url"
-          />
-          <el-table-column
             label="Autor"
             prop="author"
           />
           <el-table-column
-            label="Actions"
+            label="URL"
+            prop="url"
+          />
+          <el-table-column
+            prop="url"
+            align="center"
+          >
+            <template
+              slot="header"
+            >
+            <p class="ma-0">Zoom</p>
+            <small>[min, max]</small>
+            </template>
+            <template slot-scope="scope">
+              {{ `[${scope.row.minZoom} - ${scope.row.maxZoom}]` }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Acción"
             align="center"
           >
             <template slot-scope="scope">
-              <el-button
-                circle
-                icon="el-icon-edit"
-                size="small"
-                type="primary"
-                @click="handleEdit(scope.$index, scope.row)"
-              />
               <BtnConfirm
                 :item-selected="scope.row"
                 @confirmed-action="deleteBaseMap"
