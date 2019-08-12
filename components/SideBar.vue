@@ -55,7 +55,7 @@
             index="/managementUsers/rejectedUsers"
             :route="{ path: '/managementUsers/rejectedUsers' }"
           >
-            Solicitudes rechazados
+            Solicitudes rechazadas
           </el-menu-item>
 
         </el-submenu>

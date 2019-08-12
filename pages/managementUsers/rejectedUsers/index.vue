@@ -1,5 +1,5 @@
 <template>
-  <BasePage title="solicitudes rechazadas">
+  <BasePage title="Solicitudes rechazadas">
     <template v-slot:content>
       <el-container direction="vertical">
         <el-row
