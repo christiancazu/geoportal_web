@@ -19,6 +19,15 @@ body {
 .font-weight-bold {
   font-weight: 700 !important;
 }
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+.text-none {
+  text-transform: none !important;
+}
+.text-uppercase {
+  text-transform: uppercase !important;
+}
 
 label {
   padding-bottom: 0px !important;
@@ -104,7 +113,10 @@ label {
 .el-submenu .el-menu-item {
   padding-left: 3.3rem !important;
 }
-
+.el-dialog__body{
+  padding-bottom: 20px !important;
+  padding-top: 20px !important;
+}
 .el-dialog__header, .el-message-box__header {
   padding-bottom: 15px !important;
   padding-left: 15px !important;
@@ -112,6 +124,10 @@ label {
   padding-top: 15px !important;
   border-bottom: 1px solid #EBEEF5;
   font-weight: bold;
+}
+.el-dialog__footer {
+  border-top: 1px solid #EBEEF5;
+  padding: 10px 10px !important;
 }
 .el-message-box--center {
   padding-bottom: 10px !important;

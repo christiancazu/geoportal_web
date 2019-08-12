@@ -41,54 +41,16 @@
             prop="email"
           />
           <el-table-column
-            label="Motivo de uso"
-            align="center"
-          >
-            <template slot-scope="scope">
-              <el-popover
-                trigger="hover"
-                placement="top"
-                width="200px"
-              >
-                {{`${scope.row.subject}`}}
-
-                <div
-                  slot="reference"
-                  class="name-wrapper"
-                >
-                  <el-link
-                    type="primary"
-                    icon="el-icon-view"
-                  >
-                    <div class="text-nowrap">
-                      {{`${scope.row.subject}`}}
-                    </div>
-                  </el-link>
-                </div>
-              </el-popover>
-            </template>
-          </el-table-column>
-          <el-table-column
             label="Actions"
             align="center"
           >
             <template slot-scope="scope">
-              <BtnConfirm
-                :item-selected="scope.row"
-                @confirmed-action="acceptUser"
-                accion="accepted"
-                title="Aceptar solicitud usuario"
-                body-text="¿Esta seguro de aceptar la solicitud de usuario?"
-              />
-              <BtnConfirm
-                :item-selected="scope.row"
-                @confirmed-action="rejectUser"
-                accion="rejected"
-                title="Rechazar solicitud usuario"
-                body-text="¿Esta seguro de rechazar la solicitud de usuario?"
-                :input="true"
-                inputType="textarea"
-                inputPlaceholder="Observación"
+              <el-button
+                circle
+                icon="el-icon-view"
+                size="small"
+                type="primary"
+                @click="onLoadModalViewRequestPending(scope.$index, scope.row)"
               />
             </template>
           </el-table-column>
@@ -108,6 +70,9 @@
         </el-pagination>
       </el-container>
     </template>
+    <template v-slot:modals>
+      <ModalViewPendingRequest />
+    </template>
   </BasePage>
 </template>
 
@@ -115,10 +80,12 @@
 import { mapActions, mapState } from "vuex";
 import BasePage from "@/components/base/BasePage.vue";
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
+import ModalViewPendingRequest from "@/components/users/ModalViewPendingRequest.vue";
 export default {
   components: {
     BasePage,
-    BtnConfirm
+    BtnConfirm,
+    ModalViewPendingRequest
   },
 
   data () {
@@ -169,7 +136,9 @@ export default {
 
   methods: {
     ...mapActions({
-      getPendingRequests: "userRequests/getPendingRequests"
+      getPendingRequests: "userRequests/getPendingRequests",
+      replaceCurrentPendingRequest: "userRequests/replaceCurrentPendingRequest",
+      replaceShowModalViewPendingRequest: "modalsManagementUser/replaceShowModalViewPendingRequest"
     }),
 
     acceptUser (item) {
@@ -198,6 +167,11 @@ export default {
             this.getPendingRequests()
           }).catch(error => reject(error))
       })
+    },
+
+    onLoadModalViewRequestPending (index, item) {
+      this.replaceCurrentPendingRequest({ request: item })
+      this.replaceShowModalViewPendingRequest({ show: true })
     },
 
     // pagination 

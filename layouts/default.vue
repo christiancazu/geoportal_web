@@ -37,19 +37,8 @@ export default {
   computed: {
     ...mapState({
       loggedIn: state => state.auth.loggedIn
-    }),
-
-    isHideSidebar: function () {
-      return this.isCollapse ? 'hideSidebar' : 'openSidebar'
-    }
-
+    })
   },
-  mounted () {
-    // window.addEventListener("resize", this.handleResize);
-    // this.handleResize();
-  },
-
-  created () { },
 
   methods: {
     ...mapActions({
@@ -62,9 +51,3 @@ export default {
   }
 };
 </script>
-<style>
-.init {
-  /* height: 100vh; */
-  padding-top: 60px;
-}
-</style>

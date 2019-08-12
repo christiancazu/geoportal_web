@@ -238,15 +238,15 @@
             :md="12"
           >
             <el-form-item
-              class="text-xs-center"
+              class="text-xs-center label-success"
               label="Cuenta"
             >
               <el-switch
                 class="text-xs-center"
                 style="display: block"
                 v-model="form.status"
-                inactive-color="#6376f7"
-                active-color="#6376f7"
+                inactive-color="#67C23A"
+                active-color="#67C23A"
                 inactive-text="Activa"
                 active-text="Inactiva"
                 inactive-value="AC"
@@ -424,3 +424,10 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.label-success {
+  .el-switch__label.is-active {
+    color: #67c23a;
+  }
+}
+</style>

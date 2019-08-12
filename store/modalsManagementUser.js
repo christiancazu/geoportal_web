@@ -2,14 +2,14 @@ import {
   REPLACE_SHOW_MODAL_ADD_USER,
   REPLACE_SHOW_MODAL_EDIT_USER,
   REPLACE_SHOW_MODAL_DELETE_USER,
-  REPLACE_BREAKPOINTS
+  REPLACE_SHOW_MODAL_VIEW_PENDING_REQUEST
 } from '../types/mutation-types'
 
 export const state = () => ({
   showModalAddUser: false,
   showModalEditUser: false,
   showModalDeleteUser: false,
-  breakpoints: null
+  showModalViewPendingRequest: false
 })
 
 export const actions = {
@@ -22,8 +22,8 @@ export const actions = {
   replaceShowModalDeleteUser({commit}, payload) {
     commit('REPLACE_SHOW_MODAL_DELETE_USER', payload)
   },
-  replaceBreakpoints({commit}, payload) {
-    commit('REPLACE_BREAKPOINTS', payload)
+  replaceShowModalViewPendingRequest({commit}, payload) {
+    commit('REPLACE_SHOW_MODAL_VIEW_PENDING_REQUEST', payload)
   }
 }
 
@@ -37,7 +37,7 @@ export const mutations = {
   [REPLACE_SHOW_MODAL_DELETE_USER](state, { show }) {
     state.showModalDeleteUser = show
   },
-  [REPLACE_BREAKPOINTS](state, { data }) {
-    state.breakpoints = data
+  [REPLACE_SHOW_MODAL_VIEW_PENDING_REQUEST](state, { show }) {
+    state.showModalViewPendingRequest = show
   }
 }
