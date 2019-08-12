@@ -50,6 +50,10 @@ export const actions = {
       commit('REPLACE_LOADING_USER', { loading: false })
     }
   },
+
+  replaceUser ({ commit }, payload) {
+    commit('REPLACE_USER', { payload })
+  }
 }
 
 export const mutations = {

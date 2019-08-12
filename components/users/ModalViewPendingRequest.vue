@@ -40,26 +40,24 @@
       </div>
     </template>
     <template v-slot:actions>
-      <div class="text-xs-center">
-        <el-button
-          class="ma-2"
-          type="danger"
-          size="small"
-          native-type="submit"
-          :disabled="processingAcceptance"
-          :loading="processingRejection"
-          @click.prevent="submitFormReject"
-        >RECHAZAR SOLICITUD</el-button>
-        <el-button
-          class="ma-2"
-          type="success"
-          size="small"
-          native-type="submit"
-          :disabled="processingRejection"
-          :loading="processingAcceptance"
-          @click.prevent="acceptRequest"
-        >APROBAR SOLICITUD</el-button>
-      </div>
+      <el-button
+        class="ma-2"
+        type="danger"
+        size="small"
+        native-type="submit"
+        :disabled="processingAcceptance"
+        :loading="processingRejection"
+        @click.prevent="submitFormReject"
+      >RECHAZAR SOLICITUD</el-button>
+      <el-button
+        class="ma-2"
+        type="success"
+        size="small"
+        native-type="submit"
+        :disabled="processingRejection"
+        :loading="processingAcceptance"
+        @click.prevent="acceptRequest"
+      >APROBAR SOLICITUD</el-button>
     </template>
   </BaseModal>
 </template>

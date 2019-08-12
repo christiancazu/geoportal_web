@@ -27,7 +27,6 @@
             <el-form-item
               label="Imagen de Perfil"
               class="text-xs-center"
-              prop="image"
             >
               <el-upload
                 class="avatar-uploader"
@@ -51,10 +50,7 @@
           </el-col>
           <el-col :md="12">
             <!-- username -->
-            <el-form-item
-              label="Nombre de Usuario"
-              prop="username"
-            >
+            <el-form-item label="Nombre de Usuario">
               <el-input
                 v-model="user.username"
                 type="text"
@@ -64,10 +60,7 @@
             </el-form-item>
 
             <!-- email -->
-            <el-form-item
-              label="Correo Electrónico"
-              prop="email"
-            >
+            <el-form-item label="Correo Electrónico">
               <el-input
                 disabled
                 v-model="user.email"
@@ -132,10 +125,7 @@
             :sm="8"
           >
             <!-- regionId -->
-            <el-form-item
-              label="Región"
-              prop="regionId"
-            >
+            <el-form-item label="Región">
               <el-select
                 v-model="user.regionId"
                 value-key="id"
@@ -158,11 +148,7 @@
             :sm="8"
           >
             <!-- porvincia -->
-            <el-form-item
-              label="Provincia"
-              prop="provinceId"
-              ref="provinceId"
-            >
+            <el-form-item label="Provincia">
               <el-select
                 v-model="user.provinceId"
                 value-key="id"
@@ -188,7 +174,6 @@
             <el-form-item
               label="Distrito"
               prop="districtId"
-              ref="districtId"
             >
               <el-select
                 v-model="form.districtId"
@@ -260,12 +245,16 @@
     </template>
     <template v-slot:actions>
       <el-button
+        class="ma-2"
         :disabled="processingForm"
+        size="small"
         @click="replaceShowModalEditUser({ show: false })"
       >CANCELAR</el-button>
       <el-button
         type="primary"
+        class="ma-2"
         native-type="submit"
+        size="small"
         :loading="processingForm"
         @click.prevent="submitForm"
       >GUARDAR</el-button>
@@ -312,6 +301,7 @@ export default {
       if (!newState) {
         this.$refs.form.resetFields()
         this.imageSelected = ""
+        this.replaceUser({ user: null })
         return false
       }
       this.getRegions()
@@ -348,7 +338,9 @@ export default {
       getDistricts: "regions/getDistricts",
       replaceProvinces: "regions/replaceProvinces",
       replaceDistricts: "regions/replaceDistricts",
-      getUsers: "users/getUsers"
+      getUsers: "users/getUsers",
+      getUser: "users/getUser",
+      replaceUser: "users/replaceUser"
     }),
 
     setFormField () {
@@ -357,7 +349,6 @@ export default {
       this.form.name = this.user.name
       this.form.lastName = this.user.lastName
       this.form.lastNameAditional = this.user.lastNameAditional
-      this.form.uploadImage = this.user.image
       this.imageSelected = this.user.image
       this.form.status = this.user.status
 
@@ -369,14 +360,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.processingForm = true
-          this.createUser().then(response => {
-            const { status } = response.data;
-            if (status) {
-              this.$refs.form.resetFields();
-              this.replaceShowModalEditUser({ show: false });
-              this.getUsers();
-            }
-          });
+          this.updateUser()
         }
       });
     },
@@ -387,14 +371,24 @@ export default {
       keys.forEach(val => {
         data.append(val, this.form[val]);
       });
+      const id = this.user.id
 
       return new Promise((resolve, reject) => {
         this.$userAPI
-          .update({ data })
+          .update({ data, id })
           .then(response => {
             this.processingForm = false
-            this.$toast.success(`El usuario ha sido actualizado con éxito`)
-
+            if (response.data.status) {
+              this.$refs.form.resetFields();
+              this.replaceShowModalEditUser({ show: false })
+              this.getUsers()
+              this.$toast.success(`El usuario ha sido actualizado con éxito`)
+            } else {
+              this.getUser({ id: this.user.id })
+                .then(response => {
+                  this.setFormField()
+                })
+            }
             resolve(response);
           })
           .catch(error => {

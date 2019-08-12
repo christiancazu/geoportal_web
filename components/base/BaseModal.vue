@@ -9,7 +9,9 @@
       <slot name="content" />
 
       <template slot="footer">
-        <slot name="actions" />
+        <div class="text-xs-center">
+          <slot name="actions" />
+        </div>
       </template>
 
       <slot name="modals" />
@@ -36,16 +38,16 @@ export default {
 
   computed: {
     showModalNow: {
-      get() {
+      get () {
         return this.showModal;
       },
-      set(value) {
+      set (value) {
         this.$emit("action-modal", { show: value });
       }
     }
   },
 
-  mounted() {
+  mounted () {
     // console.log(this.$break);
   },
 

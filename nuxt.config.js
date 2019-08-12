@@ -15,7 +15,7 @@ export default {
       content: process.env.npm_package_description || ''
     }
     ],
-    link: [ {
+    link: [{
       rel: 'stylesheet',
       href: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.css'
     },

@@ -50,7 +50,6 @@
           </el-col>
           <el-col :md="12">
             <!-- username -->
-            <p>{{imageSelected}}</p>
             <el-form-item
               label="Nombre de Usuario"
               prop="username"
@@ -296,10 +295,14 @@
     </template>
     <template v-slot:actions>
       <el-button
+        class="ma-2"
+        size="small"
         :disabled="processingForm"
         @click="replaceShowModalAddUser({ show: false })"
       >CANCELAR</el-button>
       <el-button
+        class="ma-2"
+        size="small"
         type="primary"
         native-type="submit"
         :loading="processingForm"

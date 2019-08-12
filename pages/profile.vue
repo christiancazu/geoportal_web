@@ -190,7 +190,6 @@
             <el-form-item
               label="Distrito"
               prop="districtId"
-              ref="districtId"
             >
               <el-select
                 v-model="form.districtId"
