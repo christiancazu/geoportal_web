@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    title="Agregar Autor"
+    title="Agregar mapa base"
     :show-modal="showModalAddBaseMap"
     @action-modal="replaceShowModalAddBaseMap"
   >
@@ -15,17 +15,76 @@
         class="demo-ruleForm"
         @submit.prevent="submitForm"
       >
-        <!-- username -->
-        <el-form-item label="Nombre del Mapa Base" prop="name">
-          <el-input v-model="form.name" type="text" autocomplete="off" />
-        </el-form-item>
+        <el-row
+          :gutter="10"
+          style="display:flex;"
+        >
+          <el-col
+            :xs="24"
+            :sm="12"
+            :md="14"
+          >
+            <!-- base map name -->
+            <el-form-item
+              label="Nombre del Mapa Base"
+              prop="name"
+            >
+              <el-input
+                v-model="form.name"
+                type="text"
+                autocomplete="off"
+              />
+            </el-form-item>
+            <!-- url base map -->
+            <el-form-item
+              label="URL"
+              prop="url"
+            >
+              <el-input
+                v-model="form.url"
+                type="text"
+                autocomplete="off"
+              >
+                <el-button
+                  slot="append"
+                  icon="el-icon-full-screen"
+                  @click="previewBaseMap"
+                ></el-button>
+              </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="24"
+            :sm="12"
+            :md="10"
+          >
+            <div class="demo-image__error">
+              <div
+                v-if="!!form.url"
+                id="map"
+                class="map"
+              ></div>
+              <el-image
+                v-else
+                fit="contain"
+              >
+                <div
+                  slot="error"
+                  class="image-slot"
+                >
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </div>
+          </el-col>
+        </el-row>
 
-        <!-- email -->
-        <el-form-item label="URL" prop="url">
-          <el-input v-model="form.url" type="text" autocomplete="off" />
-        </el-form-item>
         <el-form-item label="Referente">
-          <el-input v-model="form.author" type="text" autocomplete="off" />
+          <el-input
+            v-model="form.author"
+            type="text"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item label="Descripción">
           <el-input
@@ -37,16 +96,26 @@
             :show-word-limit="true"
           />
         </el-form-item>
-        <el-checkbox class="mb-3" v-model="checked">¿Necesita Autenticación?</el-checkbox>
-        <el-form-item label="Token" v-if="checked">
-          <el-input v-model="form.authenticationToken" type="text" autocomplete="off" />
+        <el-checkbox
+          class="mb-3"
+          v-model="checked"
+        >¿Necesita Autenticación?</el-checkbox>
+        <el-form-item
+          label="Token"
+          v-if="checked"
+        >
+          <el-input
+            v-model="form.authenticationToken"
+            type="text"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item label="Nivel de Zoom">
           <el-slider
             v-model="rangeZoom"
             range
             :min="1"
-            :max="100"
+            :max="20"
             :marks="marks"
             class="mb-3 pl-5"
             style="width:80%;"
@@ -63,7 +132,11 @@
     </template>
     <template v-slot:actions>
       <el-button @click="replaceShowModalAddBaseMap({ show: false })">Cancel</el-button>
-      <el-button type="primary" native-type="submit" @click.prevent="submitForm">Confirm</el-button>
+      <el-button
+        type="primary"
+        native-type="submit"
+        @click.prevent="submitForm"
+      >Confirm</el-button>
     </template>
   </BaseModal>
 </template>
@@ -75,13 +148,16 @@ export default {
   components: {
     BaseModal
   },
-  data() {
+  data () {
     return {
+      map: null,
+      tileLayer: null,
       checked: false,
       rangeZoom: [5, 18],
+      processingForm: false,
       form: {
         name: "",
-        url: "",
+        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         description: "",
         author: "",
         minZoom: "",
@@ -111,7 +187,7 @@ export default {
   },
 
   watch: {
-    showModalAddBaseMap: function(newState, oldState) {
+    showModalAddBaseMap: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         return false;
@@ -123,16 +199,14 @@ export default {
     ...mapState({}),
 
     showModalAddBaseMap: {
-      get() {
+      get () {
         return this.$store.state.modalsManagementLayer.showModalAddBaseMap;
       },
-      set(value) {
+      set (value) {
         this.replaceShowModalAddBaseMap({ show: value });
       }
     }
   },
-
-  created() {},
 
   methods: {
     ...mapActions({
@@ -141,7 +215,7 @@ export default {
       getBaseMaps: "baseMaps/getBaseMaps"
     }),
 
-    submitForm() {
+    submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.createBaseMap().then(response => {
@@ -155,7 +229,7 @@ export default {
       });
     },
 
-    createBaseMap() {
+    createBaseMap () {
       this.form.minZoom = this.rangeZoom[0];
       this.form.maxZoom = this.rangeZoom[1];
 
@@ -169,7 +243,29 @@ export default {
           })
           .catch(error => reject(error));
       });
+    },
+
+    previewBaseMap () {
+      if (!this.form.url) {
+        return false
+      }
+      
+      if (!this.map) {
+        let latlng = L.latLng(-16.39, -71.53)
+        this.map = L.map("map").setView(latlng, 5)
+      }
+
+      L.tileLayer(this.form.url, {
+        attribution:
+          '&copy; contributors'
+      }).addTo(this.map);
+
     }
   }
 };
 </script>
+<style lang="scss">
+.map {
+  height: 200px;
+}
+</style>

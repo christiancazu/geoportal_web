@@ -29,9 +29,6 @@ export default {
       src: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.js'
     },
     {
-      src: 'js/leaflet.wms.js'
-    },
-    {
       src: 'https://kit.fontawesome.com/3122b9c598.js'
     }
     ],

@@ -177,3 +177,19 @@ label {
     height: 0;
   }
 }
+
+// image 
+.demo-image__error {
+  height: 100%;
+  .image-slot {
+  font-size: 30px;
+}}
+.demo-image__error .image-slot, .demo-image__placeholder .image-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: #f5f7fa;
+  color: #909399;
+}
