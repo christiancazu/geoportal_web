@@ -13,6 +13,7 @@
         :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
+        :disabled="processingForm"
         @submit.prevent="submitForm"
       >
         <el-row
@@ -79,14 +80,20 @@
           </el-col>
         </el-row>
 
-        <el-form-item label="Referente">
+        <el-form-item
+          label="Referente"
+          prop="author"
+        >
           <el-input
             v-model="form.author"
             type="text"
             autocomplete="off"
           />
         </el-form-item>
-        <el-form-item label="Descripción">
+        <el-form-item
+          label="Descripción"
+          prop="description"
+        >
           <el-input
             v-model="form.description"
             type="textarea"
@@ -102,6 +109,7 @@
         >¿Necesita Autenticación?</el-checkbox>
         <el-form-item
           label="Token"
+          prop="authenticationToken"
           v-if="checked"
         >
           <el-input
@@ -131,12 +139,18 @@
       </el-form>
     </template>
     <template v-slot:actions>
-      <el-button @click="replaceShowModalAddBaseMap({ show: false })">Cancel</el-button>
       <el-button
+      size="small"
+        :disabled="processingForm"
+        @click="replaceShowModalAddBaseMap({ show: false })"
+      >CANCELAR</el-button>
+      <el-button
+      size="small"
+        :loading="processingForm"
         type="primary"
         native-type="submit"
         @click.prevent="submitForm"
-      >Confirm</el-button>
+      >GUARDAR MAPA BASE</el-button>
     </template>
   </BaseModal>
 </template>
@@ -157,7 +171,7 @@ export default {
       processingForm: false,
       form: {
         name: "",
-        url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        url: "",
         description: "",
         author: "",
         minZoom: "",
@@ -179,7 +193,7 @@ export default {
         url: [
           {
             required: true,
-            message: "El nombre es requerido"
+            message: "La url del mapa base es requrido"
           }
         ]
       }
@@ -218,18 +232,13 @@ export default {
     submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.createBaseMap().then(response => {
-            let { status } = response.data;
-            if (status) {
-              this.replaceShowModalAddBaseMap({ show: false });
-              this.getBaseMaps();
-            }
-          });
+          this.createBaseMap()
         }
-      });
+      })
     },
 
     createBaseMap () {
+      this.processingForm = true
       this.form.minZoom = this.rangeZoom[0];
       this.form.maxZoom = this.rangeZoom[1];
 
@@ -239,17 +248,27 @@ export default {
         this.$baseMapAPI
           .create({ data })
           .then(response => {
-            resolve(response);
+            this.processingForm = false
+            const { status } = response.data;
+            if (status) {
+              this.replaceShowModalAddBaseMap({ show: false })
+              this.$toast.success(`Mapa Base registrado con éxito`)
+              this.getBaseMaps()
+            }
+            resolve(response)
           })
-          .catch(error => reject(error));
-      });
+          .catch(error => {
+            this.processingForm = false
+            reject(error)
+          })
+      })
     },
 
     previewBaseMap () {
       if (!this.form.url) {
         return false
       }
-      
+
       if (!this.map) {
         let latlng = L.latLng(-16.39, -71.53)
         this.map = L.map("map").setView(latlng, 5)

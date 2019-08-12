@@ -139,15 +139,15 @@ export default {
       let users = this.$store.state.users.users
       this.currentPage = 1
       return users.filter(item => {
-        // checking description
+        // checking lastName
         if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
           return item
         }
-        // checking hs no image
+        // checking name
         if (item.name && item.name.toString().toLowerCase().includes(search)) {
           return item
         }
-        // checking current tax rate
+        // checking email
         if (item.email && item.email.toString().toLowerCase().includes(search)) {
           return item
         }

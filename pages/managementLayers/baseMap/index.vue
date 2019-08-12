@@ -32,7 +32,7 @@
           </el-col>
         </el-row>
         <el-table
-          :data="baseMaps.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
           v-loading="loadingBaseMaps"
         >
@@ -60,16 +60,28 @@
                 type="primary"
                 @click="handleEdit(scope.$index, scope.row)"
               />
-              <el-button
-                size="small"
-                circle
-                type="danger"
-                icon="el-icon-delete"
-                @click="handleDelete(scope.$index, scope.row)"
+              <BtnConfirm
+                :item-selected="scope.row"
+                @confirmed-action="deleteBaseMap"
+                accion="deleted"
+                title="¿Eliminar Mapa Base?"
+                body-text="¿Esta seguro de continuar con la operación?"
               />
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination
+          small
+          class="pt-4 text-xs-right"
+          :pager-size="100"
+          :page-size="pagesize"
+          layout="prev, pager, next, sizes"
+          :total="filteredData.length"
+          :current-page="currentPage"
+          @current-change="onChangeCurrentPage"
+          @size-change="onChangePageSize"
+        >
+        </el-pagination>
       </el-container>
     </template>
     <template v-slot:modals>
@@ -81,23 +93,46 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
+import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalAddBaseMap from '@/components/layers/ModalAddBaseMap.vue'
 export default {
   components: {
     BasePage,
+    BtnConfirm,
     ModalAddBaseMap,
   },
   data () {
     return {
-      search: ''
+      search: '',
+      pagesize: 10,
+      currentPage: 1
     }
   },
 
   computed: {
     ...mapState({
-      baseMaps: state => state.baseMaps.baseMaps,
       loadingBaseMaps: state => state.baseMaps.loadingBaseMaps
-    })
+    }),
+
+    filteredData: function () {
+      let search = this.search.toString().toLowerCase()
+      let baseMaps = this.$store.state.baseMaps.baseMaps
+      this.currentPage = 1
+      return baseMaps.filter(item => {
+        // checking description
+        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
+          return item
+        }
+        // checking hs no image
+        if (item.name && item.name.toString().toLowerCase().includes(search)) {
+          return item
+        }
+        // checking current tax rate
+        if (item.email && item.email.toString().toLowerCase().includes(search)) {
+          return item
+        }
+      })
+    },
   },
 
   created () {
@@ -115,10 +150,24 @@ export default {
       this.replaceShowModalEditUser({ show: true })
       console.log(index, row)
     },
-    handleDelete (index, row) {
-      this.replaceShowModalDeleteUser({ show: true })
-      console.log(index, row)
-    }
+
+    deleteBaseMap (item) {
+      new Promise((resolve, reject) => {
+        this.$baseMapAPI.delete({ id: item.itemSelected.id })
+          .then(response => {
+            resolve(response)
+            this.getBaseMaps()
+          }).catch(error => reject(error))
+      })
+    },
+
+    // pagination 
+    onChangeCurrentPage: function (currentPage) {
+      this.currentPage = currentPage;
+    },
+    onChangePageSize: function (pagesize) {
+      this.pagesize = pagesize;
+    },
   }
 }
 </script>
