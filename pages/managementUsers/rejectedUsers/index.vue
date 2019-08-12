@@ -9,7 +9,7 @@
         >
           <el-col
             :xs="24"
-            :sm="8"
+            :sm="12"
             :md="8"
           >
             <div>
@@ -40,6 +40,34 @@
             label="Correo Electrónico"
             prop="email"
           />
+          <el-table-column
+            label="Observación"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <el-popover
+                trigger="hover"
+                placement="top"
+                width="200px"
+              >
+                {{`${scope.row.observation}`}}
+
+                <div
+                  slot="reference"
+                  class="name-wrapper"
+                >
+                  <el-link
+                    type="danger"
+                    icon="el-icon-view"
+                  >
+                    <div class="text-nowrap">
+                      {{`${scope.row.observation}`}}
+                    </div>
+                  </el-link>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
           <el-table-column
             label="Motivo de uso"
             align="center"

@@ -9,7 +9,7 @@
         >
           <el-col
             :xs="24"
-            :sm="8"
+            :sm="12"
             :md="8"
           >
             <div>
@@ -79,12 +79,10 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import BasePage from "@/components/base/BasePage.vue";
-import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalViewPendingRequest from "@/components/users/ModalViewPendingRequest.vue";
 export default {
   components: {
     BasePage,
-    BtnConfirm,
     ModalViewPendingRequest
   },
 
@@ -93,7 +91,6 @@ export default {
       search: "",
       pagesize: 10,
       currentPage: 1,
-
     };
   },
 
@@ -140,34 +137,6 @@ export default {
       replaceCurrentPendingRequest: "userRequests/replaceCurrentPendingRequest",
       replaceShowModalViewPendingRequest: "modalsManagementUser/replaceShowModalViewPendingRequest"
     }),
-
-    acceptUser (item) {
-      const data = {
-        id: item.itemSelected.id
-      }
-
-      new Promise((resolve, reject) => {
-        this.$userRequestAPI.approve({ data })
-          .then(response => {
-            resolve(response)
-            this.getPendingRequests()
-          }).catch(error => reject(error))
-      })
-    },
-
-    rejectUser (item) {
-      const data = {
-        observation: item.inputValue.value,
-        id: item.itemSelected.id
-      }
-      new Promise((resolve, reject) => {
-        this.$userRequestAPI.rejected({ data })
-          .then(response => {
-            resolve(response)
-            this.getPendingRequests()
-          }).catch(error => reject(error))
-      })
-    },
 
     onLoadModalViewRequestPending (index, item) {
       this.replaceCurrentPendingRequest({ request: item })
