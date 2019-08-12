@@ -3,10 +3,6 @@
     id="app"
     style="height:100vh;"
   >
-    <!-- <el-container>
-      <SideBar v-if="loggedIn" />
-      <el-main>Principal</el-main>
-    </el-container>-->
     <el-container
       :class="{ 'hideSidebar': isCollapse, 'openSidebar': !isCollapse }"
       style="min-height:100%"
@@ -15,8 +11,10 @@
         v-if="loggedIn"
         @is-collapse="onChangeCollapse"
       />
-      <!-- <SideBar /> -->
-      <el-main class="main-container pa-0">
+      <el-main
+        class="pa-0"
+        :class="{'main-container': loggedIn}"
+      >
         <nuxt />
       </el-main>
     </el-container>

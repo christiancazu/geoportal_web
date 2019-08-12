@@ -15,13 +15,10 @@ export default async ({ app, redirect, store, $auth }) => {
               }).catch(error => {
                 return redirect('/login')
               })
-          } else {
-            console.log('test')
           }
         })
     } catch (error) {
       $auth.logout()
-      console.log('Error fetchUser', error.response)
       return redirect('/login')
     }
   }

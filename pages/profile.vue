@@ -210,30 +210,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-            <!-- instituto -->
-            <el-form-item
-              label="Institución"
-              prop="institute"
-            >
-              <el-input
-                v-model="form.institute"
-                type="text"
-                disabled
-                autocomplete="off"
-              />
-            </el-form-item>
-        <el-form-item
-          label="¿Porque desea usar el Geoportal?"
-          prop="subject"
-        >
-          <el-input
-            v-model="form.subject"
-            type="textarea"
-            :rows="3"
-            disabled
-            autocomplete="off"
-          />
-        </el-form-item>
         <el-form-item class="text-xs-center mb-0">
           <el-button
             :loading="processingForm"

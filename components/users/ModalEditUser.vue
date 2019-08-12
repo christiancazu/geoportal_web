@@ -214,24 +214,6 @@
             :sm="12"
             :md="12"
           >
-            <!-- instituto -->
-            <el-form-item
-              label="Institución"
-              prop="institute"
-            >
-              <el-input
-                v-model="form.institute"
-                type="text"
-                disabled
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="12"
-            :sm="12"
-            :md="12"
-          >
             <el-form-item
               class="text-xs-center"
               label="Privilegio"
@@ -249,6 +231,12 @@
               >
               </el-switch>
             </el-form-item>
+          </el-col>
+          <el-col
+            :xs="12"
+            :sm="12"
+            :md="12"
+          >
             <el-form-item
               class="text-xs-center"
               label="Cuenta"
@@ -268,21 +256,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- objetivo -->
-        <el-form-item
-          label="¿Porque desea usar el Geoportal?"
-          prop="subject"
-        >
-          <el-input
-            v-model="form.subject"
-            type="textarea"
-            :rows="3"
-            disabled
-            autocomplete="off"
-            :maxlength="300"
-            :show-word-limit="true"
-          />
-        </el-form-item>
       </el-form>
     </template>
     <template v-slot:actions>
@@ -318,7 +291,7 @@ export default {
         lastName: '',
         lastNameAditional: '',
         uploadImage: '',
-        status:'AC'
+        status: 'AC'
       },
 
       rules: {
