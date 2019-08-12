@@ -28,8 +28,8 @@
             :before-upload="beforeAvatarUpload"
           >
             <img
-              v-if="imageUrl"
-              :src="imageUrl"
+              v-if="imageSelected"
+              :src="imageSelected"
               class="avatar"
             />
             <i
@@ -190,7 +190,6 @@
             <el-form-item
               label="Distrito"
               prop="districtId"
-              ref="districtId"
             >
               <el-select
                 v-model="form.districtId"
@@ -210,57 +209,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="10">
-          <el-col
-            :xs="12"
-            :sm="12"
-            :md="12"
-          >
-            <!-- instituto -->
-            <el-form-item
-              label="Institución"
-              prop="institute"
-            >
-              <el-input
-                v-model="form.institute"
-                type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="12"
-            :sm="12"
-            :md="12"
-          >
-            <el-form-item
-              class="text-xs-center"
-              label="Cuenta"
-            >
-              <el-switch
-                style="display: block"
-                v-model="form.type"
-                inactive-color="#6376f7"
-                active-color="#6376f7"
-                inactive-text="Activa"
-                active-text="Inactiva"
-              >
-              </el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item
-          label="¿Porque desea usar el Geoportal?"
-          prop="subject"
-        >
-          <el-input
-            v-model="form.subject"
-            type="textarea"
-            :rows="3"
-            disabled
-            autocomplete="off"
-          />
-        </el-form-item>
         <el-form-item class="text-xs-center mb-0">
           <el-button
             :loading="processingForm"
@@ -282,7 +230,7 @@ export default {
 
   data () {
     return {
-      imageUrl: "",
+      imageSelected: "",
       processingForm: false,
       profile: {},
       form: {
@@ -293,7 +241,7 @@ export default {
         status: '',
         institute: '',
         subject: '',
-        imageUrl: ''
+        uploadImage: ''
       },
 
       rules: {
@@ -328,7 +276,7 @@ export default {
       loadingDistricts: state => state.regions.loadingDistricts
     })
   },
-  
+
   created () {
     this.getRegions()
     this.getProfile()
@@ -366,7 +314,7 @@ export default {
 
       this.form.institute = data.institute
       this.form.subject = data.subject
-      this.imageUrl = data.image
+      this.imageSelected = data.image
 
       this.getProvinces({ params: { id: data.regionId } });
       this.getDistricts({ params: { id: data.provinceId } });
@@ -408,8 +356,8 @@ export default {
     },
 
     launchUploadAvatar (option) {
-      this.imageUrl = URL.createObjectURL(option.file);
-      this.form.imageUrl = option.file;
+      this.imageSelected = URL.createObjectURL(option.file);
+      this.form.uploadImage = option.file;
     },
 
     beforeAvatarUpload (file) {

@@ -1,5 +1,5 @@
 <template>
-  <BasePage title="Usuarios pendientes de aprobación">
+  <BasePage title="Solicitudes rechazadas">
     <template v-slot:content>
       <el-container direction="vertical">
         <el-row
@@ -9,7 +9,7 @@
         >
           <el-col
             :xs="24"
-            :sm="8"
+            :sm="12"
             :md="8"
           >
             <div>
@@ -24,62 +24,91 @@
           </el-col>
         </el-row>
         <el-table
-          :data="pendingRequests"
-          style="width: 100%"
+          :data="filteredData"
           v-loading="loadingPendingRequests"
         >
           <el-table-column
-            label="Name"
-            prop="name"
+            label="Institución"
+            prop="institute"
           />
+          <el-table-column label="Nombres y Apellidos">
+            <template slot-scope="scope">
+              {{`${scope.row.name} ${scope.row.lastName} ${scope.row.lastNameAditional}`}}
+            </template>
+          </el-table-column>
           <el-table-column
-            label="Name"
-            prop="lastName"
-          />
-          <el-table-column
-            label="Name"
+            label="Correo Electrónico"
             prop="email"
           />
           <el-table-column
-            label="Actions"
+            label="Observación"
             align="center"
           >
             <template slot-scope="scope">
-              <el-button
-                circle
-                icon="el-icon-view"
-                size="small"
-                type="info"
-              />
-              <BtnConfirm
-                :item-selected="scope.row"
-                @confirmed-action="acceptUser"
-                accion="accepted"
-                title="Aceptar solicitud usuario"
-                body-text="¿Esta seguro de aceptar la solicitud de usuario?"
-              />
-              <BtnConfirm
-                :item-selected="scope.row"
-                @confirmed-action="rejectUser"
-                accion="rejected"
-                title="Rechazar solicitud usuario"
-                body-text="¿Esta seguro de rechazar la solicitud de usuario?"
-                :input="true"
-                inputType="textarea"
-                inputPlaceholder="Observación"
-              />
+              <el-popover
+                trigger="hover"
+                placement="top"
+                width="200px"
+              >
+                {{`${scope.row.observation}`}}
+
+                <div
+                  slot="reference"
+                  class="name-wrapper"
+                >
+                  <el-link
+                    type="danger"
+                    icon="el-icon-view"
+                  >
+                    <div class="text-nowrap">
+                      {{`${scope.row.observation}`}}
+                    </div>
+                  </el-link>
+                </div>
+              </el-popover>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Motivo de uso"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <el-popover
+                trigger="hover"
+                placement="top"
+                width="200px"
+              >
+                {{`${scope.row.subject}`}}
+
+                <div
+                  slot="reference"
+                  class="name-wrapper"
+                >
+                  <el-link
+                    type="primary"
+                    icon="el-icon-view"
+                  >
+                    <div class="text-nowrap">
+                      {{`${scope.row.subject}`}}
+                    </div>
+                  </el-link>
+                </div>
+              </el-popover>
             </template>
           </el-table-column>
         </el-table>
-
         <el-pagination
           small
-          background
+          class="pt-4 text-xs-right"
+          :pager-size="100"
           :page-size="pagesize"
-          layout="prev, pager, next"
-          :total="dataDisplay.length"
-          @current-change="current_change"
-        ></el-pagination>
+          layout="prev, pager, next, sizes"
+          :total="filteredData.length"
+          :current-page="currentPage"
+          @current-change="onChangeCurrentPage"
+          @size-change="onChangePageSize"
+        >
+        </el-pagination>
       </el-container>
     </template>
   </BasePage>
@@ -100,102 +129,35 @@ export default {
       search: "",
       pagesize: 10,
       currentPage: 1,
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "Tom",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-09-04",
-          name: "John",
-          address: "No. 189, Grove St, Los Angeles"
-        }, {
-          date: "2016-05-04",
-          name: "John",
-          address: "No. 189, Grove St, Los Angeles"
-        }, {
-          date: "2016-05-04",
-          name: "Maria",
-          address: "No. 189, Grove St, Los Angeles"
-        }, {
-          date: "2016-05-04",
-          name: "Carolina",
-          address: "No. 189, Grove St, Los Angeles"
-        }, {
-          date: "2016-05-04",
-          name: "John",
-          address: "No. 189, Grove St, Los Angeles"
-        }, {
-          date: "2016-05-04",
-          name: "John",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-05-04",
-          name: "John",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-05-04",
-          name: "Jony deep",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-05-01",
-          name: "Morgan",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-05-03",
-          name: "Jessy",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-05-01",
-          name: "Morgan",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-05-03",
-          name: "Jessy",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-05-01",
-          name: "Morgan",
-          address: "No. 189, Grove St, Los Angeles"
-        },
-        {
-          date: "2016-05-03",
-          name: "Jessy",
-          address: "No. 189, Grove St, Los Angeles"
-        }
-      ]
     };
   },
 
   computed: {
     ...mapState({
-      pendingRequests: state => state.userRequests.pendingRequests,
       loadingPendingRequests: state => state.userRequests.loadingPendingRequests,
     }),
-
-    dataDisplay: function () {
+    filteredData: function () {
+      const rejectedRequests = this.$store.state.userRequests.rejectedRequests
       let search = this.search.toString().toLowerCase()
-      return this.tableData.filter(item => {
-        // checking description
-        if (item.date && item.date.toString().toLowerCase().includes(search)) {
-          return item
-        }
-
-        // checking hs no image
+      return rejectedRequests.filter(item => {
+        // checking name
         if (item.name && item.name.toString().toLowerCase().includes(search)) {
           return item
         }
-
-        // checking current tax rate
-        if (item.address && item.address.toString().toLowerCase().includes(search)) {
+        // checking lastName
+        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
+          return item
+        }
+        // checking lastNameAditional
+        if (item.lastNameAditional && item.lastNameAditional.toString().toLowerCase().includes(search)) {
+          return item
+        }
+        // checking institute
+        if (item.institute && item.institute.toString().toLowerCase().includes(search)) {
+          return item
+        }
+        // checking subject
+        if (item.subject && item.subject.toString().toLowerCase().includes(search)) {
           return item
         }
       })
@@ -209,42 +171,20 @@ export default {
   methods: {
     ...mapActions({
       getRejectedRequests: "userRequests/getRejectedRequests",
-      replaceShowModalAddUser: "modalsManagementUser/replaceShowModalAddUser",
-      replaceShowModalEditUser: "modalsManagementUser/replaceShowModalEditUser",
-      replaceShowModalDeleteUser:
-        "modalsManagementUser/replaceShowModalDeleteUser"
     }),
 
     current_change: function (currentPage) {
       this.currentPage = currentPage;
     },
 
-    acceptUser (item) {
-      const data = {
-        id: item.itemSelected.id
-      }
-
-      new Promise((resolve, reject) => {
-        this.$userRequestAPI.approve({ data })
-          .then(response => {
-            resolve(response)
-            this.getRejectedRequests()
-          }).catch(error => reject(error))
-      })
+    // pagination 
+    onChangeCurrentPage: function (currentPage) {
+      this.currentPage = currentPage;
     },
-    rejectUser (item) {
-      const data = {
-        observation: item.inputValue.value,
-        id: item.itemSelected.id
-      }
-      new Promise((resolve, reject) => {
-        this.$userRequestAPI.rejected({ data })
-          .then(response => {
-            resolve(response)
-            this.getRejectedRequests()
-          }).catch(error => reject(error))
-      })
-    }
+
+    onChangePageSize: function (pagesize) {
+      this.pagesize = pagesize;
+    },
   }
 };
 </script>

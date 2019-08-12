@@ -1,33 +1,25 @@
-export default function (ctx) {
+export default async ({ app, redirect, store, $auth }) => {
   if (process.server) {
     return
   }
-
-  let loggedIn = ctx.$auth.$state.loggedIn
-  let app = ctx.app
-  let auth = ctx.$auth
-  if (loggedIn) {
-    let tokenLocal = auth.getToken('local')
-    let token = tokenLocal.replace('Bearer ', '')
-    const data = { token }
-
-    new Promise((resolve, reject) => {
-      app.$refreshAPI.refreshToken({ data })
+  const isToken = $auth.getToken('local')
+  if ($auth.$state.loggedIn && !!isToken) {
+    const token = isToken.replace('Bearer ', '')
+    try {
+      app.$refreshAPI.refreshToken({ data: { token } })
         .then(response => {
-          auth.setToken('local', `Bearer ${response.data.token}`)
-          auth.fetchUser().then((res) => {
-          }).catch(error => {
-            return redirect('/login')
-          }).catch(error => {
-            console.log('user', error)
-          })
-          resolve(response);
+          if ($auth.$state.loggedIn) {
+            $auth.setToken('local', `Bearer ${response.data.token}`)
+            $auth.fetchUser()
+              .then(response => {
+              }).catch(error => {
+                return redirect('/login')
+              })
+          }
         })
-        .catch(error => {
-          auth.logout()
-          return ctx.redirect('/login')
-          reject(error)
-        });
-    })
+    } catch (error) {
+      $auth.logout()
+      return redirect('/login')
+    }
   }
 }

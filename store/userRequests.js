@@ -3,7 +3,7 @@ import {
   REPLACE_LOADING_PENDING_REQUESTS,
   REPLACE_REJECTED_REQUESTS,
   REPLACE_LOADING_REJECTED_REQUESTS,
-
+  REPLACE_CURRENT_PENDING_REQUEST
 } from '../types/mutation-types'
 
 export const state = () => ({
@@ -11,6 +11,7 @@ export const state = () => ({
   loadingPendingRequests: false,
   rejectedRequests: [],
   loadingRejectedRequests: false,
+  currentPendingRequest: null
 })
 
 export const actions = {
@@ -38,6 +39,10 @@ export const actions = {
     } finally {
       commit('REPLACE_LOADING_REJECTED_REQUESTS', { loading: false })
     }
+  },
+
+  replaceCurrentPendingRequest ({ commit }, payload) {
+    commit('REPLACE_CURRENT_PENDING_REQUEST', payload)
   }
 }
 
@@ -53,5 +58,8 @@ export const mutations = {
   },
   [REPLACE_LOADING_REJECTED_REQUESTS] (state, { loading }) {
     state.loadingRejectedRequests = loading
+  },
+  [REPLACE_CURRENT_PENDING_REQUEST] (state, { request }) {
+    state.currentPendingRequest = request
   },
 }

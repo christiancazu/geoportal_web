@@ -15,6 +15,7 @@
         class="demo-ruleForm"
         :disabled="processingForm"
         @submit.prevent="submitForm"
+        v-if="user"
       >
         <el-row
           :gutter="10"
@@ -26,7 +27,6 @@
             <el-form-item
               label="Imagen de Perfil"
               class="text-xs-center"
-              prop="image"
             >
               <el-upload
                 class="avatar-uploader"
@@ -50,25 +50,20 @@
           </el-col>
           <el-col :md="12">
             <!-- username -->
-            <p>{{imageSelected}}</p>
-            <el-form-item
-              label="Nombre de Usuario"
-              prop="username"
-            >
+            <el-form-item label="Nombre de Usuario">
               <el-input
-                v-model="form.username"
+                v-model="user.username"
                 type="text"
+                disabled
                 autocomplete="off"
               />
             </el-form-item>
 
             <!-- email -->
-            <el-form-item
-              label="Correo Electrónico"
-              prop="email"
-            >
+            <el-form-item label="Correo Electrónico">
               <el-input
-                v-model="form.email"
+                disabled
+                v-model="user.email"
                 type="text"
               />
             </el-form-item>
@@ -124,30 +119,26 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row :gutter="10">
           <el-col
             :xs="24"
             :sm="8"
           >
-            <!-- region -->
-            <el-form-item
-              label="Región"
-              prop="region"
-            >
+            <!-- regionId -->
+            <el-form-item label="Región">
               <el-select
-                v-model="form.region"
+                v-model="user.regionId"
                 value-key="id"
                 filterable
-                placeholder="Select"
+                disabled
                 :loading="loadingRegions"
-                @change="onchangeRegions"
+                placeholder="Select"
               >
                 <el-option
                   v-for="item in regions"
                   :key="item.id"
                   :label="item.name"
-                  :value="item"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -157,24 +148,20 @@
             :sm="8"
           >
             <!-- porvincia -->
-            <el-form-item
-              label="Provincia"
-              prop="province"
-              ref="province"
-            >
+            <el-form-item label="Provincia">
               <el-select
-                v-model="form.province"
-                :loading="loadingProvinces"
+                v-model="user.provinceId"
                 value-key="id"
+                :loading="loadingProvinces"
                 filterable
                 placeholder="Select"
-                @change="onchangeProvinces"
+                disabled
               >
                 <el-option
                   v-for="item in provinces"
                   :key="item.id"
                   :label="item.name"
-                  :value="item"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -187,12 +174,12 @@
             <el-form-item
               label="Distrito"
               prop="districtId"
-              ref="districtId"
             >
               <el-select
                 v-model="form.districtId"
                 value-key="id"
                 filterable
+                :disabled="processingForm"
                 :loading="loadingDistricts"
                 placeholder="Select"
               >
@@ -212,16 +199,22 @@
             :sm="12"
             :md="12"
           >
-            <!-- instituto -->
             <el-form-item
-              label="Institución"
-              prop="institute"
+              class="text-xs-center"
+              label="Privilegio"
             >
-              <el-input
-                v-model="form.institute"
-                type="text"
-                autocomplete="off"
-              />
+              <el-switch
+                class="text-xs-center"
+                style="display: block"
+                v-model="form.userTypeId"
+                inactive-color="#6376f7"
+                active-color="#6376f7"
+                inactive-text="Administrador"
+                active-text="Usuario"
+                inactive-value="AD"
+                active-value="US"
+              >
+              </el-switch>
             </el-form-item>
           </el-col>
           <el-col
@@ -230,46 +223,38 @@
             :md="12"
           >
             <el-form-item
-              class="pl-4"
-              label="Privilegio"
+              class="text-xs-center label-success"
+              label="Cuenta"
             >
               <el-switch
                 class="text-xs-center"
                 style="display: block"
-                v-model="form.type"
-                inactive-color="#6376f7"
-                active-color="#6376f7"
-                inactive-text="ADMINISTRADOR"
-                active-text="USUARIO"
+                v-model="form.status"
+                inactive-color="#67C23A"
+                active-color="#67C23A"
+                inactive-text="Activa"
+                active-text="Inactiva"
+                inactive-value="AC"
+                active-value="IN"
               >
               </el-switch>
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- objetivo -->
-        <el-form-item
-          label="¿Porque desea usar el Geoportal?"
-          prop="subject"
-        >
-          <el-input
-            v-model="form.subject"
-            type="textarea"
-            :rows="3"
-            autocomplete="off"
-            :maxlength="300"
-            :show-word-limit="true"
-          />
-        </el-form-item>
       </el-form>
     </template>
     <template v-slot:actions>
       <el-button
+        class="ma-2"
         :disabled="processingForm"
+        size="small"
         @click="replaceShowModalEditUser({ show: false })"
       >CANCELAR</el-button>
       <el-button
         type="primary"
+        class="ma-2"
         native-type="submit"
+        size="small"
         :loading="processingForm"
         @click.prevent="submitForm"
       >GUARDAR</el-button>
@@ -289,26 +274,16 @@ export default {
       imageSelected: "",
       processingForm: false,
       form: {
-        username: "",
-        email: "",
-        image: "",
-        subject: null,
-        name: "",
-        lastName: "",
-        lastNameAditional: "",
-        institute: "",
-        password: "",
-        passwordConfirmation: "",
-        districtId: null,
-        region: null,
-        province: null
+        userTypeId: '',
+        districtId: '',
+        name: '',
+        lastName: '',
+        lastNameAditional: '',
+        uploadImage: '',
+        status: 'AC'
       },
 
       rules: {
-        username: [{
-          required: true,
-          message: "El nombre de usuario es requerido"
-        }],
         name: [{
           required: true,
           message: "El nombre es requerido"
@@ -316,56 +291,6 @@ export default {
         lastName: [{
           required: true,
           message: "El nombre es requerido"
-        }],
-        password: [{
-          required: true,
-          min: 6,
-          message: "La contraseña es requerida"
-        }],
-        passwordConfirmation: [{
-          required: true,
-          validator: (rule, value, callback) => {
-            if (value !== this.form.password) {
-              return callback(new Error("La contraseña no coincide"));
-            }
-            callback();
-          }
-        }],
-        email: [{
-          required: true,
-          pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-          message: "El correo electrónico debe ser válido"
-        }],
-        subject: [{
-          required: true,
-          min: 10,
-          message: "Detalle el motivo para acceder al Geoportal UNAT"
-        }],
-        institute: [{
-          required: true,
-          message: "La institución es requerida"
-        }],
-        region: [{
-          required: true,
-          message: "Seleccione su región"
-        }],
-        province: [{
-          required: true,
-          validator: (rule, value, callback) => {
-            if (!this.form.region) {
-              return callback(new Error("Seleccione su Provincia"));
-            }
-            callback();
-          }
-        }],
-        districtId: [{
-          required: true,
-          validator: (rule, value, callback) => {
-            if (!this.form.province) {
-              return callback(new Error("Seleccione su Distrito"));
-            }
-            callback();
-          }
         }]
       }
     };
@@ -376,14 +301,17 @@ export default {
       if (!newState) {
         this.$refs.form.resetFields()
         this.imageSelected = ""
+        this.replaceUser({ user: null })
         return false
       }
       this.getRegions()
+      this.setFormField()
     }
   },
 
   computed: {
     ...mapState({
+      user: state => state.users.user,
       regions: state => state.regions.regions,
       loadingRegions: state => state.regions.loadingRegions,
       provinces: state => state.regions.provinces,
@@ -410,39 +338,57 @@ export default {
       getDistricts: "regions/getDistricts",
       replaceProvinces: "regions/replaceProvinces",
       replaceDistricts: "regions/replaceDistricts",
-      getUsers: "users/getUsers"
+      getUsers: "users/getUsers",
+      getUser: "users/getUser",
+      replaceUser: "users/replaceUser"
     }),
+
+    setFormField () {
+      this.form.userTypeId = this.user.userTypeId
+      this.form.districtId = this.user.districtId
+      this.form.name = this.user.name
+      this.form.lastName = this.user.lastName
+      this.form.lastNameAditional = this.user.lastNameAditional
+      this.imageSelected = this.user.image
+      this.form.status = this.user.status
+
+      this.getProvinces({ params: { id: this.user.regionId } });
+      this.getDistricts({ params: { id: this.user.provinceId } });
+    },
 
     submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.processingForm = true
-          this.createUser().then(response => {
-            const { status } = response.data;
-            if (status) {
-              this.$refs.form.resetFields();
-              this.replaceShowModalEditUser({ show: false });
-              this.getUsers();
-            }
-          });
+          this.updateUser()
         }
       });
     },
 
-    createUser () {
-      const formData = new FormData();
+    updateUser () {
+      const data = new FormData()
       let keys = Object.keys(this.form);
       keys.forEach(val => {
-        formData.append(val, this.form[val]);
-      })
+        data.append(val, this.form[val]);
+      });
+      const id = this.user.id
 
-      const data = formData;
       return new Promise((resolve, reject) => {
         this.$userAPI
-          .create({ data })
+          .update({ data, id })
           .then(response => {
             this.processingForm = false
-            this.$toast.success(`El usuario se registro con éxito`)
+            if (response.data.status) {
+              this.$refs.form.resetFields();
+              this.replaceShowModalEditUser({ show: false })
+              this.getUsers()
+              this.$toast.success(`El usuario ha sido actualizado con éxito`)
+            } else {
+              this.getUser({ id: this.user.id })
+                .then(response => {
+                  this.setFormField()
+                })
+            }
             resolve(response);
           })
           .catch(error => {
@@ -454,7 +400,7 @@ export default {
 
     launchUploadAvatar (option) {
       this.imageSelected = URL.createObjectURL(option.file);
-      this.form.image = option.file;
+      this.form.uploadImage = option.file;
     },
 
     beforeAvatarUpload (file) {
@@ -469,28 +415,13 @@ export default {
       }
       return isJPG && isLt2M;
     },
-
-    onchangeRegions (region) {
-      const params = {
-        id: region.id
-      };
-      this.replaceProvinces({ provinces: null });
-      this.replaceDistricts({ districts: null });
-      this.$refs.province.resetField();
-      this.$refs.districtId.resetField();
-
-      this.getProvinces({ params });
-    },
-
-    onchangeProvinces (province) {
-      const params = {
-        id: province.id
-      };
-
-      this.replaceDistricts({ districts: null });
-      this.$refs.districtId.resetField();
-      this.getDistricts({ params });
-    }
   }
 };
 </script>
+<style lang="scss">
+.label-success {
+  .el-switch__label.is-active {
+    color: #67c23a;
+  }
+}
+</style>

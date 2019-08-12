@@ -7,7 +7,7 @@
       class="container-fluid"
       style="justify-content: center"
     >
-      <el-card shadow="always">
+      <el-card shadow="always" class="ma-4">
         <div
           class="text-xs-center"
           slot="header"
