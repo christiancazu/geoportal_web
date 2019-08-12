@@ -167,10 +167,13 @@ export default {
       getUsers: 'users/getUsers',
       getUser: 'users/getUser'
     }),
+
     handleEdit (index, item) {
-      this.getUser({ id: item.id })
-      this.replaceShowModalEditUser({ show: true })
+      this.getUser({ id: item.id }).then(response => {
+        this.replaceShowModalEditUser({ show: true })
+      })
     },
+
     deleteUser (item) {
       new Promise((resolve, reject) => {
         this.$userAPI.delete({ id: item.itemSelected.id })
@@ -179,10 +182,6 @@ export default {
             this.getUsers()
           }).catch(error => reject(error))
       })
-    },
-    handleDelete (index, row) {
-      this.replaceShowModalDeleteUser({ show: true })
-      console.log(index, row)
     },
 
     // pagination 

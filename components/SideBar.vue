@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-sidebar">
+  <div class="sidebar-container">
     <el-menu
       :default-active="$route.path"
       class="el-menu-vertical-demo"
@@ -7,6 +7,7 @@
       :collapse="isCollapse"
       style="height:100%"
       unique-opened
+      mode="vertical"
     >
       <el-menu-item v-if="user">
         <img
@@ -134,6 +135,12 @@ export default {
     }
   },
 
+  watch: {
+    isCollapse: function (newState, oldState) {
+      this.$emit('is-collapse', newState)
+    }
+  },
+
   computed: {
     ...mapState({
       user: state => state.auth.user,
@@ -141,21 +148,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-  min-width: 275px;
-}
-.nav-sidebar {
-  /* transition: width 0.3s, right 0.3s;
-  position: fixed;
-  z-index: 600;
-  width: 220px;
-  top: 40px;
-  bottom: 0;
-  left: 0;
-  background-color: #fafafa;
-  box-shadow: inset -1px 0 0 #e5e5e5;
-  transform: translate3d(0, 0, 0); */
-}
-</style>

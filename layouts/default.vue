@@ -1,13 +1,22 @@
 <template>
-  <div id="app" style="height:100vh;">
+  <div
+    id="app"
+    style="height:100vh;"
+  >
     <!-- <el-container>
       <SideBar v-if="loggedIn" />
       <el-main>Principal</el-main>
     </el-container>-->
-    <el-container style="min-height:100%">
-      <SideBar v-if="loggedIn" />
+    <el-container
+      :class="{ 'hideSidebar': isCollapse, 'openSidebar': !isCollapse }"
+      style="min-height:100%"
+    >
+      <SideBar
+        v-if="loggedIn"
+        @is-collapse="onChangeCollapse"
+      />
       <!-- <SideBar /> -->
-      <el-main class="pa-0">
+      <el-main class="main-container pa-0">
         <nuxt />
       </el-main>
     </el-container>
@@ -21,32 +30,36 @@ export default {
     SideBar
   },
 
-  data() {
-    return {};
+  data () {
+    return {
+      isCollapse: false
+    };
   },
 
   computed: {
     ...mapState({
       loggedIn: state => state.auth.loggedIn
-    })
+    }),
+
+    isHideSidebar: function () {
+      return this.isCollapse ? 'hideSidebar' : 'openSidebar'
+    }
+
   },
-  mounted() {
+  mounted () {
     // window.addEventListener("resize", this.handleResize);
     // this.handleResize();
   },
 
-  created() {},
+  created () { },
 
   methods: {
     ...mapActions({
       replaceBreakpoints: "modalsManagementUser/replaceBreakpoints",
     }),
-    handleResize() {
-      let width = window.innerWidth;
-      let height = window.innerHeight;
-      // let data = this.$breakpoint(width, height);
-      // console.log(data, "data");
-      // this.replaceBreakpoints({ data })
+
+    onChangeCollapse (value) {
+      this.isCollapse = value
     }
   }
 };
