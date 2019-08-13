@@ -53,7 +53,7 @@
             prop="userType.name"
           />
           <el-table-column
-            label="Actions"
+            label="Acción"
             align="center"
           >
             <template slot-scope="scope">
