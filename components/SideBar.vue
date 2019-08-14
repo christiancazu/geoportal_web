@@ -94,6 +94,12 @@
         >
           Copias de Seguridad
         </el-menu-item>
+        <el-menu-item
+          :route="{ path: '/managementData/settingBackups' }"
+          index="/managementData/settingBackups"
+        >
+          Configurar
+        </el-menu-item>
       </el-submenu>
       <el-menu-item
         index="/WMSServices"
@@ -101,6 +107,13 @@
         :route="{ path: '/WMSServices' }"
       >
         <i class="fas fa-users-cog"></i><span>Servicios</span>
+      </el-menu-item>
+      <el-menu-item
+        index="/reports"
+        :active="false"
+        :route="{ path: '/reports' }"
+      >
+        <i class="fas fa-clipboard-list"></i><span>Reportes</span>
       </el-menu-item>
       <el-menu-item
         index="7"
