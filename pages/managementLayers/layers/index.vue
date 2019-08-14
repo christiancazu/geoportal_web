@@ -41,15 +41,15 @@
             prop="name"
           />
           <el-table-column
-            label="Apellidos"
+            label="Título"
             prop="fullName"
           />
           <el-table-column
-            label="Correo Electrónico"
+            label="Nombre style"
             prop="email"
           />
           <el-table-column
-            label="Rol"
+            label="Archivos"
             prop="tag"
             align="center"
           >

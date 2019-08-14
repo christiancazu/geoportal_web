@@ -28,72 +28,39 @@
           v-loading="loadingPendingRequests"
         >
           <el-table-column
-            label="Institución"
-            prop="institute"
-          />
-          <el-table-column label="Nombres y Apellidos">
-            <template slot-scope="scope">
-              {{`${scope.row.name} ${scope.row.lastName} ${scope.row.lastNameAditional}`}}
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="Correo Electrónico"
-            prop="email"
+            label="Usuario"
+            prop="username"
           />
           <el-table-column
-            label="Observación"
+            label="Asunto"
+            prop="subject"
+          />
+          <el-table-column
+            label="Descripción"
             align="center"
           >
             <template slot-scope="scope">
-              <el-popover
-                trigger="hover"
-                placement="top"
-                width="200px"
+              <div
+                slot="reference"
+                class="name-wrapper"
               >
-                {{`${scope.row.observation}`}}
-
-                <div
-                  slot="reference"
-                  class="name-wrapper"
-                >
-                  <el-link
-                    type="danger"
-                    icon="el-icon-view"
-                  >
-                    <div class="text-nowrap">
-                      {{`${scope.row.observation}`}}
-                    </div>
-                  </el-link>
+                <div class="text-nowrap">
+                  {{`${scope.row.description}`}}
                 </div>
-              </el-popover>
+              </div>
             </template>
           </el-table-column>
           <el-table-column
-            label="Motivo de uso"
+            label="Acción"
             align="center"
           >
             <template slot-scope="scope">
-              <el-popover
-                trigger="hover"
-                placement="top"
-                width="200px"
-              >
-                {{`${scope.row.subject}`}}
-
-                <div
-                  slot="reference"
-                  class="name-wrapper"
-                >
-                  <el-link
-                    type="primary"
-                    icon="el-icon-view"
-                  >
-                    <div class="text-nowrap">
-                      {{`${scope.row.subject}`}}
-                    </div>
-                  </el-link>
-                </div>
-              </el-popover>
+              <el-button
+                circle
+                icon="el-icon-view"
+                size="small"
+                type="primary"
+              />
             </template>
           </el-table-column>
         </el-table>

@@ -58,6 +58,7 @@
                 v-model="form.title"
                 type="text"
                 autocomplete="off"
+                :rules="rules.title"
               />
             </el-form-item>
 
@@ -69,139 +70,18 @@
               <el-input
                 v-model="form.name"
                 type="text"
+                :rules="rules.name"
               />
             </el-form-item>
           </el-col>
         </el-row>
-
-        <el-row :gutter="10">
-          <el-col :md="12">
-            <!-- password_1 -->
-            <el-form-item
-              label="contraseña"
-              prop="password"
-            >
-              <el-input
-                v-model="form.password"
-                type="password"
-                autocomplete="off"
-                :rules="rules.password"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :md="12">
-            <!-- password_2 -->
-            <el-form-item
-              label="Confirmar contraseña"
-              prop="passwordConfirmation"
-            >
-              <el-input
-                v-model="form.passwordConfirmation"
-                type="password"
-                autocomplete="off"
-                :rules="rules.passwordConfirmation"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="10">
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
-            <!-- name -->
-            <el-form-item
-              label="Nombres"
-              prop="name"
-            >
-              <el-input
-                v-model="form.name"
-                type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
-            <!-- lasname -->
-            <el-form-item
-              label="Apellido"
-              prop="lastName"
-            >
-              <el-input
-                v-model="form.lastName"
-                type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
-            <!-- lasname -->
-            <el-form-item
-              label="Segundo apellido"
-              prop="lastNameAditional"
-            >
-              <el-input
-                v-model="form.lastNameAditional"
-                type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col
-            :xs="12"
-            :sm="12"
-            :md="12"
-          >
-            <!-- instituto -->
-            <el-form-item
-              label="Institución"
-              prop="institute"
-            >
-              <el-input
-                v-model="form.institute"
-                type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="12"
-            :sm="12"
-            :md="12"
-          >
-            <el-form-item
-              class="pl-4"
-              label="Privilegio"
-            >
-              <el-switch
-                class="text-xs-center"
-                style="display: block"
-                v-model="form.type"
-                inactive-color="#6376f7"
-                active-color="#6376f7"
-                inactive-text="ADMINISTRADOR"
-                active-text="USUARIO"
-              >
-              </el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!-- objetivo -->
+        <!-- Descripción -->
         <el-form-item
-          label="¿Porque desea usar el Geoportal?"
-          prop="subject"
+          label="Descripción"
+          prop="description"
         >
           <el-input
-            v-model="form.subject"
+            v-model="form.description"
             type="textarea"
             :rows="3"
             autocomplete="off"
@@ -209,6 +89,81 @@
             :show-word-limit="true"
           />
         </el-form-item>
+
+        <el-checkbox
+          class="font-weight-bold mb-2"
+          v-model="showFormStyle"
+        >Agregar Style</el-checkbox>
+        <div v-show="showFormStyle">
+          <div class="my-3 py-2">
+            <el-divider content-position="left">
+              <strong>Agregar Style</strong>
+            </el-divider>
+          </div>
+          <!-- add style -->
+          <el-row
+            :gutter="10"
+            align="bottom"
+            justify="center"
+          >
+            <el-col :md="12">
+              <!-- file -->
+              <el-form-item
+                label="Imagen de Perfil"
+                class="text-xs-center"
+                prop="image"
+              >
+                <el-upload
+                  class="avatar-uploader"
+                  action
+                  :http-request="launchUploadAvatar"
+                  :show-file-list="false"
+                  name="image"
+                  :before-upload="beforeAvatarUpload"
+                >
+                  <img
+                    v-if="imageSelected"
+                    :src="imageSelected"
+                    class="avatar"
+                  />
+                  <i
+                    v-else
+                    class="el-icon-plus avatar-uploader-icon"
+                  ></i>
+                </el-upload>
+              </el-form-item>
+            </el-col>
+            <el-col :md="12">
+              <!-- nameStyle -->
+              <el-form-item
+                label="Nombre"
+                prop="nameStyle"
+              >
+                <el-input
+                  v-model="form.nameStyle"
+                  type="text"
+                  autocomplete="off"
+                  :rules="rules.nameStyle"
+                />
+              </el-form-item>
+
+              <!-- descriptionStyle -->
+              <el-form-item
+                label="Descripción"
+                prop="descriptionStyle"
+              >
+                <el-input
+                  v-model="form.descriptionStyle"
+                  type="textarea"
+                  :rows="3"
+                  autocomplete="off"
+                  :maxlength="300"
+                  :show-word-limit="true"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
       </el-form>
     </template>
     <template v-slot:actions>
@@ -245,7 +200,7 @@ export default {
         description: null,
         nameStyle: "",
         fileStyle: "",
-        description: "",
+        descriptionStyle: "",
       },
 
       rules: {

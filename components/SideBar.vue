@@ -77,12 +77,6 @@
         >
           Capas
         </el-menu-item>
-        <el-menu-item
-          index="/managementLayers/pendingLayers"
-          :route="{ path: '/managementLayers/pendingLayers' }"
-        >
-          Capas pendientes
-        </el-menu-item>
       </el-submenu>
       <el-submenu index="4">
         <div slot="title">
