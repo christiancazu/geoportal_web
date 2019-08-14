@@ -29,7 +29,7 @@
         <!-- weburl -->
         <el-form-item label="URL">
           <el-input
-            v-model="form.webUrl"
+            v-model="form.url"
             type="text"
             autocomplete="off"
           />
@@ -156,12 +156,16 @@
       </el-form>
     </template>
     <template v-slot:actions>
-      <el-button @click="replaceShowModalAddWMSService({ show: false })">Cancel</el-button>
+      <el-button
+        size="small"
+        @click="replaceShowModalAddWMSService({ show: false })"
+      >CANCELAR</el-button>
       <el-button
         type="primary"
+        size="small"
         native-type="submit"
         @click.prevent="submitForm"
-      >Confirm</el-button>
+      >GUARDAR</el-button>
     </template>
     <template v-slot:modals>
       <ModalAddWMSAuthor />
@@ -190,7 +194,7 @@ export default {
       form: {
         name: "",
         description: "",
-        webUrl: "",
+        url: "",
         image: ""
       },
 

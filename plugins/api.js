@@ -7,6 +7,7 @@ import baseMapAPI from '~/api/baseMap'
 import WMSServiceAPI from '~/api/WMSService'
 import WMSCategoryAPI from '~/api/WMSCategory'
 import WMSAuthorAPI from '~/api/WMSAuthor'
+import reportAPI from '~/api/report'
 
 export default (ctx, inject) => {
   const refreshAPIWithAxios = refreshAPI(ctx.$axios)
@@ -18,6 +19,7 @@ export default (ctx, inject) => {
   const WMSServiceWithAxios = WMSServiceAPI(ctx.$axios)
   const WMSCategoryWithAxios = WMSCategoryAPI(ctx.$axios)
   const WMSAuthorWithAxios = WMSAuthorAPI(ctx.$axios)
+  const reportWithAxios = reportAPI(ctx.$axios)
 
   inject('refreshAPI', refreshAPIWithAxios)
   inject('regionAPI', regionAPIWithAxios)
@@ -28,4 +30,5 @@ export default (ctx, inject) => {
   inject('WMSServiceAPI', WMSServiceWithAxios)
   inject('WMSCategoryAPI', WMSCategoryWithAxios)
   inject('WMSAuthorAPI', WMSAuthorWithAxios)
+  inject('reportAPI', reportWithAxios)
 }

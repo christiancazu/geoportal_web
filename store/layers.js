@@ -1,34 +1,32 @@
 import {
-  REPLACE_USERS,
-  REPLACE_LOADING_USERS
+  REPLACE_LAYERS,
+  REPLACE_LOADING_LAYERS
 } from '../types/mutation-types'
 
 export const state = () => ({
-  users: [],
-  loadingUsers: false,
+  layers: [],
+  loadingLayers: false,
 })
 
 export const actions = {
-  async getUsers ({ commit }, payload) {
-    commit('REPLACE_LOADING_USERS', { loading: true })
-
+  async getLayers ({ commit }, payload) {
+    commit('REPLACE_LOADING_LAYERS', { loading: true })
     try {
-      const { data } = await this.$userAPI.index(payload)
-      commit('REPLACE_USERS', { users: data.data })
+      const { data } = await this.$layerAPI.index(payload)
+      commit('REPLACE_LAYERS', { layers: data.data })
     } catch (error) {
       if (!error.response) return
     } finally {
-      commit('REPLACE_LOADING_USERS', { loading: false })
+      commit('REPLACE_LOADING_LAYERS', { loading: false })
     }
   }
-
 }
 
 export const mutations = {
-  [REPLACE_USERS] (state, { users }) {
-    state.users = users
+  [REPLACE_LAYERS] (state, { layers }) {
+    state.layers = layers
   },
-  [REPLACE_LOADING_USERS] (state, { loading }) {
-    state.loadingUsers = loading
+  [REPLACE_LOADING_LAYERS] (state, { loading }) {
+    state.loadingLayers = loading
   },
 }

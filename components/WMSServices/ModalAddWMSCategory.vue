@@ -65,12 +65,16 @@
       </el-form>
     </template>
     <template v-slot:actions>
-      <el-button @click="replaceShowModalAddWMSCategory({ show: false })">Cancel</el-button>
       <el-button
+        size="small"
+        @click="replaceShowModalAddWMSCategory({ show: false })"
+      >CANCELAR</el-button>
+      <el-button
+        size="small"
         native-type="submit"
         type="primary"
         @click.prevent="submitFormWMSCategory"
-      >Registrar</el-button>
+      >REGISTRAR</el-button>
     </template>
   </BaseModal>
 </template>

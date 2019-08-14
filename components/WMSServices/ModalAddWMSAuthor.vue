@@ -80,12 +80,16 @@
       </el-form>
     </template>
     <template v-slot:actions>
-      <el-button @click="replaceShowModalAddWMSAuthor({ show: false })">Cancel</el-button>
+      <el-button
+        size="small"
+        @click="replaceShowModalAddWMSAuthor({ show: false })"
+      >CANCELAR</el-button>
       <el-button
         type="primary"
+        size="small"
         native-type="submit"
         @click.prevent="submitFormWMSAuthor"
-      >Confirm</el-button>
+      >GUARDAR</el-button>
     </template>
   </BaseModal>
 </template>

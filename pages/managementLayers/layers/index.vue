@@ -5,14 +5,20 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-      >Nuevo capa</el-button>
+        @click="replaceShowModalAddLayer({ show: true })"
+      >Nuevo Capa</el-button>
     </template>
     <template v-slot:content>
       <el-container direction="vertical">
-        <el-row :gutter="20">
+        <el-row
+          type="flex"
+          justify="end"
+          :gutter="10"
+        >
           <el-col
-            :span="8"
-            :offset="16"
+            :xs="24"
+            :sm="12"
+            :md="8"
           >
             <div>
               <el-input
@@ -26,87 +32,143 @@
           </el-col>
         </el-row>
         <el-table
-          :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
-          v-loading="loading"
+          v-loading="loadingLayers"
         >
           <el-table-column
-            label="Date"
-            prop="date"
-          />
-          <el-table-column
-            label="Name"
+            label="Nombre"
             prop="name"
           />
+          <el-table-column
+            label="Título"
+            prop="fullName"
+          />
+          <el-table-column
+            label="Nombre style"
+            prop="email"
+          />
+          <el-table-column
+            label="Archivos"
+            prop="tag"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <el-tag
+                type="primary"
+                disable-transitions
+              >{{scope.row.userType.id === 'AD' ? 'Admin': 'Usuario' }}
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             label="Acción"
             align="center"
           >
             <template slot-scope="scope">
-              <el-button
-                circle
-                icon="el-icon-edit"
-                size="small"
-                type="primary"
-                @click="handleEdit(scope.$index, scope.row)"
-              />
-              <el-button
-                size="small"
-                circle
-                type="danger"
-                icon="el-icon-delete"
-                @click="handleDelete(scope.$index, scope.row)"
+              <BtnConfirm
+                :item-selected="scope.row"
+                @confirmed-action="deleteLayer"
+                accion="deleted"
+                title="¿Eliminar cuenta de usuario?"
+                body-text="¿Esta seguro?, realizada la operación no se podra revertir"
               />
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination
+          small
+          class="pt-4 text-xs-right"
+          :pager-size="100"
+          :page-size="pagesize"
+          layout="prev, pager, next, sizes"
+          :total="filteredData.length"
+          :current-page="currentPage"
+          @current-change="onChangeCurrentPage"
+          @size-change="onChangePageSize"
+        >
+        </el-pagination>
       </el-container>
+    </template>
+    <template v-slot:modals>
+      <ModalAddLayer />
     </template>
   </BasePage>
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
-
+import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
+import ModalAddLayer from '@/components/layers/ModalAddLayer.vue'
 export default {
   components: {
-    BasePage
+    BasePage,
+    BtnConfirm,
+    ModalAddLayer,
   },
   data () {
     return {
       search: '',
-      loading: true,
-      tableData: [{
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-04',
-        name: 'John',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-01',
-        name: 'Morgan',
-        address: 'No. 189, Grove St, Los Angeles'
-      }, {
-        date: '2016-05-03',
-        name: 'Jessy',
-        address: 'No. 189, Grove St, Los Angeles'
-      }]
-
+      pagesize: 10,
+      currentPage: 1
     }
+  },
+
+  computed: {
+    ...mapState({
+      layers: state => state.layers.layers,
+      loadingLayers: state => state.layers.loadingLayers
+    }),
+
+    filteredData: function () {
+      let search = this.search.toString().toLowerCase()
+      let layers = this.$store.state.layers.layers
+      this.currentPage = 1
+      return layers.filter(item => {
+        // checking lastName
+        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
+          return item
+        }
+        // checking name
+        if (item.name && item.name.toString().toLowerCase().includes(search)) {
+          return item
+        }
+        // checking email
+        if (item.email && item.email.toString().toLowerCase().includes(search)) {
+          return item
+        }
+      })
+    },
   },
 
   created () {
+    this.getLayers()
   },
 
   methods: {
-    handleEdit (index, row) {
-      console.log(index, row)
+    ...mapActions({
+      replaceShowModalAddLayer: 'modalsManagementLayer/replaceShowModalAddLayer',
+      getLayers: 'layers/getLayers',
+    }),
+
+    deleteLayer (item) {
+      new Promise((resolve, reject) => {
+        this.$layerAPI.delete({ id: item.itemSelected.id })
+          .then(response => {
+            resolve(response)
+            this.getLayers()
+          }).catch(error => reject(error))
+      })
     },
-    handleDelete (index, row) {
-      console.log(index, row)
-    }
+
+    // pagination 
+    onChangeCurrentPage: function (currentPage) {
+      this.currentPage = currentPage;
+    },
+    onChangePageSize: function (pagesize) {
+      this.pagesize = pagesize;
+    },
   }
 }
 </script>

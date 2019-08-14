@@ -1,21 +1,21 @@
 export default $axios => ({
-    index(payload = {}) {
+  index (payload = {}) {
     return $axios({
-      url: `user/`,
+      url: `layer/`,
       method: 'GET',
       data: payload.data || {}
     })
   },
-    register(payload = {}) {
+  create (payload = {}) {
     return $axios({
-      url: `register/`,
+      url: `layer/`,
       method: 'POST',
       data: payload.data || {}
     })
   },
-    create(payload = {}) {
+  delete (payload = {}) {
     return $axios({
-      url: `user/`,
+      url: `layer/${payload.id}`,
       method: 'POST',
       data: payload.data || {}
     })
