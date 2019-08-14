@@ -150,7 +150,6 @@ export default {
     ...mapActions({
       replaceShowModalAddBaseMap: 'modalsManagementLayer/replaceShowModalAddBaseMap',
       replaceShowModalEditUser: 'modalsManagementLayer/replaceShowModalEditUser',
-      replaceShowModalDeleteUser: 'modalsManagementLayer/replaceShowModalDeleteUser',
       getBaseMaps: 'baseMaps/getBaseMaps',
     }),
     handleEdit (index, row) {

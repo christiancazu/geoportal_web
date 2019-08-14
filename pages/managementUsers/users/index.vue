@@ -100,7 +100,6 @@
     <template v-slot:modals>
       <ModalAddUser />
       <ModalEditUser />
-      <ModalDeleteUser />
     </template>
   </BasePage>
 </template>
@@ -111,14 +110,12 @@ import BasePage from '@/components/base/BasePage.vue'
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalAddUser from '@/components/users/ModalAddUser.vue'
 import ModalEditUser from '@/components/users/ModalEditUser.vue'
-import ModalDeleteUser from '@/components/users/ModalDeleteUser.vue'
 export default {
   components: {
     BasePage,
     BtnConfirm,
     ModalAddUser,
-    ModalEditUser,
-    ModalDeleteUser
+    ModalEditUser
   },
   data () {
     return {
@@ -163,7 +160,6 @@ export default {
     ...mapActions({
       replaceShowModalAddUser: 'modalsManagementUser/replaceShowModalAddUser',
       replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
-      replaceShowModalDeleteUser: 'modalsManagementUser/replaceShowModalDeleteUser',
       getUsers: 'users/getUsers',
       getUser: 'users/getUser'
     }),

@@ -79,7 +79,6 @@
     <template v-slot:modals>
       <ModalAddUser />
       <ModalEditUser />
-      <ModalDeleteUser />
     </template>
   </BasePage>
 </template>
@@ -89,13 +88,11 @@ import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
 import ModalAddUser from '@/components/users/ModalAddUser.vue'
 import ModalEditUser from '@/components/users/ModalEditUser.vue'
-import ModalDeleteUser from '@/components/users/ModalDeleteUser.vue'
 export default {
   components: {
     BasePage,
     ModalAddUser,
-    ModalEditUser,
-    ModalDeleteUser
+    ModalEditUser
   },
   data () {
     return {
@@ -142,7 +139,6 @@ export default {
     ...mapActions({
       replaceShowModalAddUser: 'modalsManagementUser/replaceShowModalAddUser',
       replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
-      replaceShowModalDeleteUser: 'modalsManagementUser/replaceShowModalDeleteUser',
       getUsers: 'users/getUsers',
     }),
     handleEdit (index, row) {
@@ -150,7 +146,6 @@ export default {
       console.log(index, row)
     },
     handleDelete (index, row) {
-      this.replaceShowModalDeleteUser({ show: true })
       console.log(index, row)
     }
   }
