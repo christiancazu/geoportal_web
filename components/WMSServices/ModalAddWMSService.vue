@@ -29,7 +29,7 @@
         <!-- weburl -->
         <el-form-item label="URL">
           <el-input
-            v-model="form.webUrl"
+            v-model="form.url"
             type="text"
             autocomplete="off"
           />
@@ -194,7 +194,7 @@ export default {
       form: {
         name: "",
         description: "",
-        webUrl: "",
+        url: "",
         image: ""
       },
 

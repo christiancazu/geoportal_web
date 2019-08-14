@@ -1,13 +1,5 @@
 <template>
   <BasePage title="Copias de seguridad">
-    <template v-slot:itemsActions>
-      <el-button
-        size="mini"
-        type="primary"
-        icon="el-icon-plus"
-        @click="replaceShowModalAddUser({ show: true })"
-      >Nueva copia de seguridad</el-button>
-    </template>
     <template v-slot:content>
       <el-container direction="vertical">
         <el-row
@@ -34,23 +26,18 @@
         <el-table
           :data="users.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
           style="width: 100%"
-          v-loading="loading"
         >
           <el-table-column
-            label="Nombre"
-            prop="name"
+            label="Usuario"
+            prop="username"
           />
           <el-table-column
-            label="Apellidos"
-            prop="lastName"
+            label="Fecha"
+            prop="date"
           />
           <el-table-column
-            label="Correo Electrónico"
-            prop="email"
-          />
-          <el-table-column
-            label="Rol"
-            prop="userType.name"
+            label="Estado"
+            prop="state"
           />
           <el-table-column
             label="Acción"
@@ -59,26 +46,15 @@
             <template slot-scope="scope">
               <el-button
                 circle
-                icon="el-icon-edit"
+                icon="el-icon-view"
                 size="small"
                 type="primary"
                 @click="handleEdit(scope.$index, scope.row)"
-              />
-              <el-button
-                size="small"
-                circle
-                type="danger"
-                icon="el-icon-delete"
-                @click="handleDelete(scope.$index, scope.row)"
               />
             </template>
           </el-table-column>
         </el-table>
       </el-container>
-    </template>
-    <template v-slot:modals>
-      <ModalAddUser />
-      <ModalEditUser />
     </template>
   </BasePage>
 </template>
@@ -86,13 +62,9 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
-import ModalAddUser from '@/components/users/ModalAddUser.vue'
-import ModalEditUser from '@/components/users/ModalEditUser.vue'
 export default {
   components: {
-    BasePage,
-    ModalAddUser,
-    ModalEditUser
+    BasePage
   },
   data () {
     return {

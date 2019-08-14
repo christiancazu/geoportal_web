@@ -25,11 +25,11 @@
         </el-row>
         <el-table
           :data="filteredData"
-          v-loading="loadingPendingRequests"
+          v-loading="loadingReports"
         >
           <el-table-column
             label="Usuario"
-            prop="username"
+            prop="user"
           />
           <el-table-column
             label="Asunto"
@@ -60,6 +60,7 @@
                 icon="el-icon-view"
                 size="small"
                 type="primary"
+                @click="onLoadModalViewReport(scope.row)"
               />
             </template>
           </el-table-column>
@@ -78,17 +79,20 @@
         </el-pagination>
       </el-container>
     </template>
+    <template v-slot:modals>
+      <ModalViewReport />
+    </template>
   </BasePage>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
 import BasePage from "@/components/base/BasePage.vue";
-import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
+import ModalViewReport from "@/components/reports/ModalViewReport.vue";
 export default {
   components: {
     BasePage,
-    BtnConfirm
+    ModalViewReport
   },
 
   data () {
@@ -101,12 +105,12 @@ export default {
 
   computed: {
     ...mapState({
-      loadingPendingRequests: state => state.userRequests.loadingPendingRequests,
+      loadingReports: state => state.reports.loadingReports,
     }),
     filteredData: function () {
-      const rejectedRequests = this.$store.state.userRequests.rejectedRequests
+      const reports = this.$store.state.reports.reports
       let search = this.search.toString().toLowerCase()
-      return rejectedRequests.filter(item => {
+      return reports.filter(item => {
         // checking name
         if (item.name && item.name.toString().toLowerCase().includes(search)) {
           return item
@@ -138,10 +142,13 @@ export default {
   methods: {
     ...mapActions({
       getReports: "reports/getReports",
+      replaceCurrentReport: "reports/replaceCurrentReport",
+      replaceShowModalViewReport: "reports/replaceShowModalViewReport"
     }),
 
-    current_change: function (currentPage) {
-      this.currentPage = currentPage;
+    onLoadModalViewReport: function (report) {
+      this.replaceCurrentReport({ report })
+      this.replaceShowModalViewReport({ show: true })
     },
 
     // pagination 

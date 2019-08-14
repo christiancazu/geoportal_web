@@ -3,16 +3,31 @@
     <template v-slot:content>
       <el-container direction="vertical">
         <el-form
-        ref="form"
-        label-position="top"
-        status-icon
-        :model="form"
-        label-width="120px"
-        class="demo-ruleForm"
-        :disabled="processingForm"
-      >
-       
-      </el-form>
+          ref="form"
+          label-position="top"
+          status-icon
+          :model="form"
+          label-width="120px"
+          class="demo-ruleForm"
+          :disabled="processingForm"
+        >
+          <el-form-item
+            label="Fecha de la ultima copia de seguridad"
+            prop="subject"
+          >
+            <el-input
+              v-model="form.subject"
+            />
+          </el-form-item>
+          <el-form-item
+            label="Objetivos del geoportal"
+            prop="subject"
+          >
+            <el-input
+              v-model="form.subject"
+            />
+          </el-form-item>
+        </el-form>
       </el-container>
     </template>
   </BasePage>
