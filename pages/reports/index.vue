@@ -37,6 +37,7 @@
           />
           <el-table-column
             label="Descripción"
+            prop="description"
             align="center"
           >
             <template slot-scope="scope">
@@ -111,24 +112,20 @@ export default {
       const reports = this.$store.state.reports.reports
       let search = this.search.toString().toLowerCase()
       return reports.filter(item => {
-        // checking name
-        if (item.name && item.name.toString().toLowerCase().includes(search)) {
+        // checking user
+        if (item.user && item.user.toString().toLowerCase().includes(search)) {
           return item
         }
-        // checking lastName
-        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
+        // checking subject
+        if (item.subject && item.subject.toString().toLowerCase().includes(search)) {
           return item
         }
         // checking lastNameAditional
         if (item.lastNameAditional && item.lastNameAditional.toString().toLowerCase().includes(search)) {
           return item
         }
-        // checking institute
-        if (item.institute && item.institute.toString().toLowerCase().includes(search)) {
-          return item
-        }
-        // checking subject
-        if (item.subject && item.subject.toString().toLowerCase().includes(search)) {
+        // checking description
+        if (item.description && item.description.toString().toLowerCase().includes(search)) {
           return item
         }
       })
