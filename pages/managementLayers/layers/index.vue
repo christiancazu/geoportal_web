@@ -5,7 +5,7 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="replaceShowModalAddUser({ show: true })"
+        @click="replaceShowModalAddLayer({ show: true })"
       >Nuevo Capa</el-button>
     </template>
     <template v-slot:content>
@@ -34,7 +34,7 @@
         <el-table
           :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
-          v-loading="loadingUsers"
+          v-loading="loadingLayers"
         >
           <el-table-column
             label="Nombre"
@@ -68,7 +68,7 @@
             <template slot-scope="scope">
               <BtnConfirm
                 :item-selected="scope.row"
-                @confirmed-action="deleteUser"
+                @confirmed-action="deleteLayer"
                 accion="deleted"
                 title="¿Eliminar cuenta de usuario?"
                 body-text="¿Esta seguro?, realizada la operación no se podra revertir"
@@ -91,7 +91,7 @@
       </el-container>
     </template>
     <template v-slot:modals>
-      <ModalAddUser />
+      <ModalAddLayer />
     </template>
   </BasePage>
 </template>
@@ -100,12 +100,12 @@
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
-import ModalAddUser from '@/components/users/ModalAddUser.vue'
+import ModalAddLayer from '@/components/layers/ModalAddLayer.vue'
 export default {
   components: {
     BasePage,
     BtnConfirm,
-    ModalAddUser,
+    ModalAddLayer,
   },
   data () {
     return {
@@ -117,15 +117,15 @@ export default {
 
   computed: {
     ...mapState({
-      users: state => state.users.users,
-      loadingUsers: state => state.users.loadingUsers
+      layers: state => state.layers.layers,
+      loadingLayers: state => state.layers.loadingLayers
     }),
 
     filteredData: function () {
       let search = this.search.toString().toLowerCase()
-      let users = this.$store.state.users.users
+      let layers = this.$store.state.layers.layers
       this.currentPage = 1
-      return users.filter(item => {
+      return layers.filter(item => {
         // checking lastName
         if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
           return item
@@ -143,29 +143,21 @@ export default {
   },
 
   created () {
-    this.getUsers()
+    this.getLayers()
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddUser: 'modalsManagementUser/replaceShowModalAddUser',
-      replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
-      getUsers: 'users/getUsers',
-      getUser: 'users/getUser'
+      replaceShowModalAddLayer: 'modalsManagementLayer/replaceShowModalAddLayer',
+      getLayers: 'layers/getLayers',
     }),
 
-    handleEdit (index, item) {
-      this.getUser({ id: item.id }).then(response => {
-        this.replaceShowModalEditUser({ show: true })
-      })
-    },
-
-    deleteUser (item) {
+    deleteLayer (item) {
       new Promise((resolve, reject) => {
-        this.$userAPI.delete({ id: item.itemSelected.id })
+        this.$layerAPI.delete({ id: item.itemSelected.id })
           .then(response => {
             resolve(response)
-            this.getUsers()
+            this.getLayers()
           }).catch(error => reject(error))
       })
     },
