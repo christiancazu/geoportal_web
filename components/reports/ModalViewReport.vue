@@ -6,39 +6,26 @@
     v-if="currentReport"
   >
     <template v-slot:content>
-      <el-row
-        :gutter="10"
-        class="d-flex"
+
+      <div class="text-request">
+        <label class="text-uppercase">{{ `${currentReport.user}`}}</label>
+        <p class="text-uppercase ma-0">{{ `${currentReport.subject}` }}</p>
+      </div>
+      <div class="my-3 text-request">
+        <label class="text-uppercase">Descripción del reporte: </label>
+        <p class="text-capitalize ma-0"> {{ `${currentReport.description}` }}</p>
+      </div>
+      <el-image
+        :src="currentReport.image"
+        fit="contain"
       >
-        <el-col
-          :xs="24"
-          :md="12"
-          :sm="12"
+        <div
+          slot="placeholder"
+          class="image-slot"
         >
-          <div class="text-request">
-            <label class="text-uppercase">{{ `${currentReport.user}`}}</label>
-            <p class="text-uppercase ma-0">{{ `${currentReport.subject}` }}</p>
-          </div>
-          <div class="my-3 text-request">
-            <label class="text-uppercase">Descripción del reporte: </label>
-            <p class="text-capitalize ma-0"> {{ `${currentReport.description}` }}</p>
-          </div>
-        </el-col>
-        <el-col
-          :xs="24"
-          :md="12"
-          :sm="12"
-        >
-          <el-image :src="currentReport.image" fit="contain">
-            <div
-              slot="placeholder"
-              class="image-slot"
-            >
-              Loading<span class="dot">...</span>
-            </div>
-          </el-image>
-        </el-col>
-      </el-row>
+          Loading<span class="dot">...</span>
+        </div>
+      </el-image>
 
     </template>
   </BaseModal>

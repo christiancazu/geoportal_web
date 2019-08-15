@@ -1,7 +1,6 @@
 export default function ({ app }) {
   if (!app.$auth.loggedIn) {
-    // return
+    // app.$auth.logout()
+    return
   }
-
-  // const username = app.$auth.user.username
 }

@@ -16,6 +16,9 @@ export default async ({ app, redirect, store, $auth }) => {
                 return redirect('/login')
               })
           }
+        }).catch(error => {
+          $auth.logout()
+          return redirect('/login')
         })
     } catch (error) {
       $auth.logout()

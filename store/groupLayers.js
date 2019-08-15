@@ -6,6 +6,7 @@ import {
 export const state = () => ({
   groupLayers: [],
   loadingGroupLayers: false,
+  currentGroupLayer: null
 })
 
 export const actions = {

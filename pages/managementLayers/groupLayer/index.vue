@@ -67,7 +67,7 @@
                 :item-selected="scope.row"
                 @confirmed-action="deleteGroupLayer"
                 accion="deleted"
-                title="¿Eliminar cuenta de usuario?"
+                title="¿Eliminar grupo de capas?"
                 body-text="¿Esta seguro?, realizada la operación no se podra revertir"
               />
             </template>
