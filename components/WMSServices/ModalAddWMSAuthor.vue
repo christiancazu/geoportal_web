@@ -14,59 +14,29 @@
         :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
+        :disabled="processingForm"
         @submit.prevent="submitFormWMSAuthor"
       >
-        <el-row :gutter="10">
-          <el-col :md="10">
-            <!-- image -->
-            <el-form-item
-              label="Imagen"
-              class="text-xs-center"
-            >
-              <el-upload
-                class="avatar-uploader"
-                action
-                :http-request="launchUploadAvatar"
-                :show-file-list="false"
-                name="image"
-                :before-upload="beforeAvatarUpload"
-              >
-                <img
-                  v-if="imageSelected"
-                  :src="imageSelected"
-                  class="avatar"
-                />
-                <i
-                  v-else
-                  class="el-icon-plus avatar-uploader-icon"
-                ></i>
-              </el-upload>
-            </el-form-item>
-          </el-col>
-          <el-col :md="14">
-            <!-- name -->
-            <el-form-item
-              label="Nombre"
-              prop="name"
-            >
-              <el-input
-                v-model="form.name"
-                type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
+        <!-- name -->
+        <el-form-item
+          label="Nombre"
+          prop="name"
+        >
+          <el-input
+            v-model="form.name"
+            type="text"
+            autocomplete="off"
+          />
+        </el-form-item>
 
-            <!-- weburl -->
-            <el-form-item label="URL">
-              <el-input
-                v-model="form.webUrl"
-                type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
+        <!-- weburl -->
+        <el-form-item label="URL">
+          <el-input
+            v-model="form.webUrl"
+            type="text"
+            autocomplete="off"
+          />
+        </el-form-item>
         <el-form-item label="Descripción">
           <el-input
             v-model="form.description"
@@ -82,12 +52,14 @@
     <template v-slot:actions>
       <el-button
         size="small"
+        :disabled="processingForm"
         @click="replaceShowModalAddWMSAuthor({ show: false })"
       >CANCELAR</el-button>
       <el-button
         type="primary"
         size="small"
         native-type="submit"
+        :loading="processingForm"
         @click.prevent="submitFormWMSAuthor"
       >GUARDAR</el-button>
     </template>
@@ -102,12 +74,11 @@ export default {
   },
   data () {
     return {
-      imageSelected: "",
       form: {
+        processingForm: false,
         name: "",
         description: "",
         webUrl: "",
-        image: ""
       },
       rules: {
         name: [
@@ -141,12 +112,14 @@ export default {
     submitFormWMSAuthor () {
       this.$refs.formWMSAuthor.validate(valid => {
         if (valid) {
+          this.processingForm = true
           this.createWMSAuthor().then(response => {
             const { status } = response.data;
             if (status) {
               this.$refs.formWMSAuthor.resetFields();
               this.replaceShowModalAddWMSAuthor({ show: false });
               this.getWMSAuthors();
+              this.$toast.success(`El Author se registro con éxito`)
             }
           });
         }
@@ -165,29 +138,15 @@ export default {
         this.$WMSAuthorAPI
           .create({ data: formData })
           .then(response => {
+            this.processingForm = false
             resolve(response);
           })
-          .catch(error => reject(error));
+          .catch(error => {
+            this.processingForm = false
+            reject(error)
+          });
       });
     },
-
-    launchUploadAvatar (option) {
-      this.imageSelected = URL.createObjectURL(option.file);
-      this.form.image = option.file;
-    },
-
-    beforeAvatarUpload (file) {
-      const isJPG = file.type === "image/png" || file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("La imagen debe estar en formato JPG!");
-      }
-      if (!isLt2M) {
-        this.$message.error("La imagen excede los 2MB!");
-      }
-      return isJPG && isLt2M;
-    }
   }
 };
 </script>

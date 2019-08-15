@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    title="Registrar Categoria WMS"
+    title="Registrar Categoría WMS"
     :show-modal="showModalAddWMSCategory"
     :append-to-body="true"
     @action-modal="replaceShowModalAddWMSCategory"
@@ -14,32 +14,9 @@
         :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
+        :disabled="processingForm"
         @submit.prevent="submitFormWMSCategory"
       >
-        <!-- image -->
-        <el-form-item
-          label="Imagen"
-          class="text-xs-center"
-        >
-          <el-upload
-            class="avatar-uploader"
-            action
-            :http-request="launchUploadAvatar"
-            :show-file-list="false"
-            name="image"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img
-              v-if="imageSelected"
-              :src="imageSelected"
-              class="avatar"
-            />
-            <i
-              v-else
-              class="el-icon-plus avatar-uploader-icon"
-            ></i>
-          </el-upload>
-        </el-form-item>
         <!-- name -->
         <el-form-item
           label="Nombre"
@@ -67,12 +44,14 @@
     <template v-slot:actions>
       <el-button
         size="small"
+        :disabled="processingForm"
         @click="replaceShowModalAddWMSCategory({ show: false })"
       >CANCELAR</el-button>
       <el-button
         size="small"
         native-type="submit"
         type="primary"
+        :loading="processingForm"
         @click.prevent="submitFormWMSCategory"
       >REGISTRAR</el-button>
     </template>
@@ -91,11 +70,10 @@ export default {
 
   data () {
     return {
-      imageSelected: "",
+      processingForm : false,
       form: {
         name: "",
         description: "",
-        image: ""
       },
 
       rules: {
@@ -127,18 +105,17 @@ export default {
         "modalsWMSServices/replaceShowModalAddWMSCategory"
     }),
 
-    closeModal (val) {
-      console.log('component', val)
-    },
-
     submitFormWMSCategory () {
       this.$refs.formWMSCategory.validate(valid => {
         if (valid) {
+          this.processingForm = true
           this.createWMSCategory().then(response => {
             const { status } = response.data;
             if (status) {
               this.$refs.formWMSCategory.resetFields();
+              this.replaceShowModalAddWMSCategory({ show: false });
               this.getWMSCategories();
+              this.$toast.success(`La categoría se registro con éxito`)
             }
           });
         }
@@ -157,28 +134,14 @@ export default {
         this.$WMSCategoryAPI
           .create({ data: formData })
           .then(response => {
+            this.processingForm = false
             resolve(response);
           })
-          .catch(error => reject(error));
+          .catch(error => {
+            this.processingForm = false
+            reject(error)
+          });
       });
-    },
-
-    launchUploadAvatar (option) {
-      this.imageSelected = URL.createObjectURL(option.file);
-      this.form.image = option.file;
-    },
-
-    beforeAvatarUpload (file) {
-      const isJPG = file.type === "image/png" || file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("La imagen debe estar en formato JPG!");
-      }
-      if (!isLt2M) {
-        this.$message.error("La imagen excede los 2MB!");
-      }
-      return isJPG && isLt2M;
     }
   }
 };

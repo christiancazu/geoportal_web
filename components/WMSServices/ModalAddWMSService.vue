@@ -13,6 +13,7 @@
         :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
+        :disabled="processingForm"
         @submit.prevent="submitForm"
       >
         <!-- name -->
@@ -27,7 +28,10 @@
           />
         </el-form-item>
         <!-- weburl -->
-        <el-form-item label="URL">
+        <el-form-item
+          label="URL"
+          prop="url"
+        >
           <el-input
             v-model="form.url"
             type="text"
@@ -47,7 +51,7 @@
             >
               <el-container>
                 <el-select
-                  v-model="form.authorId"
+                  v-model="form.idAuthor"
                   value-key="id"
                   filterable
                   placeholder="Select"
@@ -56,7 +60,7 @@
                     v-for="item in WMSAuthors"
                     :key="item.id"
                     :label="item.name"
-                    :value="item"
+                    :value="item.id"
                   ></el-option>
                 </el-select>
                 <el-button
@@ -65,6 +69,7 @@
                   type="text"
                   class="pa-0 pl-1 ma-0"
                   style="font-size: 1.7rem;"
+                  :disabled="processingForm"
                   @click="replaceShowModalAddWMSAuthor({ show:true })"
                 ></el-button>
               </el-container>
@@ -81,16 +86,16 @@
             >
               <el-container>
                 <el-select
-                  v-model="form.categoryId"
-                  value-key="id"
+                  v-model="form.idCategory"
                   filterable
+                  value-key="id"
                   placeholder="Select"
                 >
                   <el-option
                     v-for="item in WMSCategories"
                     :key="item.id"
                     :label="item.name"
-                    :value="item"
+                    :value="item.id"
                   ></el-option>
                 </el-select>
                 <el-button
@@ -99,6 +104,7 @@
                   type="text"
                   class="pa-0 pl-1 ma-0"
                   style="font-size: 1.7rem;"
+                  :disabled="processingForm"
                   @click="replaceShowModalAddWMSCategory({ show: true })"
                 ></el-button>
               </el-container>
@@ -106,64 +112,40 @@
           </el-col>
         </el-row>
 
-        <el-row
-          :gutter="10"
-          align="bottom"
-          justify="center"
+        <el-form-item
+          label="Descripción"
+          prop="description"
         >
-          <el-col :md="12">
-            <el-form-item
-              label="Descripción"
-              prop="description"
-            >
-              <el-input
-                v-model="form.description"
-                type="textarea"
-                :rows="3"
-                autocomplete="off"
-                :maxlength="300"
-                :show-word-limit="true"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :md="12">
-            <!-- image -->
-            <el-form-item
-              label="Imagen de Servicio"
-              class="text-xs-center"
-            >
-              <el-upload
-                class="avatar-uploader"
-                action
-                :http-request="launchUploadAvatar"
-                :show-file-list="false"
-                name="image"
-                :before-upload="beforeAvatarUpload"
-              >
-                <img
-                  v-if="imageSelected"
-                  :src="imageSelected"
-                  class="avatar"
-                />
-                <i
-                  v-else
-                  class="el-icon-plus avatar-uploader-icon"
-                ></i>
-              </el-upload>
-            </el-form-item>
-          </el-col>
-        </el-row>
+          <el-input
+            v-model="form.description"
+            type="textarea"
+            :rows="3"
+            autocomplete="off"
+            :maxlength="300"
+            :show-word-limit="true"
+          />
+        </el-form-item>
+        <el-form-item class="text-xs-right">
+          <el-switch
+            v-model="form.isEnabled"
+            active-value="True"
+            inactive-value="False"
+            :active-text="form.isEnabled ? 'Servicio Activo': 'Servicio Inactivo' "
+          ></el-switch>
+        </el-form-item>
       </el-form>
     </template>
     <template v-slot:actions>
       <el-button
         size="small"
+        :disabled="processingForm"
         @click="replaceShowModalAddWMSService({ show: false })"
       >CANCELAR</el-button>
       <el-button
         type="primary"
         size="small"
         native-type="submit"
+        :loading="processingForm"
         @click.prevent="submitForm"
       >GUARDAR</el-button>
     </template>
@@ -190,21 +172,25 @@ export default {
 
   data () {
     return {
-      imageSelected: "",
+      processingForm: false,
       form: {
         name: "",
         description: "",
         url: "",
-        image: ""
+        idAuthor: '',
+        isEnabled: "True",
+        idCategory: ''
       },
 
       rules: {
-        name: [
-          {
-            required: true,
-            message: "El nombre es requerido"
-          }
-        ]
+        name: [{
+          required: true,
+          message: "El nombre es requerido"
+        }],
+        url: [{
+          required: true,
+          message: "El nombre es requerido"
+        }]
       }
     };
   },
@@ -228,7 +214,6 @@ export default {
       loadingWMSAuthors: state => state.WMSAuthors.loadingWMSAuthors,
       WMSCategories: state => state.WMSCategories.WMSCategories,
       loadingWMSCategories: state => state.WMSCategories.loadingWMSCategories,
-      WMSServices: state => state.WMSServices.WMSServices
     }),
 
     showModalAddWMSService: {
@@ -254,19 +239,17 @@ export default {
         "modalsWMSServices/replaceShowModalAddWMSCategory"
     }),
 
-    onChangeZindex (val) {
-      // console.log(val, "val");
-    },
-
     submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          this.processingForm = true
           this.createWMSService().then(response => {
             const { status } = response.data;
             if (status) {
               this.$refs.form.resetFields();
               this.replaceShowModalAddWMSService({ show: false });
               this.getWMSServices();
+              this.$toast.success(`El servicio se registro con éxito`)
             }
           });
         }
@@ -287,51 +270,15 @@ export default {
         this.$WMSServiceAPI
           .create({ data })
           .then(response => {
+            this.processingForm = false
             resolve(response);
           })
-          .catch(error => reject(error));
+          .catch(error => {
+            this.processingForm = false
+            reject(error)
+          });
       });
     },
-
-    launchUploadAvatar (option) {
-      this.imageSelected = URL.createObjectURL(option.file);
-      this.form.image = option.file;
-    },
-
-    beforeAvatarUpload (file) {
-      const isJPG = file.type === "image/png" || file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("La imagen debe estar en formato JPG!");
-      }
-      if (!isLt2M) {
-        this.$message.error("La imagen excede los 2MB!");
-      }
-      return isJPG && isLt2M;
-    },
-
-    onchangeRegions (region) {
-      const params = {
-        id: region.id
-      };
-      this.replaceProvinces({ provinces: null });
-      this.replaceDistricts({ districts: null });
-      this.$refs.province.resetField();
-      this.$refs.districtId.resetField();
-
-      this.getProvinces({ params });
-    },
-
-    onchangeProvinces (province) {
-      const params = {
-        id: province.id
-      };
-
-      this.replaceDistricts({ districts: null });
-      this.$refs.districtId.resetField();
-      this.getDistricts({ params });
-    }
   }
 };
 </script>

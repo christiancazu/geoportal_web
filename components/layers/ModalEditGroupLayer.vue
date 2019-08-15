@@ -161,12 +161,14 @@ export default {
     submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          this.processingForm = true
           this.editLayer().then(response => {
             const { status } = response.data;
             if (status) {
               this.$refs.form.resetFields();
               this.replaceShowModalEditGroupLayer({ show: false });
               this.getLayers();
+              this.$toast.success(`el grupo de capas se guardo con éxito`)
             }
           });
         }
@@ -188,9 +190,13 @@ export default {
         this.$groupLayerAPI
           .edit({ data })
           .then(response => {
+            this.processingForm = false
             resolve(response);
           })
-          .catch(error => reject(error));
+          .catch(error => {
+            this.processingForm = false
+            reject(error)
+          });
       });
     }
   }

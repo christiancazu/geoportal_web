@@ -478,6 +478,7 @@ export default {
             const { status } = response.data;
             if (status) {
               this.replaceShowModalAddUser({ show: false });
+              this.$toast.success(`El usuario se registro con éxito`)
               this.getUsers();
             }
           });
@@ -498,7 +499,6 @@ export default {
           .create({ data })
           .then(response => {
             this.processingForm = false
-            this.$toast.success(`El usuario se registro con éxito`)
             resolve(response);
           })
           .catch(error => {

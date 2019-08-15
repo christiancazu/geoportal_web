@@ -317,12 +317,14 @@ export default {
     submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          this.processingForm = true
           this.createLayer().then(response => {
             const { status } = response.data;
             if (status) {
               this.$refs.form.resetFields();
               this.replaceShowModalAddLayer({ show: false });
               this.getLayers();
+              this.$toast.success(`La capa se registro con éxito`)
             }
           });
         }
@@ -344,9 +346,13 @@ export default {
         this.$layerAPI
           .create({ data })
           .then(response => {
+            this.processingForm = false
             resolve(response);
           })
-          .catch(error => reject(error));
+          .catch(error => {
+            this.processingForm = false
+            reject(error)
+            });
       });
     },
 
