@@ -34,7 +34,7 @@
                 action
                 :http-request="launchUploadAvatar"
                 :show-file-list="false"
-                :before-upload="beforeAvatarUpload"
+                :before-upload="beforeFileLayerUpload"
               >
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text pa-2">
@@ -160,11 +160,11 @@
                   ref="uploadFile"
                   class="upload-demo"
                   drag
+                  :data="{style: true}"
                   action
                   :http-request="launchUploadAvatar"
-                  :limit="1"
                   :show-file-list="false"
-                  :before-upload="beforeAvatarUpload"
+                  :before-upload="beforeFileStyleUpload"
                 >
                   <i class="el-icon-upload"></i>
                   <div class="el-upload__text pa-2">
@@ -172,21 +172,26 @@
                     </p>
                   </div>
                 </el-upload>
-                <ul class="el-upload-list el-upload-list--text mx-3">
-                  <li
-                    tabindex="0"
-                    class="el-upload-list__item is-ready"
-                  >
-                    <a class="el-upload-list__item-name">
-                      <i class="el-icon-document"></i>LINEA_FERREA.shp
-                    </a>
-                    <label class="el-upload-list__item-status-label">
-                      <i class="el-icon-upload-success el-icon-circle-check"></i>
-                    </label>
-                    <i class="el-icon-close"></i>
-                    <i class="el-icon-close-tip">Pulse Eliminar para retirar</i>
-                  </li>
-                </ul>
+                <ul
+                v-if="fileStyleSelected"
+                class="el-upload-list el-upload-list--text px-3"
+              >
+                <li
+                  tabindex="0"
+                  class="el-upload-list__item is-success"
+                >
+                  <a class="el-upload-list__item-name">
+                    <i class="el-icon-document"></i>
+                    {{ fileStyleSelected.name }}
+                  </a>
+                  <label class="el-upload-list__item-status-label">
+                    <i class="el-icon-upload-success el-icon-circle-check"></i>
+                  </label>
+                  <i class="el-icon-close"></i>
+                  <i class="el-icon-close-tip">delete</i>
+                </li>
+
+              </ul>
               </el-form-item>
             </el-col>
             <el-col :md="12">
@@ -248,9 +253,9 @@ export default {
   },
   data () {
     return {
-      fileList: [],
       processingForm: false,
       fileLayerSelected: null,
+      fileStyleSelected: null,
       showFormStyle: false,
       form: {
         title: "",
@@ -346,11 +351,16 @@ export default {
     },
 
     launchUploadAvatar (option) {
-      this.form.file = option.file;
-      this.fileLayerSelected = option.file
+      if (!option.data) {
+        this.form.file = option.file;
+        this.fileLayerSelected = option.file
+      } else if (option.data.style) {
+        this.form.fileStyle = option.file;
+        this.fileStyleSelected = option.file
+      }
     },
 
-    beforeAvatarUpload (file) {
+    beforeFileLayerUpload (file) {
       // const extension = (name.substring(name.lastIndexOf("."))).toLowerCase()
       const extension = `.${file.name.split('.').pop()}`
       const isSHP = extension === '.shp'
@@ -363,6 +373,16 @@ export default {
         this.$message.error("Solo se acepta archivos .zip ó .shp");
       }
       return valid
+    },
+    beforeFileStyleUpload (file) {
+      // const extension = (name.substring(name.lastIndexOf("."))).toLowerCase()
+      const extension = `.${file.name.split('.').pop()}`
+      const isSHP = extension === '.sld'
+
+      if (!isSHP) {
+        this.$message.error("Solo se acepta archivos .zip ó .shp");
+      }
+      return isSHP
     }
   }
 };

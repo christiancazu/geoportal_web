@@ -13,7 +13,7 @@ export default $axios => ({
       data: payload.data || {}
     })
   },
-  delete (payload = {}) {
+  edit (payload = {}) {
     return $axios({
       url: `group_layer/${payload.id}`,
       method: 'DELETE',

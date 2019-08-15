@@ -1,5 +1,13 @@
 <template>
   <BasePage title="Grupos de Capas">
+    <template v-slot:itemsActions>
+      <el-button
+        size="mini"
+        type="primary"
+        icon="el-icon-plus"
+        @click="replaceShowModalAddGroupLayer({ show: true })"
+      >Nuevo Grupo de capa</el-button>
+    </template>
     <template v-slot:content>
       <el-container direction="vertical">
         <el-row
@@ -28,17 +36,20 @@
           v-loading="loadingGroupLayers"
         >
           <el-table-column
-            label="Institución"
-            prop="institute"
+            label="Categoria"
+            prop="categoryId"
           />
-          <el-table-column label="Nombres y Apellidos">
-            <template slot-scope="scope">
-              {{`${scope.row.name} ${scope.row.lastName} ${scope.row.lastNameAditional}`}}
-            </template>
-          </el-table-column>
           <el-table-column
-            label="Correo Electrónico"
-            prop="email"
+            label="Nombre"
+            prop="name"
+          />
+          <el-table-column
+            label="Título"
+            prop="title"
+          />
+          <el-table-column
+            label="Descripción"
+            prop="description"
           />
           <el-table-column
             label="Acción"
@@ -47,10 +58,17 @@
             <template slot-scope="scope">
               <el-button
                 circle
-                icon="el-icon-view"
+                icon="el-icon-edit"
                 size="small"
                 type="primary"
-                @click="onLoadModalViewRequestPending(scope.$index, scope.row)"
+                @click="editGroupLayer(scope.$index, scope.row)"
+              />
+              <BtnConfirm
+                :item-selected="scope.row"
+                @confirmed-action="deleteGroupLayer"
+                accion="deleted"
+                title="¿Eliminar cuenta de usuario?"
+                body-text="¿Esta seguro?, realizada la operación no se podra revertir"
               />
             </template>
           </el-table-column>
@@ -71,7 +89,8 @@
       </el-container>
     </template>
     <template v-slot:modals>
-      <ModalViewPendingRequest />
+      <ModalAddGroupLayer />
+      <ModalEditGroupLayer />
     </template>
   </BasePage>
 </template>
@@ -79,11 +98,15 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import BasePage from "@/components/base/BasePage.vue";
-import ModalViewPendingRequest from "@/components/users/ModalViewPendingRequest.vue";
+import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
+import ModalAddGroupLayer from "@/components/layers/ModalAddGroupLayer.vue";
+import ModalEditGroupLayer from "@/components/layers/ModalEditGroupLayer.vue";
 export default {
   components: {
     BasePage,
-    ModalViewPendingRequest
+    ModalAddGroupLayer,
+    ModalEditGroupLayer,
+    BtnConfirm
   },
 
   data () {
@@ -107,20 +130,12 @@ export default {
         if (item.name && item.name.toString().toLowerCase().includes(search)) {
           return item
         }
-        // checking lastName
-        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
+        // checking title
+        if (item.title && item.title.toString().toLowerCase().includes(search)) {
           return item
         }
-        // checking lastNameAditional
-        if (item.lastNameAditional && item.lastNameAditional.toString().toLowerCase().includes(search)) {
-          return item
-        }
-        // checking institute
-        if (item.institute && item.institute.toString().toLowerCase().includes(search)) {
-          return item
-        }
-        // checking subject
-        if (item.subject && item.subject.toString().toLowerCase().includes(search)) {
+        // checking description
+        if (item.description && item.description.toString().toLowerCase().includes(search)) {
           return item
         }
       })
@@ -134,13 +149,21 @@ export default {
   methods: {
     ...mapActions({
       getGroupLayers: "groupLayers/getGroupLayers",
-      replaceCurrentPendingRequest: "groupLayers/replaceCurrentPendingRequest",
-      replaceShowModalViewPendingRequest: "modalsManagementUser/replaceShowModalViewPendingRequest"
+      replaceShowModalAddGroupLayer: "modalsManagementLayer/replaceShowModalAddGroupLayer",
+      replaceShowModalEditGroupLayer: "modalsManagementLayer/replaceShowModalEditGroupLayer"
     }),
 
     onLoadModalViewRequestPending (index, item) {
       this.replaceCurrentPendingRequest({ request: item })
       this.replaceShowModalViewPendingRequest({ show: true })
+    },
+
+    editGroupLayer: function () {
+      this.replaceShowModalEditGroupLayer({ show: true })
+    },
+
+    deleteGroupLayer: function () {
+
     },
 
     // pagination 
