@@ -16,8 +16,15 @@ export default $axios => ({
   delete (payload = {}) {
     return $axios({
       url: `layer/${payload.id}`,
-      method: 'POST',
+      method: 'DELETE',
       data: payload.data || {}
     })
   },
+  delete (payload = {}) {
+    return $axios({
+      url: `layer/${payload.id}`,
+      method: 'PUT',
+      data: payload.data || {}
+    })
+  }
 })

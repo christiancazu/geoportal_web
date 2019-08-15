@@ -74,7 +74,7 @@
             :xs="24"
             :sm="12"
           >
-            <!-- porvincia -->
+            <!-- category -->
             <el-form-item
               label="Categorías"
               prop="Categories"
