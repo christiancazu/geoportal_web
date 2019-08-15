@@ -77,6 +77,12 @@
         >
           Capas
         </el-menu-item>
+        <el-menu-item
+          :route="{ path: '/managementLayers/groupLayer' }"
+          index="/managementLayers/groupLayer"
+        >
+          Grupo de Capas
+        </el-menu-item>
       </el-submenu>
       <el-submenu index="4">
         <div slot="title">
