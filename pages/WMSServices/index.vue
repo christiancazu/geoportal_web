@@ -39,12 +39,12 @@
           v-loading="loadingWMSServices"
         >
           <el-table-column
-            label="Nombre"
-            prop="name"
+            label="URL"
+            prop="url"
           />
           <el-table-column
-            label="Web ULR"
-            prop="webUrl"
+            label="Nombre"
+            prop="name"
           />
           <el-table-column
             label="Categoría"
@@ -54,6 +54,18 @@
             label="Autor"
             prop="author.name"
           />
+          <el-table-column
+            label="Estado"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.isEnabled"
+                disabled
+              >
+              </el-switch>
+            </template>
+          </el-table-column>
           <el-table-column
             label="Acción"
             align="center"

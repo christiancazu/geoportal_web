@@ -24,28 +24,45 @@
           <el-col :md="12">
             <!-- file -->
             <el-form-item
-              label="Imagen de Perfil"
-              class="text-xs-center"
-              prop="image"
+              class="text-xs-center upload-file"
+              prop="file"
             >
               <el-upload
-                class="avatar-uploader"
+                ref="uploadFile"
+                class="upload-demo"
+                drag
                 action
                 :http-request="launchUploadAvatar"
                 :show-file-list="false"
-                name="image"
-                :before-upload="beforeAvatarUpload"
+                :before-upload="beforeFileLayerUpload"
               >
-                <img
-                  v-if="imageSelected"
-                  :src="imageSelected"
-                  class="avatar"
-                />
-                <i
-                  v-else
-                  class="el-icon-plus avatar-uploader-icon"
-                ></i>
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text pa-2">
+                  <p class="ma-0">Suelta tu archivo .zip ó .shp aquí <br> ó <br><em>haz clic para cargar</em>
+                  </p>
+                </div>
               </el-upload>
+
+              <ul
+                v-if="fileLayerSelected"
+                class="el-upload-list el-upload-list--text px-3"
+              >
+                <li
+                  tabindex="0"
+                  class="el-upload-list__item is-success"
+                >
+                  <a class="el-upload-list__item-name">
+                    <i class="el-icon-document"></i>
+                    {{ fileLayerSelected.name }}
+                  </a>
+                  <label class="el-upload-list__item-status-label">
+                    <i class="el-icon-upload-success el-icon-circle-check"></i>
+                  </label>
+                  <i class="el-icon-close"></i>
+                  <i class="el-icon-close-tip">delete</i>
+                </li>
+
+              </ul>
             </el-form-item>
           </el-col>
           <el-col :md="12">
@@ -73,6 +90,33 @@
                 :rules="rules.name"
               />
             </el-form-item>
+            <el-form-item
+              label="Grupo"
+              prop="group"
+            >
+              <el-container>
+                <el-select
+                  v-model="form.GroupId"
+                  value-key="id"
+                  filterable
+                  placeholder="Select"
+                >
+                  <el-option
+                    v-for="item in []"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item"
+                  ></el-option>
+                </el-select>
+                <el-button
+                  icon="el-icon-circle-plus"
+                  circle
+                  type="text"
+                  class="pa-0 pl-1 ma-0"
+                  style="font-size: 1.7rem;"
+                ></el-button>
+              </el-container>
+            </el-form-item>
           </el-col>
         </el-row>
         <!-- Descripción -->
@@ -94,7 +138,7 @@
           class="font-weight-bold mb-2"
           v-model="showFormStyle"
         >Agregar Style</el-checkbox>
-        <div v-show="showFormStyle">
+        <div v-if="showFormStyle">
           <div class="my-3 py-2">
             <el-divider content-position="left">
               <strong>Agregar Style</strong>
@@ -109,28 +153,45 @@
             <el-col :md="12">
               <!-- file -->
               <el-form-item
-                label="Imagen de Perfil"
-                class="text-xs-center"
-                prop="image"
+                class="text-xs-center upload-file"
+                prop="file"
               >
                 <el-upload
-                  class="avatar-uploader"
+                  ref="uploadFile"
+                  class="upload-demo"
+                  drag
+                  :data="{style: true}"
                   action
                   :http-request="launchUploadAvatar"
                   :show-file-list="false"
-                  name="image"
-                  :before-upload="beforeAvatarUpload"
+                  :before-upload="beforeFileStyleUpload"
                 >
-                  <img
-                    v-if="imageSelected"
-                    :src="imageSelected"
-                    class="avatar"
-                  />
-                  <i
-                    v-else
-                    class="el-icon-plus avatar-uploader-icon"
-                  ></i>
+                  <i class="el-icon-upload"></i>
+                  <div class="el-upload__text pa-2">
+                    <p class="ma-0">Suelta tu archivo .zip ó .shp aquí <br> ó <br><em>haz clic para cargar</em>
+                    </p>
+                  </div>
                 </el-upload>
+                <ul
+                v-if="fileStyleSelected"
+                class="el-upload-list el-upload-list--text px-3"
+              >
+                <li
+                  tabindex="0"
+                  class="el-upload-list__item is-success"
+                >
+                  <a class="el-upload-list__item-name">
+                    <i class="el-icon-document"></i>
+                    {{ fileStyleSelected.name }}
+                  </a>
+                  <label class="el-upload-list__item-status-label">
+                    <i class="el-icon-upload-success el-icon-circle-check"></i>
+                  </label>
+                  <i class="el-icon-close"></i>
+                  <i class="el-icon-close-tip">delete</i>
+                </li>
+
+              </ul>
               </el-form-item>
             </el-col>
             <el-col :md="12">
@@ -168,6 +229,7 @@
     </template>
     <template v-slot:actions>
       <el-button
+        :disabled="processingForm"
         size="small"
         @click="replaceShowModalAddLayer({ show: false })"
       >CANCELAR</el-button>
@@ -175,6 +237,7 @@
         type="primary"
         size="small"
         native-type="submit"
+        :loading="processingForm"
         @click.prevent="submitForm"
       >GUARDAR CAPA</el-button>
     </template>
@@ -191,15 +254,16 @@ export default {
   data () {
     return {
       processingForm: false,
-      imageSelected: "",
+      fileLayerSelected: null,
+      fileStyleSelected: null,
       showFormStyle: false,
       form: {
         title: "",
         name: "",
-        file: "",
-        description: null,
+        file: null,
+        description: "",
         nameStyle: "",
-        fileStyle: "",
+        fileStyle: null,
         descriptionStyle: "",
       },
 
@@ -238,6 +302,7 @@ export default {
     showModalAddLayer: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
+        this.fileLayerSelected = null
         return false;
       }
     }
@@ -252,12 +317,14 @@ export default {
     submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
+          this.processingForm = true
           this.createLayer().then(response => {
             const { status } = response.data;
             if (status) {
               this.$refs.form.resetFields();
               this.replaceShowModalAddLayer({ show: false });
               this.getLayers();
+              this.$toast.success(`La capa se registro con éxito`)
             }
           });
         }
@@ -269,7 +336,8 @@ export default {
 
       let keys = Object.keys(this.form);
       keys.forEach(val => {
-        formData.append(val, this.form[val]);
+        if (!!this.form[val])
+          formData.append(val, this.form[val]);
       });
 
       const data = formData;
@@ -278,28 +346,49 @@ export default {
         this.$layerAPI
           .create({ data })
           .then(response => {
+            this.processingForm = false
             resolve(response);
           })
-          .catch(error => reject(error));
+          .catch(error => {
+            this.processingForm = false
+            reject(error)
+            });
       });
     },
 
     launchUploadAvatar (option) {
-      this.imageSelected = URL.createObjectURL(option.file);
-      this.form.image = option.file;
+      if (!option.data) {
+        this.form.file = option.file;
+        this.fileLayerSelected = option.file
+      } else if (option.data.style) {
+        this.form.fileStyle = option.file;
+        this.fileStyleSelected = option.file
+      }
     },
 
-    beforeAvatarUpload (file) {
-      const isJPG = file.type === "image/png" || file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+    beforeFileLayerUpload (file) {
+      // const extension = (name.substring(name.lastIndexOf("."))).toLowerCase()
+      const extension = `.${file.name.split('.').pop()}`
+      const isSHP = extension === '.shp'
+      const isZIP = extension === '.zip' || file.type === 'application/zip'
+      const isRAR = extension === '.rar' || file.type === 'application/rar'
 
-      if (!isJPG) {
-        this.$message.error("La imagen debe estar en formato JPG!");
+      let valid = isSHP || isZIP || isRAR
+
+      if (!valid) {
+        this.$message.error("Solo se acepta archivos .zip ó .shp");
       }
-      if (!isLt2M) {
-        this.$message.error("La imagen excede los 2MB!");
+      return valid
+    },
+    beforeFileStyleUpload (file) {
+      // const extension = (name.substring(name.lastIndexOf("."))).toLowerCase()
+      const extension = `.${file.name.split('.').pop()}`
+      const isSHP = extension === '.sld'
+
+      if (!isSHP) {
+        this.$message.error("Solo se acepta archivos .zip ó .shp");
       }
-      return isJPG && isLt2M;
+      return isSHP
     }
   }
 };

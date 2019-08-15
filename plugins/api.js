@@ -8,6 +8,7 @@ import WMSServiceAPI from '~/api/WMSService'
 import WMSCategoryAPI from '~/api/WMSCategory'
 import WMSAuthorAPI from '~/api/WMSAuthor'
 import reportAPI from '~/api/report'
+import groupLayerAPI from '~/api/groupLayer'
 
 export default (ctx, inject) => {
   const refreshAPIWithAxios = refreshAPI(ctx.$axios)
@@ -16,10 +17,11 @@ export default (ctx, inject) => {
   const userRequestAPIWithAxios = userRequestAPI(ctx.$axios)
   const layerAPIWithAxios = layerAPI(ctx.$axios)
   const baseMapAPIWithAxios = baseMapAPI(ctx.$axios)
-  const WMSServiceWithAxios = WMSServiceAPI(ctx.$axios)
-  const WMSCategoryWithAxios = WMSCategoryAPI(ctx.$axios)
-  const WMSAuthorWithAxios = WMSAuthorAPI(ctx.$axios)
-  const reportWithAxios = reportAPI(ctx.$axios)
+  const WMSServiceAPIWithAxios = WMSServiceAPI(ctx.$axios)
+  const WMSCategoryAPIWithAxios = WMSCategoryAPI(ctx.$axios)
+  const WMSAuthorAPIWithAxios = WMSAuthorAPI(ctx.$axios)
+  const reportAPIWithAxios = reportAPI(ctx.$axios)
+  const groupLayerAPIWithAxios = groupLayerAPI(ctx.$axios)
 
   inject('refreshAPI', refreshAPIWithAxios)
   inject('regionAPI', regionAPIWithAxios)
@@ -27,8 +29,9 @@ export default (ctx, inject) => {
   inject('userRequestAPI', userRequestAPIWithAxios)
   inject('layerAPI', layerAPIWithAxios)
   inject('baseMapAPI', baseMapAPIWithAxios)
-  inject('WMSServiceAPI', WMSServiceWithAxios)
-  inject('WMSCategoryAPI', WMSCategoryWithAxios)
-  inject('WMSAuthorAPI', WMSAuthorWithAxios)
-  inject('reportAPI', reportWithAxios)
+  inject('WMSServiceAPI', WMSServiceAPIWithAxios)
+  inject('WMSCategoryAPI', WMSCategoryAPIWithAxios)
+  inject('WMSAuthorAPI', WMSAuthorAPIWithAxios)
+  inject('reportAPI', reportAPIWithAxios)
+  inject('groupLayerAPI', groupLayerAPIWithAxios)
 }
