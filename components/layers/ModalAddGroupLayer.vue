@@ -146,7 +146,7 @@ export default {
   watch: {
     showModalAddGroupLayer: function (newState, oldState) {
       if (!newState) {
-        this.$refs.form.resetFields();
+        this.$refs.form.resetFields()
         return false;
       }
     }
@@ -155,7 +155,7 @@ export default {
   methods: {
     ...mapActions({
       replaceShowModalAddGroupLayer: "modalsManagementLayer/replaceShowModalAddGroupLayer",
-      getGroupLayers: "GroupLayers/getGroupLayers"
+      getGroupLayers: "GroupLayers/getGroupLayers",
     }),
 
     submitForm () {

@@ -149,6 +149,7 @@ export default {
   methods: {
     ...mapActions({
       getGroupLayers: "groupLayers/getGroupLayers",
+      replaceCurrentGroupLayer: "groupLayers/replaceCurrentGroupLayer",
       replaceShowModalAddGroupLayer: "modalsManagementLayer/replaceShowModalAddGroupLayer",
       replaceShowModalEditGroupLayer: "modalsManagementLayer/replaceShowModalEditGroupLayer"
     }),
@@ -158,7 +159,8 @@ export default {
       this.replaceShowModalViewPendingRequest({ show: true })
     },
 
-    editGroupLayer: function () {
+    editGroupLayer: function (index, groupLayer) {
+      this.replaceCurrentGroupLayer({ groupLayer })
       this.replaceShowModalEditGroupLayer({ show: true })
     },
 

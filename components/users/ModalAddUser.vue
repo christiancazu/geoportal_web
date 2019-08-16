@@ -340,42 +340,32 @@ export default {
       },
 
       rules: {
-        username: [
-          {
-            required: true,
-            message: "El nombre de usuario es requerido"
-          }
-        ],
-        name: [
-          {
-            required: true,
-            message: "El nombre es requerido"
-          }
-        ],
-        lastName: [
-          {
-            required: true,
-            message: "El nombre es requerido"
-          }
-        ],
-        password: [
-          {
-            required: true,
-            min: 6,
-            message: "La contraseña es requerida"
-          }
-        ],
-        passwordConfirmation: [
-          {
-            required: true,
-            validator: (rule, value, callback) => {
-              if (value !== this.form.password) {
-                return callback(new Error("La contraseña no coincide"));
-              }
-              callback();
+        username: [{
+          required: true,
+          message: "El nombre de usuario es requerido"
+        }],
+        name: [{
+          required: true,
+          message: "El nombre es requerido"
+        }],
+        lastName: [{
+          required: true,
+          message: "El nombre es requerido"
+        }],
+        password: [{
+          required: true,
+          min: 6,
+          message: "La contraseña es requerida"
+        }],
+        passwordConfirmation: [{
+          required: true,
+          validator: (rule, value, callback) => {
+            if (value !== this.form.password) {
+              return callback(new Error("La contraseña no coincide"));
             }
+            callback();
           }
-        ],
+        }],
         email: [
           {
             required: true,

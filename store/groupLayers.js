@@ -1,6 +1,7 @@
 import {
   REPLACE_GROUP_LAYER,
-  REPLACE_LOADING_GROUP_LAYER
+  REPLACE_LOADING_GROUP_LAYER,
+  REPLACE_CURRENT_GROUP_LAYER
 } from '../types/mutation-types'
 
 export const state = () => ({
@@ -20,6 +21,9 @@ export const actions = {
     } finally {
       commit('REPLACE_LOADING_GROUP_LAYER', { loading: false })
     }
+  },
+  replaceCurrentGroupLayer ({ commit }, payload) {
+    commit('REPLACE_CURRENT_GROUP_LAYER', payload)
   }
 }
 
@@ -29,5 +33,8 @@ export const mutations = {
   },
   [REPLACE_LOADING_GROUP_LAYER] (state, { loading }) {
     state.loadingGroupLayers = loading
+  },
+  [REPLACE_CURRENT_GROUP_LAYER] (state, { groupLayer }) {
+    state.currentGroupLayer = groupLayer
   },
 }

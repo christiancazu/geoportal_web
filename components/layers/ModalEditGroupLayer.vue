@@ -6,6 +6,7 @@
   >
     <template v-slot:content>
       <el-form
+        v-if="currentGroupLayer"
         ref="form"
         label-position="top"
         status-icon
@@ -35,7 +36,7 @@
           prop="name"
         >
           <el-input
-            v-model="form.name"
+            v-model.trim="form.name"
             type="text"
             :rules="rules.name"
           />
@@ -46,6 +47,7 @@
         >
           <el-container>
             <el-select
+              disabled
               v-model="form.GroupId"
               value-key="id"
               filterable
@@ -73,6 +75,7 @@
           prop="description"
         >
           <el-input
+            disabled
             v-model="form.description"
             type="textarea"
             :rows="3"
@@ -131,6 +134,7 @@ export default {
 
   computed: {
     ...mapState({
+      currentGroupLayer: state => state.groupLayers.currentGroupLayer
     }),
 
     showModalEditGroupLayer: {

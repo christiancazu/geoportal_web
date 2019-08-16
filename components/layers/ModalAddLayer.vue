@@ -96,25 +96,19 @@
             >
               <el-container>
                 <el-select
-                  v-model="form.GroupId"
+                  v-model="form.groupId"
                   value-key="id"
+                  :loading="loadingGroupLayers"
                   filterable
                   placeholder="Select"
                 >
                   <el-option
-                    v-for="item in []"
+                    v-for="item in groupLayers"
                     :key="item.id"
                     :label="item.name"
-                    :value="item"
+                    :value="item.id"
                   ></el-option>
                 </el-select>
-                <el-button
-                  icon="el-icon-circle-plus"
-                  circle
-                  type="text"
-                  class="pa-0 pl-1 ma-0"
-                  style="font-size: 1.7rem;"
-                ></el-button>
               </el-container>
             </el-form-item>
           </el-col>
@@ -173,25 +167,25 @@
                   </div>
                 </el-upload>
                 <ul
-                v-if="fileStyleSelected"
-                class="el-upload-list el-upload-list--text px-3"
-              >
-                <li
-                  tabindex="0"
-                  class="el-upload-list__item is-success"
+                  v-if="fileStyleSelected"
+                  class="el-upload-list el-upload-list--text px-3"
                 >
-                  <a class="el-upload-list__item-name">
-                    <i class="el-icon-document"></i>
-                    {{ fileStyleSelected.name }}
-                  </a>
-                  <label class="el-upload-list__item-status-label">
-                    <i class="el-icon-upload-success el-icon-circle-check"></i>
-                  </label>
-                  <i class="el-icon-close"></i>
-                  <i class="el-icon-close-tip">delete</i>
-                </li>
+                  <li
+                    tabindex="0"
+                    class="el-upload-list__item is-success"
+                  >
+                    <a class="el-upload-list__item-name">
+                      <i class="el-icon-document"></i>
+                      {{ fileStyleSelected.name }}
+                    </a>
+                    <label class="el-upload-list__item-status-label">
+                      <i class="el-icon-upload-success el-icon-circle-check"></i>
+                    </label>
+                    <i class="el-icon-close"></i>
+                    <i class="el-icon-close-tip">delete</i>
+                  </li>
 
-              </ul>
+                </ul>
               </el-form-item>
             </el-col>
             <el-col :md="12">
@@ -261,10 +255,11 @@ export default {
         title: "",
         name: "",
         file: null,
+        groupId: '',
         description: "",
         nameStyle: "",
         fileStyle: null,
-        descriptionStyle: "",
+        descriptionStyle: ""
       },
 
       rules: {
@@ -274,11 +269,25 @@ export default {
         }],
         name: [{
           required: true,
-          message: "El nombre es requerido"
+          // pattern: /^[z0-9\s.,\/#!$%\^&\*;:{}=\-+'´`~()”“"…]+$/g,
+          validator: (rule, value, callback) => {
+            let text = value.split('')
+            let itContainsBlanks = text.every(val => /[a-zA-Z_]/g.test(val))
+            if (!itContainsBlanks) {
+              return callback(new Error("Solo se admite letras y subguion '_'"))
+            }
+            callback();
+          }
         }],
         nameStyle: [{
           required: true,
-          message: "El nombre es requerido"
+          validator: (rule, value, callback) => {
+            console.log(rule, value)
+            // if () {
+            //   return callback(new Error("Seleccione su Provincia"));
+            // }
+            callback();
+          }
         }],
       }
     };
@@ -286,6 +295,8 @@ export default {
 
   computed: {
     ...mapState({
+      groupLayers: state => state.groupLayers.groupLayers,
+      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers
     }),
 
     showModalAddLayer: {
@@ -305,13 +316,15 @@ export default {
         this.fileLayerSelected = null
         return false;
       }
+      this.getGroupLayers()
     }
   },
 
   methods: {
     ...mapActions({
       replaceShowModalAddLayer: "modalsManagementLayer/replaceShowModalAddLayer",
-      getLayers: "layers/getLayers"
+      getLayers: "layers/getLayers",
+      getGroupLayers: 'groupLayers/getGroupLayers'
     }),
 
     submitForm () {
@@ -352,7 +365,7 @@ export default {
           .catch(error => {
             this.processingForm = false
             reject(error)
-            });
+          });
       });
     },
 
