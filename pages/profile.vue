@@ -213,8 +213,9 @@
           <el-button
             :loading="processingForm"
             type="primary"
+            size="small"
             @click="submitForm"
-          >Guardar Cambios</el-button>
+          >GUARDAR</el-button>
         </el-form-item>
       </el-form>
     </template>

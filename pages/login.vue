@@ -55,7 +55,7 @@
                 native-type="submit"
                 @click.prevent="submitForm"
               >
-                Ingresar
+                INGRESAR
               </el-button>
             </el-form-item>
           </el-form>

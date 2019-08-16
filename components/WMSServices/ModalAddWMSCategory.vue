@@ -53,7 +53,7 @@
         type="primary"
         :loading="processingForm"
         @click.prevent="submitFormWMSCategory"
-      >REGISTRAR</el-button>
+      >GUARDAR</el-button>
     </template>
   </BaseModal>
 </template>

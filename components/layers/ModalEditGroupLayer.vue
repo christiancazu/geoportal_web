@@ -98,7 +98,7 @@
         native-type="submit"
         :loading="processingForm"
         @click.prevent="submitForm"
-      >GUARDAR GRUPO DE CAPA</el-button>
+      >GUARDAR</el-button>
     </template>
   </BaseModal>
 </template>

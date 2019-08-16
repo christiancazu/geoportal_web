@@ -140,17 +140,17 @@
     </template>
     <template v-slot:actions>
       <el-button
-      size="small"
+        size="small"
         :disabled="processingForm"
         @click="replaceShowModalAddBaseMap({ show: false })"
       >CANCELAR</el-button>
       <el-button
-      size="small"
+        size="small"
         :loading="processingForm"
         type="primary"
         native-type="submit"
         @click.prevent="submitForm"
-      >GUARDAR MAPA BASE</el-button>
+      >GUARDAR</el-button>
     </template>
   </BaseModal>
 </template>

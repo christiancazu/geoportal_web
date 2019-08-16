@@ -307,7 +307,7 @@
         native-type="submit"
         :loading="processingForm"
         @click.prevent="submitForm"
-      >CREAR NUEVO USUARIO</el-button>
+      >GUARDAR</el-button>
     </template>
   </BaseModal>
 </template>

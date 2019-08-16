@@ -233,7 +233,7 @@
         native-type="submit"
         :loading="processingForm"
         @click.prevent="submitForm"
-      >GUARDAR CAPA</el-button>
+      >GUARDAR</el-button>
     </template>
   </BaseModal>
 </template>
