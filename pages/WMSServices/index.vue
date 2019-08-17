@@ -72,13 +72,6 @@
           >
             <template slot-scope="scope">
               <el-button
-                circle
-                icon="el-icon-edit"
-                size="small"
-                type="primary"
-                @click="handleEdit(scope.$index, scope.row)"
-              />
-              <el-button
                 size="small"
                 circle
                 type="danger"

@@ -48,25 +48,19 @@
           <el-container>
             <el-select
               disabled
-              v-model="form.GroupId"
-              value-key="id"
+              v-model="currentGroupLayer.categoryId"
+              :loading="loadingGroupLayers"
+              value-key="categoryId"
               filterable
               placeholder="Select"
             >
               <el-option
-                v-for="item in []"
+                v-for="item in groupLayers"
                 :key="item.id"
                 :label="item.name"
-                :value="item"
+                :value="item.category"
               ></el-option>
             </el-select>
-            <el-button
-              icon="el-icon-circle-plus"
-              circle
-              type="text"
-              class="pa-0 pl-1 ma-0"
-              style="font-size: 1.7rem;"
-            ></el-button>
           </el-container>
         </el-form-item>
         <!-- Descripción -->
@@ -76,7 +70,7 @@
         >
           <el-input
             disabled
-            v-model="form.description"
+            v-model="currentGroupLayer.description"
             type="textarea"
             :rows="3"
             autocomplete="off"
@@ -116,7 +110,8 @@ export default {
       form: {
         title: "",
         name: "",
-        description: ""
+        description: "",
+        categoryId: ''
       },
 
       rules: {
@@ -134,7 +129,9 @@ export default {
 
   computed: {
     ...mapState({
-      currentGroupLayer: state => state.groupLayers.currentGroupLayer
+      currentGroupLayer: state => state.groupLayers.currentGroupLayer,
+      groupLayers: state => state.groupLayers.groupLayers,
+      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers
     }),
 
     showModalEditGroupLayer: {
@@ -152,6 +149,12 @@ export default {
       if (!newState) {
         this.$refs.form.resetFields();
         return false;
+        this.setForm()
+      }
+    },
+    currentGroupLayer : function(newState, oldState) {
+      if(this.showModalEditGroupLayer){
+        this.setForm()
       }
     }
   },
@@ -159,8 +162,12 @@ export default {
   methods: {
     ...mapActions({
       replaceShowModalEditGroupLayer: "modalsManagementLayer/replaceShowModalEditGroupLayer",
-      getGroupLayers: "groupLayers/getGroupLayers"
     }),
+
+    setForm(){
+      this.form.title = this.currentGroupLayer.title
+      this.form.name = this.currentGroupLayer.name
+    },
 
     submitForm () {
       this.$refs.form.validate(valid => {

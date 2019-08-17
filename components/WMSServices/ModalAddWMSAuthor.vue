@@ -14,7 +14,7 @@
         :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
-        :disabled="processingForm"
+        :disabled="processingFormWMSAuthor"
         @submit.prevent="submitFormWMSAuthor"
       >
         <!-- name -->
@@ -52,14 +52,14 @@
     <template v-slot:actions>
       <el-button
         size="small"
-        :disabled="processingForm"
+        :disabled="processingFormWMSAuthor"
         @click="replaceShowModalAddWMSAuthor({ show: false })"
       >CANCELAR</el-button>
       <el-button
         type="primary"
         size="small"
         native-type="submit"
-        :loading="processingForm"
+        :loading="processingFormWMSAuthor"
         @click.prevent="submitFormWMSAuthor"
       >GUARDAR</el-button>
     </template>
@@ -74,19 +74,17 @@ export default {
   },
   data () {
     return {
+      processingFormWMSAuthor: false,
       form: {
-        processingForm: false,
         name: "",
         description: "",
         webUrl: "",
       },
       rules: {
-        name: [
-          {
-            required: true,
-            message: "El nombre es requerido"
-          }
-        ]
+        name: [{
+          required: true,
+          message: "El nombre es requerido"
+        }]
       }
     };
   },
@@ -112,7 +110,7 @@ export default {
     submitFormWMSAuthor () {
       this.$refs.formWMSAuthor.validate(valid => {
         if (valid) {
-          this.processingForm = true
+          this.processingFormWMSAuthor = true
           this.createWMSAuthor().then(response => {
             const { status } = response.data;
             if (status) {
@@ -138,11 +136,11 @@ export default {
         this.$WMSAuthorAPI
           .create({ data: formData })
           .then(response => {
-            this.processingForm = false
+            this.processingFormWMSAuthor = false
             resolve(response);
           })
           .catch(error => {
-            this.processingForm = false
+            this.processingFormWMSAuthor = false
             reject(error)
           });
       });

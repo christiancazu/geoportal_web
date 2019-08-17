@@ -46,25 +46,19 @@
         >
           <el-container>
             <el-select
-              v-model="form.GroupId"
+              v-model="form.categoryId"
               value-key="id"
               filterable
+              :loading="loadingGroupLayers"
               placeholder="Select"
             >
               <el-option
-                v-for="item in []"
+                v-for="item in groupLayers"
                 :key="item.id"
                 :label="item.name"
-                :value="item"
+                :value="item.id"
               ></el-option>
             </el-select>
-            <el-button
-              icon="el-icon-circle-plus"
-              circle
-              type="text"
-              class="pa-0 pl-1 ma-0"
-              style="font-size: 1.7rem;"
-            ></el-button>
           </el-container>
         </el-form-item>
         <!-- Descripción -->
@@ -114,6 +108,7 @@ export default {
         title: "",
         name: "",
         description: "",
+        categoryId: ''
       },
 
       rules: {
@@ -131,6 +126,8 @@ export default {
 
   computed: {
     ...mapState({
+      groupLayers: state => state.groupLayers.groupLayers,
+      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers
     }),
 
     showModalAddGroupLayer: {
@@ -155,7 +152,6 @@ export default {
   methods: {
     ...mapActions({
       replaceShowModalAddGroupLayer: "modalsManagementLayer/replaceShowModalAddGroupLayer",
-      getGroupLayers: "GroupLayers/getGroupLayers",
     }),
 
     submitForm () {
