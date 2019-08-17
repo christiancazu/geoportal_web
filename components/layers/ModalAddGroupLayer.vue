@@ -28,18 +28,6 @@
             :rules="rules.title"
           />
         </el-form-item>
-
-        <!-- name -->
-        <el-form-item
-          label="Nombre"
-          prop="name"
-        >
-          <el-input
-            v-model="form.name"
-            type="text"
-            :rules="rules.name"
-          />
-        </el-form-item>
         <el-form-item
           label="Grupo"
           prop="group"
@@ -55,7 +43,7 @@
               <el-option
                 v-for="item in groupLayers"
                 :key="item.id"
-                :label="item.name"
+                :label="item.title"
                 :value="item.id"
               ></el-option>
             </el-select>
@@ -106,7 +94,6 @@ export default {
       processingForm: false,
       form: {
         title: "",
-        name: "",
         description: "",
         categoryId: ''
       },
@@ -115,10 +102,6 @@ export default {
         title: [{
           required: true,
           message: "El nombre de usuario es requerido"
-        }],
-        name: [{
-          required: true,
-          message: "El nombre es requerido"
         }]
       }
     };
@@ -186,6 +169,7 @@ export default {
         this.$groupLayerAPI
           .create({ data })
           .then(response => {
+            console.log(response.data)
             this.processingForm = false
             resolve(response);
           })

@@ -37,11 +37,7 @@
         >
           <el-table-column
             label="Categoria"
-            prop="categoryId"
-          />
-          <el-table-column
-            label="Nombre"
-            prop="name"
+            prop="categoryTitle"
           />
           <el-table-column
             label="Título"
@@ -54,6 +50,7 @@
           <el-table-column
             label="Acción"
             align="center"
+            width="120"
           >
             <template slot-scope="scope">
               <el-button
@@ -126,8 +123,8 @@ export default {
       let search = this.search.toString().toLowerCase()
       let groupLayers = this.$store.state.groupLayers.groupLayers
       return groupLayers.filter(item => {
-        // checking name
-        if (item.name && item.name.toString().toLowerCase().includes(search)) {
+        // checking categoryTitle
+        if (item.categoryTitle && item.categoryTitle.toString().toLowerCase().includes(search)) {
           return item
         }
         // checking title
@@ -164,8 +161,14 @@ export default {
       this.replaceShowModalEditGroupLayer({ show: true })
     },
 
-    deleteGroupLayer: function () {
-
+    deleteGroupLayer: function (item) {
+      new Promise((resolve, reject) => {
+        this.$groupLayerAPI.delete({ id: item.itemSelected.id })
+          .then(response => {
+            resolve(response)
+            this.getGroupLayers()
+          }).catch(error => reject(error))
+      })
     },
 
     // pagination 

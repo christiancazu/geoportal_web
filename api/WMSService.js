@@ -13,4 +13,11 @@ export default $axios => ({
       data: payload.data || {}
     })
   },
+    delete(payload = {}) {
+    return $axios({
+      url: `external_wms_service/${payload.id}`,
+      method: 'DELETE',
+      data: payload.data || {}
+    })
+  }
 })

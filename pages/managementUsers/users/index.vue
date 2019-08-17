@@ -64,6 +64,7 @@
           <el-table-column
             label="Acción"
             align="center"
+            width="120"
           >
             <template slot-scope="scope">
               <el-button
@@ -71,7 +72,7 @@
                 icon="el-icon-edit"
                 size="small"
                 type="primary"
-                @click="handleEdit(scope.$index, scope.row)"
+                @click="onLoadModalEditUser(scope.$index, scope.row)"
               />
               <BtnConfirm
                 :item-selected="scope.row"
@@ -164,7 +165,7 @@ export default {
       getUser: 'users/getUser'
     }),
 
-    handleEdit (index, item) {
+    onLoadModalEditUser (index, item) {
       this.getUser({ id: item.id }).then(response => {
         this.replaceShowModalEditUser({ show: true })
       })

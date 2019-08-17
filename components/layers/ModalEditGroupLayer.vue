@@ -29,18 +29,6 @@
             :rules="rules.title"
           />
         </el-form-item>
-
-        <!-- name -->
-        <el-form-item
-          label="Nombre de Capa"
-          prop="name"
-        >
-          <el-input
-            v-model.trim="form.name"
-            type="text"
-            :rules="rules.name"
-          />
-        </el-form-item>
         <el-form-item
           label="Grupo"
           prop="group"
@@ -57,7 +45,7 @@
               <el-option
                 v-for="item in groupLayers"
                 :key="item.id"
-                :label="item.name"
+                :label="item.title"
                 :value="item.category"
               ></el-option>
             </el-select>
@@ -109,19 +97,12 @@ export default {
       processingForm: false,
       form: {
         title: "",
-        name: "",
-        description: "",
-        categoryId: ''
       },
 
       rules: {
         title: [{
           required: true,
           message: "El nombre de usuario es requerido"
-        }],
-        name: [{
-          required: true,
-          message: "El nombre es requerido"
         }]
       }
     };
@@ -154,7 +135,7 @@ export default {
     },
     currentGroupLayer : function(newState, oldState) {
       if(this.showModalEditGroupLayer){
-        this.setForm()
+      this.form.title = this.currentGroupLayer.title
       }
     }
   },
@@ -163,11 +144,6 @@ export default {
     ...mapActions({
       replaceShowModalEditGroupLayer: "modalsManagementLayer/replaceShowModalEditGroupLayer",
     }),
-
-    setForm(){
-      this.form.title = this.currentGroupLayer.title
-      this.form.name = this.currentGroupLayer.name
-    },
 
     submitForm () {
       this.$refs.form.validate(valid => {

@@ -64,6 +64,7 @@
           <el-table-column
             label="Acción"
             align="center"
+            width="120"
           >
             <template slot-scope="scope">
               <BtnConfirm
@@ -86,8 +87,7 @@
           :current-page="currentPage"
           @current-change="onChangeCurrentPage"
           @size-change="onChangePageSize"
-        >
-        </el-pagination>
+        />
       </el-container>
     </template>
     <template v-slot:modals>

@@ -42,6 +42,7 @@
           <el-table-column
             label="Acción"
             align="center"
+            width="120"
           >
             <template slot-scope="scope">
               <el-button

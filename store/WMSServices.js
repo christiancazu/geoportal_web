@@ -14,7 +14,7 @@ export const actions = {
 
     try {
       const { data } = await this.$WMSServiceAPI.index(payload)
-      commit('REPLACE_WMS_SERVICES', { WMSServices: data.data })
+      commit('REPLACE_WMS_SERVICES', { WMSServices: data.data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {

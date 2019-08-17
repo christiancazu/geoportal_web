@@ -33,7 +33,7 @@
           </el-col>
         </el-row>
         <el-table
-          :data="WMSServices.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
           lazy
           v-loading="loadingWMSServices"
@@ -57,6 +57,7 @@
           <el-table-column
             label="Estado"
             align="center"
+            width="120"
           >
             <template slot-scope="scope">
               <el-switch
@@ -69,26 +70,30 @@
           <el-table-column
             label="Acción"
             align="center"
+            width="120"
           >
             <template slot-scope="scope">
-              <el-button
-                size="small"
-                circle
-                type="danger"
-                icon="el-icon-delete"
-                @click="handleDelete(scope.$index, scope.row)"
+              <BtnConfirm
+                :item-selected="scope.row"
+                @confirmed-action="deleteWMSServices"
+                accion="deleted"
+                title="¿Eliminar el servicio seleccionado?"
+                body-text="¿Esta seguro?, esta operación no se podra revertir"
               />
             </template>
           </el-table-column>
         </el-table>
-        <div class="text-xs-right">
-          <el-pagination
-            :hide-on-single-page="true"
-            :total="WMSServices.length"
-            layout="prev, pager, next"
-          >
-          </el-pagination>
-        </div>
+        <el-pagination
+          small
+          class="pt-4 text-xs-right"
+          :pager-size="100"
+          :page-size="pagesize"
+          layout="prev, pager, next, sizes"
+          :total="filteredData.length"
+          :current-page="currentPage"
+          @current-change="onChangeCurrentPage"
+          @size-change="onChangePageSize"
+        />
       </el-container>
     </template>
 
@@ -102,29 +107,44 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
+import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalAddWMSService from '@/components/WMSServices/ModalAddWMSService.vue'
 export default {
   components: {
     BasePage,
     ModalAddWMSService,
+    BtnConfirm
   },
   data () {
     return {
       search: '',
+      pagesize: 10,
+      currentPage: 1
     }
   },
 
   computed: {
     ...mapState({
-      WMSServices: state => state.WMSServices.WMSServices,
       loadingWMSServices: state => state.WMSServices.loadingWMSServices
-    })
+    }),
+    filteredData: function () {
+      let search = this.search.toString().toLowerCase()
+      let WMSServices = this.$store.state.WMSServices.WMSServices
+      this.currentPage = 1
+      return WMSServices.filter(item => {
+        // checking url
+        if (item.url && item.url.toString().toLowerCase().includes(search)) {
+          return item
+        }
+        // checking name
+        if (item.name && item.name.toString().toLowerCase().includes(search)) {
+          return item
+        }
+      })
+    },
   },
-  mounted () {
-    this.getWMSServices()
-  },
-
   created () {
+    this.getWMSServices()
   },
 
   methods: {
@@ -132,12 +152,22 @@ export default {
       replaceShowModalAddWMSService: 'modalsWMSServices/replaceShowModalAddWMSService',
       getWMSServices: 'WMSServices/getWMSServices',
     }),
-    handleEdit (index, row) {
-      console.log(index, row)
+    deleteWMSServices (item) {
+      new Promise((resolve, reject) => {
+        this.$WMSServiceAPI.delete({ id: item.itemSelected.id })
+          .then(response => {
+            resolve(response)
+            this.getWMSServices()
+          }).catch(error => reject(error))
+      })
     },
-    handleDelete (index, row) {
-      console.log(index, row)
-    }
+    // pagination 
+    onChangeCurrentPage: function (currentPage) {
+      this.currentPage = currentPage;
+    },
+    onChangePageSize: function (pagesize) {
+      this.pagesize = pagesize;
+    },
   }
 }
 </script>
