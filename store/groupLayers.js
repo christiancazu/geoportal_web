@@ -15,7 +15,7 @@ export const actions = {
     commit('REPLACE_LOADING_GROUP_LAYER', { loading: true })
     try {
       const { data } = await this.$groupLayerAPI.index(payload)
-      commit('REPLACE_GROUP_LAYER', { groupLayers: data.data })
+      commit('REPLACE_GROUP_LAYER', { groupLayers: data.data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {
