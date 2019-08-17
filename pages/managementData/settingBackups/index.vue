@@ -1,6 +1,6 @@
 <template>
   <BasePage
-    title="Mi Perfil"
+    title="Configurar copias de seguridad"
     :fit-content="true"
   >
     <template v-slot:content>
@@ -10,212 +10,64 @@
         status-icon
         :model="form"
         :rules="rules"
-        label-width="120px"
+        label-width="180px"
         :disabled="processingForm"
-        class="demo-ruleForm"
       >
         <el-form-item
-          label="Imagen de Perfil"
-          class="text-xs-center"
+          label="Fecha de la ultima copia de seguridad"
+          prop="username"
         >
-          <el-upload
-            class="avatar-uploader"
-            action
-            :disabled="processingForm"
-            :show-file-list="false"
-            name="image"
-            :http-request="launchUploadAvatar"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img
-              v-if="imageSelected"
-              :src="imageSelected"
-              class="avatar"
-            />
-            <i
-              v-else
-              class="el-icon-plus avatar-uploader-icon"
-            ></i>
-          </el-upload>
+          <el-date-picker
+            type="date"
+            size="small"
+            placeholder="yyyy/MM/dd"
+            v-model="form.date"
+            style="width: 100%;"
+            format="yyyy/MM/dd"
+          ></el-date-picker>
         </el-form-item>
-        <el-row :gutter="10">
-          <el-col
-            :xs="24"
-            :sm="12"
-            :md="12"
+        <el-form-item
+          label="Copias automáticas"
+          prop="email"
+        >
+          <el-switch v-model="form.automaticCopies">
+          </el-switch>
+        </el-form-item>
+        <el-form-item
+          label="OBJETOS DEL GEOPORTAL"
+          prop="object"
+        >
+          <el-checkbox-group
+            v-model="form.object"
+            @change="handleCheckedCitiesChange"
           >
-            <el-form-item
-              label="Nombre de Usuario"
-              prop="username"
-            >
-              <el-input
-                v-model="profile.username"
-                type="text"
-                disabled
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="24"
-            :sm="12"
-            :md="12"
-          >
-            <el-form-item
-              label="Correo Electrónico"
-              prop="email"
-            >
-              <el-input
-                disabled
-                v-model="profile.email"
-                type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="10">
-          <el-col
-            :xs="24"
-            :sm="12"
-            :md="8"
-          >
-            <el-form-item
-              label="Nombres"
-              prop="name"
-            >
-              <el-input
-                :disabled="processingForm"
-                v-model="form.name"
-                type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="24"
-            :sm="12"
-            :md="8"
-          >
-            <el-form-item
-              label="Apellido Paterno"
-              prop="lastName"
-            >
-              <el-input
-                :disabled="processingForm"
-                v-model="form.lastName"
-                type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="24"
-            :sm="12"
-            :md="8"
-          >
-            <el-form-item
-              label="Apellido Materno"
-              prop="lastNameAditional"
-            >
-              <el-input
-                :disabled="processingForm"
-                v-model="form.lastNameAditional"
-                type="text"
-                autocomplete="off"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="10">
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
-            <!-- regionId -->
-            <el-form-item
-              label="Región"
-              prop="regionId"
-            >
-              <el-select
-                v-model="profile.regionId"
-                value-key="id"
-                filterable
-                disabled
-                :loading="loadingRegions"
-                placeholder="Select"
-              >
-                <el-option
-                  v-for="item in regions"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
-            <!-- porvincia -->
-            <el-form-item
-              label="Provincia"
-              prop="provinceId"
-              ref="provinceId"
-            >
-              <el-select
-                v-model="profile.provinceId"
-                value-key="id"
-                :loading="loadingProvinces"
-                filterable
-                placeholder="Select"
-                disabled
-              >
-                <el-option
-                  v-for="item in provinces"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
-            <!-- distrito -->
-            <el-form-item
-              label="Distrito"
-              prop="districtId"
-            >
-              <el-select
-                v-model="form.districtId"
-                value-key="id"
-                filterable
-                :disabled="processingForm"
-                :loading="loadingDistricts"
-                placeholder="Select"
-              >
-                <el-option
-                  v-for="item in districts"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
+            <el-checkbox
+              v-for="item in items"
+              :label="item.value"
+              :key="item.id"
+            >{{item.value}}</el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item
+          label="Description"
+          prop="description"
+        >
+          <el-input
+            v-model="form.description"
+            type="textarea"
+            :rows="3"
+            autocomplete="off"
+            :maxlength="300"
+            :show-word-limit="true"
+          />
+        </el-form-item>
         <el-form-item class="text-xs-center mb-0">
           <el-button
             :loading="processingForm"
             type="primary"
             size="small"
             @click="submitForm"
-          >GUARDAR</el-button>
+          >CREAR COPIA DE SEGURIDAD</el-button>
         </el-form-item>
       </el-form>
     </template>
@@ -231,94 +83,30 @@ export default {
 
   data () {
     return {
-      imageSelected: "",
+      checkedCities: [],
+      items: [
+        { value: 'Capas', id: '1' },
+        { value: 'Image', id: '2' },
+        { value: 'Datos estadisticos', id: '3' },
+        { value: 'Reportes', id: '4' },
+        { value: 'Configuraciones', id: '5' }
+      ],
       processingForm: false,
       profile: {},
       form: {
-        districtId: '',
-        name: '',
-        lastName: '',
-        lastNameAditional: '',
-        status: '',
-        institute: '',
-        subject: '',
-        uploadImage: ''
+        object: [],
+        date: '',
+        automaticCopies: true,
+        description: ''
       },
 
-      rules: {
-        name: [{
-          required: true,
-          message: "El campo es requerido",
-        }],
-        lastName: [{
-          required: true,
-          message: "El campo es requerido",
-        }],
-        lastNameAditional: [{
-          required: true,
-          message: "El campo es requerido",
-        }],
-        districtId: [{
-          required: true,
-          message: "El campo es requerido",
-        }],
-      }
+      rules: {}
     };
   },
 
-  computed: {
-    ...mapState({
-      user: state => state.auth.user,
-      regions: state => state.regions.regions,
-      loadingRegions: state => state.regions.loadingRegions,
-      provinces: state => state.regions.provinces,
-      loadingProvinces: state => state.regions.loadingProvinces,
-      districts: state => state.regions.districts,
-      loadingDistricts: state => state.regions.loadingDistricts
-    })
-  },
-
-  created () {
-    this.getRegions()
-    this.getProfile()
-  },
-
   methods: {
-    ...mapActions({
-      getUser: 'users/getUser',
-      getRegions: "regions/getRegions",
-      getProvinces: "regions/getProvinces",
-      getDistricts: "regions/getDistricts",
-    }),
+    handleCheckedCitiesChange () {
 
-    getProfile () {
-      new Promise((resolve, reject) => {
-        this.$userAPI.getProfile()
-          .then(response => {
-            const { data } = response.data
-            this.setFormField(data)
-            resolve(response);
-          })
-          .catch(error => reject(error));
-      });
-    },
-
-    setFormField (data) {
-      this.profile = data
-      this.profile.email = this.user.email
-
-      this.form.name = data.name
-      this.form.lastName = data.lastName
-      this.form.lastNameAditional = data.lastNameAditional
-      this.form.status = data.status
-      this.form.districtId = data.districtId
-
-      this.form.institute = data.institute
-      this.form.subject = data.subject
-      this.imageSelected = data.image
-
-      this.getProvinces({ params: { id: data.regionId } });
-      this.getDistricts({ params: { id: data.provinceId } });
     },
 
     submitForm (e) {
@@ -326,52 +114,8 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.processingForm = true
-          this.modifyProfile().then(response => {
-            this.getProfile()
-          })
         }
       });
-    },
-
-    modifyProfile () {
-      const data = new FormData()
-      let keys = Object.keys(this.form);
-      keys.forEach(val => {
-        data.append(val, this.form[val]);
-      });
-
-      return new Promise((resolve, reject) => {
-        this.$userAPI
-          .putProfile({ data })
-          .then(response => {
-            this.processingForm = false
-            this.$toast.success(`Su perfil ha sido actualizado con éxito`)
-
-            resolve(response);
-          })
-          .catch(error => {
-            this.processingForm = false
-            reject(error)
-          });
-      });
-    },
-
-    launchUploadAvatar (option) {
-      this.imageSelected = URL.createObjectURL(option.file);
-      this.form.uploadImage = option.file;
-    },
-
-    beforeAvatarUpload (file) {
-      const isJPG = file.type === "image/png" || file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("La imagen debe estar en formato JPG!");
-      }
-      if (!isLt2M) {
-        this.$message.error("La imagen excede los 2MB!");
-      }
-      return isJPG && isLt2M;
     }
   }
 };

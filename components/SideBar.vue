@@ -29,53 +29,50 @@
         <i class="fas fa-user"></i>
         <span>Perfil</span>
       </el-menu-item>
-      <transition name="el-zoom-in-top">
-
-        <el-submenu
-          index="2"
-          active-text-color="#7f5ae7"
-          activeTextColor="#7f5ae7"
+      <!-- <el-divider /> -->
+      <el-submenu
+        index="2"
+        active-text-color="#7f5ae7"
+        activeTextColor="#7f5ae7"
+      >
+        <template slot="title">
+          <i class="fas fa-users"></i><span slot="title">Gestión de usuarios</span>
+        </template>
+        <el-menu-item
+          :route="{ path: '/managementUsers/users' }"
+          index="/managementUsers/users"
         >
-          <template slot="title">
-            <i class="fas fa-users"></i><span slot="title">Gestión de usuarios</span>
-          </template>
-          <el-menu-item
-            :route="{ path: '/managementUsers/users' }"
-            index="/managementUsers/users"
-          >
-            Usuarios
-          </el-menu-item>
-          <el-menu-item
-            index="/managementUsers/pendingUsers"
-            :route="{ path: '/managementUsers/pendingUsers' }"
-          >
-            Solicitudes pendientes
-          </el-menu-item>
-          <el-menu-item
-            index="/managementUsers/rejectedUsers"
-            :route="{ path: '/managementUsers/rejectedUsers' }"
-          >
-            Solicitudes rechazadas
-          </el-menu-item>
-
-        </el-submenu>
-      </transition>
-
+          Usuarios
+        </el-menu-item>
+        <el-menu-item
+          index="/managementUsers/pendingUsers"
+          :route="{ path: '/managementUsers/pendingUsers' }"
+        >
+          Solicitudes pendientes
+        </el-menu-item>
+        <el-menu-item
+          index="/managementUsers/rejectedUsers"
+          :route="{ path: '/managementUsers/rejectedUsers' }"
+        >
+          Solicitudes rechazadas
+        </el-menu-item>
+      </el-submenu>
+      <!-- <el-divider /> -->
       <el-submenu index="3">
         <div slot="title">
           <i class="fas fa-layer-group"></i><span slot="title">Gestión de Capas</span>
         </div>
         <el-menu-item
-          :route="{ path: '/managementLayers/baseMap' }"
-          index="/managementLayers/baseMap"
-        >
-          Mapas Base
-        </el-menu-item>
-        <el-menu-item
           :route="{ path: '/managementLayers/layers' }"
           index="/managementLayers/layers"
         >
           Capas
+        </el-menu-item>
+        <el-menu-item
+          :route="{ path: '/managementLayers/baseMap' }"
+          index="/managementLayers/baseMap"
+        >
+          Mapas Base
         </el-menu-item>
         <el-menu-item
           :route="{ path: '/managementLayers/groupLayer' }"
@@ -98,7 +95,7 @@
           :route="{ path: '/managementData/settingBackups' }"
           index="/managementData/settingBackups"
         >
-          Configurar
+          Configuración
         </el-menu-item>
       </el-submenu>
       <el-menu-item

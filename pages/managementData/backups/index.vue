@@ -24,12 +24,12 @@
           </el-col>
         </el-row>
         <el-table
-          :data="users.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+          :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
         >
           <el-table-column
             label="Usuario"
-            prop="username"
+            prop="user"
           />
           <el-table-column
             label="Fecha"
@@ -50,11 +50,22 @@
                 icon="el-icon-view"
                 size="small"
                 type="primary"
-                @click="handleEdit(scope.$index, scope.row)"
+                @click="onLoadModalViewReport(scope.row)"
               />
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination
+          small
+          class="pt-4 text-xs-right"
+          :pager-size="100"
+          :page-size="pagesize"
+          layout="prev, pager, next, sizes"
+          :total="filteredData.length"
+          :current-page="currentPage"
+          @current-change="onChangeCurrentPage"
+          @size-change="onChangePageSize"
+        />
       </el-container>
     </template>
   </BasePage>
@@ -71,56 +82,78 @@ export default {
     return {
       loading: true,
       search: '',
+      pagesize: 10,
+      currentPage: 1,
       tableData: [{
         date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles'
+        user: 'Tom',
+        state: 'Completado'
       }, {
         date: '2016-05-04',
-        name: 'John',
-        address: 'No. 189, Grove St, Los Angeles'
+        user: 'John',
+        state: 'En proceso...'
       }, {
         date: '2016-05-01',
-        name: 'Morgan',
-        address: 'No. 189, Grove St, Los Angeles'
+        user: 'Morgan',
+        state: 'Pendiente'
       }, {
         date: '2016-05-03',
-        name: 'Jessy',
-        address: 'No. 189, Grove St, Los Angeles'
+        user: 'Jessy',
+        state: 'Completado'
       }]
-
     }
   },
 
   computed: {
     ...mapState({
-      showModalAddUser: state => state.modals.showModalAddUser,
-      users: state => state.users.users
-    })
-  },
-  mounted () {
-    this.getUsers()
+      loadingBackups: state => state.backups.loadingBackups,
+      backups: state => state.backups.backups,
+    }),
 
+    filteredData: function () {
+      let search = this.search.toString().toLowerCase()
+      let backups = this.$store.state.backups.backups
+      // let backups = this.$store.state.backups.backups
+      this.currentPage = 1
+      return backups.filter(item => {
+        // checking lastName
+        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
+          return item
+        }
+        // checking name
+        if (item.name && item.name.toString().toLowerCase().includes(search)) {
+          return item
+        }
+        // checking email
+        if (item.email && item.email.toString().toLowerCase().includes(search)) {
+          return item
+        }
+      })
+    }
   },
 
   created () {
-    // console.log(this.$route)
     // this.getUsers()
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddUser: 'modalsManagementUser/replaceShowModalAddUser',
+      replaceCurrentBackup: 'backups/replaceCurrentBackup',
       replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
-      getUsers: 'users/getUsers',
+      getUsers: 'backups/getUsers',
     }),
-    handleEdit (index, row) {
-      this.replaceShowModalEditUser({ show: true })
-      console.log(index, row)
+
+    onLoadModalViewReport: function (backup) {
+      this.replaceCurrentBackup({ backup })
+      // this.replaceShowModalViewReport({ show: true })
     },
-    handleDelete (index, row) {
-      console.log(index, row)
-    }
+    // pagination 
+    onChangeCurrentPage: function (currentPage) {
+      this.currentPage = currentPage;
+    },
+    onChangePageSize: function (pagesize) {
+      this.pagesize = pagesize;
+    },
   }
 }
 </script>
