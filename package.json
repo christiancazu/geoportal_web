@@ -4,7 +4,10 @@
   "description": "veox_unat_geoportal_web",
   "main": "nuxt.config.js",
   "scripts": {
-    "dev": "nuxt"
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
   },
   "repository": {
     "type": "git",

@@ -49,7 +49,8 @@
             </el-select>
           </el-container>
         </el-form-item>
-        <!-- Descripción -->
+        <!-- Descripción 
+        -->
         <el-form-item
           label="Descripción"
           prop="description"
