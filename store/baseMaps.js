@@ -14,7 +14,7 @@ export const actions = {
 
     try {
       const { data } = await this.$baseMapAPI.index(payload)
-      commit('REPLACE_BASE_MAPS', { baseMaps: data.data })
+      commit('REPLACE_BASE_MAPS', { baseMaps: data.data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {

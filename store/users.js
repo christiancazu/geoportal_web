@@ -41,7 +41,7 @@ export const actions = {
 
     try {
       const { data } = await this.$userAPI.getUser(payload)
-      commit('REPLACE_USER', { user: data.data })
+      commit('REPLACE_USER', { user: data.data || [] })
       commit('REPLACE_LOADING_USER', { loading: false })
 
     } catch (error) {

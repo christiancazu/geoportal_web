@@ -20,7 +20,7 @@ export const actions = {
 
     try {
       const { data } = await this.$userRequestAPI.getPending(payload)
-      commit('REPLACE_PENDING_REQUESTS', { requests: data.data })
+      commit('REPLACE_PENDING_REQUESTS', { requests: data.data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {
@@ -33,7 +33,7 @@ export const actions = {
 
     try {
       const { data } = await this.$userRequestAPI.getRejected(payload)
-      commit('REPLACE_REJECTED_REQUESTS', { requests: data.data })
+      commit('REPLACE_REJECTED_REQUESTS', { requests: data.data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {

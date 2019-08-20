@@ -22,7 +22,7 @@ export const actions = {
 
     try {
       const { data } = await this.$regionAPI.regions(payload)
-      commit('REPLACE_REGIONS', { regions: data.data })
+      commit('REPLACE_REGIONS', { regions: data.data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {
@@ -35,7 +35,7 @@ export const actions = {
 
     try {
       const { data } = await this.$regionAPI.provinces(payload)
-      commit('REPLACE_PROVINCES', { provinces: data.data })
+      commit('REPLACE_PROVINCES', { provinces: data.data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {
@@ -48,7 +48,7 @@ export const actions = {
 
     try {
       const { data } = await this.$regionAPI.districts(payload)
-      commit('REPLACE_DISTRICTS', { districts: data.data })
+      commit('REPLACE_DISTRICTS', { districts: data.data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {

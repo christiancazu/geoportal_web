@@ -13,7 +13,7 @@ export const actions = {
     commit('REPLACE_LOADING_LAYERS', { loading: true })
     try {
       const { data } = await this.$layerAPI.index(payload)
-      commit('REPLACE_LAYERS', { layers: data.data })
+      commit('REPLACE_LAYERS', { layers: data.data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {
