@@ -3,7 +3,10 @@
     class="container-fluid"
     style="justify-content: center"
   > -->
-  <el-row :gutter="10" class="content-center pt-5">
+  <el-row
+    :gutter="10"
+    class="content-center pt-5"
+  >
     <el-col
       :xs='24'
       :md="14"
@@ -112,6 +115,7 @@
                   size="small"
                   native-type="submit"
                   @click.prevent="submitForm"
+                  class="btn-block"
                 >
                   INGRESAR
                 </el-button>
@@ -127,16 +131,17 @@
           </el-card>
         </el-col>
       </el-row>
-      <!-- </el-card> -->
     </el-col>
   </el-row>
-
-  <!-- </el-container> -->
 </template>
 
 <script>
 import { Promise } from 'q';
 export default {
+
+  head: {
+    title: 'Iniciar Sesión',
+  },
 
   data () {
     return {
