@@ -67,6 +67,7 @@
               ></div>
               <el-image
                 v-else
+                class="w-100 h-100"
                 fit="contain"
               >
                 <div
