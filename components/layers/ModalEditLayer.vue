@@ -1,11 +1,12 @@
 <template>
   <BaseModal
     title="Registrar nueva capa"
-    :show-modal="showModalAddLayer"
-    @action-modal="replaceShowModalAddLayer"
+    :show-modal="showModalEditLayer"
+    @action-modal="replaceShowModalEditLayer"
   >
     <template v-slot:content>
       <el-form
+        v-if="currentLayer"
         ref="form"
         label-position="top"
         status-icon
@@ -16,103 +17,38 @@
         :disabled="processingForm"
         @submit.prevent="submitForm"
       >
-        <el-row
-          :gutter="10"
-          align="bottom"
-          justify="center"
+        <el-form-item
+          label="Título"
+          prop="title"
         >
-          <el-col :md="12">
-            <!-- file -->
-            <el-form-item
-              class="text-xs-center upload-file"
-              prop="file"
+          <el-input
+            v-model="form.title"
+            type="text"
+            autocomplete="off"
+            :rules="rules.title"
+          />
+        </el-form-item>
+        <el-form-item
+          label="Grupo"
+          prop="groupLayerId"
+        >
+          <el-container>
+            <el-select
+              v-model="form.groupLayerId"
+              value-key="id"
+              :loading="loadingGroupLayers"
+              filterable
+              placeholder="Select"
             >
-              <el-upload
-                ref="uploadFile"
-                class="upload-demo"
-                drag
-                action
-                :http-request="launchUploadAvatar"
-                :show-file-list="false"
-                :before-upload="beforeFileLayerUpload"
-              >
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text pa-2">
-                  <p class="ma-0">Suelta tu archivo .zip ó .shp aquí <br> ó <br><em>haz clic para cargar</em>
-                  </p>
-                </div>
-              </el-upload>
-
-              <ul
-                v-if="fileLayerSelected"
-                class="el-upload-list el-upload-list--text px-3"
-              >
-                <li
-                  tabindex="0"
-                  class="el-upload-list__item is-success"
-                >
-                  <a class="el-upload-list__item-name">
-                    <i class="el-icon-document"></i>
-                    {{ fileLayerSelected.name }}
-                  </a>
-                  <label class="el-upload-list__item-status-label">
-                    <i class="el-icon-upload-success el-icon-circle-check"></i>
-                  </label>
-                  <i class="el-icon-close"></i>
-                  <i class="el-icon-close-tip">delete</i>
-                </li>
-
-              </ul>
-            </el-form-item>
-          </el-col>
-          <el-col :md="12">
-            <!-- title -->
-            <el-form-item
-              label="Título"
-              prop="title"
-            >
-              <el-input
-                v-model="form.title"
-                type="text"
-                autocomplete="off"
-                :rules="rules.title"
-              />
-            </el-form-item>
-
-            <!-- name -->
-            <el-form-item
-              label="Nombre de Capa"
-              prop="name"
-            >
-              <el-input
-                v-model="form.name"
-                type="text"
-                :rules="rules.name"
-              />
-            </el-form-item>
-            <el-form-item
-              label="Grupo"
-              prop="groupLayerId"
-            >
-              <el-container>
-                <el-select
-                  v-model="form.groupLayerId"
-                  value-key="id"
-                  :loading="loadingGroupLayers"
-                  filterable
-                  placeholder="Select"
-                >
-                  <el-option
-                    v-for="item in groupLayers"
-                    :key="item.id"
-                    :label="item.title"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-              </el-container>
-            </el-form-item>
-          </el-col>
-        </el-row>
+              <el-option
+                v-for="item in groupLayers"
+                :key="item.id"
+                :label="item.title"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-container>
+        </el-form-item>
         <!-- Descripción -->
         <el-form-item
           label="Descripción"
@@ -133,7 +69,7 @@
       <el-button
         :disabled="processingForm"
         size="small"
-        @click="replaceShowModalAddLayer({ show: false })"
+        @click="replaceShowModalEditLayer({ show: false })"
       >CANCELAR</el-button>
       <el-button
         type="primary"
@@ -161,8 +97,6 @@ export default {
       showFormStyle: false,
       form: {
         title: "",
-        name: "",
-        file: null,
         groupLayerId: '',
         description: ""
       },
@@ -183,51 +117,40 @@ export default {
             }
             callback();
           }
-        }],
-        nameStyle: [{
-          required: true,
-          validator: (rule, value, callback) => {
-            console.log(rule, value)
-            // if () {
-            //   return callback(new Error("Seleccione su Provincia"));
-            // }
-            callback();
-          }
-        }],
+        }]
       }
     };
   },
 
   computed: {
     ...mapState({
+      currentLayer: state => state.layers.currentLayer,
       groupLayers: state => state.groupLayers.groupLayers,
-      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers
-    }),
-
-    showModalAddLayer: {
-      get () {
-        return this.$store.state.modalsManagementLayer.showModalAddLayer;
-      },
-      set (value) {
-        this.replaceShowModalAddLayer({ show: value });
-      }
-    }
+      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
+      showModalEditLayer: state => state.modalsManagementLayer.showModalEditLayer
+    })
   },
 
   watch: {
-    showModalAddLayer: function (newState, oldState) {
+    showModalEditLayer: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         this.fileLayerSelected = null
         return false;
       }
       this.getGroupLayers()
+    },
+
+    currentLayer: function(newState, oldState) {
+      this.form.title = this.currentLayer.title
+      this.form.description = this.currentLayer.description
+      // this.form.title = this.currentLayer.title groupid
     }
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddLayer: "modalsManagementLayer/replaceShowModalAddLayer",
+      replaceShowModalEditLayer: "modalsManagementLayer/replaceShowModalEditLayer",
       getLayers: "layers/getLayers",
       getGroupLayers: 'groupLayers/getGroupLayers'
     }),
@@ -240,7 +163,7 @@ export default {
             const { status } = response.data;
             if (status) {
               this.$refs.form.resetFields();
-              this.replaceShowModalAddLayer({ show: false });
+              this.replaceShowModalEditLayer({ show: false });
               this.getLayers();
               this.$toast.success(`La capa se registro con éxito`)
             }

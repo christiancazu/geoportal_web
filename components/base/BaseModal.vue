@@ -2,6 +2,7 @@
   <div>
     <el-dialog
       :title="title"
+      :close-on-click-modal="false"
       :visible.sync="showModalNow"
       :append-to-body="appendToBody"
       top="2vh"
@@ -46,12 +47,6 @@ export default {
       }
     }
   },
-
-  mounted () {
-    // console.log(this.$break);
-  },
-
-  methods: {}
 };
 </script>
 <style lang="scss">

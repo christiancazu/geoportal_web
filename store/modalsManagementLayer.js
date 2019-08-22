@@ -2,11 +2,13 @@ import {
   REPLACE_SHOW_MODAL_ADD_LAYER,
   REPLACE_SHOW_MODAL_ADD_BASE_MAP,
   REPLACE_SHOW_MODAL_ADD_GROUP_LAYER,
-  REPLACE_SHOW_MODAL_EDIT_GROUP_LAYER
+  REPLACE_SHOW_MODAL_EDIT_GROUP_LAYER,
+  REPLACE_SHOW_MODAL_EDIT_LAYER
 } from '../types/mutation-types'
 
 export const state = () => ({
   showModalAddLayer: false,
+  showModalEditLayer: false,
   showModalAddBaseMap: false,
   showModalAddGroupLayer: false,
   showModalEditGroupLayer: false
@@ -15,6 +17,9 @@ export const state = () => ({
 export const actions = {
   replaceShowModalAddLayer ({ commit }, payload) {
     commit('REPLACE_SHOW_MODAL_ADD_LAYER', payload)
+  },
+  replaceShowModalEditLayer ({ commit }, payload) {
+    commit('REPLACE_SHOW_MODAL_EDIT_LAYER', payload)
   },
   replaceShowModalAddBaseMap ({ commit }, payload) {
     commit('REPLACE_SHOW_MODAL_ADD_BASE_MAP', payload)
@@ -30,6 +35,9 @@ export const actions = {
 export const mutations = {
   [REPLACE_SHOW_MODAL_ADD_LAYER] (state, { show }) {
     state.showModalAddLayer = show
+  },
+  [REPLACE_SHOW_MODAL_EDIT_LAYER] (state, { show }) {
+    state.showModalEditLayer = show
   },
   [REPLACE_SHOW_MODAL_ADD_BASE_MAP] (state, { show }) {
     state.showModalAddBaseMap = show

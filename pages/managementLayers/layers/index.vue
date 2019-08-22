@@ -79,6 +79,7 @@
     </template>
     <template v-slot:modals>
       <ModalAddLayer />
+      <ModalEditLayer />
     </template>
   </BasePage>
 </template>
@@ -86,12 +87,12 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
-import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalAddLayer from '@/components/layers/ModalAddLayer.vue'
+import ModalEditLayer from '@/components/layers/ModalEditLayer.vue'
 export default {
   components: {
     BasePage,
-    BtnConfirm,
+    ModalEditLayer,
     ModalAddLayer,
   },
   data () {
@@ -113,16 +114,16 @@ export default {
       let layers = this.$store.state.layers.layers
       this.currentPage = 1
       return layers.filter(item => {
-        // checking lastName
-        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
+        // checking title
+        if (item.title && item.title.toString().toLowerCase().includes(search)) {
           return item
         }
         // checking name
         if (item.name && item.name.toString().toLowerCase().includes(search)) {
           return item
         }
-        // checking email
-        if (item.email && item.email.toString().toLowerCase().includes(search)) {
+        // checking description
+        if (item.description && item.description.toString().toLowerCase().includes(search)) {
           return item
         }
       })
@@ -136,6 +137,8 @@ export default {
   methods: {
     ...mapActions({
       replaceShowModalAddLayer: 'modalsManagementLayer/replaceShowModalAddLayer',
+      replaceShowModalEditLayer: 'modalsManagementLayer/replaceShowModalEditLayer',
+      replaceCurrentLayer: 'layers/replaceCurrentLayer',
       getLayers: 'layers/getLayers',
     }),
 
@@ -150,7 +153,8 @@ export default {
     },
 
     onLoadModalEditLayer (index, item) {
-
+      this.replaceCurrentLayer({ layer: item })
+      this.replaceShowModalEditLayer({ show: true })
     },
 
     // pagination 
