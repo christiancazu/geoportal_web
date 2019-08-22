@@ -70,32 +70,25 @@ export default {
 
   data () {
     return {
-      processingForm : false,
+      processingForm: false,
       form: {
         name: "",
         description: "",
       },
 
       rules: {
-        name: [
-          {
-            required: true,
-            message: "El nombre es requerido"
-          }
-        ]
+        name: [{
+          required: true,
+          message: "El nombre es requerido"
+        }]
       }
     };
   },
 
   computed: {
-    showModalAddWMSCategory: {
-      get () {
-        return this.$store.state.modalsWMSServices.showModalAddWMSCategory;
-      },
-      set (value) {
-        this.replaceShowModalAddWMSCategory({ show: value });
-      }
-    }
+    ...mapState({
+      showModalAddWMSCategory: state => state.modalsWMSServices.showModalAddWMSCategory
+    })
   },
 
   methods: {

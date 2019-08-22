@@ -142,16 +142,6 @@ export default {
       getLayers: 'layers/getLayers',
     }),
 
-    deleteLayer (item) {
-      new Promise((resolve, reject) => {
-        this.$layerAPI.delete({ id: item.itemSelected.pk })
-          .then(response => {
-            resolve(response)
-            this.getLayers()
-          }).catch(error => reject(error))
-      })
-    },
-
     onLoadModalEditLayer (index, item) {
       this.replaceCurrentLayer({ layer: item })
       this.replaceShowModalEditLayer({ show: true })

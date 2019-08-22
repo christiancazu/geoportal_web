@@ -165,7 +165,7 @@ export default {
               this.$refs.form.resetFields();
               this.replaceShowModalEditLayer({ show: false });
               this.getLayers();
-              this.$toast.success(`La capa se registro con éxito`)
+              this.$toast.success(`La capa se modifico con éxito`)
             }
           });
         }
@@ -218,16 +218,6 @@ export default {
         this.$message.error("Solo se acepta archivos .zip ó .shp");
       }
       return valid
-    },
-    beforeFileStyleUpload (file) {
-      // const extension = (name.substring(name.lastIndexOf("."))).toLowerCase()
-      const extension = `.${file.name.split('.').pop()}`
-      const isSHP = extension === '.sld'
-
-      if (!isSHP) {
-        this.$message.error("Solo se acepta archivos .zip ó .shp");
-      }
-      return isSHP
     }
   }
 };

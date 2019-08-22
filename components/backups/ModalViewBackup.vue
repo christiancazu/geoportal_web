@@ -43,31 +43,11 @@ export default {
     BaseModal,
     ModalViewBackup
   },
-  data () {
-    return {
-    };
-  },
-
-  watch: {
-    showModalViewReport: function (newState, oldState) {
-      if (!newState) {
-        return false;
-      }
-    }
-  },
-
   computed: {
     ...mapState({
-      currentReport: state => state.reports.currentReport
-    }),
-    showModalViewReport: {
-      get () {
-        return this.$store.state.reports.showModalViewReport;
-      },
-      set (value) {
-        this.replaceShowModalViewReport({ show: value });
-      }
-    }
+      currentReport: state => state.reports.currentReport,
+      showModalViewReport: state => state.reports.showModalViewReport
+    })
   },
 
   methods: {

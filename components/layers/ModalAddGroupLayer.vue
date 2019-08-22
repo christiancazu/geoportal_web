@@ -111,17 +111,9 @@ export default {
   computed: {
     ...mapState({
       groupLayers: state => state.groupLayers.groupLayers,
-      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers
-    }),
-
-    showModalAddGroupLayer: {
-      get () {
-        return this.$store.state.modalsManagementLayer.showModalAddGroupLayer;
-      },
-      set (value) {
-        this.replaceShowModalAddGroupLayer({ show: value });
-      }
-    }
+      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
+      showModalAddGroupLayer: state => state.modalsManagementLayer.showModalAddGroupLayer
+    })
   },
 
   watch: {

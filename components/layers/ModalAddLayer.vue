@@ -183,17 +183,7 @@ export default {
             }
             callback();
           }
-        }],
-        nameStyle: [{
-          required: true,
-          validator: (rule, value, callback) => {
-            console.log(rule, value)
-            // if () {
-            //   return callback(new Error("Seleccione su Provincia"));
-            // }
-            callback();
-          }
-        }],
+        }]
       }
     };
   },
@@ -201,17 +191,9 @@ export default {
   computed: {
     ...mapState({
       groupLayers: state => state.groupLayers.groupLayers,
-      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers
-    }),
-
-    showModalAddLayer: {
-      get () {
-        return this.$store.state.modalsManagementLayer.showModalAddLayer;
-      },
-      set (value) {
-        this.replaceShowModalAddLayer({ show: value });
-      }
-    }
+      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
+      showModalAddLayer: state => state.modalsManagementLayer.showModalAddLayer
+    })
   },
 
   watch: {

@@ -90,14 +90,9 @@ export default {
   },
 
   computed: {
-    showModalAddWMSAuthor: {
-      get () {
-        return this.$store.state.modalsWMSServices.showModalAddWMSAuthor;
-      },
-      set (value) {
-        this.replaceShowModalAddWMSAuthor({ show: value });
-      }
-    }
+    ...mapState({
+      showModalAddWMSAuthor: state => state.modalsWMSServices.showModalAddWMSAuthor
+    })
   },
 
   methods: {

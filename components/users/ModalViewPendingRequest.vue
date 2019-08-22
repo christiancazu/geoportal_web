@@ -96,16 +96,9 @@ export default {
 
   computed: {
     ...mapState({
-      currentPendingRequest: state => state.userRequests.currentPendingRequest
-    }),
-    showModalViewPendingRequest: {
-      get () {
-        return this.$store.state.modalsManagementUser.showModalViewPendingRequest;
-      },
-      set (value) {
-        this.replaceShowModalViewPendingRequest({ show: value });
-      }
-    }
+      currentPendingRequest: state => state.userRequests.currentPendingRequest,
+      showModalViewPendingRequest: state => state.modalsManagementUser.showModalViewPendingRequest
+    })
   },
 
   methods: {

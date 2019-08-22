@@ -366,54 +366,42 @@ export default {
             callback();
           }
         }],
-        email: [
-          {
-            required: true,
-            pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            message: "El correo electrónico debe ser válido"
-          }
-        ],
-        subject: [
-          {
-            required: true,
-            min: 10,
-            message: "Detalle el motivo para acceder al Geoportal UNAT"
-          }
-        ],
-        institute: [
-          {
-            required: true,
-            message: "La institución es requerida"
-          }
-        ],
-        region: [
-          {
-            required: true,
-            message: "Seleccione su región"
-          }
-        ],
-        province: [
-          {
-            required: true,
-            validator: (rule, value, callback) => {
-              if (!this.form.region) {
-                return callback(new Error("Seleccione su Provincia"));
-              }
-              callback();
+        email: [{
+          required: true,
+          pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+          message: "El correo electrónico debe ser válido"
+        }],
+        subject: [{
+          required: true,
+          min: 10,
+          message: "Detalle el motivo para acceder al Geoportal UNAT"
+        }],
+        institute: [{
+          required: true,
+          message: "La institución es requerida"
+        }],
+        region: [{
+          required: true,
+          message: "Seleccione su región"
+        }],
+        province: [{
+          required: true,
+          validator: (rule, value, callback) => {
+            if (!this.form.region) {
+              return callback(new Error("Seleccione su Provincia"));
             }
+            callback();
           }
-        ],
-        districtId: [
-          {
-            required: true,
-            validator: (rule, value, callback) => {
-              if (!this.form.province) {
-                return callback(new Error("Seleccione su Distrito"));
-              }
-              callback();
+        }],
+        districtId: [{
+          required: true,
+          validator: (rule, value, callback) => {
+            if (!this.form.province) {
+              return callback(new Error("Seleccione su Distrito"));
             }
+            callback();
           }
-        ]
+        }]
       }
     };
   },
@@ -436,17 +424,9 @@ export default {
       provinces: state => state.regions.provinces,
       loadingProvinces: state => state.regions.loadingProvinces,
       districts: state => state.regions.districts,
-      loadingDistricts: state => state.regions.loadingDistricts
-    }),
-
-    showModalAddUser: {
-      get () {
-        return this.$store.state.modalsManagementUser.showModalAddUser;
-      },
-      set (value) {
-        this.replaceShowModalAddUser({ show: value });
-      }
-    }
+      loadingDistricts: state => state.regions.loadingDistricts,
+      showModalAddUser: state => state.modalsManagementUser.showModalAddUser
+    })
   },
 
   methods: {

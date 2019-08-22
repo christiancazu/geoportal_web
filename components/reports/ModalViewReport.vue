@@ -53,16 +53,9 @@ export default {
 
   computed: {
     ...mapState({
-      currentReport: state => state.reports.currentReport
-    }),
-    showModalViewReport: {
-      get () {
-        return this.$store.state.reports.showModalViewReport;
-      },
-      set (value) {
-        this.replaceShowModalViewReport({ show: value });
-      }
-    }
+      currentReport: state => state.reports.currentReport,
+      showModalViewReport: state => state.reports.showModalViewReport
+    })
   },
 
   methods: {

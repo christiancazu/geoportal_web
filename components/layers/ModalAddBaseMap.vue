@@ -185,18 +185,14 @@ export default {
         100: "100 max"
       },
       rules: {
-        name: [
-          {
-            required: true,
-            message: "El nombre de usuario es requerido"
-          }
-        ],
-        url: [
-          {
-            required: true,
-            message: "La url del mapa base es requrido"
-          }
-        ]
+        name: [{
+          required: true,
+          message: "El nombre de usuario es requerido"
+        }],
+        url: [{
+          required: true,
+          message: "La url del mapa base es requrido"
+        }]
       }
     };
   },
@@ -211,16 +207,9 @@ export default {
   },
 
   computed: {
-    ...mapState({}),
-
-    showModalAddBaseMap: {
-      get () {
-        return this.$store.state.modalsManagementLayer.showModalAddBaseMap;
-      },
-      set (value) {
-        this.replaceShowModalAddBaseMap({ show: value });
-      }
-    }
+    ...mapState({
+      showModalAddBaseMap: state => state.modalsManagementLayer.showModalAddBaseMap
+    })
   },
 
   methods: {

@@ -214,16 +214,8 @@ export default {
       loadingWMSAuthors: state => state.WMSAuthors.loadingWMSAuthors,
       WMSCategories: state => state.WMSCategories.WMSCategories,
       loadingWMSCategories: state => state.WMSCategories.loadingWMSCategories,
-    }),
-
-    showModalAddWMSService: {
-      get () {
-        return this.$store.state.modalsWMSServices.showModalAddWMSService;
-      },
-      set (value) {
-        this.replaceShowModalAddWMSService({ show: value });
-      }
-    }
+      showModalAddWMSService: state => state.modalsWMSServices.showModalAddWMSService,
+    })
   },
 
   methods: {

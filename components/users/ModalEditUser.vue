@@ -317,17 +317,9 @@ export default {
       provinces: state => state.regions.provinces,
       loadingProvinces: state => state.regions.loadingProvinces,
       districts: state => state.regions.districts,
-      loadingDistricts: state => state.regions.loadingDistricts
-    }),
-
-    showModalEditUser: {
-      get () {
-        return this.$store.state.modalsManagementUser.showModalEditUser;
-      },
-      set (value) {
-        this.replaceShowModalEditUser({ show: value });
-      }
-    }
+      loadingDistricts: state => state.regions.loadingDistricts,
+      showModalEditUser: state => state.modalsManagementUser.showModalEditUser
+    })
   },
 
   methods: {
