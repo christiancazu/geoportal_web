@@ -96,7 +96,7 @@
             >
               <el-container>
                 <el-select
-                  v-model="form.groupId"
+                  v-model="form.groupLayerId"
                   value-key="id"
                   :loading="loadingGroupLayers"
                   filterable
@@ -105,7 +105,7 @@
                   <el-option
                     v-for="item in groupLayers"
                     :key="item.id"
-                    :label="item.name"
+                    :label="item.title"
                     :value="item.id"
                   ></el-option>
                 </el-select>
@@ -127,98 +127,6 @@
             :show-word-limit="true"
           />
         </el-form-item>
-
-        <el-checkbox
-          class="font-weight-bold mb-2"
-          v-model="showFormStyle"
-        >Agregar Style</el-checkbox>
-        <div v-if="showFormStyle">
-          <div class="my-3 py-2">
-            <el-divider content-position="left">
-              <strong>Agregar Style</strong>
-            </el-divider>
-          </div>
-          <!-- add style -->
-          <el-row
-            :gutter="10"
-            align="bottom"
-            justify="center"
-          >
-            <el-col :md="12">
-              <!-- file -->
-              <el-form-item
-                class="text-xs-center upload-file"
-                prop="file"
-              >
-                <el-upload
-                  ref="uploadFile"
-                  class="upload-demo"
-                  drag
-                  :data="{style: true}"
-                  action
-                  :http-request="launchUploadAvatar"
-                  :show-file-list="false"
-                  :before-upload="beforeFileStyleUpload"
-                >
-                  <i class="el-icon-upload"></i>
-                  <div class="el-upload__text pa-2">
-                    <p class="ma-0">Suelta tu archivo .zip ó .shp aquí <br> ó <br><em>haz clic para cargar</em>
-                    </p>
-                  </div>
-                </el-upload>
-                <ul
-                  v-if="fileStyleSelected"
-                  class="el-upload-list el-upload-list--text px-3"
-                >
-                  <li
-                    tabindex="0"
-                    class="el-upload-list__item is-success"
-                  >
-                    <a class="el-upload-list__item-name">
-                      <i class="el-icon-document"></i>
-                      {{ fileStyleSelected.name }}
-                    </a>
-                    <label class="el-upload-list__item-status-label">
-                      <i class="el-icon-upload-success el-icon-circle-check"></i>
-                    </label>
-                    <i class="el-icon-close"></i>
-                    <i class="el-icon-close-tip">delete</i>
-                  </li>
-
-                </ul>
-              </el-form-item>
-            </el-col>
-            <el-col :md="12">
-              <!-- nameStyle -->
-              <el-form-item
-                label="Nombre"
-                prop="nameStyle"
-              >
-                <el-input
-                  v-model="form.nameStyle"
-                  type="text"
-                  autocomplete="off"
-                  :rules="rules.nameStyle"
-                />
-              </el-form-item>
-
-              <!-- descriptionStyle -->
-              <el-form-item
-                label="Descripción"
-                prop="descriptionStyle"
-              >
-                <el-input
-                  v-model="form.descriptionStyle"
-                  type="textarea"
-                  :rows="3"
-                  autocomplete="off"
-                  :maxlength="300"
-                  :show-word-limit="true"
-                />
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </div>
       </el-form>
     </template>
     <template v-slot:actions>
@@ -255,11 +163,8 @@ export default {
         title: "",
         name: "",
         file: null,
-        groupId: '',
-        description: "",
-        nameStyle: "",
-        fileStyle: null,
-        descriptionStyle: ""
+        groupLayerId: '',
+        description: ""
       },
 
       rules: {
@@ -272,7 +177,7 @@ export default {
           // pattern: /^[z0-9\s.,\/#!$%\^&\*;:{}=\-+'´`~()”“"…]+$/g,
           validator: (rule, value, callback) => {
             let text = value.split('')
-            let itContainsBlanks = text.every(val => /[a-zA-Z_]/g.test(val))
+            let itContainsBlanks = text.every(val => /[a-zA-Z0-9_]/g.test(val))
             if (!itContainsBlanks) {
               return callback(new Error("Solo se admite letras y subguion '_'"))
             }
@@ -370,13 +275,11 @@ export default {
     },
 
     launchUploadAvatar (option) {
-      if (!option.data) {
-        this.form.file = option.file;
-        this.fileLayerSelected = option.file
-      } else if (option.data.style) {
-        this.form.fileStyle = option.file;
-        this.fileStyleSelected = option.file
-      }
+      this.form.file = option.file;
+      this.fileLayerSelected = option.file
+      const nameFile = option.file.name.split('.')
+      this.form.name = nameFile[0]
+      this.form.title = nameFile[0]
     },
 
     beforeFileLayerUpload (file) {

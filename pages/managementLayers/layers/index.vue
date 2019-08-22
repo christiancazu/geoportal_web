@@ -42,37 +42,24 @@
           />
           <el-table-column
             label="Título"
-            prop="fullName"
+            prop="title"
           />
           <el-table-column
             label="Nombre style"
-            prop="email"
+            prop="description"
           />
-          <el-table-column
-            label="Archivos"
-            prop="tag"
-            align="center"
-          >
-            <template slot-scope="scope">
-              <el-tag
-                type="primary"
-                disable-transitions
-              >{{scope.row.userType.id === 'AD' ? 'Admin': 'Usuario' }}
-              </el-tag>
-            </template>
-          </el-table-column>
           <el-table-column
             label="Acción"
             align="center"
             width="120"
           >
             <template slot-scope="scope">
-              <BtnConfirm
-                :item-selected="scope.row"
-                @confirmed-action="deleteLayer"
-                accion="deleted"
-                title="¿Eliminar cuenta de usuario?"
-                body-text="¿Esta seguro?, realizada la operación no se podra revertir"
+              <el-button
+                circle
+                icon="el-icon-edit"
+                size="small"
+                type="primary"
+                @click="onLoadModalEditLayer(scope.$index, scope.row)"
               />
             </template>
           </el-table-column>
@@ -154,12 +141,16 @@ export default {
 
     deleteLayer (item) {
       new Promise((resolve, reject) => {
-        this.$layerAPI.delete({ id: item.itemSelected.id })
+        this.$layerAPI.delete({ id: item.itemSelected.pk })
           .then(response => {
             resolve(response)
             this.getLayers()
           }).catch(error => reject(error))
       })
+    },
+
+    onLoadModalEditLayer (index, item) {
+
     },
 
     // pagination 
