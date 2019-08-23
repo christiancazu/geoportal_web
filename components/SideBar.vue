@@ -80,6 +80,12 @@
         >
           Grupo de Capas
         </el-menu-item>
+        <el-menu-item
+          :route="{ path: '/managementLayers/imagesRaster' }"
+          index="/managementLayers/imagesRaster"
+        >
+          Imagenes Raster
+        </el-menu-item>
       </el-submenu>
       <el-submenu index="4">
         <div slot="title">

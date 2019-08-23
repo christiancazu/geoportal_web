@@ -67,11 +67,13 @@
             <el-form
               ref="formLogin"
               label-position="top"
-              status-icon
               :model="form"
               :rules="rules"
               label-width="120px"
+              autocomplete="on"
               class="demo-ruleForm"
+              hide-required-asterisk
+              :validate-on-rule-change="false"
               @submit.native.prevent="submitForm"
             >
               <el-form-item
@@ -83,18 +85,23 @@
                   :disabled="processingForm"
                   v-model="form.email"
                   type="text"
+                  name="username"
+                  clearable
+                  autocomplete="on"
                 />
               </el-form-item>
               <el-form-item
                 label="Contraseña"
                 prop="password"
+                :rules="rules.password"
               >
                 <el-input
                   :disabled="processingForm"
                   v-model="form.password"
                   type="password"
-                  autocomplete="off"
-                  :rules="rules.password"
+                  clearable
+                  name="password"
+                  autocomplete="on"
                 />
               </el-form-item>
               <p class="text-xs-right">
@@ -172,17 +179,16 @@ export default {
     async login () {
       this.processingForm = true
       try {
-        this.$toast.info('Ingresando ...')
         await this.$auth.loginWith('local', {
           data: {
             username: this.form.email,
             password: this.form.password
           }
+        }).then(response => {
+          this.$toast.success(`Bienvenido al Geoportal UNAT`)
         })
-        this.$toast.success(`Bienvenido ${this.user.name}`)
-        this.$router.push('/geovisor')
       } catch (error) {
-        // this.$toast.error('Erlocalror al ingresar')
+        this.$toast.error('Datos invalidos')
         if (!error.response) return
         this.error = error.response.data || null
       } finally {

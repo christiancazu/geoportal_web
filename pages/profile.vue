@@ -345,7 +345,8 @@ export default {
           .putProfile({ data })
           .then(response => {
             this.processingForm = false
-            this.$toast.success(`Su perfil ha sido actualizado con éxito`)
+            if (response.data.status)
+              this.$toast.success(`Su perfil ha sido actualizado con éxito`)
 
             resolve(response);
           })

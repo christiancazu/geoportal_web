@@ -94,7 +94,8 @@ export default {
         showInput: this.input,
         inputType: this.inputType,
         inputPlaceholder: this.inputPlaceholder,
-        inputValue: this.valueInput
+        inputValue: this.valueInput,
+        closeOnClickModal: false
       })
         .then((value) => {
           const data = {
