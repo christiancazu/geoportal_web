@@ -69,6 +69,7 @@
               <el-input
                 v-model="form.email"
                 type="text"
+                auto-complete="off"
               />
             </el-form-item>
           </el-col>
