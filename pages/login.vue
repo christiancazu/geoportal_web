@@ -1,11 +1,7 @@
 <template>
-  <!-- <el-container
-    class="container-fluid"
-    style="justify-content: center"
-  > -->
   <el-row
     :gutter="10"
-    class="content-center pt-5"
+    class="content-center pt-5 ma-0"
   >
     <el-col
       :xs='24'
@@ -13,10 +9,6 @@
       :sm="16"
       :lg="10"
     >
-      <!-- <el-card
-        shadow="always"
-        class="ma-4"
-      > -->
       <el-row
         :gutter="2"
         class="el-card is-always-shadow"
