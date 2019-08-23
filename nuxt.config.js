@@ -65,7 +65,7 @@ export default {
       login: '/login',
       logout: '/login',
       callback: '/login',
-      home: '/profile'
+      home: '/'
     },
     strategies: {
       local: {

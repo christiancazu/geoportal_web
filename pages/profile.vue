@@ -142,9 +142,9 @@
                 v-model="profile.regionId"
                 value-key="id"
                 filterable
-                disabled
                 :loading="loadingRegions"
                 placeholder="Select"
+                @change="onChangeRegion"
               >
                 <el-option
                   v-for="item in regions"
@@ -171,7 +171,7 @@
                 :loading="loadingProvinces"
                 filterable
                 placeholder="Select"
-                disabled
+                @change="onChangeProvince"
               >
                 <el-option
                   v-for="item in provinces"
@@ -190,6 +190,7 @@
             <el-form-item
               label="Distrito"
               prop="districtId"
+              ref="districtId"
             >
               <el-select
                 v-model="form.districtId"
@@ -289,6 +290,7 @@ export default {
       getRegions: "regions/getRegions",
       getProvinces: "regions/getProvinces",
       getDistricts: "regions/getDistricts",
+      replaceDistricts: "regions/replaceDistricts"
     }),
 
     getProfile () {
@@ -311,7 +313,7 @@ export default {
       this.form.lastName = data.lastName
       this.form.lastNameAditional = data.lastNameAditional
       this.form.status = data.status
-      this.form.districtId = data.districtId
+      this.form.districtId = data.districtId || ''
 
       this.form.institute = data.institute
       this.form.subject = data.subject
@@ -373,6 +375,17 @@ export default {
         this.$message.error("La imagen excede los 2MB!");
       }
       return isJPG && isLt2M;
+    },
+
+    onChangeRegion (regionId) {
+      this.profile.provinceId = ''
+      this.$refs.districtId.resetField()
+      this.replaceDistricts({ districts: null });
+      this.getProvinces({ params: { id: regionId } });
+    },
+    onChangeProvince (provinceId) {
+      this.$refs.districtId.resetField()
+      this.getDistricts({ params: { id: provinceId } });
     }
   }
 };

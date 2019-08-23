@@ -5,7 +5,7 @@ export default ({ $axios, redirect }) => {
     // console.log('Making request to ' + config.url)
 
   })
-  
+
   $axios.onResponse((response) => {
     const code = response.status
     const status = !response.data.status
@@ -19,8 +19,8 @@ export default ({ $axios, redirect }) => {
   $axios.onError((error) => {
     const code = parseInt(error.response && error.response.status)
 
-    // if (code === 400) {
-    //   redirect('/400')
+    // if (code === 401) {
+    //   redirect('/login')
     // }
 
     if (code === 404) {

@@ -125,14 +125,17 @@
             :sm="8"
           >
             <!-- regionId -->
-            <el-form-item label="Región">
+            <el-form-item
+              label="Región"
+              prop="regionId"
+            >
               <el-select
-                v-model="user.regionId"
+                v-model="regionId"
                 value-key="id"
                 filterable
-                disabled
                 :loading="loadingRegions"
                 placeholder="Select"
+                @change="onChangeRegion"
               >
                 <el-option
                   v-for="item in regions"
@@ -148,14 +151,17 @@
             :sm="8"
           >
             <!-- porvincia -->
-            <el-form-item label="Provincia">
+            <el-form-item
+              label="Provincia"
+              prop="provinceId"
+            >
               <el-select
-                v-model="user.provinceId"
+                v-model="provinceId"
                 value-key="id"
                 :loading="loadingProvinces"
                 filterable
                 placeholder="Select"
-                disabled
+                @change="onChangeProvince"
               >
                 <el-option
                   v-for="item in provinces"
@@ -174,6 +180,7 @@
             <el-form-item
               label="Distrito"
               prop="districtId"
+              ref="districtId"
             >
               <el-select
                 v-model="form.districtId"
@@ -272,6 +279,8 @@ export default {
   data () {
     return {
       imageSelected: "",
+      provinceId: 0,
+      regionId: 0,
       processingForm: false,
       form: {
         userTypeId: '',
@@ -291,7 +300,11 @@ export default {
         lastName: [{
           required: true,
           message: "El nombre es requerido"
-        }]
+        }],
+        districtId: [{
+          required: true,
+          message: "El campo es requerido",
+        }],
       }
     };
   },
@@ -337,12 +350,15 @@ export default {
 
     setFormField () {
       this.form.userTypeId = this.user.userTypeId
-      this.form.districtId = this.user.districtId
+      this.form.districtId = this.user.districtId || ''
       this.form.name = this.user.name
       this.form.lastName = this.user.lastName
       this.form.lastNameAditional = this.user.lastNameAditional
       this.imageSelected = this.user.image
       this.form.status = this.user.status
+
+      this.provinceId = this.user.provinceId || ''
+      this.regionId = this.user.regionId || ''
 
       this.getProvinces({ params: { id: this.user.regionId } });
       this.getDistricts({ params: { id: this.user.provinceId } });
@@ -407,6 +423,20 @@ export default {
       }
       return isJPG && isLt2M;
     },
+
+    onChangeRegion (regionId) {
+      this.provinceId = ''
+      this.$refs.districtId.resetField()
+      this.form.districtId = ''
+      this.replaceDistricts({ districts: null });
+      this.getProvinces({ params: { id: regionId } });
+    },
+
+    onChangeProvince (provinceId) {
+      this.$refs.districtId.resetField()
+      this.form.districtId = ''
+      this.getDistricts({ params: { id: provinceId } });
+    }
   }
 };
 </script>
