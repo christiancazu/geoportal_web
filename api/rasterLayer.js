@@ -6,9 +6,9 @@ export default $axios => ({
       data: payload.data || {}
     })
   },
-  put (payload = {}) {
+  publish (payload = {}) {
     return $axios({
-      url: `raster_layer/publish/${payload.id}`,
+      url: `raster_layer/publish/`,
       method: 'PUT',
       data: payload.data || {}
     })

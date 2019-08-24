@@ -1,8 +1,7 @@
 import {
   REPLACE_RASTER_LAYER,
   REPLACE_LOADING_RASTER_LAYER,
-  REPLACE_CURRENT_RASTER_LAYER,
-  REPLACE_SHOW_MODAL_PUBLISH_RASTER_LAYER
+  REPLACE_CURRENT_RASTER_LAYER
 
 } from '../types/mutation-types'
 
@@ -10,11 +9,10 @@ export const state = () => ({
   rasterLayers: [],
   loadingRasterLayers: false,
   currentRasterLayer: null,
-  showModalPublishRasterLayer: false
 })
 
 export const actions = {
-  async getRasterLayer ({ commit }, payload) {
+  async getRasterLayers ({ commit }, payload) {
     commit('REPLACE_LOADING_RASTER_LAYER', { loading: true })
     try {
       const { data } = await this.$rasterLayerAPI.index(payload)
@@ -25,11 +23,8 @@ export const actions = {
       commit('REPLACE_LOADING_RASTER_LAYER', { loading: false })
     }
   },
-  replaceCurrentLayer ({ commit }, payload) {
+  replaceCurrentRasterLayer ({ commit }, payload) {
     commit('REPLACE_CURRENT_RASTER_LAYER', payload)
-  },
-  replaceShowModalPublishRasterLayer ({ commit }, payload) {
-    commit('REPLACE_SHOW_MODAL_PUBLISH_RASTER_LAYER', payload)
   }
 }
 
@@ -42,8 +37,5 @@ export const mutations = {
   },
   [REPLACE_CURRENT_RASTER_LAYER] (state, { rasterLayer }) {
     state.currentRasterLayer = rasterLayer
-  },
-  [REPLACE_SHOW_MODAL_PUBLISH_RASTER_LAYER] (state, { show }) {
-    state.showModalPublishRasterLayer = show
   }
 }
