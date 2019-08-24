@@ -1,5 +1,5 @@
 <template>
-  <BasePage title="Capas">
+  <BasePage title="Capas vectoriales">
     <template v-slot:itemsActions>
       <el-button
         size="mini"

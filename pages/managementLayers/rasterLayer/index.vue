@@ -1,13 +1,5 @@
 <template>
-  <BasePage title="Capas">
-    <template v-slot:itemsActions>
-      <el-button
-        size="mini"
-        type="primary"
-        icon="el-icon-plus"
-        @click="replaceShowModalAddLayer({ show: true })"
-      >Nuevo Capa</el-button>
-    </template>
+  <BasePage title="Capas Raster">
     <template v-slot:content>
       <el-container direction="vertical">
         <el-row
@@ -34,7 +26,7 @@
         <el-table
           :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
-          v-loading="loadingLayers"
+          v-loading="loadingRasterLayers"
         >
           <el-table-column
             label="Nombre"
@@ -58,8 +50,9 @@
                 circle
                 icon="el-icon-edit"
                 size="small"
+                :disabled="scope.row.status"
                 type="primary"
-                @click="onLoadModalEditLayer(scope.$index, scope.row)"
+                @click="onLoadModalPublishRasterLayer(scope.$index, scope.row)"
               />
             </template>
           </el-table-column>
@@ -78,8 +71,7 @@
       </el-container>
     </template>
     <template v-slot:modals>
-      <ModalAddLayer />
-      <ModalEditLayer />
+      <ModalPublishRasterLayer />
     </template>
   </BasePage>
 </template>
@@ -87,13 +79,11 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
-import ModalAddLayer from '@/components/layers/ModalAddLayer.vue'
-import ModalEditLayer from '@/components/layers/ModalEditLayer.vue'
+import ModalPublishRasterLayer from '@/components/layers/ModalPublishRasterLayer.vue'
 export default {
   components: {
     BasePage,
-    ModalEditLayer,
-    ModalAddLayer,
+    ModalPublishRasterLayer,
   },
   data () {
     return {
@@ -105,15 +95,15 @@ export default {
 
   computed: {
     ...mapState({
-      layers: state => state.layers.layers,
-      loadingLayers: state => state.layers.loadingLayers
+      rasterLayers: state => state.rasterLayer.rasterLayers,
+      loadingRasterLayers: state => state.rasterLayer.loadingRasterLayers
     }),
 
     filteredData: function () {
       let search = this.search.toString().toLowerCase()
-      let layers = this.$store.state.layers.layers
+      let rasterLayers = this.$store.state.rasterLayer.rasterLayers
       this.currentPage = 1
-      return layers.filter(item => {
+      return rasterLayers.filter(item => {
         // checking title
         if (item.title && item.title.toString().toLowerCase().includes(search)) {
           return item
@@ -131,20 +121,19 @@ export default {
   },
 
   created () {
-    this.getLayers()
+    this.getRasterLayers()
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddLayer: 'modalsManagementLayer/replaceShowModalAddLayer',
-      replaceShowModalEditLayer: 'modalsManagementLayer/replaceShowModalEditLayer',
-      replaceCurrentLayer: 'layers/replaceCurrentLayer',
-      getLayers: 'layers/getLayers',
+      replaceShowModalPublishRasterLayer: 'modalsManagementLayer/replaceShowModalPublishRasterLayer',
+      replaceCurrentRasterLayer: 'rasterLayer/replaceCurrentRasterLayer',
+      getRasterLayers: 'rasterLayer/getRasterLayers',
     }),
 
-    onLoadModalEditLayer (index, item) {
-      this.replaceCurrentLayer({ layer: item })
-      this.replaceShowModalEditLayer({ show: true })
+    onLoadModalPublishRasterLayer (index, item) {
+      this.replaceCurrentRasterLayer({ rasterLayer: item })
+      this.replaceShowModalPublishRasterLayer({ show: true })
     },
 
     // pagination 

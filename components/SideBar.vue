@@ -66,25 +66,25 @@
           :route="{ path: '/managementLayers/layers' }"
           index="/managementLayers/layers"
         >
-          Capas
+          Capas Vectoriales
+        </el-menu-item>
+        <el-menu-item
+          :route="{ path: '/managementLayers/rasterLayer' }"
+          index="/managementLayers/rasterLayer"
+        >
+          Capas Raster
         </el-menu-item>
         <el-menu-item
           :route="{ path: '/managementLayers/baseMap' }"
           index="/managementLayers/baseMap"
         >
-          Mapas Base
+          Capas Base
         </el-menu-item>
         <el-menu-item
           :route="{ path: '/managementLayers/groupLayer' }"
           index="/managementLayers/groupLayer"
         >
           Grupo de Capas
-        </el-menu-item>
-        <el-menu-item
-          :route="{ path: '/managementLayers/imagesRaster' }"
-          index="/managementLayers/imagesRaster"
-        >
-          Imagenes Raster
         </el-menu-item>
       </el-submenu>
       <el-submenu index="4">

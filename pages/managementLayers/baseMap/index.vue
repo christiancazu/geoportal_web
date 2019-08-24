@@ -1,5 +1,5 @@
 <template>
-  <BasePage title="Mapas base">
+  <BasePage title="Capas base">
     <template v-slot:itemsActions>
       <el-button
         size="mini"
