@@ -53,20 +53,22 @@
             width="120"
           >
             <template slot-scope="scope">
-              <el-button
-                circle
-                icon="el-icon-edit"
-                size="small"
-                type="primary"
-                @click="editGroupLayer(scope.$index, scope.row)"
-              />
-              <BtnConfirm
-                :item-selected="scope.row"
-                @confirmed-action="deleteGroupLayer"
-                accion="deleted"
-                title="¿Eliminar grupo de capas?"
-                body-text="¿Esta seguro?, realizada la operación no se podra revertir"
-              />
+              <div v-if="scope.row.categoryId">
+                <el-button
+                  circle
+                  icon="el-icon-edit"
+                  size="small"
+                  type="primary"
+                  @click="editGroupLayer(scope.$index, scope.row)"
+                />
+                <BtnConfirm
+                  :item-selected="scope.row"
+                  @confirmed-action="deleteGroupLayer"
+                  accion="deleted"
+                  title="¿Eliminar grupo de capas?"
+                  body-text="¿Esta seguro?, realizada la operación no se podra revertir"
+                />
+              </div>
             </template>
           </el-table-column>
         </el-table>
