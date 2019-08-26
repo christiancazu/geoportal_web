@@ -37,9 +37,18 @@
             prop="title"
           />
           <el-table-column
-            label="Nombre style"
-            prop="description"
-          />
+            label="¿Publicado?"
+            prop="status"
+          >
+            <template slot-scope="scope">
+              <el-switch
+                disabled
+                v-model="scope.row.status"
+                :active-text="scope.row.status? 'Si' :'No'"
+              >
+              </el-switch>
+            </template>
+          </el-table-column>
           <el-table-column
             label="Acción"
             align="center"
@@ -73,7 +82,7 @@
     <template v-slot:modals>
       <ModalPublishRasterLayer />
     </template>
-  </BasePage>
+  </BasePage> 
 </template>
 
 <script>
@@ -95,13 +104,12 @@ export default {
 
   computed: {
     ...mapState({
-      // rasterLayers: state => state.rasterLayer.rasterLayers,
-      loadingRasterLayers: state => state.rasterLayer.loadingRasterLayers
+      loadingRasterLayers: state => state.rasterLayers.loadingRasterLayers
     }),
 
     filteredData: function () {
       let search = this.search.toString().toLowerCase()
-      let rasterLayers = this.$store.state.rasterLayer.rasterLayers
+      let rasterLayers = this.$store.state.rasterLayers.rasterLayers
       this.currentPage = 1
       return rasterLayers.filter(item => {
         // checking title
@@ -144,10 +152,9 @@ export default {
 
   methods: {
     ...mapActions({
-      getRasterLayers: "rasterLayer/getRasterLayers",
-      replaceCurrentRasterLayer: "rasterLayer/replaceCurrentRasterLayer",
-      replaceShowModalPublishRasterLayer:
-        "modalsManagementLayer/replaceShowModalPublishRasterLayer"
+      replaceShowModalPublishRasterLayer: 'modalsManagementLayer/replaceShowModalPublishRasterLayer',
+      replaceCurrentRasterLayer: 'rasterLayers/replaceCurrentRasterLayer',
+      getRasterLayers: 'rasterLayers/getRasterLayers',
     }),
 
     onLoadModalPublishRasterLayer (index, item) {
