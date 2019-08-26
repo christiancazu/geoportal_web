@@ -1,6 +1,6 @@
 <template>
   <BaseModal
-    title="Registrar nueva capa"
+    title="Registrar nueva capa vectorial"
     :show-modal="showModalAddLayer"
     @action-modal="replaceShowModalAddLayer"
   >
