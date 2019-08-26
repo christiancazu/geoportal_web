@@ -1,5 +1,13 @@
 <template>
-  <BasePage title="Capas Raster">
+  <BasePage title="Images Georeferenciales">
+    <template v-slot:itemsActions>
+      <el-button
+        size="mini"
+        type="primary"
+        icon="el-icon-plus"
+        @click="replaceShowModalAddGeoreferentialImage({ show: true })"
+      >Nuevo imagen georeferencial</el-button>
+    </template>
     <template v-slot:content>
       <el-container direction="vertical">
         <el-row
@@ -23,12 +31,10 @@
             </div>
           </el-col>
         </el-row>
-        <p>{{ filteredData }}</p>
-        <p>{{ rasterLayers }}</p>
         <el-table
           :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
-          v-loading="loadingRasterLayers"
+          v-loading="loadingUsers"
         >
           <el-table-column
             label="Nombre"
@@ -39,8 +45,8 @@
             prop="title"
           />
           <el-table-column
-            label="Estado"
-            prop="status"
+            label="Descripción"
+            prop="description"
           />
           <el-table-column
             label="Acción"
@@ -52,9 +58,15 @@
                 circle
                 icon="el-icon-edit"
                 size="small"
-                :disabled="scope.row.status"
                 type="primary"
-                @click="onLoadModalPublishRasterLayer(scope.$index, scope.row)"
+                @click="onLoadModalEditUser(scope.$index, scope.row)"
+              />
+              <BtnConfirm
+                :item-selected="scope.row"
+                @confirmed-action="deleteUser"
+                accion="deleted"
+                title="¿Eliminar cuenta de usuario?"
+                body-text="¿Esta seguro?, realizada la operación no se podra revertir"
               />
             </template>
           </el-table-column>
@@ -73,7 +85,8 @@
       </el-container>
     </template>
     <template v-slot:modals>
-      <ModalPublishRasterLayer />
+      <ModalAddGeoreferentialImage />
+      <ModalEditGeoreferentialImage />
     </template>
   </BasePage>
 </template>
@@ -81,11 +94,15 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
-import ModalPublishRasterLayer from '@/components/layers/ModalPublishRasterLayer.vue'
+import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
+import ModalAddGeoreferentialImage from '@/components/data/ModalAddGeoreferentialImage.vue'
+import ModalEditGeoreferentialImage from '@/components/data/ModalEditGeoreferentialImage.vue'
 export default {
   components: {
     BasePage,
-    ModalPublishRasterLayer,
+    BtnConfirm,
+    ModalAddGeoreferentialImage,
+    ModalEditGeoreferentialImage
   },
   data () {
     return {
@@ -97,46 +114,54 @@ export default {
 
   computed: {
     ...mapState({
-      rasterLayers: state => state.rasterLayers.rasterLayers,
-      loadingRasterLayers: state => state.rasterLayers.loadingRasterLayers
+      users: state => state.users.users,
+      loadingUsers: state => state.users.loadingUsers
     }),
 
     filteredData: function () {
       let search = this.search.toString().toLowerCase()
-      let rasterLayers = this.rasterLayers
+      let users = this.$store.state.users.users
       this.currentPage = 1
-      console.log(rasterLayers)
-      return rasterLayers.filter(item => {
-        // checking title
-        if (item.title && item.title.toString().toLowerCase().includes(search)) {
+      return users.filter(item => {
+        // checking lastName
+        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
           return item
         }
         // checking name
         if (item.name && item.name.toString().toLowerCase().includes(search)) {
           return item
         }
-        // checking description
-        // if (item.description && item.description.toString().toLowerCase().includes(search)) {
-        //   return item
-        // }
+        // checking email
+        if (item.email && item.email.toString().toLowerCase().includes(search)) {
+          return item
+        }
       })
     },
   },
 
   created () {
-    this.getRasterLayers()
+    this.getGeoreferentialImages()
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalPublishRasterLayer: 'modalsManagementLayer/replaceShowModalPublishRasterLayer',
-      replaceCurrentRasterLayer: 'rasterLayers/replaceCurrentRasterLayer',
-      getRasterLayers: 'rasterLayers/getRasterLayers',
+      replaceShowModalAddGeoreferentialImage: 'modalsManagementData/replaceShowModalAddGeoreferentialImage',
+      replaceShowModalEditGeoreferentialImage: 'modalsManagementData/replaceShowModalEditGeoreferentialImage',
+      getGeoreferentialImages: 'georeferentialImages/getGeoreferentialImages',
     }),
 
-    onLoadModalPublishRasterLayer (index, item) {
-      this.replaceCurrentRasterLayer({ rasterLayers: item })
-      this.replaceShowModalPublishRasterLayer({ show: true })
+    onLoadModalEditUser (index, item) {
+      this.replaceShowModalEditGeoreferentialImage({ show: true })
+    },
+
+    deleteUser (item) {
+      new Promise((resolve, reject) => {
+        this.$userAPI.delete({ id: item.itemSelected.id })
+          .then(response => {
+            resolve(response)
+            this.getGeoreferentialImages()
+          }).catch(error => reject(error))
+      })
     },
 
     // pagination 

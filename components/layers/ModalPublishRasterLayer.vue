@@ -112,7 +112,7 @@ export default {
   computed: {
     ...mapState({
       showModalPublishRasterLayer: state => state.modalsManagementLayer.showModalPublishRasterLayer,
-      currentRasterLayer: state => state.rasterLayer.currentRasterLayer
+      currentRasterLayer: state => state.rasterLayers.currentRasterLayer
     })
   },
 
