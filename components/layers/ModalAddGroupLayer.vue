@@ -128,6 +128,7 @@ export default {
   methods: {
     ...mapActions({
       replaceShowModalAddGroupLayer: "modalsManagementLayer/replaceShowModalAddGroupLayer",
+      getGroupLayers: "groupLayers/getGroupLayers"
     }),
 
     submitForm () {
@@ -135,11 +136,11 @@ export default {
         if (valid) {
           this.processingForm = true
           this.createGroupLayer().then(response => {
-            const { status } = response.data;
+            const { status } = response.data
             if (status) {
               this.$refs.form.resetFields();
-              this.replaceShowModalAddGroupLayer({ show: false });
-              this.getGroupLayers();
+              this.replaceShowModalAddGroupLayer({ show: false })
+              this.getGroupLayers()
               this.$toast.success(`El grupo de capa se registro con éxito`)
             }
           });
@@ -162,9 +163,8 @@ export default {
         this.$groupLayerAPI
           .create({ data })
           .then(response => {
-            console.log(response.data)
             this.processingForm = false
-            resolve(response);
+            resolve(response)
           })
           .catch(error => {
             this.processingForm = false

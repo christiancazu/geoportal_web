@@ -1,30 +1,26 @@
 export default {
   // "dev": "nuxt --hostname 0.0.0.0 --port 9100"
-  server: {
-    port: 8400, // default: 3000
-    host: '0.0.0.0', // default: localhost
-  },
+  //server: {
+  //  port: 8400, // default: 3000
+  //  host: '0.0.0.0', // default: localhost
+  //},
 
-	head: {
+  head: {
     title: process.env.npm_package_name || '',
     meta: [{
       charset: 'utf-8'
-    },
-    {
+    }, {
       name: 'viewport',
       content: 'width=device-width, initial-scale=1'
-    },
-    {
+    }, {
       hid: 'description',
       name: 'description',
       content: process.env.npm_package_description || ''
-    }
-    ],
+    }],
     link: [{
       rel: 'stylesheet',
       href: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.css'
-    },
-    {
+    }, {
       rel: 'stylesheet',
       href: 'https://fonts.googleapis.com/css?family=Open+Sans|Poppins|Roboto&display=swap" rel="stylesheet'
     }],
@@ -32,11 +28,9 @@ export default {
       src: 'https://code.jquery.com/jquery-3.3.1.slim.min.js'
     }, {
       src: 'https://unpkg.com/leaflet@1.5.1/dist/leaflet.js'
-    },
-    {
+    }, {
       src: 'https://kit.fontawesome.com/3122b9c598.js'
-    }
-    ],
+    }],
   },
   css: [
     '~/assets/sass/app.scss',
@@ -62,7 +56,7 @@ export default {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     //(baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.125:8300/geoportal/api/'
-    baseURL: process.env.NODE_ENV === 'production' ? 'http://192.168.1.130:8300/geoportal/api/' : 'http://192.168.18.32:8300/geoportal/api/'
+    baseURL: process.env.NODE_ENV === 'production' ? 'http://192.168.1.130:8300/geoportal/api/' : 'http://192.168.1.130:8300/geoportal/api/'
   },
 
   auth: {
@@ -92,11 +86,10 @@ export default {
         },
       }
     },
-    plugins: ['~/plugins/auth.js']
   },
 
   router: {
-     middleware: ['auth', 'check']
+    middleware: ['auth', 'check']
   },
 
   toast: {

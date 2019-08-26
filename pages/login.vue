@@ -36,15 +36,16 @@
               src="image/logo_escudo.png"
               fit="contain"
             ></el-image>
-            <p>¿Aún no tienes cuenta? <el-link
+            <!-- <p>¿Aún no tienes cuenta? <el-link
                 type="primary"
                 class="font-weight-bold"
               >Regístrese</el-link>
+            </p> -->
+            <p>
+              <small>
+                <el-link type="primary">Ir pagina principal</el-link>
+              </small>
             </p>
-            <small>
-              <el-link type="primary">Ir pagina principal</el-link>
-            </small>
-
           </el-card>
         </el-col>
         <el-col
@@ -104,9 +105,9 @@
                   autocomplete="on"
                 />
               </el-form-item>
-              <p class="text-xs-right">
+              <!-- <p class="text-xs-right">
                 <el-link type="primary">Olvidaste tu contraseña</el-link>
-              </p>
+              </p> -->
               <el-form-item class="text-xs-center mb-0">
                 <el-button
                   :loading="processingForm"

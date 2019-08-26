@@ -35,10 +35,9 @@
         >
           <el-container>
             <el-select
-              disabled
-              v-model="currentGroupLayer.categoryId"
+              v-model="form.categoryId"
               :loading="loadingGroupLayers"
-              value-key="categoryId"
+              value-key="id"
               filterable
               placeholder="Select"
             >
@@ -46,7 +45,7 @@
                 v-for="item in groupLayers"
                 :key="item.id"
                 :label="item.title"
-                :value="item.category"
+                :value="item.id"
               ></el-option>
             </el-select>
           </el-container>
@@ -57,13 +56,12 @@
           prop="description"
         >
           <el-input
-            disabled
-            v-model="currentGroupLayer.description"
+            v-model="form.description"
             type="textarea"
             :rows="3"
             autocomplete="off"
             :maxlength="300"
-            :show-word-limit="true"
+            show-word-limit
           />
         </el-form-item>
       </el-form>
@@ -97,6 +95,9 @@ export default {
       processingForm: false,
       form: {
         title: "",
+        categoryId: '',
+        description: ''
+
       },
 
       rules: {
@@ -128,12 +129,15 @@ export default {
     currentGroupLayer : function(newState, oldState) {
       if(this.showModalEditGroupLayer){
       this.form.title = this.currentGroupLayer.title
+      this.form.categoryId = this.currentGroupLayer.categoryId || 1
+      this.form.description = this.currentGroupLayer.title
       }
     }
   },
 
   methods: {
     ...mapActions({
+      getGroupLayers: "groupLayers/getGroupLayers",
       replaceShowModalEditGroupLayer: "modalsManagementLayer/replaceShowModalEditGroupLayer",
     }),
 
@@ -146,8 +150,8 @@ export default {
             if (status) {
               this.$refs.form.resetFields();
               this.replaceShowModalEditGroupLayer({ show: false });
-              this.getLayers();
-              this.$toast.success(`el grupo de capas se guardo con éxito`)
+              this.getGroupLayers();
+              this.$toast.success(`El grupo de capas ha sido modificado con éxito`)
             }
           });
         }
@@ -164,10 +168,11 @@ export default {
       });
 
       const data = formData;
+      const id = this.currentGroupLayer.id 
 
       return new Promise((resolve, reject) => {
         this.$groupLayerAPI
-          .edit({ data })
+          .edit({ data, id })
           .then(response => {
             this.processingForm = false
             resolve(response);
