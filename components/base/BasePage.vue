@@ -5,7 +5,7 @@
         class="space-between"
         slot="header"
       >
-        <p class="mt-1 mb-0 font-weight-bold">{{ title }}</p>
+        <p class="mt-1 mb-0 font-weight-bold text-uppercase">{{ title }}</p>
         <slot name="itemsActions" />
       </div>
 
