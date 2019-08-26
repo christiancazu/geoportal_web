@@ -24,7 +24,7 @@
           </el-col>
         </el-row>
         <el-table
-          :data="rasterLayers.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+          :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
           v-loading="loadingRasterLayers"
         >
@@ -82,7 +82,7 @@
     <template v-slot:modals>
       <ModalPublishRasterLayer />
     </template>
-  </BasePage>
+  </BasePage> 
 </template>
 
 <script>
@@ -92,41 +92,62 @@ import ModalPublishRasterLayer from '@/components/layers/ModalPublishRasterLayer
 export default {
   components: {
     BasePage,
-    ModalPublishRasterLayer,
+    ModalPublishRasterLayer
   },
-  data () {
+  data() {
     return {
-      search: '',
+      search: "",
       pagesize: 10,
       currentPage: 1
-    }
+    };
   },
 
   computed: {
     ...mapState({
-      rasterLayers: state => state.rasterLayers.rasterLayers,
       loadingRasterLayers: state => state.rasterLayers.loadingRasterLayers
     }),
 
     filteredData: function () {
       let search = this.search.toString().toLowerCase()
-      let rasterLayers = this.rasterLayers
+      let rasterLayers = this.$store.state.rasterLayers.rasterLayers
       this.currentPage = 1
       return rasterLayers.filter(item => {
         // checking title
-        if (item.title && item.title.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.title &&
+          item.title
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
         // checking name
-        if (item.name && item.name.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.name &&
+          item.name
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
-      })
-    },
+        // checking description
+        if (
+          item.description &&
+          item.description
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
+        }
+      });
+    }
   },
 
-  created () {
-    this.getRasterLayers()
+  created() {
+    this.getRasterLayers();
   },
 
   methods: {
@@ -142,7 +163,7 @@ export default {
     },
 
     // pagination 
-    onChangeCurrentPage: function (currentPage) {
+    onChangeCurrentPage: function(currentPage) {
       this.currentPage = currentPage;
     },
     onChangePageSize: function (pagesize) {

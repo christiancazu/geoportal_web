@@ -14,19 +14,7 @@
         label-width="120px"
         class="demo-ruleForm"
         :disabled="processingForm"
-        @submit.prevent="submitForm"
-      >
-        <!-- name -->
-        <el-form-item
-          label="Nombre de capa raster"
-          prop="name"
-        >
-          <el-input
-            v-model="form.name"
-            type="text"
-            autocomplete="off"
-          />
-        </el-form-item>
+        @submit.prevent="submitForm">
 
         <el-form-item
           label="Título"
@@ -81,15 +69,10 @@ export default {
     return {
       processingForm: false,
       form: {
-        name: "",
         title: "",
         description: "",
       },
       rules: {
-        name: [{
-          required: true,
-          message: "El nombre es requerido"
-        }],
         title: [{
           required: true,
           message: "El título es requrido"
@@ -104,9 +87,8 @@ export default {
         this.$refs.form.resetFields();
         return false;
       }
-      this.form.name = this.currentRasterLayer.name
       this.form.title = this.currentRasterLayer.title
-      this.form.pk = this.currentRasterLayer.pk
+      this.form.identificator = this.currentRasterLayer.identificator
     }
   },
 
@@ -136,6 +118,8 @@ export default {
       this.processingForm = true
 
       const data = this.form
+
+      console.log(data)
 
       return new Promise((resolve, reject) => {
         this.$rasterLayerAPI
