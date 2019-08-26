@@ -23,10 +23,8 @@
             </div>
           </el-col>
         </el-row>
-        <p>{{ filteredData }}</p>
-        <p>{{ rasterLayers }}</p>
         <el-table
-          :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+          :data="rasterLayers.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
           v-loading="loadingRasterLayers"
         >
@@ -39,9 +37,18 @@
             prop="title"
           />
           <el-table-column
-            label="Estado"
+            label="¿Publicado?"
             prop="status"
-          />
+          >
+            <template slot-scope="scope">
+              <el-switch
+                disabled
+                v-model="scope.row.status"
+                :active-text="scope.row.status? 'Si' :'No'"
+              >
+              </el-switch>
+            </template>
+          </el-table-column>
           <el-table-column
             label="Acción"
             align="center"
@@ -105,7 +112,6 @@ export default {
       let search = this.search.toString().toLowerCase()
       let rasterLayers = this.rasterLayers
       this.currentPage = 1
-      console.log(rasterLayers)
       return rasterLayers.filter(item => {
         // checking title
         if (item.title && item.title.toString().toLowerCase().includes(search)) {
@@ -115,10 +121,6 @@ export default {
         if (item.name && item.name.toString().toLowerCase().includes(search)) {
           return item
         }
-        // checking description
-        // if (item.description && item.description.toString().toLowerCase().includes(search)) {
-        //   return item
-        // }
       })
     },
   },
@@ -135,7 +137,7 @@ export default {
     }),
 
     onLoadModalPublishRasterLayer (index, item) {
-      this.replaceCurrentRasterLayer({ rasterLayers: item })
+      this.replaceCurrentRasterLayer({ rasterLayer: item })
       this.replaceShowModalPublishRasterLayer({ show: true })
     },
 

@@ -65,7 +65,7 @@
         type="primary"
         native-type="submit"
         @click.prevent="submitForm"
-      >GUARDAR</el-button>
+      >PUBLICAR</el-button>
     </template>
   </BaseModal>
 </template>
@@ -106,6 +106,7 @@ export default {
       }
       this.form.name = this.currentRasterLayer.name
       this.form.title = this.currentRasterLayer.title
+      this.form.pk = this.currentRasterLayer.pk
     }
   },
 
