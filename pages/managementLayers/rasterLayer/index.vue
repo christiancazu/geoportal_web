@@ -83,19 +83,19 @@ import ModalPublishRasterLayer from '@/components/layers/ModalPublishRasterLayer
 export default {
   components: {
     BasePage,
-    ModalPublishRasterLayer,
+    ModalPublishRasterLayer
   },
-  data () {
+  data() {
     return {
-      search: '',
+      search: "",
       pagesize: 10,
       currentPage: 1
-    }
+    };
   },
 
   computed: {
     ...mapState({
-      rasterLayers: state => state.rasterLayer.rasterLayers,
+      // rasterLayers: state => state.rasterLayer.rasterLayers,
       loadingRasterLayers: state => state.rasterLayer.loadingRasterLayers
     }),
 
@@ -105,30 +105,49 @@ export default {
       this.currentPage = 1
       return rasterLayers.filter(item => {
         // checking title
-        if (item.title && item.title.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.title &&
+          item.title
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
         // checking name
-        if (item.name && item.name.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.name &&
+          item.name
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
         // checking description
-        if (item.description && item.description.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.description &&
+          item.description
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
-      })
-    },
+      });
+    }
   },
 
-  created () {
-    this.getRasterLayers()
+  created() {
+    this.getRasterLayers();
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalPublishRasterLayer: 'modalsManagementLayer/replaceShowModalPublishRasterLayer',
-      replaceCurrentRasterLayer: 'rasterLayer/replaceCurrentRasterLayer',
-      getRasterLayers: 'rasterLayer/getRasterLayers',
+      getRasterLayers: "rasterLayer/getRasterLayers",
+      replaceCurrentRasterLayer: "rasterLayer/replaceCurrentRasterLayer",
+      replaceShowModalPublishRasterLayer:
+        "modalsManagementLayer/replaceShowModalPublishRasterLayer"
     }),
 
     onLoadModalPublishRasterLayer (index, item) {
@@ -137,7 +156,7 @@ export default {
     },
 
     // pagination 
-    onChangeCurrentPage: function (currentPage) {
+    onChangeCurrentPage: function(currentPage) {
       this.currentPage = currentPage;
     },
     onChangePageSize: function (pagesize) {
