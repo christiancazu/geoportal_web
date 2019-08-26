@@ -10,6 +10,7 @@ import WMSAuthorAPI from '~/api/WMSAuthor'
 import reportAPI from '~/api/report'
 import groupLayerAPI from '~/api/groupLayer'
 import rasterLayerAPI from '~/api/rasterLayer'
+import georeferentialImageAPI from '~/api/georeferentialImage'
 
 export default (ctx, inject) => {
   const refreshAPIWithAxios = refreshAPI(ctx.$axios)
@@ -24,6 +25,7 @@ export default (ctx, inject) => {
   const reportAPIWithAxios = reportAPI(ctx.$axios)
   const groupLayerAPIWithAxios = groupLayerAPI(ctx.$axios)
   const rasterLayerAPIWithAxios = rasterLayerAPI(ctx.$axios)
+  const georeferentialImageAPIWithAxios = georeferentialImageAPI(ctx.$axios)
 
   inject('refreshAPI', refreshAPIWithAxios)
   inject('regionAPI', regionAPIWithAxios)
@@ -37,4 +39,5 @@ export default (ctx, inject) => {
   inject('reportAPI', reportAPIWithAxios)
   inject('groupLayerAPI', groupLayerAPIWithAxios)
   inject('rasterLayerAPI', rasterLayerAPIWithAxios)
+  inject('georeferentialImageAPI', georeferentialImageAPIWithAxios)
 }
