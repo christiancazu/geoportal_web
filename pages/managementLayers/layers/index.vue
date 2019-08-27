@@ -37,6 +37,12 @@
           v-loading="loadingLayers"
         >
           <el-table-column
+            label="N°"
+            align="center"
+            width="50px"
+            prop="order"
+          />
+          <el-table-column
             label="Nombre"
             prop="name"
           />

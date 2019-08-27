@@ -36,6 +36,12 @@
           v-loading="loadingGroupLayers"
         >
           <el-table-column
+            label="N°"
+            align="center"
+            width="50px"
+            prop="order"
+          />
+          <el-table-column
             label="Categoria"
             prop="categoryTitle"
           />
