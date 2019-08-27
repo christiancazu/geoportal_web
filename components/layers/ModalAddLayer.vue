@@ -114,7 +114,6 @@
               <el-input
                 v-model="form.name"
                 type="text"
-                :rules="rules.name"
               />
             </el-form-item>
             <el-form-item
@@ -199,6 +198,10 @@ export default {
         title: [{
           required: true,
           message: "El nombre de usuario es requerido"
+        }],
+        groupLayerId: [{
+          required: true,
+          message: "Seleccione un Grupo de capa"
         }],
         order: [{
           required: true,
