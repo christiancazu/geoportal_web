@@ -1,14 +1,14 @@
 export default $axios => ({
   index (payload = {}) {
     return $axios({
-      url: `vectorial/get_registered/`,
+      url: `vectorial/`,
       method: 'GET',
       data: payload.data || {}
     })
   },
   create (payload = {}) {
     return $axios({
-      url: `vectorial/register/`,
+      url: `vectorial/`,
       method: 'POST',
       data: payload.data || {}
     })
