@@ -16,7 +16,12 @@ export const actions = {
     commit('REPLACE_LOADING_RASTER_LAYER', { loading: true })
     try {
       const { data } = await this.$rasterLayerAPI.index(payload)
-      commit('REPLACE_RASTER_LAYER', { rasterLayers: data.data || [] })
+      let rasterLayers = data.data || []
+      rasterLayers.forEach(val => {
+        val.name = val.name || "--"
+        val.title = val.title || "--"
+      })
+      commit('REPLACE_RASTER_LAYER', { rasterLayers })
     } catch (error) {
       if (!error.response) return
     } finally {
