@@ -96,7 +96,9 @@ export default {
     BasePage,
     ModalViewReport
   },
-
+ head: {
+    title: 'Reportes | GEOVISOR',
+  },
   data () {
     return {
       search: "",

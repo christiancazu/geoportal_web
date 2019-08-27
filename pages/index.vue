@@ -162,8 +162,9 @@ export default {
   components: {
     BasePage
   },
-
-  mounted () { }
+  head: {
+    title: 'Inicio',
+  }
 };
 </script>
 

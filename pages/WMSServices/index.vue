@@ -115,6 +115,9 @@ export default {
     ModalAddWMSService,
     BtnConfirm
   },
+   head: {
+    title: 'Servicios WMS | GEOVISOR',
+  },
   data () {
     return {
       search: '',

@@ -115,7 +115,7 @@
         :active="false"
         :route="{ path: '/WMSServices' }"
       >
-        <i class="fas fa-users-cog"></i><span>Servicios</span>
+        <i class="fas fa-users-cog"></i><span>Servicios WMS</span>
       </el-menu-item>
       <el-menu-item
         index="/reports"

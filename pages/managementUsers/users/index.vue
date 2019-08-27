@@ -117,6 +117,11 @@ export default {
     ModalAddUser,
     ModalEditUser
   },
+
+  head: {
+    title: 'Usuarios | GEOVISOR',
+  },
+
   data () {
     return {
       search: '',
