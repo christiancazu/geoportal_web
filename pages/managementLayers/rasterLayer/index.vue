@@ -82,7 +82,7 @@
     <template v-slot:modals>
       <ModalPublishRasterLayer />
     </template>
-  </BasePage> 
+  </BasePage>
 </template>
 
 <script>
@@ -94,10 +94,10 @@ export default {
     BasePage,
     ModalPublishRasterLayer
   },
-   head: {
+  head: {
     title: 'Capas raster | GEOVISOR',
   },
-  data() {
+  data () {
     return {
       search: "",
       pagesize: 10,
@@ -116,40 +116,18 @@ export default {
       this.currentPage = 1
       return rasterLayers.filter(item => {
         // checking title
-        if (
-          item.title &&
-          item.title
-            .toString()
-            .toLowerCase()
-            .includes(search)
-        ) {
-          return item;
+        if (item.title && item.title.toString().toLowerCase().includes(search)) {
+          return item
         }
         // checking name
-        if (
-          item.name &&
-          item.name
-            .toString()
-            .toLowerCase()
-            .includes(search)
-        ) {
-          return item;
-        }
-        // checking description
-        if (
-          item.description &&
-          item.description
-            .toString()
-            .toLowerCase()
-            .includes(search)
-        ) {
-          return item;
+        if (item.name && item.name.toString().toLowerCase().includes(search)) {
+          return item
         }
       });
     }
   },
 
-  created() {
+  created () {
     this.getRasterLayers();
   },
 
@@ -166,7 +144,7 @@ export default {
     },
 
     // pagination 
-    onChangeCurrentPage: function(currentPage) {
+    onChangeCurrentPage: function (currentPage) {
       this.currentPage = currentPage;
     },
     onChangePageSize: function (pagesize) {
