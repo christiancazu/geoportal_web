@@ -55,7 +55,7 @@
               href="/managementData/georeferentialImages"
             >
               <el-card shadow="hover ">
-                <p class="ma-0">Ver Imagenes Georeferenciadas</p>
+                <p class="ma-0">Ver Imágenes Georeferenciadas</p>
               </el-card>
             </el-link>
           </el-col>

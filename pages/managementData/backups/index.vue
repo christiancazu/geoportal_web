@@ -78,6 +78,9 @@ export default {
   components: {
     BasePage
   },
+   head: {
+    title: 'Copias de Seguridad | GEOVISOR',
+  },
   data () {
     return {
       loading: true,

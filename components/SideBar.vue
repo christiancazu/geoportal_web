@@ -95,7 +95,7 @@
           :route="{ path: '/managementData/georeferentialImages' }"
           index="/managementData/georeferentialImages"
         >
-          Imagenes Georeferenciales
+          Imágenes Georeferenciales
         </el-menu-item>
         <el-menu-item
           :route="{ path: '/managementData/backups' }"
