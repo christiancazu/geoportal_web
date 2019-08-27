@@ -90,6 +90,16 @@
             :show-word-limit="true"
           />
         </el-form-item>
+        <el-form-item
+          label="¿Habilitado?"
+          prop="status"
+        >
+          <el-switch
+            v-model="form.status"
+            :active-text="form.status? 'SI': 'NO'"
+          >
+          </el-switch>
+        </el-form-item>
       </el-form>
     </template>
     <template v-slot:actions>
@@ -126,7 +136,8 @@ export default {
         order: 1,
         title: "",
         groupLayerId: '',
-        description: ""
+        description: "",
+        status: true
       },
 
       rules: {
@@ -178,15 +189,15 @@ export default {
       this.form.order = this.currentLayer.order
       this.form.title = this.currentLayer.title
       this.form.description = this.currentLayer.description
-      // this.form.title = this.currentLayer.title groupid
+      this.form.groupLayerId = this.currentLayer.groupLayerId
     }
   },
 
   methods: {
     ...mapActions({
       replaceShowModalEditLayer: "modalsManagementLayer/replaceShowModalEditLayer",
-      getLayers: "layers/getLayers",
-      getGroupLayers: 'groupLayers/getGroupLayers'
+      getGroupLayers: 'groupLayers/getGroupLayers',
+      getLayers: "layers/getLayers"
     }),
 
     submitForm () {

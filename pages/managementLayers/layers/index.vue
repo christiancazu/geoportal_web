@@ -149,11 +149,14 @@ export default {
       replaceShowModalEditLayer: 'modalsManagementLayer/replaceShowModalEditLayer',
       replaceCurrentLayer: 'layers/replaceCurrentLayer',
       getLayers: 'layers/getLayers',
+      getLayer: 'layers/getLayer',
     }),
 
     onLoadModalEditLayer (index, item) {
-      this.replaceCurrentLayer({ layer: item })
-      this.replaceShowModalEditLayer({ show: true })
+      this.getLayer({ id: item.pk }).then(response => {
+        this.replaceShowModalEditLayer({ show: true })
+      })
+      // this.replaceCurrentLayer({ layer: item })
     },
 
     // pagination 
