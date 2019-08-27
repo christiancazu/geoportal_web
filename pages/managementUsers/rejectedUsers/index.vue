@@ -124,6 +124,10 @@ export default {
     BtnConfirm
   },
 
+  head: {
+    title: 'Solicitudes rechazadas | GEOVISOR',
+  },
+
   data () {
     return {
       search: "",

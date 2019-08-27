@@ -108,6 +108,10 @@ export default {
     BtnConfirm
   },
 
+   head: {
+    title: 'Grupo de Capas | GEOVISOR',
+  },
+
   data () {
     return {
       search: "",

@@ -95,6 +95,9 @@ export default {
     ModalEditLayer,
     ModalAddLayer,
   },
+  head: {
+    title: 'Capas vectoriales | GEOVISOR',
+  },
   data () {
     return {
       search: '',

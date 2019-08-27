@@ -94,6 +94,9 @@ export default {
     BasePage,
     ModalPublishRasterLayer
   },
+   head: {
+    title: 'Capas raster | GEOVISOR',
+  },
   data() {
     return {
       search: "",

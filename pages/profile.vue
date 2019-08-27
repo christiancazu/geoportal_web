@@ -230,6 +230,10 @@ export default {
     BasePage
   },
 
+  head: {
+    title: 'Mi Perfil',
+  },
+
   data () {
     return {
       imageSelected: "",

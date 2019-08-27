@@ -80,7 +80,9 @@ export default {
   components: {
     BasePage
   },
-
+ head: {
+    title: 'Configurar copias de seguridad | GEOVISOR',
+  },
   data () {
     return {
       checkedCities: [],

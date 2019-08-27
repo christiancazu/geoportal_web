@@ -1,5 +1,5 @@
 <template>
-  <BasePage title="Images Georeferenciales">
+  <BasePage title="Imágenes Georeferenciales">
     <template v-slot:itemsActions>
       <el-button
         size="mini"
@@ -103,6 +103,9 @@ export default {
     BtnConfirm,
     ModalAddGeoreferentialImage,
     ModalEditGeoreferentialImage
+  },
+   head: {
+    title: 'Imágenes | GEOVISOR',
   },
   data () {
     return {

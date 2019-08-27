@@ -109,6 +109,9 @@ export default {
     BtnConfirm,
     ModalAddBaseMap,
   },
+   head: {
+    title: 'Capas base | GEOVISOR',
+  },
   data () {
     return {
       search: '',

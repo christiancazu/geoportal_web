@@ -87,6 +87,10 @@ export default {
     ModalViewPendingRequest
   },
 
+  head: {
+    title: 'Solicitudes | GEOVISOR',
+  },
+
   data () {
     return {
       search: "",
