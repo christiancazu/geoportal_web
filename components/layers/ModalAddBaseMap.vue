@@ -46,11 +46,13 @@
                 type="text"
                 autocomplete="off"
               >
-                <el-button
-                  slot="append"
-                  icon="el-icon-full-screen"
-                  @click="previewBaseMap"
-                ></el-button>
+                <template slot="append">
+                  <el-button
+                    icon="el-icon-full-screen"
+                    @click="previewBaseMap"
+                  ></el-button>
+                </template>
+
               </el-input>
             </el-form-item>
           </el-col>
@@ -61,11 +63,10 @@
           >
             <div class="demo-image__error">
               <div
-                v-if="!!form.url"
                 id="map"
                 class="map"
               ></div>
-              <el-image
+              <!-- <el-image
                 v-else
                 class="w-100 h-100"
                 fit="contain"
@@ -76,7 +77,7 @@
                 >
                   <i class="el-icon-picture-outline"></i>
                 </div>
-              </el-image>
+              </el-image> -->
             </div>
           </el-col>
         </el-row>

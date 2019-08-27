@@ -15,7 +15,7 @@ export default $axios => ({
   },
   edit (payload = {}) {
     return $axios({
-      url: `layer/${payload.id}`,
+      url: `vectorial_layer/${payload.id}`,
       method: 'PUT',
       data: payload.data || {}
     })

@@ -182,7 +182,7 @@ export default {
       });
 
       const data = formData;
-      const id = this.currentLayer.id
+      const id = this.currentLayer.pk
 
       return new Promise((resolve, reject) => {
         this.$layerAPI
