@@ -16,6 +16,33 @@
         :disabled="processingForm"
         @submit.prevent="submitForm"
       >
+        <el-row :gutter="14">
+          <el-col
+            :xs="24"
+            :md="{span:12, offset:12}"
+            :sm="24"
+            :lg="{span:12, offset:12}"
+            class="text-xs-center"
+          >
+            <el-form-item
+              prop="order"
+              size="mini"
+              :inline-message="true"
+            >
+              <label
+                class="pr-2"
+                for=""
+              >N° de orden: </label>
+              <el-input-number
+                size="mini"
+                v-model="form.order"
+                controls-position="right"
+                :min="1"
+                type="number"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
         <!-- title -->
         <el-form-item
           label="Título"
@@ -94,6 +121,7 @@ export default {
     return {
       processingForm: false,
       form: {
+        order: '1',
         title: "",
         description: "",
         categoryId: ''
@@ -103,7 +131,12 @@ export default {
         title: [{
           required: true,
           message: "El nombre de usuario es requerido"
-        }]
+        }],
+        order: [{
+          required: true,
+          type: 'number',
+          message: " "
+        }],
       }
     };
   },

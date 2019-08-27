@@ -17,6 +17,33 @@
         :disabled="processingForm"
         @submit.prevent="submitForm"
       >
+        <el-row :gutter="14">
+          <el-col
+            :xs="24"
+            :md="{span:12, offset:12}"
+            :sm="24"
+            :lg="{span:12, offset:12}"
+            class="text-xs-center"
+          >
+            <el-form-item
+              prop="order"
+              size="mini"
+              :inline-message="true"
+            >
+              <label
+                class="pr-2"
+                for=""
+              >N° de orden: </label>
+              <el-input-number
+                size="mini"
+                v-model="form.order"
+                controls-position="right"
+                :min="1"
+                type="number"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item
           label="Título"
           prop="title"
@@ -96,6 +123,7 @@ export default {
       fileStyleSelected: null,
       showFormStyle: false,
       form: {
+        order: 1,
         title: "",
         groupLayerId: '',
         description: ""
@@ -117,7 +145,12 @@ export default {
             }
             callback();
           }
-        }]
+        }],
+        order: [{
+          required: true,
+          type: 'number',
+          message: " "
+        }],
       }
     };
   },
@@ -141,7 +174,8 @@ export default {
       this.getGroupLayers()
     },
 
-    currentLayer: function(newState, oldState) {
+    currentLayer: function (newState, oldState) {
+      this.form.order = this.currentLayer.order
       this.form.title = this.currentLayer.title
       this.form.description = this.currentLayer.description
       // this.form.title = this.currentLayer.title groupid
