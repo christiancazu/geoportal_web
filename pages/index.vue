@@ -3,7 +3,10 @@
     <!-- <template v-slot:itemsActions>
     </template> -->
     <template v-slot:content>
-      <el-container direction="vertical">
+      <el-container
+        direction="vertical"
+        class="card-dashboard"
+      >
         <el-row
           :gutter="14"
           class="btn-admin"
@@ -172,6 +175,13 @@ export default {
 .btn-admin {
   .el-link--inner {
     width: 100%;
+  }
+}
+.card-dashboard {
+  .el-card {
+    min-height: 82px;
+    display: flex;
+    align-items: center;
   }
 }
 </style>
