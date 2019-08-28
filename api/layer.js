@@ -15,14 +15,14 @@ export default $axios => ({
   },
   edit (payload = {}) {
     return $axios({
-      url: `vectorial/${payload.id}`,
+      url: `vectorial/${payload.id}/`,
       method: 'PUT',
       data: payload.data || {}
     })
   },
   data (payload = {}) {
     return $axios({
-      url: `vectorial/${payload.id}`,
+      url: `vectorial/${payload.id}/`,
       method: 'PUT',
       data: payload.data || {}
     })
