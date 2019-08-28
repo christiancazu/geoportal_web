@@ -23,7 +23,7 @@ export default $axios => ({
   data (payload = {}) {
     return $axios({
       url: `vectorial/${payload.id}/`,
-      method: 'PUT',
+      method: 'GET',
       data: payload.data || {}
     })
   }

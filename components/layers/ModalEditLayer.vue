@@ -159,7 +159,6 @@ export default {
         }],
         order: [{
           required: true,
-          type: 'number',
           message: " "
         }],
       }
