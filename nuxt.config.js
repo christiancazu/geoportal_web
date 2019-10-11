@@ -4,6 +4,7 @@ export default {
   //  port: 8400, // default: 3000
   //  host: '0.0.0.0', // default: localhost
   //},
+  mode:'spa',
 
   head: {
     title: process.env.npm_package_name || '',
@@ -43,8 +44,7 @@ export default {
   plugins: [
     '~/plugins/element-ui',
     '~/plugins/axios',
-    '~/plugins/api',
-    '~/plugins/breakpoint',
+    '~/plugins/api'
   ],
 
   modules: [
@@ -56,7 +56,7 @@ export default {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     //(baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.125:8300/geoportal/api/'
-    baseURL: process.env.NODE_ENV === 'production' ? 'http://192.168.1.130:8300/geoportal/api/' : 'http://192.168.1.130:8300/geoportal/api/'
+    baseURL: process.env.NODE_ENV === 'production' ? 'http://192.168.1.130:8300/geoportal/api/' : 'http://192.168.1.143:8300/api/'
   },
 
   auth: {
@@ -80,8 +80,8 @@ export default {
           },
           user: {
             url: 'user/info/',
-            method: 'get',
-            propertyName: 'data'
+            method: 'GET',
+            propertyName: 'user'
           }
         },
       }
@@ -89,7 +89,7 @@ export default {
   },
 
   router: {
-    middleware: ['auth', 'check']
+    middleware: ['auth']
   },
 
   toast: {
