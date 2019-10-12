@@ -1,12 +1,14 @@
 <template>
-  <BasePage title="Servicios Externos WMS">
+  <base-page title="Servicios Externos WMS">
     <template v-slot:itemsActions>
       <el-button
         size="mini"
         type="primary"
         icon="el-icon-plus"
         @click="replaceShowModalAddWMSService({ show: true })"
-      >Nuevo Servicio WMS</el-button>
+      >
+        Nuevo Servicio WMS
+      </el-button>
     </template>
 
     <template v-slot:content>
@@ -21,15 +23,13 @@
             :sm="12"
             :md="8"
           >
-            <div>
-              <el-input
-                v-model="search"
-                prefix-icon="el-icon-search"
-                size="small"
-                placeholder="Buscar..."
-                clearable
-              />
-            </div>
+            <el-input
+              v-model="search"
+              prefix-icon="el-icon-search"
+              size="small"
+              placeholder="Buscar..."
+              clearable
+            />
           </el-col>
         </el-row>
         <el-table
@@ -73,7 +73,7 @@
             width="120"
           >
             <template slot-scope="scope">
-              <BtnConfirm
+              <btn-confirm
                 :item-selected="scope.row"
                 @confirmed-action="deleteWMSServices"
                 accion="deleted"
@@ -101,23 +101,26 @@
       <ModalAddWMSService />
     </template>
 
-  </BasePage>
+  </base-page>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import BasePage from '@/components/base/BasePage.vue'
-import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
-import ModalAddWMSService from '@/components/WMSServices/ModalAddWMSService.vue'
+import BasePage from '@/components/base/BasePage'
+import BtnConfirm from "@/components/base/BaseBtnConfirm";
+import ModalAddWMSService from '@/components/WMSServices/ModalAddWMSService'
+
 export default {
   components: {
     BasePage,
     ModalAddWMSService,
     BtnConfirm
   },
+
    head: {
     title: 'Servicios WMS | GEOVISOR',
   },
+
   data () {
     return {
       search: '',
@@ -130,6 +133,7 @@ export default {
     ...mapState({
       loadingWMSServices: state => state.WMSServices.loadingWMSServices
     }),
+
     filteredData: function () {
       let search = this.search.toString().toLowerCase()
       let WMSServices = this.$store.state.WMSServices.WMSServices
@@ -155,6 +159,7 @@ export default {
       replaceShowModalAddWMSService: 'modalsWMSServices/replaceShowModalAddWMSService',
       getWMSServices: 'WMSServices/getWMSServices',
     }),
+
     deleteWMSServices (item) {
       new Promise((resolve, reject) => {
         this.$WMSServiceAPI.delete({ id: item.itemSelected.id })
@@ -164,10 +169,12 @@ export default {
           }).catch(error => reject(error))
       })
     },
+
     // pagination 
     onChangeCurrentPage: function (currentPage) {
       this.currentPage = currentPage;
     },
+
     onChangePageSize: function (pagesize) {
       this.pagesize = pagesize;
     },

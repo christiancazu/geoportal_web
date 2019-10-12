@@ -79,6 +79,7 @@ export default {
         name: "",
         description: "",
         webUrl: "",
+        isPublic: "True"
       },
       rules: {
         name: [{

@@ -179,7 +179,8 @@ export default {
         url: "",
         idAuthor: '',
         isEnabled: "True",
-        idCategory: ''
+        idCategory: '',
+        isPublic: "True"
       },
 
       rules: {

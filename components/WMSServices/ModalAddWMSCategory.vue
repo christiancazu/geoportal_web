@@ -74,6 +74,7 @@ export default {
       form: {
         name: "",
         description: "",
+        isPublic: "True"
       },
 
       rules: {
