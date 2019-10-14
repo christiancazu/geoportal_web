@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import { ERRORS } from '~/config/messages'
 
-export default ({ $axios, redirect, store }) => {
+export default ({ $axios, store }) => {
+  // timout for request
   $axios.defaults.timeout = 30000
 
   $axios.onRequest((config) => {
@@ -15,13 +16,13 @@ export default ({ $axios, redirect, store }) => {
   })
 
   $axios.onResponse((response) => {
-    const code = response.status
-    const status = !response.data.status
-    const message = response.data.message
-
-    if (code === 200 && status) {
-      Vue.prototype.$toasted.info(message)
-    }
+    // const code = response.status
+    // const status = response.data.status
+    // const message = response.data.message
+    // console.warn(code);
+    // if (code === 200 && status) {
+    //   Vue.prototype.$toasted.info(message)
+    // }
   })
 
   $axios.onError((error) => {
@@ -33,9 +34,9 @@ export default ({ $axios, redirect, store }) => {
 
     const code = parseInt(error.response && error.response.status)
 
-    // if (code === 401) {
-    //   redirect('/login')
-    // }
+    if (code === 401) {
+      redirect('/login')
+    }
 
     if (code === 404) {
       Vue.prototype.$toasted.error(ERRORS.ROUTE_NOT_FOUND)

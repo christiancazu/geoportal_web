@@ -6,5 +6,15 @@ export const ERRORS = {
 }
 
 export const SUCCESS = {
-  WELLCOME: 'Bienvenido al Geoportal UNAT'
+  WELLCOME: 'Bienvenido al Geoportal UNAT',
+  
+  SERVICE: {
+    REGISTERED: 'El servicio se registro con éxito'
+  },
+  AUTHOR: {
+    REGISTERED: 'El autor se registro con éxito'
+  },
+  CATEGORY: {
+    REGISTERED: 'La categoría se registro con éxito'
+  }
 }

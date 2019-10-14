@@ -188,7 +188,8 @@ export default {
         this.$toast.success(SUCCESS.WELLCOME)
         
       } catch (error) {
-        this.$toast.error(error.response.data || ERRORS.ERROR_TRY_LATER)
+        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : ERRORS.ERROR_TRY_LATER
+        this.$toast.error(errorMessage)
       } finally {
         this.processingForm = false
       }

@@ -1,21 +1,22 @@
 <template>
   <BaseModal
-    title="Agregar Autor"
-    :show-modal="showModalAddWMSAuthor"
+    title="Registrar Categoría WMS"
+    :show-modal="modalAddWMSCategory"
     :append-to-body="true"
-    @action-modal="replaceShowModalAddWMSAuthor"
+    @action-modal="SHOW_MODAL_ADD_WMS('modalAddWMSCategory')"
+    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSCategory')"
   >
     <template v-slot:content>
       <el-form
-        ref="formWMSAuthor"
+        ref="formWMSCategory"
         label-position="top"
         status-icon
         :model="form"
         :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
-        :disabled="processingFormWMSAuthor"
-        @submit.prevent="submitFormWMSAuthor"
+        :disabled="processingForm"
+        @submit.prevent="submitFormWMSCategory"
       >
         <!-- name -->
         <el-form-item
@@ -29,14 +30,6 @@
           />
         </el-form-item>
 
-        <!-- weburl -->
-        <el-form-item label="URL">
-          <el-input
-            v-model="form.webUrl"
-            type="text"
-            autocomplete="off"
-          />
-        </el-form-item>
         <el-form-item label="Descripción">
           <el-input
             v-model="form.description"
@@ -52,35 +45,40 @@
     <template v-slot:actions>
       <el-button
         size="small"
-        :disabled="processingFormWMSAuthor"
-        @click="replaceShowModalAddWMSAuthor({ show: false })"
+        :disabled="processingForm"
+        @click="HIDE_MODAL_ADD_WMS('modalAddWMSCategory')"
       >CANCELAR</el-button>
       <el-button
-        type="primary"
         size="small"
         native-type="submit"
-        :loading="processingFormWMSAuthor"
-        @click.prevent="submitFormWMSAuthor"
+        type="primary"
+        :loading="processingForm"
+        @click.prevent="submitFormWMSCategory"
       >GUARDAR</el-button>
     </template>
   </BaseModal>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
+import BasePopover from "@/components/base/BasePopover.vue";
+import { SUCCESS } from "@/config/messages";
+
 export default {
   components: {
-    BaseModal
+    BaseModal,
+    BasePopover
   },
+
   data () {
     return {
-      processingFormWMSAuthor: false,
+      processingForm: false,
       form: {
         name: "",
         description: "",
-        webUrl: "",
         isPublic: "True"
       },
+
       rules: {
         name: [{
           required: true,
@@ -91,36 +89,38 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      showModalAddWMSAuthor: state => state.modalsWMSServices.showModalAddWMSAuthor
+    ...mapState('modalsWMSServices', {
+      modalAddWMSCategory: state => state.modalAddWMSCategory
     })
   },
 
   methods: {
     ...mapActions({
-      getWMSAuthors: "WMSAuthors/getWMSAuthors",
-      replaceShowModalAddWMSAuthor:
-        "modalsWMSServices/replaceShowModalAddWMSAuthor"
+      getWMSCategories: "WMSCategories/getWMSCategories"
     }),
 
-    submitFormWMSAuthor () {
-      this.$refs.formWMSAuthor.validate(valid => {
+    ...mapMutations({
+      SHOW_MODAL_ADD_WMS: 'modalsWMSServices/SHOW_MODAL_ADD_WMS',
+      HIDE_MODAL_ADD_WMS: 'modalsWMSServices/HIDE_MODAL_ADD_WMS'
+    }),
+
+    submitFormWMSCategory () {
+      this.$refs.formWMSCategory.validate(valid => {
         if (valid) {
-          this.processingFormWMSAuthor = true
-          this.createWMSAuthor().then(response => {
+          this.processingForm = true
+          this.createWMSCategory().then(response => {
             const { status } = response.data;
             if (status) {
-              this.$refs.formWMSAuthor.resetFields();
-              this.replaceShowModalAddWMSAuthor({ show: false });
-              this.getWMSAuthors();
-              this.$toast.success(`El Author se registro con éxito`)
+              this.$refs.formWMSCategory.resetFields();
+              this.getWMSCategories();
+              this.$toast.success(this.$toast.success(SUCCESS.CATEGORY.REGISTERED))
             }
           });
         }
       });
     },
 
-    createWMSAuthor () {
+    createWMSCategory () {
       const formData = new FormData();
 
       let keys = Object.keys(this.form);
@@ -129,18 +129,18 @@ export default {
       });
 
       return new Promise((resolve, reject) => {
-        this.$WMSAuthorAPI
+        this.$WMSCategoryAPI
           .create({ data: formData })
           .then(response => {
-            this.processingFormWMSAuthor = false
+            this.processingForm = false
             resolve(response);
           })
           .catch(error => {
-            this.processingFormWMSAuthor = false
+            this.processingForm = false
             reject(error)
           });
       });
-    },
+    }
   }
 };
 </script>

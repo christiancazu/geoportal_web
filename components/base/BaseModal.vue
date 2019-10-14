@@ -6,16 +6,21 @@
       :visible.sync="showModalNow"
       :append-to-body="appendToBody"
       top="2vh"
+      close-on-click-modal
+      @close="$emit('close-modal')"
     >
       <slot name="content" />
 
       <template slot="footer">
         <div class="text-xs-center">
+
           <slot name="actions" />
+          
         </div>
       </template>
 
       <slot name="modals" />
+
     </el-dialog>
   </div>
 </template>
@@ -46,7 +51,7 @@ export default {
         this.$emit("action-modal", { show: value });
       }
     }
-  },
+  }
 };
 </script>
 <style lang="scss">

@@ -1,8 +1,9 @@
 <template>
   <BaseModal
     title="Registrar Servicios WMS"
-    :show-modal="showModalAddWMSService"
-    @action-modal="replaceShowModalAddWMSService"
+    :show-modal="modalAddWMSService"
+    @action-modal="SHOW_MODAL_ADD_WMS('modalAddWMSService')"
+    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSService')"
   >
     <template v-slot:content>
       <el-form
@@ -70,7 +71,7 @@
                   class="pa-0 pl-1 ma-0"
                   style="font-size: 1.7rem;"
                   :disabled="processingForm"
-                  @click="replaceShowModalAddWMSAuthor({ show:true })"
+                  @click="SHOW_MODAL_ADD_WMS('modalAddWMSAuthor')"
                 ></el-button>
               </el-container>
             </el-form-item>
@@ -105,7 +106,7 @@
                   class="pa-0 pl-1 ma-0"
                   style="font-size: 1.7rem;"
                   :disabled="processingForm"
-                  @click="replaceShowModalAddWMSCategory({ show: true })"
+                  @click="SHOW_MODAL_ADD_WMS('modalAddWMSCategory')"
                 ></el-button>
               </el-container>
             </el-form-item>
@@ -139,8 +140,10 @@
       <el-button
         size="small"
         :disabled="processingForm"
-        @click="replaceShowModalAddWMSService({ show: false })"
-      >CANCELAR</el-button>
+        @click="HIDE_MODAL_ADD_WMS('modalAddWMSService')"
+      >
+        CANCELAR
+      </el-button>
       <el-button
         type="primary"
         size="small"
@@ -150,54 +153,59 @@
       >GUARDAR</el-button>
     </template>
     <template v-slot:modals>
-      <ModalAddWMSAuthor />
-      <ModalAddWMSCategory />
+      <form-modal-add-w-m-s-author />
+      <form-modal-add-w-m-s-category />
     </template>
   </BaseModal>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-
 import BaseModal from "@/components/base/BaseModal.vue";
 import BasePopover from "@/components/base/BasePopover.vue";
-import ModalAddWMSAuthor from "@/components/WMSServices/ModalAddWMSAuthor.vue";
-import ModalAddWMSCategory from "@/components/WMSServices/ModalAddWMSCategory.vue";
+import FormModalAddWMSAuthor from "@/components/WMSServices/FormModalAddWMSAuthor.vue";
+import FormModalAddWMSCategory from "@/components/WMSServices/FormModalAddWMSCategory.vue";
+import { mapState, mapActions, mapMutations } from "vuex";
+import { SUCCESS } from "@/config/messages";
+
 export default {
   components: {
     BaseModal,
     BasePopover,
-    ModalAddWMSAuthor,
-    ModalAddWMSCategory
+    FormModalAddWMSAuthor,
+    FormModalAddWMSCategory
   },
 
-  data () {
+  data() {
     return {
       processingForm: false,
       form: {
         name: "",
         description: "",
         url: "",
-        idAuthor: '',
+        idAuthor: "",
         isEnabled: "True",
-        idCategory: '',
+        idCategory: "",
         isPublic: "True"
       },
 
       rules: {
-        name: [{
-          required: true,
-          message: "El nombre es requerido"
-        }],
-        url: [{
-          required: true,
-          message: "El nombre es requerido"
-        }]
+        name: [
+          {
+            required: true,
+            message: "El nombre es requerido"
+          }
+        ],
+        url: [
+          {
+            required: true,
+            message: "El nombre es requerido"
+          }
+        ]
       }
     };
   },
 
   watch: {
-    showModalAddWMSService: function (newState, oldState) {
+    modalAddWMSService(newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         return false;
@@ -215,41 +223,39 @@ export default {
       loadingWMSAuthors: state => state.WMSAuthors.loadingWMSAuthors,
       WMSCategories: state => state.WMSCategories.WMSCategories,
       loadingWMSCategories: state => state.WMSCategories.loadingWMSCategories,
-      showModalAddWMSService: state => state.modalsWMSServices.showModalAddWMSService,
+      modalAddWMSService: state => state.modalsWMSServices.modalAddWMSService
     })
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddWMSService:
-        "modalsWMSServices/replaceShowModalAddWMSService",
-      replaceShowModalAddWMSAuthor:
-        "modalsWMSServices/replaceShowModalAddWMSAuthor",
       getWMSCategories: "WMSCategories/getWMSCategories",
       getWMSAuthors: "WMSAuthors/getWMSAuthors",
-      getWMSServices: "WMSServices/getWMSServices",
-      replaceShowModalAddWMSCategory:
-        "modalsWMSServices/replaceShowModalAddWMSCategory"
+      getWMSServices: "WMSServices/getWMSServices"
+    }),
+    ...mapMutations({
+      SHOW_MODAL_ADD_WMS: "modalsWMSServices/SHOW_MODAL_ADD_WMS",
+      HIDE_MODAL_ADD_WMS: "modalsWMSServices/HIDE_MODAL_ADD_WMS"
     }),
 
-    submitForm () {
+    submitForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.processingForm = true
+          this.processingForm = true;
           this.createWMSService().then(response => {
+            console.warn(response);
             const { status } = response.data;
             if (status) {
               this.$refs.form.resetFields();
-              this.replaceShowModalAddWMSService({ show: false });
               this.getWMSServices();
-              this.$toast.success(`El servicio se registro con éxito`)
+              this.$toast.success(SUCCESS.SERVICE.REGISTERED);
             }
           });
         }
       });
     },
 
-    createWMSService () {
+    createWMSService() {
       const formData = new FormData();
 
       let keys = Object.keys(this.form);
@@ -263,17 +269,15 @@ export default {
         this.$WMSServiceAPI
           .create({ data })
           .then(response => {
-            this.processingForm = false
+            this.processingForm = false;
             resolve(response);
           })
           .catch(error => {
-            this.processingForm = false
-            reject(error)
+            this.processingForm = false;
+            reject(error);
           });
       });
-    },
+    }
   }
 };
 </script>
-<style lang="scss">
-</style>
