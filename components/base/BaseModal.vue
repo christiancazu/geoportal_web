@@ -6,7 +6,6 @@
       :visible.sync="showModalNow"
       :append-to-body="appendToBody"
       top="2vh"
-      close-on-click-modal
       @close="$emit('close-modal')"
     >
       <slot name="content" />

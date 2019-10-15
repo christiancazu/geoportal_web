@@ -4,7 +4,7 @@
     :show-modal="modalAddWMSCategory"
     :append-to-body="true"
     @action-modal="SHOW_MODAL_ADD_WMS('modalAddWMSCategory')"
-    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSCategory')"
+    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSCategory'); $refs.formWMSCategory.resetFields()"
   >
     <template v-slot:content>
       <el-form

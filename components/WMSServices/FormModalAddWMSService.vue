@@ -3,11 +3,11 @@
     title="Registrar Servicios WMS"
     :show-modal="modalAddWMSService"
     @action-modal="SHOW_MODAL_ADD_WMS('modalAddWMSService')"
-    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSService')"
+    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSService'); $refs.formWMSService.resetFields()"
   >
     <template v-slot:content>
       <el-form
-        ref="form"
+        ref="formWMSService"
         label-position="top"
         status-icon
         :model="form"
@@ -206,10 +206,6 @@ export default {
 
   watch: {
     modalAddWMSService(newState, oldState) {
-      if (!newState) {
-        this.$refs.form.resetFields();
-        return false;
-      }
       if (newState) {
         this.getWMSCategories();
         this.getWMSAuthors();
@@ -246,7 +242,7 @@ export default {
             console.warn(response);
             const { status } = response.data;
             if (status) {
-              this.$refs.form.resetFields();
+              this.$refs.formWMSService.resetFields();
               this.getWMSServices();
               this.$toast.success(SUCCESS.SERVICE.REGISTERED);
             }

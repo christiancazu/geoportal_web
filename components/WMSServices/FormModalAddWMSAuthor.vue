@@ -4,7 +4,7 @@
     :show-modal="modalAddWMSAuthor"
     :append-to-body="true"
     @action-modal="SHOW_MODAL_ADD_WMS('modalAddWMSAuthor')"
-    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSAuthor')"
+    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSAuthor'); $refs.formWMSAuthor.resetFields()"
   >
     <template v-slot:content>
       <el-form
@@ -30,14 +30,20 @@
         </el-form-item>
 
         <!-- weburl -->
-        <el-form-item label="URL">
+        <el-form-item 
+          label="URL"
+          prop="webUrl"  
+        >
           <el-input
             v-model="form.webUrl"
             type="text"
             autocomplete="off"
           />
         </el-form-item>
-        <el-form-item label="Descripción">
+        <el-form-item 
+          label="Descripción"
+          prop="description"
+        >
           <el-input
             v-model="form.description"
             type="textarea"
