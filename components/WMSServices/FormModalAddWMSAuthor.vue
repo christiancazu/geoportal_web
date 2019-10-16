@@ -114,9 +114,9 @@ export default {
       getWMSAuthors: "WMSAuthors/getWMSAuthors"
     }),
 
-    ...mapMutations({
-      SHOW_MODAL_ADD_WMS: 'modalsWMSServices/SHOW_MODAL_ADD_WMS',
-      HIDE_MODAL_ADD_WMS: 'modalsWMSServices/HIDE_MODAL_ADD_WMS'
+    ...mapMutations('modalsWMSServices', {
+      SHOW_MODAL_ADD_WMS: 'SHOW_MODAL_ADD_WMS',
+      HIDE_MODAL_ADD_WMS: 'HIDE_MODAL_ADD_WMS'
     }),
 
     async submitFormWMSAuthor () {

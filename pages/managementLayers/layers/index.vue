@@ -6,7 +6,9 @@
         type="primary"
         icon="el-icon-plus"
         @click="replaceShowModalAddLayer({ show: true })"
-      >Nuevo Capa</el-button>
+      >
+        Nuevo Capa
+      </el-button>
     </template>
     <template v-slot:content>
       <el-container direction="vertical">
@@ -16,9 +18,7 @@
           :gutter="10"
         >
           <el-col
-            :xs="24"
-            :sm="12"
-            :md="8"
+            :xs="24" :sm="12" :md="8"
           >
             <div>
               <el-input
@@ -60,13 +60,24 @@
             width="120"
           >
             <template slot-scope="scope">
-              <el-button
-                circle
-                icon="el-icon-edit"
-                size="small"
-                type="primary"
-                @click="onLoadModalEditLayer(scope.$index, scope.row)"
-              />
+              <el-tooltip content="Editar" placement="bottom">
+                <el-button
+                  circle
+                  icon="el-icon-edit"
+                  size="small"
+                  type="primary"
+                  @click="onLoadModalEditLayer(scope.$index, scope.row)"
+                />
+              </el-tooltip>
+              <el-tooltip content="Eliminar" placement="bottom">
+                <el-button
+                  circle
+                  icon="el-icon-delete"
+                  size="small"
+                  type="danger"
+                  @click="onLoadModalDeleteLayer(scope.$index, scope.row)"
+                />
+              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
@@ -84,8 +95,13 @@
       </el-container>
     </template>
     <template v-slot:modals>
-      <ModalAddLayer />
-      <ModalEditLayer />
+
+      <form-modal-add-layer />
+      
+      <form-modal-edit-layer />
+      
+      <form-modal-delete-layer />
+    
     </template>
   </BasePage>
 </template>
@@ -93,13 +109,16 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
-import ModalAddLayer from '@/components/layers/ModalAddLayer.vue'
-import ModalEditLayer from '@/components/layers/ModalEditLayer.vue'
+import FormModalAddLayer from '@/components/layers/FormModalAddLayer'
+import FormModalEditLayer from '@/components/layers/FormModalEditLayer'
+import FormModalDeleteLayer from '@/components/layers/FormModalDeleteLayer'
+
 export default {
   components: {
     BasePage,
-    ModalEditLayer,
-    ModalAddLayer,
+    FormModalAddLayer,
+    FormModalEditLayer,
+    FormModalDeleteLayer
   },
   head: {
     title: 'Capas vectoriales | GEOVISOR',
@@ -118,10 +137,11 @@ export default {
       loadingLayers: state => state.layers.loadingLayers
     }),
 
-    filteredData: function () {
+    filteredData () {
       let search = this.search.toString().toLowerCase()
       let layers = this.$store.state.layers.layers
       this.currentPage = 1
+
       return layers.filter(item => {
         // checking title
         if (item.title && item.title.toString().toLowerCase().includes(search)) {
@@ -147,14 +167,22 @@ export default {
     ...mapActions({
       replaceShowModalAddLayer: 'modalsManagementLayer/replaceShowModalAddLayer',
       replaceShowModalEditLayer: 'modalsManagementLayer/replaceShowModalEditLayer',
+      replaceShowModalDeleteLayer: 'modalsManagementLayer/replaceShowModalDeleteLayer',
       replaceCurrentLayer: 'layers/replaceCurrentLayer',
       getLayers: 'layers/getLayers',
       getLayer: 'layers/getLayer',
     }),
 
     onLoadModalEditLayer (index, item) {
-      this.getLayer({ id: item.pk }).then(response => {
+      this.getLayer({ id: item.id }).then(response => {
         this.replaceShowModalEditLayer({ show: true })
+      })
+      // this.replaceCurrentLayer({ layer: item })
+    },
+
+    onLoadModalDeleteLayer (index, item) {
+      this.getLayer({ id: item.id }).then(response => {
+        this.replaceShowModalDeleteLayer({ show: true })
       })
       // this.replaceCurrentLayer({ layer: item })
     },

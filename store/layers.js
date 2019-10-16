@@ -14,8 +14,8 @@ export const actions = {
   async getLayers ({ commit }, payload) {
     commit('REPLACE_LOADING_LAYERS', { loading: true })
     try {
-      const { data } = await this.$layerAPI.index(payload)
-      commit('REPLACE_LAYERS', { layers: data.data || [] })
+      const { data } = await this.$layerAPI.get(payload)
+      commit('REPLACE_LAYERS', { layers: data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {
@@ -25,7 +25,7 @@ export const actions = {
   async getLayer ({ commit }, payload) {
     try {
       const { data } = await this.$layerAPI.data(payload)
-      commit('REPLACE_CURRENT_LAYER', { layer: data.data })
+      commit('REPLACE_CURRENT_LAYER', { layer: data })
     } catch (error) {
       if (!error.response) return
     }
