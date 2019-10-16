@@ -5,9 +5,9 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="replaceShowModalAddLayer({ show: true })"
+        @click="SHOW_MODAL_LAYER('modalAddLayer')"
       >
-        Nuevo Capa
+        Nueva Capa
       </el-button>
     </template>
     <template v-slot:content>
@@ -96,29 +96,29 @@
     </template>
     <template v-slot:modals>
 
-      <form-modal-add-layer />
+      <modal-add-layer />
       
-      <form-modal-edit-layer />
+      <modal-edit-layer />
       
-      <form-modal-delete-layer />
+      <modal-delete-layer />
     
     </template>
   </BasePage>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
-import FormModalAddLayer from '@/components/layers/FormModalAddLayer'
-import FormModalEditLayer from '@/components/layers/FormModalEditLayer'
-import FormModalDeleteLayer from '@/components/layers/FormModalDeleteLayer'
+import ModalAddLayer from '@/components/layers/ModalAddLayer'
+import ModalEditLayer from '@/components/layers/ModalEditLayer'
+import ModalDeleteLayer from '@/components/layers/ModalDeleteLayer'
 
 export default {
   components: {
     BasePage,
-    FormModalAddLayer,
-    FormModalEditLayer,
-    FormModalDeleteLayer
+    ModalAddLayer,
+    ModalEditLayer,
+    ModalDeleteLayer
   },
   head: {
     title: 'Capas vectoriales | GEOVISOR',
@@ -173,16 +173,20 @@ export default {
       getLayer: 'layers/getLayer',
     }),
 
+    ...mapMutations({
+      SHOW_MODAL_LAYER: 'modalsManagementLayer/SHOW_MODAL_LAYER'
+    }),
+
     onLoadModalEditLayer (index, item) {
       this.getLayer({ id: item.id }).then(response => {
-        this.replaceShowModalEditLayer({ show: true })
+        this.SHOW_MODAL_LAYER('modalEditLayer')
       })
       // this.replaceCurrentLayer({ layer: item })
     },
 
     onLoadModalDeleteLayer (index, item) {
       this.getLayer({ id: item.id }).then(response => {
-        this.replaceShowModalDeleteLayer({ show: true })
+        this.SHOW_MODAL_LAYER('modalDeleteLayer')
       })
       // this.replaceCurrentLayer({ layer: item })
     },
@@ -191,6 +195,7 @@ export default {
     onChangeCurrentPage: function (currentPage) {
       this.currentPage = currentPage;
     },
+
     onChangePageSize: function (pagesize) {
       this.pagesize = pagesize;
     },

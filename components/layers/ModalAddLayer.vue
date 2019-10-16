@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Registrar nueva capa vectorial"
-    :show-modal="showModalAddLayer"
-    @action-modal="replaceShowModalAddLayer"
+    :show-modal="modalAddLayer"
+    @close-modal="$_modalLayerMixin_closeModal('modalAddLayer')"
   >
     <template v-slot:content>
       <el-form
@@ -159,7 +159,7 @@
       <el-button
         :disabled="processingForm"
         size="small"
-        @click="replaceShowModalAddLayer({ show: false })"
+        @click="$_modalLayerMixin_closeModal('modalAddLayer')"
       >
         CANCELAR
       </el-button>
@@ -176,14 +176,18 @@
   </BaseModal>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
-import { SUCCESS } from '@/config/messages'
+import { SUCCESS, ERRORS } from '@/config/messages'
+import modalLayerMixin from "@/mixins/modalLayerMixin";
 
 export default {
   components: {
     BaseModal
   },
+
+  mixins: [modalLayerMixin],
+
   data () {
     return {
       processingForm: false,
@@ -233,12 +237,12 @@ export default {
     ...mapState({
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      showModalAddLayer: state => state.modalsManagementLayer.showModalAddLayer
+      modalAddLayer: state => state.modalsManagementLayer.modalAddLayer
     })
   },
 
   watch: {
-    showModalAddLayer (newState, oldState) {
+    modalAddLayer (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         this.fileLayerSelected = null
@@ -250,7 +254,6 @@ export default {
 
   methods: {
     ...mapActions({
-      replaceShowModalAddLayer: "modalsManagementLayer/replaceShowModalAddLayer",
       getLayers: "layers/getLayers",
       getGroupLayers: 'groupLayers/getGroupLayers'
     }),
@@ -268,7 +271,6 @@ export default {
           await this.$layerAPI.create({ data })
 
           this.$refs.form.resetFields()
-          this.replaceShowModalAddLayer({ show: false })
           this.getLayers()
           this.$toast.success(SUCCESS.LAYER.REGISTERED)
 

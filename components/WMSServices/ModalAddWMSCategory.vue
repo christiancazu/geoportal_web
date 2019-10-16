@@ -3,8 +3,8 @@
     title="Registrar Categoría WMS"
     :show-modal="modalAddWMSCategory"
     :append-to-body="true"
-    @action-modal="SHOW_MODAL_ADD_WMS('modalAddWMSCategory')"
-    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSCategory'); $refs.formWMSCategory.resetFields()"
+    @action-modal="SHOW_MODAL_WMS('modalAddWMSCategory')"
+    @close-modal="HIDE_MODAL_WMS('modalAddWMSCategory'); $refs.formWMSCategory.resetFields()"
   >
     <template v-slot:content>
       <el-form
@@ -46,7 +46,7 @@
       <el-button
         size="small"
         :disabled="processingForm"
-        @click="HIDE_MODAL_ADD_WMS('modalAddWMSCategory')"
+        @click="HIDE_MODAL_WMS('modalAddWMSCategory')"
       >CANCELAR</el-button>
       <el-button
         size="small"
@@ -100,8 +100,8 @@ export default {
     }),
 
     ...mapMutations({
-      SHOW_MODAL_ADD_WMS: 'modalsWMSServices/SHOW_MODAL_ADD_WMS',
-      HIDE_MODAL_ADD_WMS: 'modalsWMSServices/HIDE_MODAL_ADD_WMS'
+      SHOW_MODAL_WMS: 'modalsWMSServices/SHOW_MODAL_WMS',
+      HIDE_MODAL_WMS: 'modalsWMSServices/HIDE_MODAL_WMS'
     }),
 
     submitFormWMSCategory () {

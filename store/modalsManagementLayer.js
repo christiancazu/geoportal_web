@@ -1,68 +1,36 @@
 import {
-  REPLACE_SHOW_MODAL_ADD_LAYER,
-  REPLACE_SHOW_MODAL_EDIT_LAYER,
-  REPLACE_SHOW_MODAL_DELETE_LAYER,
-  REPLACE_SHOW_MODAL_ADD_BASE_MAP,
-  REPLACE_SHOW_MODAL_ADD_GROUP_LAYER,
-  REPLACE_SHOW_MODAL_EDIT_GROUP_LAYER,
-  REPLACE_SHOW_MODAL_PUBLISH_RASTER_LAYER
+  SHOW_MODAL_LAYER,
+  CLOSE_MODAL_LAYER
 } from '../types/mutation-types'
 
 export const state = () => ({
-  showModalAddLayer: false,
-  showModalEditLayer: false,
-  showModalDeleteLayer: false,
-  showModalAddBaseMap: false,
-  showModalAddGroupLayer: false,
-  showModalEditGroupLayer: false,
-  showModalPublishRasterLayer: false,
-  
+  modalAddLayer: false,
+  modalEditLayer: false,
+  modalDeleteLayer: false,
+  modalAddBaseMap: false,
+  modalAddGroupLayer: false,
+  modalEditGroupLayer: false,
+  modalPublishRasterLayer: false
 })
 
-export const actions = {
-  replaceShowModalAddLayer ({ commit }, payload) {
-    commit('REPLACE_SHOW_MODAL_ADD_LAYER', payload)
-  },
-  replaceShowModalEditLayer ({ commit }, payload) {
-    commit('REPLACE_SHOW_MODAL_EDIT_LAYER', payload)
-  },
-  replaceShowModalDeleteLayer ({ commit }, payload) {
-    commit(REPLACE_SHOW_MODAL_DELETE_LAYER, payload)
-  },
-  replaceShowModalAddBaseMap ({ commit }, payload) {
-    commit('REPLACE_SHOW_MODAL_ADD_BASE_MAP', payload)
-  },
-  replaceShowModalAddGroupLayer ({ commit }, payload) {
-    commit('REPLACE_SHOW_MODAL_ADD_GROUP_LAYER', payload)
-  },
-  replaceShowModalEditGroupLayer ({ commit }, payload) {
-    commit('REPLACE_SHOW_MODAL_EDIT_GROUP_LAYER', payload)
-  },
-  replaceShowModalPublishRasterLayer ({ commit }, payload) {
-    commit('REPLACE_SHOW_MODAL_PUBLISH_RASTER_LAYER', payload)
-  }
-}
-
 export const mutations = {
-  [REPLACE_SHOW_MODAL_ADD_LAYER] (state, { show }) {
-    state.showModalAddLayer = show
-  },
-  [REPLACE_SHOW_MODAL_EDIT_LAYER] (state, { show }) {
-    state.showModalEditLayer = show
-  },
-  [REPLACE_SHOW_MODAL_DELETE_LAYER] (state, { show }) {
-    state.showModalDeleteLayer = show
-  },
-  [REPLACE_SHOW_MODAL_ADD_BASE_MAP] (state, { show }) {
-    state.showModalAddBaseMap = show
-  },
-  [REPLACE_SHOW_MODAL_ADD_GROUP_LAYER] (state, { show }) {
-    state.showModalAddGroupLayer = show
-  },
-  [REPLACE_SHOW_MODAL_EDIT_GROUP_LAYER] (state, { show }) {
-    state.showModalEditGroupLayer = show
-  },
-  [REPLACE_SHOW_MODAL_PUBLISH_RASTER_LAYER] (state, { show }) {
-    state.showModalPublishRasterLayer = show
-  }
+  
+  [SHOW_MODAL_LAYER]: (state, payload) =>  state[payload] = true,
+
+  [CLOSE_MODAL_LAYER]: (state, payload) =>  state[payload] = false,
+  // [REPLACE_SHOW_MODAL_DELETE_LAYER] (state, { show }) {
+  //   state.modalDeleteLayer = show
+  // },
+  // [REPLACE_SHOW_MODAL_ADD_BASE_MAP] (state, { show }) {
+  //   state.modalAddBaseMap = show
+  // },
+  // [REPLACE_SHOW_MODAL_ADD_GROUP_LAYER] (state, { show }) {
+  //   state.modalAddGroupLayer = show
+  // },
+  // [REPLACE_SHOW_MODAL_EDIT_GROUP_LAYER] (state, { show }) {
+  //   state.modalEditGroupLayer = show
+  // },
+  // [REPLACE_SHOW_MODAL_PUBLISH_RASTER_LAYER] (state, { show }) {
+  //   state.modalPublishRasterLayer = show
+  // }
 }

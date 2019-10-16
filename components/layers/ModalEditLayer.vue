@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Modificar capa vectorial"
-    :show-modal="showModalEditLayer"
-    @action-modal="replaceShowModalEditLayer"
+    :show-modal="modalEditLayer"
+    @close-modal="$_modalLayerMixin_closeModal('modalEditLayer')"
   >
     <template v-slot:content>
       <el-form
@@ -106,7 +106,7 @@
       <el-button
         :disabled="processingForm"
         size="small"
-        @click="replaceShowModalEditLayer({ show: false })"
+        @click="$_modalLayerMixin_closeModal('modalEditLayer')"
       >CANCELAR</el-button>
       <el-button
         type="primary"
@@ -119,13 +119,17 @@
   </BaseModal>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
+import modalLayerMixin from "@/mixins/modalLayerMixin";
 
 export default {
   components: {
     BaseModal
   },
+
+  mixins: [modalLayerMixin],
+  
   data () {
     return {
       processingForm: false,
@@ -170,12 +174,12 @@ export default {
       currentLayer: state => state.layers.currentLayer,
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      showModalEditLayer: state => state.modalsManagementLayer.showModalEditLayer
+      modalEditLayer: state => state.modalsManagementLayer.modalEditLayer
     })
   },
 
   watch: {
-    showModalEditLayer: function (newState, oldState) {
+    modalEditLayer: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         this.fileLayerSelected = null
