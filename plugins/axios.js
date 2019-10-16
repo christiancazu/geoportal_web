@@ -1,34 +1,49 @@
 import Vue from 'vue'
+import { ERRORS } from '~/config/messages'
 
-export default ({ $axios, redirect }) => {
+export default ({ $axios, store }) => {
+  // timout for request
+  $axios.defaults.timeout = 30000
+
   $axios.onRequest((config) => {
-    // console.log('Making request to ' + config.url)
+    const token = store.$auth.getToken('local')
 
+    if (token) {
+      config.headers.Authorization = `${token}`
+    }
+
+    // console.log('Making request to ' + config.url)
   })
 
   $axios.onResponse((response) => {
-    const code = response.status
-    const status = !response.data.status
-    const message = response.data.message
-
-    if (code === 200 && status) {
-      Vue.prototype.$toasted.info(message)
-    }
+    // const code = response.status
+    // const status = response.data.status
+    // const message = response.data.message
+    // console.warn(code);
+    // if (code === 200 && status) {
+    //   Vue.prototype.$toasted.info(message)
+    // }
   })
 
   $axios.onError((error) => {
+    // time expired for request
+    if (error.code === 'ECONNABORTED') {
+      Vue.prototype.$toasted.error(ERRORS.ERROR_TRY_LATER)
+      return
+    }
+
     const code = parseInt(error.response && error.response.status)
 
-    // if (code === 401) {
-    //   redirect('/login')
-    // }
+    if (code === 401) {
+      redirect('/login')
+    }
 
     if (code === 404) {
-      Vue.prototype.$toasted.error('Error 404: Ruta no encontrada')
+      Vue.prototype.$toasted.error(ERRORS.ROUTE_NOT_FOUND)
     }
 
     if (code === 422) {
-      Vue.prototype.$toasted.error('Error 422: Errores de validación')
+      Vue.prototype.$toasted.error(ERRORS.INVALID_DATA)
     }
   })
 }

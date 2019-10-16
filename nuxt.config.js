@@ -1,3 +1,5 @@
+import { timeout } from "q";
+
 export default {
   // "dev": "nuxt --hostname 0.0.0.0 --port 9100"
   //server: {
@@ -38,7 +40,7 @@ export default {
   ],
 
   loading: {
-    color: '#fff'
+    color: '#6376f7'
   },
 
   plugins: [
@@ -56,10 +58,11 @@ export default {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     //(baseURL: process.env.NODE_ENV === 'production' ? 'https://veox.com/api' : 'http://192.168.1.125:8300/geoportal/api/'
-    baseURL: process.env.NODE_ENV === 'production' ? 'http://192.168.1.130:8300/geoportal/api/' : 'http://192.168.1.143:8300/api/'
+    baseURL: process.env.NODE_ENV === 'production' ? 'http://192.168.1.130:8300/geoportal/api/' : 'http://192.168.1.130:8300/api/'
   },
 
   auth: {
+    // plugins: [ '~/plugins/auth.js' ],
     redirect: {
       login: '/login',
       logout: '/login',

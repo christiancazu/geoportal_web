@@ -1,9 +1,10 @@
 <template>
   <BaseModal
     title="Registrar Categoría WMS"
-    :show-modal="showModalAddWMSCategory"
+    :show-modal="modalAddWMSCategory"
     :append-to-body="true"
-    @action-modal="replaceShowModalAddWMSCategory"
+    @action-modal="SHOW_MODAL_ADD_WMS('modalAddWMSCategory')"
+    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSCategory'); $refs.formWMSCategory.resetFields()"
   >
     <template v-slot:content>
       <el-form
@@ -45,7 +46,7 @@
       <el-button
         size="small"
         :disabled="processingForm"
-        @click="replaceShowModalAddWMSCategory({ show: false })"
+        @click="HIDE_MODAL_ADD_WMS('modalAddWMSCategory')"
       >CANCELAR</el-button>
       <el-button
         size="small"
@@ -58,10 +59,11 @@
   </BaseModal>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
-
 import BasePopover from "@/components/base/BasePopover.vue";
+import { SUCCESS } from "@/config/messages";
+
 export default {
   components: {
     BaseModal,
@@ -74,6 +76,7 @@ export default {
       form: {
         name: "",
         description: "",
+        isPublic: "True"
       },
 
       rules: {
@@ -86,16 +89,19 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      showModalAddWMSCategory: state => state.modalsWMSServices.showModalAddWMSCategory
+    ...mapState('modalsWMSServices', {
+      modalAddWMSCategory: state => state.modalAddWMSCategory
     })
   },
 
   methods: {
     ...mapActions({
-      getWMSCategories: "WMSCategories/getWMSCategories",
-      replaceShowModalAddWMSCategory:
-        "modalsWMSServices/replaceShowModalAddWMSCategory"
+      getWMSCategories: "WMSCategories/getWMSCategories"
+    }),
+
+    ...mapMutations({
+      SHOW_MODAL_ADD_WMS: 'modalsWMSServices/SHOW_MODAL_ADD_WMS',
+      HIDE_MODAL_ADD_WMS: 'modalsWMSServices/HIDE_MODAL_ADD_WMS'
     }),
 
     submitFormWMSCategory () {
@@ -106,9 +112,8 @@ export default {
             const { status } = response.data;
             if (status) {
               this.$refs.formWMSCategory.resetFields();
-              this.replaceShowModalAddWMSCategory({ show: false });
               this.getWMSCategories();
-              this.$toast.success(`La categoría se registro con éxito`)
+              this.$toast.success(this.$toast.success(SUCCESS.CATEGORY.REGISTERED))
             }
           });
         }

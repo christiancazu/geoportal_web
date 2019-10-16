@@ -137,8 +137,9 @@
 
 <script>
 import { Promise } from 'q';
-export default {
+import { ERRORS, SUCCESS } from '~/config/messages'
 
+export default {
   head: {
     title: 'Iniciar Sesión',
   },
@@ -165,9 +166,6 @@ export default {
     }
   },
 
-  created () {
-  },
-
   methods: {
     submitForm () {
       this.$refs.formLogin.validate((valid) => {
@@ -176,27 +174,26 @@ export default {
         }
       })
     },
-
+    
     async login () {
-      this.processingForm = true
       try {
+        this.processingForm = true
+
         await this.$auth.loginWith('local', {
           data: {
             username: this.form.email,
             password: this.form.password
           }
-        }).then(response => {
-          this.$toast.success(`Bienvenido al Geoportal UNAT`)
         })
+        this.$toast.success(SUCCESS.WELLCOME)
+        
       } catch (error) {
-        this.$toast.error('Datos invalidos')
-        if (!error.response) return
-        this.error = error.response.data || null
+        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : ERRORS.ERROR_TRY_LATER
+        this.$toast.error(errorMessage)
       } finally {
         this.processingForm = false
       }
-    },
+    }
   }
-
 }
 </script>

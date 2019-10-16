@@ -1,35 +1,16 @@
 import {
-  REPLACE_SHOW_MODAL_ADD_WMS_SERVICE,
-  REPLACE_SHOW_MODAL_ADD_WMS_CATEGORY,
-  REPLACE_SHOW_MODAL_ADD_WMS_AUTHOR
+  SHOW_MODAL_ADD_WMS,
+  HIDE_MODAL_ADD_WMS
 } from '../types/mutation-types'
 
 export const state = () => ({
-  showModalAddWMSService: false,
-  showModalAddWMSCategory: false,
-  showModalAddWMSAuthor: false,
+  modalAddWMSService: false,
+  modalAddWMSCategory: false,
+  modalAddWMSAuthor: false,
 })
 
-export const actions = {
-  replaceShowModalAddWMSService ({ commit }, payload) {
-    commit('REPLACE_SHOW_MODAL_ADD_WMS_SERVICE', payload)
-  },
-  replaceShowModalAddWMSCategory ({ commit }, payload) {
-    commit('REPLACE_SHOW_MODAL_ADD_WMS_CATEGORY', payload)
-  },
-  replaceShowModalAddWMSAuthor ({ commit }, payload) {
-    commit('REPLACE_SHOW_MODAL_ADD_WMS_AUTHOR', payload)
-  }
-}
-
 export const mutations = {
-  [REPLACE_SHOW_MODAL_ADD_WMS_SERVICE] (state, { show }) {
-    state.showModalAddWMSService = show
-  },
-  [REPLACE_SHOW_MODAL_ADD_WMS_CATEGORY] (state, { show }) {
-    state.showModalAddWMSCategory = show
-  },
-  [REPLACE_SHOW_MODAL_ADD_WMS_AUTHOR] (state, { show }) {
-    state.showModalAddWMSAuthor = show
-  }
+  [SHOW_MODAL_ADD_WMS]: (state, payload) => state[payload] = true,
+  
+  [HIDE_MODAL_ADD_WMS]: (state, payload) => state[payload] = false
 }

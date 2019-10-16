@@ -1,7 +1,7 @@
 export default $axios => ({
     refreshToken(payload = {}) {
     return $axios({
-      url: `refresh/`,
+      url: `auth/refresh/`,
       method: 'POST',
       data: payload.data || {}
     })

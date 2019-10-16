@@ -1,9 +1,10 @@
 <template>
   <BaseModal
     title="Agregar Autor"
-    :show-modal="showModalAddWMSAuthor"
+    :show-modal="modalAddWMSAuthor"
     :append-to-body="true"
-    @action-modal="replaceShowModalAddWMSAuthor"
+    @action-modal="SHOW_MODAL_ADD_WMS('modalAddWMSAuthor')"
+    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSAuthor'); $refs.formWMSAuthor.resetFields()"
   >
     <template v-slot:content>
       <el-form
@@ -15,7 +16,6 @@
         label-width="120px"
         class="demo-ruleForm"
         :disabled="processingFormWMSAuthor"
-        @submit.prevent="submitFormWMSAuthor"
       >
         <!-- name -->
         <el-form-item
@@ -30,14 +30,20 @@
         </el-form-item>
 
         <!-- weburl -->
-        <el-form-item label="URL">
+        <el-form-item 
+          label="URL"
+          prop="webUrl"  
+        >
           <el-input
             v-model="form.webUrl"
             type="text"
             autocomplete="off"
           />
         </el-form-item>
-        <el-form-item label="Descripción">
+        <el-form-item 
+          label="Descripción"
+          prop="description"
+        >
           <el-input
             v-model="form.description"
             type="textarea"
@@ -53,25 +59,32 @@
       <el-button
         size="small"
         :disabled="processingFormWMSAuthor"
-        @click="replaceShowModalAddWMSAuthor({ show: false })"
-      >CANCELAR</el-button>
+        @click="HIDE_MODAL_ADD_WMS('modalAddWMSAuthor')"
+      >
+        CANCELAR
+      </el-button>
       <el-button
         type="primary"
         size="small"
         native-type="submit"
         :loading="processingFormWMSAuthor"
         @click.prevent="submitFormWMSAuthor"
-      >GUARDAR</el-button>
+      >
+        GUARDAR
+      </el-button>
     </template>
   </BaseModal>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
+import { SUCCESS } from "@/config/messages";
+
 export default {
   components: {
     BaseModal
   },
+
   data () {
     return {
       processingFormWMSAuthor: false,
@@ -79,6 +92,7 @@ export default {
         name: "",
         description: "",
         webUrl: "",
+        isPublic: "True"
       },
       rules: {
         name: [{
@@ -90,40 +104,45 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      showModalAddWMSAuthor: state => state.modalsWMSServices.showModalAddWMSAuthor
+    ...mapState('modalsWMSServices', {
+      modalAddWMSAuthor: state => state.modalAddWMSAuthor
     })
   },
 
   methods: {
     ...mapActions({
-      getWMSAuthors: "WMSAuthors/getWMSAuthors",
-      replaceShowModalAddWMSAuthor:
-        "modalsWMSServices/replaceShowModalAddWMSAuthor"
+      getWMSAuthors: "WMSAuthors/getWMSAuthors"
     }),
 
-    submitFormWMSAuthor () {
-      this.$refs.formWMSAuthor.validate(valid => {
-        if (valid) {
-          this.processingFormWMSAuthor = true
-          this.createWMSAuthor().then(response => {
-            const { status } = response.data;
-            if (status) {
-              this.$refs.formWMSAuthor.resetFields();
-              this.replaceShowModalAddWMSAuthor({ show: false });
-              this.getWMSAuthors();
-              this.$toast.success(`El Author se registro con éxito`)
-            }
-          });
-        }
-      });
+    ...mapMutations({
+      SHOW_MODAL_ADD_WMS: 'modalsWMSServices/SHOW_MODAL_ADD_WMS',
+      HIDE_MODAL_ADD_WMS: 'modalsWMSServices/HIDE_MODAL_ADD_WMS'
+    }),
+
+    async submitFormWMSAuthor () {
+      let isFormValid = false
+      await this.$refs.formWMSAuthor.validate(result => isFormValid = result)
+    
+      if (isFormValid) {
+
+        // #TODO REFACTORED TO ACTION STORE 
+
+        this.processingFormWMSAuthor = true
+        this.createWMSAuthor().then(response => {
+          const { status } = response;
+          if (status) {
+            this.$refs.formWMSAuthor.resetFields();
+            this.getWMSAuthors();
+            this.$toast.success(SUCCESS.AUTHOR.REGISTERED)
+          }
+        });
+      }
     },
 
     createWMSAuthor () {
       const formData = new FormData();
 
-      let keys = Object.keys(this.form);
-      keys.forEach(val => {
+      Object.keys(this.form).forEach(val => {
         formData.append(val, this.form[val]);
       });
 

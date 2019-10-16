@@ -1,5 +1,5 @@
 <template>
-  <BasePage
+  <base-page
     title="Mi Perfil"
     :fit-content="true"
   >
@@ -35,7 +35,7 @@
             <i
               v-else
               class="el-icon-plus avatar-uploader-icon"
-            ></i>
+            />
           </el-upload>
         </el-form-item>
         <el-row :gutter="10">
@@ -151,7 +151,7 @@
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
-                ></el-option>
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -178,7 +178,7 @@
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
-                ></el-option>
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -205,7 +205,7 @@
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
-                ></el-option>
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -216,11 +216,13 @@
             type="primary"
             size="small"
             @click="submitForm"
-          >GUARDAR</el-button>
+          >
+            GUARDAR
+          </el-button>
         </el-form-item>
       </el-form>
     </template>
-  </BasePage>
+  </base-page>
 </template>
 <script>
 import BasePage from '@/components/base/BasePage.vue'
