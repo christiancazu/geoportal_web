@@ -64,6 +64,18 @@
             width="120"
           >
             <template slot-scope="scope">
+              <el-tooltip
+                content="Editar"
+                placement="bottom"
+              >
+                <el-button
+                  circle
+                  icon="el-icon-edit"
+                  size="small"
+                  type="primary"
+                  @click="onLoadModalEditBaseLayer(scope.$index, scope.row)"
+                />
+              </el-tooltip>
               <BtnConfirm
                 :item-selected="scope.row"
                 @confirmed-action="deleteBaseMap"
@@ -89,6 +101,7 @@
     </template>
     <template v-slot:modals>
       <ModalAddBaseMap />
+      <ModalEditBaseMap :base-layer-selected="baseLayerSelected" />
     </template>
   </BasePage>
 </template>
@@ -98,12 +111,14 @@ import { mapState, mapActions } from "vuex";
 import BasePage from "@/components/base/BasePage.vue";
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalAddBaseMap from "@/components/layers/ModalAddBaseMap.vue";
+import ModalEditBaseMap from "@/components/layers/ModalEditBaseMap.vue";
 
 export default {
   components: {
     BasePage,
     BtnConfirm,
-    ModalAddBaseMap
+    ModalAddBaseMap,
+    ModalEditBaseMap
   },
 
   head: {
@@ -113,7 +128,8 @@ export default {
     return {
       search: "",
       pagesize: 10,
-      currentPage: 1
+      currentPage: 1,
+      baseLayerSelected: null
     };
   },
 
@@ -169,9 +185,9 @@ export default {
     ...mapActions({
       getBaseMaps: "baseLayers/getBaseMaps"
     }),
-    handleEdit (index, row) {
-      // this.replaceShowModalEditUser({ show: true });
-      console.log(index, row);
+    onLoadModalEditBaseLayer (index, item) {
+      this.baseLayerSelected = item
+      this.$_modalVisibilityMixin_open('modalEditBaseLayer')
     },
 
     deleteBaseMap (item) {
