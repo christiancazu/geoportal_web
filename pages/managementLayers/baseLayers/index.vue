@@ -5,13 +5,21 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="$_modalsVisibilityMixin_open('modalAddBaseLayer')"
+        @click="$_modalVisibilityMixin_open('modalAddBaseLayer')"
       >Nuevo Mapa Base</el-button>
     </template>
     <template v-slot:content>
       <el-container direction="vertical">
-        <el-row type="flex" justify="end" :gutter="10">
-          <el-col :xs="24" :sm="12" :md="8">
+        <el-row
+          type="flex"
+          justify="end"
+          :gutter="10"
+        >
+          <el-col
+            :xs="24"
+            :sm="12"
+            :md="8"
+          >
             <div>
               <el-input
                 v-model="search"
@@ -28,17 +36,33 @@
           style="width: 100%"
           v-loading="loadingBaseMaps"
         >
-          <el-table-column label="Nombre" prop="name" />
-          <el-table-column label="Autor" prop="author" />
-          <el-table-column label="URL" prop="url" />
-          <el-table-column prop="url" align="center">
+          <el-table-column
+            label="Nombre"
+            prop="name"
+          />
+          <el-table-column
+            label="Autor"
+            prop="author"
+          />
+          <el-table-column
+            label="URL"
+            prop="url"
+          />
+          <el-table-column
+            prop="url"
+            align="center"
+          >
             <template slot="header">
               <p class="ma-0">Zoom</p>
               <small>[min, max]</small>
             </template>
             <template slot-scope="scope">{{ `[${scope.row.minZoom} - ${scope.row.maxZoom}]` }}</template>
           </el-table-column>
-          <el-table-column label="Acción" align="center" width="120">
+          <el-table-column
+            label="Acción"
+            align="center"
+            width="120"
+          >
             <template slot-scope="scope">
               <BtnConfirm
                 :item-selected="scope.row"
@@ -85,7 +109,7 @@ export default {
   head: {
     title: "Capas base | GEOVISOR"
   },
-  data() {
+  data () {
     return {
       search: "",
       pagesize: 10,
@@ -98,7 +122,7 @@ export default {
       loadingBaseMaps: state => state.baseLayers.loadingBaseMaps
     }),
 
-    filteredData: function() {
+    filteredData: function () {
       let search = this.search.toString().toLowerCase();
       let baseLayers = this.$store.state.baseLayers.baseLayers;
       this.currentPage = 1;
@@ -137,24 +161,20 @@ export default {
     }
   },
 
-  created() {
+  created () {
     this.getBaseMaps();
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddBaseMap:
-        "modalsManagementLayer/replaceShowModalAddBaseMap",
-      replaceShowModalEditUser:
-        "modalsManagementLayer/replaceShowModalEditUser",
       getBaseMaps: "baseLayers/getBaseMaps"
     }),
-    handleEdit(index, row) {
-      this.replaceShowModalEditUser({ show: true });
+    handleEdit (index, row) {
+      // this.replaceShowModalEditUser({ show: true });
       console.log(index, row);
     },
 
-    deleteBaseMap(item) {
+    deleteBaseMap (item) {
       new Promise((resolve, reject) => {
         this.$baseMapAPI
           .delete({ id: item.itemSelected.id })
@@ -167,10 +187,10 @@ export default {
     },
 
     // pagination
-    onChangeCurrentPage: function(currentPage) {
+    onChangeCurrentPage: function (currentPage) {
       this.currentPage = currentPage;
     },
-    onChangePageSize: function(pagesize) {
+    onChangePageSize: function (pagesize) {
       this.pagesize = pagesize;
     }
   }

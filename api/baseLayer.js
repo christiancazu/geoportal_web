@@ -3,12 +3,14 @@ export default $axios => ({
     return $axios({
       url: `base_layer/`,
       method: 'GET',
+      params: payload.params || {}
     })
   },
   getById (payload = {}) {
     return $axios({
-      url: `base_layer/${payload.id}`,
+      url: `base_layer/${payload.id}/`,
       method: 'GET',
+      params: payload.params || {}
     })
   },
   create (payload = {}) {
@@ -20,7 +22,7 @@ export default $axios => ({
   },
   update (payload = {}) {
     return $axios({
-      url: `base_layer/${payload.id}`,
+      url: `base_layer/${payload.id}/`,
       method: 'PUT',
       data: payload.data || {}
     })
@@ -29,7 +31,7 @@ export default $axios => ({
     return $axios({
       url: `base_layer/${payload.id}/`,
       method: 'DELETE',
-      data: payload.data || {}
+      params: payload.params || {}
     })
   }
 })
