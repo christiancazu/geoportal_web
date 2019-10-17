@@ -8,6 +8,13 @@ export default $axios => ({
       data: payload.data || {}
     })
   },
+  getById (payload = {}) {
+    return $axios({
+      url: `${LAYER}/${payload.id}/`,
+      method: 'GET',
+      data: payload.data || {}
+    })
+  },
   create (payload = {}) {
     return $axios({
       url: `${LAYER}/`,
@@ -22,11 +29,11 @@ export default $axios => ({
       data: payload.data || {}
     })
   },
-  getById (payload = {}) {
+  delete (payload = {}) {
     return $axios({
       url: `${LAYER}/${payload.id}/`,
-      method: 'GET',
+      method: 'DELETE',
       data: payload.data || {}
     })
-  }
+  },
 })

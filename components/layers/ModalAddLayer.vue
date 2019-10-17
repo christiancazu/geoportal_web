@@ -178,12 +178,14 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
-import { SUCCESS, ERRORS } from '@/config/messages'
+import objectToFormDataMixin from '@/mixins/objectToFormDataMixin'
 
 export default {
   components: {
     BaseModal
   },
+
+  mixins: [objectToFormDataMixin],
 
   data () {
     return {
@@ -257,40 +259,29 @@ export default {
     }),
 
     async submitForm () {
+      this.processingForm = true
       let isFormValid = false
+
       await this.$refs.form.validate(result => isFormValid = result)
 
       if (isFormValid) {
-        this.processingForm = true
-
-        const data = this.objectToFormData();
+        const data = this.$_objectToFormDataMixin_transform();
         
         try {
           await this.$layerAPI.create({ data })
 
           this.$refs.form.resetFields()
           this.getLayers()
-          this.$toast.success(SUCCESS.LAYER.REGISTERED)
+          this.$toast.success(this.$SUCCESS.LAYER.REGISTERED)
 
         } catch (error) {
-          const errorMessage = typeof error.response !== 'undefined' ? error.response.data : ERRORS.ERROR_TRY_LATER
+          const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
           this.$toast.error(errorMessage)
 
         } finally {
           this.processingForm = false
         }
       }
-    },
-
-    objectToFormData () {
-      const formData = new FormData();
-
-      Object.keys(this.form).forEach(val => {
-        if (!!this.form[val])
-          formData.append(val, this.form[val]);
-      });
-
-      return formData
     },
 
     launchUploadAvatar (option) {
