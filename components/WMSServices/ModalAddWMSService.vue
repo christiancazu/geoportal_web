@@ -2,12 +2,12 @@
   <BaseModal
     title="Registrar Servicios WMS"
     :show-modal="modalAddWMSService"
-    @action-modal="SHOW_MODAL_ADD_WMS('modalAddWMSService')"
-    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSService'); $refs.formWMSService.resetFields()"
+    @action-modal="SHOW_MODAL_WMS('modalAddWMSService')"
+    @close-modal="HIDE_MODAL_WMS('modalAddWMSService'); $refs.form.resetFields()"
   >
     <template v-slot:content>
       <el-form
-        ref="formWMSService"
+        ref="form"
         label-position="top"
         status-icon
         :model="form"
@@ -71,7 +71,7 @@
                   class="pa-0 pl-1 ma-0"
                   style="font-size: 1.7rem;"
                   :disabled="processingForm"
-                  @click="SHOW_MODAL_ADD_WMS('modalAddWMSAuthor')"
+                  @click="SHOW_MODAL_WMS('modalAddWMSAuthor')"
                 ></el-button>
               </el-container>
             </el-form-item>
@@ -106,7 +106,7 @@
                   class="pa-0 pl-1 ma-0"
                   style="font-size: 1.7rem;"
                   :disabled="processingForm"
-                  @click="SHOW_MODAL_ADD_WMS('modalAddWMSCategory')"
+                  @click="SHOW_MODAL_WMS('modalAddWMSCategory')"
                 ></el-button>
               </el-container>
             </el-form-item>
@@ -140,7 +140,7 @@
       <el-button
         size="small"
         :disabled="processingForm"
-        @click="HIDE_MODAL_ADD_WMS('modalAddWMSService')"
+        @click="HIDE_MODAL_WMS('modalAddWMSService')"
       >
         CANCELAR
       </el-button>
@@ -150,19 +150,26 @@
         native-type="submit"
         :loading="processingForm"
         @click.prevent="submitForm"
-      >GUARDAR</el-button>
+      >
+        GUARDAR
+      </el-button>
     </template>
+
     <template v-slot:modals>
-      <form-modal-add-w-m-s-author />
-      <form-modal-add-w-m-s-category />
+
+      <modal-add-w-m-s-author />
+
+      <modal-add-w-m-s-category />
+
     </template>
+    
   </BaseModal>
 </template>
 <script>
 import BaseModal from "@/components/base/BaseModal.vue";
 import BasePopover from "@/components/base/BasePopover.vue";
-import FormModalAddWMSAuthor from "@/components/WMSServices/FormModalAddWMSAuthor.vue";
-import FormModalAddWMSCategory from "@/components/WMSServices/FormModalAddWMSCategory.vue";
+import ModalAddWMSAuthor from "@/components/WMSServices/ModalAddWMSAuthor.vue";
+import ModalAddWMSCategory from "@/components/WMSServices/ModalAddWMSCategory.vue";
 import { mapState, mapActions, mapMutations } from "vuex";
 import { SUCCESS } from "@/config/messages";
 
@@ -170,8 +177,8 @@ export default {
   components: {
     BaseModal,
     BasePopover,
-    FormModalAddWMSAuthor,
-    FormModalAddWMSCategory
+    ModalAddWMSAuthor,
+    ModalAddWMSCategory
   },
 
   data() {
@@ -230,8 +237,8 @@ export default {
       getWMSServices: "WMSServices/getWMSServices"
     }),
     ...mapMutations({
-      SHOW_MODAL_ADD_WMS: "modalsWMSServices/SHOW_MODAL_ADD_WMS",
-      HIDE_MODAL_ADD_WMS: "modalsWMSServices/HIDE_MODAL_ADD_WMS"
+      SHOW_MODAL_WMS: "modalsWMSServices/SHOW_MODAL_WMS",
+      HIDE_MODAL_WMS: "modalsWMSServices/HIDE_MODAL_WMS"
     }),
 
     submitForm() {
@@ -242,7 +249,7 @@ export default {
             console.warn(response);
             const { status } = response.data;
             if (status) {
-              this.$refs.formWMSService.resetFields();
+              this.$refs.form.resetFields();
               this.getWMSServices();
               this.$toast.success(SUCCESS.SERVICE.REGISTERED);
             }

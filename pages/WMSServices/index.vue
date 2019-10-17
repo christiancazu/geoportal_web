@@ -5,7 +5,7 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="SHOW_MODAL_ADD_WMS('modalAddWMSService')"
+        @click="SHOW_MODAL_WMS('modalAddWMSService')"
       >
         Nuevo Servicio WMS
       </el-button>
@@ -98,7 +98,9 @@
     </template>
 
     <template v-slot:modals>
-      <ModalAddWMSService />
+
+      <modal-add-w-m-s-service />
+
     </template>
 
   </base-page>
@@ -108,7 +110,7 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import BasePage from '@/components/base/BasePage'
 import BtnConfirm from "@/components/base/BaseBtnConfirm";
-import ModalAddWMSService from '@/components/WMSServices/FormModalAddWMSService'
+import ModalAddWMSService from '@/components/WMSServices/ModalAddWMSService'
 
 export default {
   components: {
@@ -134,7 +136,7 @@ export default {
       loadingWMSServices: state => state.WMSServices.loadingWMSServices
     }),
 
-    filteredData: function () {
+    filteredData () {
       let search = this.search.toString().toLowerCase()
       let WMSServices = this.$store.state.WMSServices.WMSServices
       this.currentPage = 1
@@ -159,7 +161,7 @@ export default {
       getWMSServices: 'WMSServices/getWMSServices',
     }),
     ...mapMutations({
-      SHOW_MODAL_ADD_WMS: 'modalsWMSServices/SHOW_MODAL_ADD_WMS'
+      SHOW_MODAL_WMS: 'modalsWMSServices/SHOW_MODAL_WMS'
     }),
 
     deleteWMSServices (item) {

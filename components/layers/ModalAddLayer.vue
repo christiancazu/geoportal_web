@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Registrar nueva capa vectorial"
-    :show-modal="showModalAddLayer"
-    @action-modal="replaceShowModalAddLayer"
+    :show-modal="modalAddLayer"
+    name-state="modalAddLayer"
   >
     <template v-slot:content>
       <el-form
@@ -159,26 +159,32 @@
       <el-button
         :disabled="processingForm"
         size="small"
-        @click="replaceShowModalAddLayer({ show: false })"
-      >CANCELAR</el-button>
+        @click="$_modalVisibilityMixin_close('modalAddLayer')"
+      >
+        CANCELAR
+      </el-button>
       <el-button
         type="primary"
         size="small"
         native-type="submit"
         :loading="processingForm"
         @click.prevent="submitForm"
-      >GUARDAR</el-button>
+      >
+        GUARDAR
+      </el-button>
     </template>
   </BaseModal>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
+import { SUCCESS, ERRORS } from '@/config/messages'
 
 export default {
   components: {
     BaseModal
   },
+
   data () {
     return {
       processingForm: false,
@@ -189,7 +195,7 @@ export default {
         title: "",
         order: 0,
         name: "",
-        file: null,
+        shapeFile: null,
         groupLayerId: '',
         description: ""
       },
@@ -228,12 +234,12 @@ export default {
     ...mapState({
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      showModalAddLayer: state => state.modalsManagementLayer.showModalAddLayer
+      modalAddLayer: state => state.modalsVisibilities.modalAddLayer
     })
   },
 
   watch: {
-    showModalAddLayer: function (newState, oldState) {
+    modalAddLayer (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         this.fileLayerSelected = null
@@ -244,56 +250,51 @@ export default {
   },
 
   methods: {
+
     ...mapActions({
-      replaceShowModalAddLayer: "modalsManagementLayer/replaceShowModalAddLayer",
       getLayers: "layers/getLayers",
       getGroupLayers: 'groupLayers/getGroupLayers'
     }),
 
-    submitForm () {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.processingForm = true
-          this.createLayer().then(response => {
-            const { status } = response.data;
-            if (status) {
-              this.$refs.form.resetFields();
-              this.replaceShowModalAddLayer({ show: false });
-              this.getLayers();
-              this.$toast.success(`La capa se registro con éxito`)
-            }
-          });
+    async submitForm () {
+      let isFormValid = false
+      await this.$refs.form.validate(result => isFormValid = result)
+
+      if (isFormValid) {
+        this.processingForm = true
+
+        const data = this.objectToFormData();
+        
+        try {
+          await this.$layerAPI.create({ data })
+
+          this.$refs.form.resetFields()
+          this.getLayers()
+          this.$toast.success(SUCCESS.LAYER.REGISTERED)
+
+        } catch (error) {
+          const errorMessage = typeof error.response !== 'undefined' ? error.response.data : ERRORS.ERROR_TRY_LATER
+          this.$toast.error(errorMessage)
+
+        } finally {
+          this.processingForm = false
         }
-      });
+      }
     },
 
-    createLayer () {
+    objectToFormData () {
       const formData = new FormData();
 
-      let keys = Object.keys(this.form);
-      keys.forEach(val => {
+      Object.keys(this.form).forEach(val => {
         if (!!this.form[val])
           formData.append(val, this.form[val]);
       });
 
-      const data = formData;
-
-      return new Promise((resolve, reject) => {
-        this.$layerAPI
-          .create({ data })
-          .then(response => {
-            this.processingForm = false
-            resolve(response);
-          })
-          .catch(error => {
-            this.processingForm = false
-            reject(error)
-          });
-      });
+      return formData
     },
 
     launchUploadAvatar (option) {
-      this.form.file = option.file;
+      this.form.shapeFile = option.file;
       this.fileLayerSelected = option.file
       const nameFile = option.file.name.split('.')
       this.form.name = nameFile[0]
@@ -305,9 +306,8 @@ export default {
       const extension = `.${file.name.split('.').pop()}`
       const isSHP = extension === '.shp'
       const isZIP = extension === '.zip' || file.type === 'application/zip'
-      const isRAR = extension === '.rar' || file.type === 'application/rar'
 
-      let valid = isSHP || isZIP || isRAR
+      let valid = isSHP || isZIP
 
       if (!valid) {
         this.$message.error("Solo se acepta archivos .zip ó .shp");

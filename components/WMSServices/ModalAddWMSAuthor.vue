@@ -3,12 +3,12 @@
     title="Agregar Autor"
     :show-modal="modalAddWMSAuthor"
     :append-to-body="true"
-    @action-modal="SHOW_MODAL_ADD_WMS('modalAddWMSAuthor')"
-    @close-modal="HIDE_MODAL_ADD_WMS('modalAddWMSAuthor'); $refs.formWMSAuthor.resetFields()"
+    @action-modal="SHOW_MODAL_WMS('modalAddWMSAuthor')"
+    @close-modal="HIDE_MODAL_WMS('modalAddWMSAuthor'); $refs.modal.resetFields()"
   >
     <template v-slot:content>
       <el-form
-        ref="formWMSAuthor"
+        ref="modal"
         label-position="top"
         status-icon
         :model="form"
@@ -59,7 +59,7 @@
       <el-button
         size="small"
         :disabled="processingFormWMSAuthor"
-        @click="HIDE_MODAL_ADD_WMS('modalAddWMSAuthor')"
+        @click="HIDE_MODAL_WMS('modalAddWMSAuthor')"
       >
         CANCELAR
       </el-button>
@@ -114,14 +114,14 @@ export default {
       getWMSAuthors: "WMSAuthors/getWMSAuthors"
     }),
 
-    ...mapMutations({
-      SHOW_MODAL_ADD_WMS: 'modalsWMSServices/SHOW_MODAL_ADD_WMS',
-      HIDE_MODAL_ADD_WMS: 'modalsWMSServices/HIDE_MODAL_ADD_WMS'
+    ...mapMutations('modalsWMSServices', {
+      SHOW_MODAL_WMS: 'SHOW_MODAL_WMS',
+      HIDE_MODAL_WMS: 'HIDE_MODAL_WMS'
     }),
 
     async submitFormWMSAuthor () {
       let isFormValid = false
-      await this.$refs.formWMSAuthor.validate(result => isFormValid = result)
+      await this.$refs.modal.validate(result => isFormValid = result)
     
       if (isFormValid) {
 
@@ -131,7 +131,7 @@ export default {
         this.createWMSAuthor().then(response => {
           const { status } = response;
           if (status) {
-            this.$refs.formWMSAuthor.resetFields();
+            this.$refs.modal.resetFields();
             this.getWMSAuthors();
             this.$toast.success(SUCCESS.AUTHOR.REGISTERED)
           }

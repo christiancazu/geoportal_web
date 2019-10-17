@@ -1,6 +1,6 @@
 import {
-  SHOW_MODAL_ADD_WMS,
-  HIDE_MODAL_ADD_WMS
+  SHOW_MODAL_WMS,
+  HIDE_MODAL_WMS
 } from '../types/mutation-types'
 
 export const state = () => ({
@@ -10,7 +10,7 @@ export const state = () => ({
 })
 
 export const mutations = {
-  [SHOW_MODAL_ADD_WMS]: (state, payload) => state[payload] = true,
+  [SHOW_MODAL_WMS]: (state, payload) => state[payload] = true,
   
-  [HIDE_MODAL_ADD_WMS]: (state, payload) => state[payload] = false
+  [HIDE_MODAL_WMS]: (state, payload) => state[payload] = false
 }

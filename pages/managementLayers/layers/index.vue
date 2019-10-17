@@ -5,8 +5,10 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="replaceShowModalAddLayer({ show: true })"
-      >Nuevo Capa</el-button>
+        @click="$_modalVisibilityMixin_open('modalAddLayer')"
+      >
+        Nueva Capa
+      </el-button>
     </template>
     <template v-slot:content>
       <el-container direction="vertical">
@@ -16,9 +18,7 @@
           :gutter="10"
         >
           <el-col
-            :xs="24"
-            :sm="12"
-            :md="8"
+            :xs="24" :sm="12" :md="8"
           >
             <div>
               <el-input
@@ -60,13 +60,24 @@
             width="120"
           >
             <template slot-scope="scope">
-              <el-button
-                circle
-                icon="el-icon-edit"
-                size="small"
-                type="primary"
-                @click="onLoadModalEditLayer(scope.$index, scope.row)"
-              />
+              <el-tooltip content="Editar" placement="bottom">
+                <el-button
+                  circle
+                  icon="el-icon-edit"
+                  size="small"
+                  type="primary"
+                  @click="onLoadModalEditLayer(scope.$index, scope.row)"
+                />
+              </el-tooltip>
+              <el-tooltip content="Eliminar" placement="bottom">
+                <el-button
+                  circle
+                  icon="el-icon-delete"
+                  size="small"
+                  type="danger"
+                  @click="onLoadModalDeleteLayer(scope.$index, scope.row)"
+                />
+              </el-tooltip>
             </template>
           </el-table-column>
         </el-table>
@@ -84,8 +95,13 @@
       </el-container>
     </template>
     <template v-slot:modals>
-      <ModalAddLayer />
-      <ModalEditLayer />
+
+      <modal-add-layer />
+      
+      <modal-edit-layer />
+      
+      <modal-delete-layer />
+    
     </template>
   </BasePage>
 </template>
@@ -93,13 +109,16 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
-import ModalAddLayer from '@/components/layers/ModalAddLayer.vue'
-import ModalEditLayer from '@/components/layers/ModalEditLayer.vue'
+import ModalAddLayer from '@/components/layers/ModalAddLayer'
+import ModalEditLayer from '@/components/layers/ModalEditLayer'
+import ModalDeleteLayer from '@/components/layers/ModalDeleteLayer'
+
 export default {
   components: {
     BasePage,
-    ModalEditLayer,
     ModalAddLayer,
+    ModalEditLayer,
+    ModalDeleteLayer
   },
   head: {
     title: 'Capas vectoriales | GEOVISOR',
@@ -118,10 +137,11 @@ export default {
       loadingLayers: state => state.layers.loadingLayers
     }),
 
-    filteredData: function () {
+    filteredData () {
       let search = this.search.toString().toLowerCase()
       let layers = this.$store.state.layers.layers
       this.currentPage = 1
+
       return layers.filter(item => {
         // checking title
         if (item.title && item.title.toString().toLowerCase().includes(search)) {
@@ -147,14 +167,22 @@ export default {
     ...mapActions({
       replaceShowModalAddLayer: 'modalsManagementLayer/replaceShowModalAddLayer',
       replaceShowModalEditLayer: 'modalsManagementLayer/replaceShowModalEditLayer',
+      replaceShowModalDeleteLayer: 'modalsManagementLayer/replaceShowModalDeleteLayer',
       replaceCurrentLayer: 'layers/replaceCurrentLayer',
       getLayers: 'layers/getLayers',
       getLayer: 'layers/getLayer',
     }),
 
     onLoadModalEditLayer (index, item) {
-      this.getLayer({ id: item.pk }).then(response => {
-        this.replaceShowModalEditLayer({ show: true })
+      this.getLayer({ id: item.id }).then(response => {
+        this.$_modalVisibilityMixin_open('modalEditLayer')
+      })
+      // this.replaceCurrentLayer({ layer: item })
+    },
+
+    onLoadModalDeleteLayer (index, item) {
+      this.getLayer({ id: item.id }).then(response => {
+        this.$_modalVisibilityMixin_open('modalDeleteLayer')
       })
       // this.replaceCurrentLayer({ layer: item })
     },
@@ -163,6 +191,7 @@ export default {
     onChangeCurrentPage: function (currentPage) {
       this.currentPage = currentPage;
     },
+
     onChangePageSize: function (pagesize) {
       this.pagesize = pagesize;
     },

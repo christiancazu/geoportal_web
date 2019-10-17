@@ -1,28 +1,30 @@
+import { LAYER } from '@/config/endpoints'
+
 export default $axios => ({
-  index (payload = {}) {
+  get (payload = {}) {
     return $axios({
-      url: `vectorial/`,
+      url: `${LAYER}/`,
       method: 'GET',
       data: payload.data || {}
     })
   },
   create (payload = {}) {
     return $axios({
-      url: `vectorial/`,
+      url: `${LAYER}/`,
       method: 'POST',
       data: payload.data || {}
     })
   },
-  edit (payload = {}) {
+  update (payload = {}) {
     return $axios({
-      url: `vectorial/${payload.id}/`,
+      url: `${LAYER}/${payload.id}/`,
       method: 'PUT',
       data: payload.data || {}
     })
   },
-  data (payload = {}) {
+  getById (payload = {}) {
     return $axios({
-      url: `vectorial/${payload.id}/`,
+      url: `${LAYER}/${payload.id}/`,
       method: 'GET',
       data: payload.data || {}
     })

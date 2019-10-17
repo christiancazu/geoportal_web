@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Modificar capa vectorial"
-    :show-modal="showModalEditLayer"
-    @action-modal="replaceShowModalEditLayer"
+    :show-modal="modalEditLayer"
+    name-state="modalEditLayer"
   >
     <template v-slot:content>
       <el-form
@@ -106,7 +106,7 @@
       <el-button
         :disabled="processingForm"
         size="small"
-        @click="replaceShowModalEditLayer({ show: false })"
+        @click="$_modalVisibilityMixin_close('modalEditLayer')"
       >CANCELAR</el-button>
       <el-button
         type="primary"
@@ -126,6 +126,7 @@ export default {
   components: {
     BaseModal
   },
+
   data () {
     return {
       processingForm: false,
@@ -170,12 +171,12 @@ export default {
       currentLayer: state => state.layers.currentLayer,
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      showModalEditLayer: state => state.modalsManagementLayer.showModalEditLayer
+      modalEditLayer: state => state.modalsVisibilities.modalEditLayer
     })
   },
 
   watch: {
-    showModalEditLayer: function (newState, oldState) {
+    modalEditLayer: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         this.fileLayerSelected = null

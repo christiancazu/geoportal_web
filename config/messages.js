@@ -16,5 +16,8 @@ export const SUCCESS = {
   },
   CATEGORY: {
     REGISTERED: 'La categoría se registro con éxito'
+  },
+  LAYER: {
+    REGISTERED: 'La capa se registro con éxito'
   }
 }

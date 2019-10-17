@@ -9,7 +9,11 @@ export const state = () => ({
   modalAddWMSAuthor: false,
   // baselayers
   modalAddBaseLayer: false,
-  modalEditBaseLayer: false
+  modalEditBaseLayer: false,
+  // vectorial
+  modalAddLayer: false,
+  modalEditLayer: false,
+  modalDeleteLayer: false
 })
 
 export const mutations = {
