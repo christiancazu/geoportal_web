@@ -103,6 +103,8 @@ import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalAddBaseMap from '@/components/layers/ModalAddBaseMap.vue'
+import modalLayerMixin from "@/mixins/modalLayerMixin";
+
 export default {
   components: {
     BasePage,

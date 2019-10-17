@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Agregar mapa base"
+    name-state="modalAddBaseLayer"
     :show-modal="showModalAddBaseMap"
-    @action-modal="replaceShowModalAddBaseMap"
   >
     <template v-slot:content>
       <el-form
