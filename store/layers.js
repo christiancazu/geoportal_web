@@ -22,14 +22,32 @@ export const actions = {
       commit('REPLACE_LOADING_LAYERS', { loading: false })
     }
   },
+
   async getLayer ({ commit }, payload) {
     try {
-      const { data } = await this.$layerAPI.data(payload)
+      const { data } = await this.$layerAPI.getById(payload)
       commit('REPLACE_CURRENT_LAYER', { layer: data })
-    } catch (error) {
-      if (!error.response) return
+    } catch (error) { 
+      throw error
     }
   },
+
+  async updateLayer ({ commit }, payload) {
+    try {
+      await this.$layerAPI.update(payload)
+    } catch (error) { 
+      throw error
+    }
+  },
+
+  async deleteLayer ({ commit }, payload) {
+    try {
+      await this.$layerAPI.delete(payload)
+    } catch (error) { 
+      throw error
+    }
+  },
+
   replaceCurrentLayer ({ commit }, payload) {
     commit('REPLACE_CURRENT_LAYER', payload)
   }

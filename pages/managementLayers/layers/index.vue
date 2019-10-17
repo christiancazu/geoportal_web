@@ -77,6 +77,15 @@
                   type="danger"
                   @click="onLoadModalDeleteLayer(scope.$index, scope.row)"
                 />
+
+                <btn-confirm
+                  :item-selected="scope.row"
+                  @confirmed-action="deleteSelectedLayer"
+                  accion="deleted"
+                  title="¿Eliminar Capa?"
+                  body-text="¿Esta seguro de continuar con la operación?"
+                />
+                
               </el-tooltip>
             </template>
           </el-table-column>
@@ -99,8 +108,6 @@
       <modal-add-layer />
       
       <modal-edit-layer />
-      
-      <modal-delete-layer />
     
     </template>
   </BasePage>
@@ -111,14 +118,14 @@ import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
 import ModalAddLayer from '@/components/layers/ModalAddLayer'
 import ModalEditLayer from '@/components/layers/ModalEditLayer'
-import ModalDeleteLayer from '@/components/layers/ModalDeleteLayer'
+import BtnConfirm from "@/components/base/BaseBtnConfirm";
 
 export default {
   components: {
     BasePage,
     ModalAddLayer,
     ModalEditLayer,
-    ModalDeleteLayer
+    BtnConfirm
   },
   head: {
     title: 'Capas vectoriales | GEOVISOR',
@@ -134,7 +141,8 @@ export default {
   computed: {
     ...mapState({
       layers: state => state.layers.layers,
-      loadingLayers: state => state.layers.loadingLayers
+      loadingLayers: state => state.layers.loadingLayers,
+      currentLayer: state => state.layers.currentLayer
     }),
 
     filteredData () {
@@ -171,20 +179,54 @@ export default {
       replaceCurrentLayer: 'layers/replaceCurrentLayer',
       getLayers: 'layers/getLayers',
       getLayer: 'layers/getLayer',
+      deleteLayer: 'layers/deleteLayer'
     }),
 
-    onLoadModalEditLayer (index, item) {
-      this.getLayer({ id: item.id }).then(response => {
+    async onLoadModalEditLayer (index, item) {
+      try {
+        // #TODO: spinner onRequest
+        await this.getLayer({ id: item.id })
         this.$_modalVisibilityMixin_open('modalEditLayer')
-      })
-      // this.replaceCurrentLayer({ layer: item })
+      
+      } catch (error) {
+        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
+        this.$toast.error(errorMessage)
+
+      } finally {
+        // #TODO: spinner offRequest
+      }
     },
 
-    onLoadModalDeleteLayer (index, item) {
-      this.getLayer({ id: item.id }).then(response => {
-        this.$_modalVisibilityMixin_open('modalDeleteLayer')
-      })
-      // this.replaceCurrentLayer({ layer: item })
+    async onLoadModalDeleteLayer (index, item) {
+      try {
+        // #TODO: spinner onRequest
+        await this.getLayer({ id: item.id })
+        // this.$_modalVisibilityMixin_open('modalDeleteLayer')
+      
+      } catch (error) {
+        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
+        this.$toast.error(errorMessage)
+
+      } finally {
+        // #TODO: spinner offRequest
+      }
+    },
+
+    async deleteSelectedLayer(item) {
+      try {
+        // #TODO: spinner onRequest
+        await this.deleteLayer({ id: item.itemSelected.id })
+        this.$toast.success(this.$SUCCESS.LAYER.DELETED)
+
+        await this.getLayers()
+
+      } catch (error) {
+        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
+        this.$toast.error(errorMessage)
+
+      } finally {
+        // #TODO: spinner offRequest
+      }
     },
 
     // pagination 

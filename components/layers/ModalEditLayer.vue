@@ -6,7 +6,6 @@
   >
     <template v-slot:content>
       <el-form
-        v-if="currentLayer"
         ref="form"
         label-position="top"
         status-icon
@@ -107,25 +106,32 @@
         :disabled="processingForm"
         size="small"
         @click="$_modalVisibilityMixin_close('modalEditLayer')"
-      >CANCELAR</el-button>
+      >
+        CANCELAR
+      </el-button>
       <el-button
         type="primary"
         size="small"
         native-type="submit"
         :loading="processingForm"
         @click.prevent="submitForm"
-      >GUARDAR</el-button>
+      >
+        GUARDAR
+      </el-button>
     </template>
   </BaseModal>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
-import BaseModal from "@/components/base/BaseModal.vue";
+import BaseModal from "@/components/base/BaseModal";
+import objectToFormDataMixin from '@/mixins/objectToFormDataMixin'
 
 export default {
   components: {
     BaseModal
   },
+
+  mixins: [objectToFormDataMixin],
 
   data () {
     return {
@@ -134,8 +140,9 @@ export default {
       fileStyleSelected: null,
       showFormStyle: false,
       form: {
-        order: 1,
+        order: null,
         title: "",
+        name: "",
         groupLayerId: '',
         description: "",
         status: true
@@ -176,7 +183,7 @@ export default {
   },
 
   watch: {
-    modalEditLayer: function (newState, oldState) {
+    modalEditLayer (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         this.fileLayerSelected = null
@@ -185,7 +192,7 @@ export default {
       this.getGroupLayers()
     },
 
-    currentLayer: function (newState, oldState) {
+    currentLayer (newState, oldState) {
       this.form.order = this.currentLayer.order
       this.form.title = this.currentLayer.title
       this.form.description = this.currentLayer.description
@@ -195,52 +202,38 @@ export default {
 
   methods: {
     ...mapActions({
-      replaceShowModalEditLayer: "modalsManagementLayer/replaceShowModalEditLayer",
       getGroupLayers: 'groupLayers/getGroupLayers',
-      getLayers: "layers/getLayers"
+      getLayers: "layers/getLayers",
+      updateLayer: "layers/updateLayer"
     }),
 
-    submitForm () {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.processingForm = true
-          this.editLayer().then(response => {
-            const { status } = response.data;
-            if (status) {
-              this.$refs.form.resetFields();
-              this.replaceShowModalEditLayer({ show: false });
-              this.getLayers();
-              this.$toast.success(`La capa ha sido modificado con éxito`)
-            }
-          });
-        }
-      });
-    },
+    async submitForm () {
+      this.processingForm = false
+      let isFormValid = false
 
-    editLayer () {
-      const formData = new FormData();
+      await this.$refs.form.validate(result => isFormValid = result)
 
-      let keys = Object.keys(this.form);
-      keys.forEach(val => {
-        if (!!this.form[val])
-          formData.append(val, this.form[val]);
-      });
+      if (isFormValid) {
+        const data = this.$_objectToFormDataMixin_transform();
 
-      const data = formData;
-      const id = this.currentLayer.pk
-
-      return new Promise((resolve, reject) => {
-        this.$layerAPI
-          .edit({ data, id })
-          .then(response => {
-            this.processingForm = false
-            resolve(response);
+        try {          
+          await this.updateLayer({
+            id: this.currentLayer.id,
+            data
           })
-          .catch(error => {
-            this.processingForm = false
-            reject(error)
-          });
-      });
+          this.$refs.form.resetFields()
+          this.$toast.success(this.$SUCCESS.LAYER.UPDATED)
+
+          await this.getLayers()
+
+        } catch (error) {
+          const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
+          this.$toast.error(errorMessage)
+
+        } finally {
+          this.processingForm = false
+        }
+      }
     },
 
     launchUploadAvatar (option) {

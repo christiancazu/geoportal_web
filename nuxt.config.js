@@ -47,7 +47,8 @@ export default {
     '~/plugins/element-ui',
     '~/plugins/axios',
     '~/plugins/api',
-    '~/plugins/modalVisibilityMixin'
+    '~/plugins/modalVisibilityMixin',
+    '~/plugins/messages'
   ],
 
   modules: [
