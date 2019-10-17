@@ -5,7 +5,7 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="SHOW_MODAL_LAYER('modalAddLayer')"
+        @click="$_modalVisibilityMixin_open('modalAddLayer')"
       >
         Nueva Capa
       </el-button>
@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
 import ModalAddLayer from '@/components/layers/ModalAddLayer'
 import ModalEditLayer from '@/components/layers/ModalEditLayer'
@@ -173,20 +173,16 @@ export default {
       getLayer: 'layers/getLayer',
     }),
 
-    ...mapMutations({
-      SHOW_MODAL_LAYER: 'modalsManagementLayer/SHOW_MODAL_LAYER'
-    }),
-
     onLoadModalEditLayer (index, item) {
       this.getLayer({ id: item.id }).then(response => {
-        this.SHOW_MODAL_LAYER('modalEditLayer')
+        this.$_modalVisibilityMixin_open('modalEditLayer')
       })
       // this.replaceCurrentLayer({ layer: item })
     },
 
     onLoadModalDeleteLayer (index, item) {
       this.getLayer({ id: item.id }).then(response => {
-        this.SHOW_MODAL_LAYER('modalDeleteLayer')
+        this.$_modalVisibilityMixin_open('modalDeleteLayer')
       })
       // this.replaceCurrentLayer({ layer: item })
     },

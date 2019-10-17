@@ -2,7 +2,7 @@
   <BaseModal
     title="Registrar nueva capa vectorial"
     :show-modal="modalAddLayer"
-    @close-modal="$_modalLayerMixin_closeModal('modalAddLayer')"
+    name-state="modalAddLayer"
   >
     <template v-slot:content>
       <el-form
@@ -159,7 +159,7 @@
       <el-button
         :disabled="processingForm"
         size="small"
-        @click="$_modalLayerMixin_closeModal('modalAddLayer')"
+        @click="$_modalVisibilityMixin_close('modalAddLayer')"
       >
         CANCELAR
       </el-button>
@@ -176,17 +176,14 @@
   </BaseModal>
 </template>
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
 import { SUCCESS, ERRORS } from '@/config/messages'
-import modalLayerMixin from "@/mixins/modalLayerMixin";
 
 export default {
   components: {
     BaseModal
   },
-
-  mixins: [modalLayerMixin],
 
   data () {
     return {
@@ -237,7 +234,7 @@ export default {
     ...mapState({
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      modalAddLayer: state => state.modalsManagementLayer.modalAddLayer
+      modalAddLayer: state => state.modalsVisibilities.modalAddLayer
     })
   },
 
@@ -253,6 +250,7 @@ export default {
   },
 
   methods: {
+
     ...mapActions({
       getLayers: "layers/getLayers",
       getGroupLayers: 'groupLayers/getGroupLayers'

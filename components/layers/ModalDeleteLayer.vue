@@ -2,7 +2,7 @@
   <BaseModal
     title="Eliminar capa vectorial"
     :show-modal="modalDeleteLayer"
-    @close-modal="$_modalLayerMixin_closeModal('modalDeleteLayer')"
+    name-state="modalDeleteLayer"
   >
     <template v-slot:content>
       <el-form
@@ -33,7 +33,7 @@
       <el-button
         :disabled="processingForm"
         size="small"
-        @click="$_modalLayerMixin_closeModal('modalDeleteLayer')"
+        @click="$_modalVisibilityMixin_close('modalDeleteLayer')"
       >
         CANCELAR
       </el-button>
@@ -50,17 +50,14 @@
   </BaseModal>
 </template>
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
 import { SUCCESS } from '@/config/messages'
-import modalLayerMixin from "@/mixins/modalLayerMixin";
 
 export default {
   components: {
     BaseModal
   },
-
-  mixins: [modalLayerMixin],
 
   data () {
     return {
@@ -111,7 +108,7 @@ export default {
     ...mapState({
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      modalDeleteLayer: state => state.modalsManagementLayer.modalDeleteLayer
+      modalDeleteLayer: state => state.modalsVisibilities.modalDeleteLayer
     })
   },
 

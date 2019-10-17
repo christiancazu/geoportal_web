@@ -4,14 +4,15 @@ import { mapMutations } from "vuex"
 Vue.mixin({
   methods: {
     ...mapMutations({
-      OPEN_MODAL: 'modalsVisibility/OPEN_MODAL',
-      CLOSE_MODAL: 'modalsVisibility/CLOSE_MODAL'
+      OPEN_MODAL: 'modalsVisibilities/OPEN_MODAL',
+      CLOSE_MODAL: 'modalsVisibilities/CLOSE_MODAL'
     }),
 
-    $_modalsVisibilityMixin_open(stateName) {
+    $_modalVisibilityMixin_open(stateName) {
       this.OPEN_MODAL(stateName)
     },
-    $_modalsVisibilityMixin_close(stateName) {
+
+    $_modalVisibilityMixin_close(stateName) {
       this.CLOSE_MODAL(stateName)
     }
   }

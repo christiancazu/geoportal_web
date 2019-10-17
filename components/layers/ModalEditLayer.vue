@@ -2,7 +2,7 @@
   <BaseModal
     title="Modificar capa vectorial"
     :show-modal="modalEditLayer"
-    @close-modal="$_modalLayerMixin_closeModal('modalEditLayer')"
+    name-state="modalEditLayer"
   >
     <template v-slot:content>
       <el-form
@@ -106,7 +106,7 @@
       <el-button
         :disabled="processingForm"
         size="small"
-        @click="$_modalLayerMixin_closeModal('modalEditLayer')"
+        @click="$_modalVisibilityMixin_close('modalEditLayer')"
       >CANCELAR</el-button>
       <el-button
         type="primary"
@@ -119,17 +119,14 @@
   </BaseModal>
 </template>
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
-import modalLayerMixin from "@/mixins/modalLayerMixin";
 
 export default {
   components: {
     BaseModal
   },
 
-  mixins: [modalLayerMixin],
-  
   data () {
     return {
       processingForm: false,
@@ -174,7 +171,7 @@ export default {
       currentLayer: state => state.layers.currentLayer,
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      modalEditLayer: state => state.modalsManagementLayer.modalEditLayer
+      modalEditLayer: state => state.modalsVisibilities.modalEditLayer
     })
   },
 
