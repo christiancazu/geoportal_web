@@ -34,7 +34,7 @@
         <el-table
           :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
-          v-loading="loadingBaseMaps"
+          v-loading="loadingBaselayers"
         >
           <el-table-column
             label="Nombre"
@@ -100,8 +100,8 @@
       </el-container>
     </template>
     <template v-slot:modals>
-      <ModalAddBaseMap />
-      <ModalEditBaseMap :base-layer-selected="baseLayerSelected" />
+      <ModalAddBaseLayer />
+      <ModalEditBaseLayer :base-layer-selected="baseLayerSelected" />
     </template>
   </BasePage>
 </template>
@@ -110,15 +110,15 @@
 import { mapState, mapActions } from "vuex";
 import BasePage from "@/components/base/BasePage.vue";
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
-import ModalAddBaseMap from "@/components/layers/ModalAddBaseMap.vue";
-import ModalEditBaseMap from "@/components/layers/ModalEditBaseMap.vue";
+import ModalAddBaseLayer from "@/components/layers/ModalAddBaseLayer.vue";
+import ModalEditBaseLayer from "@/components/layers/ModalEditBaseLayer.vue";
 
 export default {
   components: {
     BasePage,
     BtnConfirm,
-    ModalAddBaseMap,
-    ModalEditBaseMap
+    ModalAddBaseLayer,
+    ModalEditBaseLayer
   },
 
   head: {
@@ -135,7 +135,7 @@ export default {
 
   computed: {
     ...mapState({
-      loadingBaseMaps: state => state.baseLayers.loadingBaseMaps
+      loadingBaselayers: state => state.baseLayers.loadingBaselayers
     }),
 
     filteredData: function () {
@@ -178,12 +178,12 @@ export default {
   },
 
   created () {
-    this.getBaseMaps();
+    this.getBaseLayers();
   },
 
   methods: {
     ...mapActions({
-      getBaseMaps: "baseLayers/getBaseMaps"
+      getBaseLayers: "baseLayers/getBaseLayers"
     }),
     onLoadModalEditBaseLayer (index, item) {
       this.baseLayerSelected = item
@@ -196,7 +196,7 @@ export default {
           .delete({ id: item.itemSelected.id })
           .then(response => {
             resolve(response);
-            this.getBaseMaps();
+            this.getBaseLayers();
           })
           .catch(error => reject(error));
       });

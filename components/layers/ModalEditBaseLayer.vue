@@ -1,8 +1,8 @@
 <template>
   <BaseModal
-    title="Agregar mapa base"
-    name-state="modalAddBaseLayer"
-    :show-modal="modalAddBaseLayer"
+    title="Editar capa base"
+    name-state="modalEditBaseLayer"
+    :show-modal="modalEditBaseLayer"
   >
     <template v-slot:content>
       <el-form
@@ -49,7 +49,7 @@
                 <template slot="append">
                   <el-button
                     icon="el-icon-full-screen"
-                    @click="previewBaseMap"
+                    @click="previewBaseLayer"
                   ></el-button>
                 </template>
               </el-input>
@@ -131,7 +131,7 @@
       <el-button
         size="small"
         :disabled="processingForm"
-        @click="$_modalVisibilityMixin_close('modalAddBaseLayer')"
+        @click="$_modalVisibilityMixin_close('modalEditBaseLayer')"
       >CANCELAR</el-button>
       <el-button
         size="small"
@@ -152,26 +152,24 @@ export default {
     BaseModal
   },
 
+  props: {
+    baseLayerSelected: {
+      type: Object,
+      default: null
+    },
+  },
+
   data () {
     return {
       map: null,
       tileLayer: null,
       checked: false,
-      rangeZoom: [5, 18],
+      rangeZoom: [],
       processingForm: false,
-      form: {
-        name: "",
-        url: "",
-        description: "",
-        author: "",
-        minZoom: "",
-        maxZoom: "",
-        authenticationToken: "",
-        isActive: true
-      },
+      form: {},
       marks: {
         1: "min: 1",
-        100: "100 max"
+        20: "20 max"
       },
       rules: {
         name: [{
@@ -187,50 +185,51 @@ export default {
   },
 
   watch: {
-    modalAddBaseLayer: function (newState, oldState) {
+    modalEditBaseLayer: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields()
-        return false
+      } else {
+        this.form = { ...this.baseLayerSelected }
+        this.rangeZoom = [`${this.baseLayerSelected.minZoom}`, `${this.baseLayerSelected.maxZoom}`]
       }
     }
   },
 
   computed: {
     ...mapState({
-      modalAddBaseLayer: state => state.modalsVisibilities.modalAddBaseLayer
+      modalEditBaseLayer: state => state.modalsVisibilities.modalEditBaseLayer
     })
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddBaseMap:
-        "modalsManagementLayer/replaceShowModalAddBaseMap",
-      getBaseMaps: "baseLayers/getBaseMaps"
+      getBaseLayers: "baseLayers/getBaseLayers"
     }),
 
     submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.createBaseMap()
+          this.updateBaseLayer()
         }
       })
     },
 
-    createBaseMap () {
+    updateBaseLayer () {
       this.processingForm = true
       this.form.minZoom = this.rangeZoom[0]
       this.form.maxZoom = this.rangeZoom[1]
 
       const data = this.form
+      const id = this.form.id
 
       return new Promise((resolve, reject) => {
         this.$baseLayerAPI
-          .create({ data })
+          .update({ data, id })
           .then(response => {
             this.processingForm = false
-            this.$_modalVisibilityMixin_close('modalAddBaseLayer')
+            this.$_modalVisibilityMixin_close('modalEditBaseLayer')
             this.$toast.success(`Mapa Base registrado con éxito`)
-            this.getBaseMaps()
+            this.getBaseLayers()
             resolve(response)
           })
           .catch(error => {
@@ -240,7 +239,7 @@ export default {
       })
     },
 
-    previewBaseMap () {
+    previewBaseLayer () {
       if (!this.form.url) {
         return false
       }
