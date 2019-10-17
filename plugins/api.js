@@ -3,7 +3,7 @@ import regionAPI from '~/api/region'
 import userAPI from '~/api/user'
 import userRequestAPI from '~/api/userRequest'
 import layerAPI from '~/api/layer'
-import baseMapAPI from '~/api/baseMap'
+import baseLayerAPI from '~/api/baseLayer'
 import WMSServiceAPI from '~/api/WMSService'
 import WMSCategoryAPI from '~/api/WMSCategory'
 import WMSAuthorAPI from '~/api/WMSAuthor'
@@ -18,7 +18,7 @@ export default (ctx, inject) => {
   const userAPIWithAxios = userAPI(ctx.$axios)
   const userRequestAPIWithAxios = userRequestAPI(ctx.$axios)
   const layerAPIWithAxios = layerAPI(ctx.$axios)
-  const baseMapAPIWithAxios = baseMapAPI(ctx.$axios)
+  const baseLayerAPIWithAxios = baseLayerAPI(ctx.$axios)
   const WMSServiceAPIWithAxios = WMSServiceAPI(ctx.$axios)
   const WMSCategoryAPIWithAxios = WMSCategoryAPI(ctx.$axios)
   const WMSAuthorAPIWithAxios = WMSAuthorAPI(ctx.$axios)
@@ -32,7 +32,7 @@ export default (ctx, inject) => {
   inject('userAPI', userAPIWithAxios)
   inject('userRequestAPI', userRequestAPIWithAxios)
   inject('layerAPI', layerAPIWithAxios)
-  inject('baseMapAPI', baseMapAPIWithAxios)
+  inject('baseLayerAPI', baseLayerAPIWithAxios)
   inject('WMSServiceAPI', WMSServiceAPIWithAxios)
   inject('WMSCategoryAPI', WMSCategoryAPIWithAxios)
   inject('WMSAuthorAPI', WMSAuthorAPIWithAxios)

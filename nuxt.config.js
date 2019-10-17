@@ -46,7 +46,8 @@ export default {
   plugins: [
     '~/plugins/element-ui',
     '~/plugins/axios',
-    '~/plugins/api'
+    '~/plugins/api',
+    '~/plugins/modalVisibilityMixin'
   ],
 
   modules: [
@@ -62,7 +63,7 @@ export default {
   },
 
   auth: {
-    // plugins: [ '~/plugins/auth.js' ],
+    plugins: [ '~/plugins/auth.js' ],
     redirect: {
       login: '/login',
       logout: '/login',

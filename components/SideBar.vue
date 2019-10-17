@@ -75,8 +75,8 @@
           Capas Raster
         </el-menu-item>
         <el-menu-item
-          :route="{ path: '/managementLayers/baseMap' }"
-          index="/managementLayers/baseMap"
+          :route="{ path: '/managementLayers/baseLayers' }"
+          index="/managementLayers/baseLayers"
         >
           Capas Base
         </el-menu-item>
