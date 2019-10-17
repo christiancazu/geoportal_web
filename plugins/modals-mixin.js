@@ -1,17 +1,18 @@
+import Vue from 'vue'
 import { mapMutations } from "vuex"
 
-export default {
+Vue.mixin({
   methods: {
     ...mapMutations({
       SHOW_MODAL: 'modals/SHOW_MODAL',
       CLOSE_MODAL: 'modals/CLOSE_MODAL'
     }),
-    showModal (stateName) {
+
+    openModal(stateName) {
       this.SHOW_MODAL(stateName)
     },
-    closeModal (stateName) {
-      this.SHOW_MODAL(stateName)
-      this.$refs.form.resetFields()
+    closeModal(stateName) {
+      this.CLOSE_MODAL(stateName)
     }
   }
-}
+})

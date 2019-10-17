@@ -1,32 +1,31 @@
 <template>
-  <div>
-    <el-dialog
-      :title="title"
-      :close-on-click-modal="false"
-      :visible.sync="showModalNow"
-      :append-to-body="appendToBody"
-      top="2vh"
-      @close="$emit('close-modal')"
-    >
-      <slot name="content" />
+  <el-dialog
+    :title="title"
+    :close-on-click-modal="false"
+    :visible.sync="showModalNow"
+    :append-to-body="appendToBody"
+    top="2vh"
+  >
+    <slot name="content" />
 
-      <template slot="footer">
-        <div class="text-xs-center">
+    <template slot="footer">
+      <div class="text-xs-center">
+        <slot name="actions" />
+      </div>
+    </template>
 
-          <slot name="actions" />
-          
-        </div>
-      </template>
-
-      <slot name="modals" />
-
-    </el-dialog>
-  </div>
+    <slot name="modals" />
+  </el-dialog>
 </template>
 
 <script>
+
 export default {
   props: {
+    nameState: {
+      type: String,
+      default: ""
+    },
     title: {
       type: String,
       default: ""
@@ -41,13 +40,14 @@ export default {
     }
   },
 
+
   computed: {
     showModalNow: {
-      get () {
+      get() {
         return this.showModal;
       },
-      set (value) {
-        this.$emit("action-modal", { show: value });
+      set(value) {
+        this.closeModal(this.nameState);
       }
     }
   }
