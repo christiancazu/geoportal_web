@@ -1,5 +1,5 @@
 import {
-  SHOW_MODAL,
+  OPEN_MODAL,
   CLOSE_MODAL
 } from '../types/mutation-types'
 
@@ -13,7 +13,7 @@ export const state = () => ({
 })
 
 export const mutations = {
-  [SHOW_MODAL]: (state, payload) => state[payload] = true,
+  [OPEN_MODAL]: (state, payload) => state[payload] = true,
   
   [CLOSE_MODAL]: (state, payload) => state[payload] = false
 }

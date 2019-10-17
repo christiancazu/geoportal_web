@@ -5,7 +5,7 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="openModal('modalAddBaseLayer')"
+        @click="$_modalsVisibilityMixin_open('modalAddBaseLayer')"
       >Nuevo Mapa Base</el-button>
     </template>
     <template v-slot:content>

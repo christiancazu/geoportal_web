@@ -47,7 +47,7 @@ export default {
         return this.showModal;
       },
       set(value) {
-        this.closeModal(this.nameState);
+        this.$_modalsVisibilityMixin_close(this.nameState);
       }
     }
   }

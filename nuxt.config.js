@@ -47,7 +47,7 @@ export default {
     '~/plugins/element-ui',
     '~/plugins/axios',
     '~/plugins/api',
-    '~/plugins/modals-mixin'
+    '~/plugins/modalVisibilityMixin'
   ],
 
   modules: [
@@ -63,7 +63,7 @@ export default {
   },
 
   auth: {
-    // plugins: [ '~/plugins/auth.js' ],
+    plugins: [ '~/plugins/auth.js' ],
     redirect: {
       login: '/login',
       logout: '/login',
@@ -93,7 +93,7 @@ export default {
   },
 
   router: {
-    // middleware: ['auth']
+    middleware: ['auth']
   },
 
   toast: {

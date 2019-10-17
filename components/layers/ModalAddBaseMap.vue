@@ -91,7 +91,7 @@
       <el-button
         size="small"
         :disabled="processingForm"
-        @click="closeModal('modalAddBaseLayer')"
+        @click="$_modalsVisibilityMixin_close('modalAddBaseLayer')"
       >CANCELAR</el-button>
       <el-button
         size="small"
@@ -161,7 +161,7 @@ export default {
 
   computed: {
     ...mapState({
-      modalAddBaseLayer: state => state.modals.modalAddBaseLayer
+      modalAddBaseLayer: state => state.modalsVisibility.modalAddBaseLayer
     })
   },
 
