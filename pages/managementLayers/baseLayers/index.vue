@@ -5,21 +5,13 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="replaceShowModalAddBaseMap({ show: true })"
+        @click="$_modalsVisibilityMixin_open('modalAddBaseLayer')"
       >Nuevo Mapa Base</el-button>
     </template>
     <template v-slot:content>
       <el-container direction="vertical">
-        <el-row
-          type="flex"
-          justify="end"
-          :gutter="10"
-        >
-          <el-col
-            :xs="24"
-            :sm="12"
-            :md="8"
-          >
+        <el-row type="flex" justify="end" :gutter="10">
+          <el-col :xs="24" :sm="12" :md="8">
             <div>
               <el-input
                 v-model="search"
@@ -36,37 +28,17 @@
           style="width: 100%"
           v-loading="loadingBaseMaps"
         >
-          <el-table-column
-            label="Nombre"
-            prop="name"
-          />
-          <el-table-column
-            label="Autor"
-            prop="author"
-          />
-          <el-table-column
-            label="URL"
-            prop="url"
-          />
-          <el-table-column
-            prop="url"
-            align="center"
-          >
-            <template
-              slot="header"
-            >
-            <p class="ma-0">Zoom</p>
-            <small>[min, max]</small>
+          <el-table-column label="Nombre" prop="name" />
+          <el-table-column label="Autor" prop="author" />
+          <el-table-column label="URL" prop="url" />
+          <el-table-column prop="url" align="center">
+            <template slot="header">
+              <p class="ma-0">Zoom</p>
+              <small>[min, max]</small>
             </template>
-            <template slot-scope="scope">
-              {{ `[${scope.row.minZoom} - ${scope.row.maxZoom}]` }}
-            </template>
+            <template slot-scope="scope">{{ `[${scope.row.minZoom} - ${scope.row.maxZoom}]` }}</template>
           </el-table-column>
-          <el-table-column
-            label="Acción"
-            align="center"
-            width="120"
-          >
+          <el-table-column label="Acción" align="center" width="120">
             <template slot-scope="scope">
               <BtnConfirm
                 :item-selected="scope.row"
@@ -88,8 +60,7 @@
           :current-page="currentPage"
           @current-change="onChangeCurrentPage"
           @size-change="onChangePageSize"
-        >
-        </el-pagination>
+        ></el-pagination>
       </el-container>
     </template>
     <template v-slot:modals>
@@ -99,25 +70,27 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import BasePage from '@/components/base/BasePage.vue'
+import { mapState, mapActions } from "vuex";
+import BasePage from "@/components/base/BasePage.vue";
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
-import ModalAddBaseMap from '@/components/layers/ModalAddBaseMap.vue'
+import ModalAddBaseMap from "@/components/layers/ModalAddBaseMap.vue";
+
 export default {
   components: {
     BasePage,
     BtnConfirm,
-    ModalAddBaseMap,
+    ModalAddBaseMap
   },
-   head: {
-    title: 'Capas base | GEOVISOR',
+
+  head: {
+    title: "Capas base | GEOVISOR"
   },
-  data () {
+  data() {
     return {
-      search: '',
+      search: "",
       pagesize: 10,
       currentPage: 1
-    }
+    };
   },
 
   computed: {
@@ -125,59 +98,81 @@ export default {
       loadingBaseMaps: state => state.baseLayers.loadingBaseMaps
     }),
 
-    filteredData: function () {
-      let search = this.search.toString().toLowerCase()
-      let baseLayers = this.$store.state.baseLayers.baseLayers
-      this.currentPage = 1
+    filteredData: function() {
+      let search = this.search.toString().toLowerCase();
+      let baseLayers = this.$store.state.baseLayers.baseLayers;
+      this.currentPage = 1;
       return baseLayers.filter(item => {
         // checking description
-        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.lastName &&
+          item.lastName
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
         // checking hs no image
-        if (item.name && item.name.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.name &&
+          item.name
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
         // checking current tax rate
-        if (item.email && item.email.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.email &&
+          item.email
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
-      })
-    },
+      });
+    }
   },
 
-  created () {
-    this.getBaseMaps()
+  created() {
+    this.getBaseMaps();
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddBaseMap: 'modalsManagementLayer/replaceShowModalAddBaseMap',
-      replaceShowModalEditUser: 'modalsManagementLayer/replaceShowModalEditUser',
-      getBaseMaps: 'baseLayers/getBaseMaps',
+      replaceShowModalAddBaseMap:
+        "modalsManagementLayer/replaceShowModalAddBaseMap",
+      replaceShowModalEditUser:
+        "modalsManagementLayer/replaceShowModalEditUser",
+      getBaseMaps: "baseLayers/getBaseMaps"
     }),
-    handleEdit (index, row) {
-      this.replaceShowModalEditUser({ show: true })
-      console.log(index, row)
+    handleEdit(index, row) {
+      this.replaceShowModalEditUser({ show: true });
+      console.log(index, row);
     },
 
-    deleteBaseMap (item) {
+    deleteBaseMap(item) {
       new Promise((resolve, reject) => {
-        this.$baseMapAPI.delete({ id: item.itemSelected.id })
+        this.$baseMapAPI
+          .delete({ id: item.itemSelected.id })
           .then(response => {
-            resolve(response)
-            this.getBaseMaps()
-          }).catch(error => reject(error))
-      })
+            resolve(response);
+            this.getBaseMaps();
+          })
+          .catch(error => reject(error));
+      });
     },
 
-    // pagination 
-    onChangeCurrentPage: function (currentPage) {
+    // pagination
+    onChangeCurrentPage: function(currentPage) {
       this.currentPage = currentPage;
     },
-    onChangePageSize: function (pagesize) {
+    onChangePageSize: function(pagesize) {
       this.pagesize = pagesize;
-    },
+    }
   }
-}
+};
 </script>
