@@ -5,11 +5,11 @@ import {
 
 export const state = () => ({
   baseLayers: [],
-  loadingBaseMaps: false,
+  loadingBaselayers: false,
 })
 
 export const actions = {
-  async getBaseMaps ({ commit }, payload) {
+  async getBaseLayers ({ commit }, payload) {
     commit('REPLACE_LOADING_BASE_LAYERS', { loading: true })
 
     try {
@@ -29,6 +29,6 @@ export const mutations = {
     state.baseLayers = baseLayers
   },
   [REPLACE_LOADING_BASE_LAYERS] (state, { loading }) {
-    state.loadingBaseMaps = loading
+    state.loadingBaselayers = loading
   },
 }

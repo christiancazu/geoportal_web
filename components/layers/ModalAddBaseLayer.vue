@@ -16,44 +16,73 @@
         :disabled="processingForm"
         @submit.prevent="submitForm"
       >
-        <el-row :gutter="10" style="display:flex;">
-          <el-col :xs="24" :sm="12" :md="14">
+        <el-row
+          :gutter="10"
+          style="display:flex;"
+        >
+          <el-col
+            :xs="24"
+            :sm="12"
+            :md="14"
+          >
             <!-- base map name -->
-            <el-form-item label="Nombre del Mapa Base" prop="name">
-              <el-input v-model="form.name" type="text" autocomplete="off" />
+            <el-form-item
+              label="Nombre del Mapa Base"
+              prop="name"
+            >
+              <el-input
+                v-model="form.name"
+                type="text"
+                autocomplete="off"
+              />
             </el-form-item>
             <!-- url base map -->
-            <el-form-item label="URL" prop="url">
-              <el-input v-model="form.url" type="text" autocomplete="off">
+            <el-form-item
+              label="URL"
+              prop="url"
+            >
+              <el-input
+                v-model="form.url"
+                type="text"
+                autocomplete="off"
+              >
                 <template slot="append">
-                  <el-button icon="el-icon-full-screen" @click="previewBaseMap"></el-button>
+                  <el-button
+                    icon="el-icon-full-screen"
+                    @click="previewBaseMap"
+                  ></el-button>
                 </template>
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="10">
+          <el-col
+            :xs="24"
+            :sm="12"
+            :md="10"
+          >
             <div class="demo-image__error">
-              <div id="map" class="map"></div>
-              <!-- <el-image
-                v-else
-                class="w-100 h-100"
-                fit="contain"
-              >
-                <div
-                  slot="error"
-                  class="image-slot"
-                >
-                  <i class="el-icon-picture-outline"></i>
-                </div>
-              </el-image>-->
+              <div
+                id="map"
+                class="map"
+              ></div>
             </div>
           </el-col>
         </el-row>
 
-        <el-form-item label="Referente" prop="author">
-          <el-input v-model="form.author" type="text" autocomplete="off" />
+        <el-form-item
+          label="Referente"
+          prop="author"
+        >
+          <el-input
+            v-model="form.author"
+            type="text"
+            autocomplete="off"
+          />
         </el-form-item>
-        <el-form-item label="Descripción" prop="description">
+        <el-form-item
+          label="Descripción"
+          prop="description"
+        >
           <el-input
             v-model="form.description"
             type="textarea"
@@ -63,9 +92,20 @@
             :show-word-limit="true"
           />
         </el-form-item>
-        <el-checkbox class="mb-3" v-model="checked">¿Necesita Autenticación?</el-checkbox>
-        <el-form-item label="Token" prop="authenticationToken" v-if="checked">
-          <el-input v-model="form.authenticationToken" type="text" autocomplete="off" />
+        <el-checkbox
+          class="mb-3"
+          v-model="checked"
+        >¿Necesita Autenticación?</el-checkbox>
+        <el-form-item
+          label="Token"
+          prop="authenticationToken"
+          v-if="checked"
+        >
+          <el-input
+            v-model="form.authenticationToken"
+            type="text"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item label="Nivel de Zoom">
           <el-slider
@@ -91,7 +131,7 @@
       <el-button
         size="small"
         :disabled="processingForm"
-        @click="$_modalsVisibilityMixin_close('modalAddBaseLayer')"
+        @click="$_modalVisibilityMixin_close('modalAddBaseLayer')"
       >CANCELAR</el-button>
       <el-button
         size="small"
@@ -112,7 +152,7 @@ export default {
     BaseModal
   },
 
-  data() {
+  data () {
     return {
       map: null,
       tileLayer: null,
@@ -134,18 +174,14 @@ export default {
         100: "100 max"
       },
       rules: {
-        name: [
-          {
-            required: true,
-            message: "El nombre de usuario es requerido"
-          }
-        ],
-        url: [
-          {
-            required: true,
-            message: "La url del mapa base es requrido"
-          }
-        ]
+        name: [{
+          required: true,
+          message: "El nombre de usuario es requerido"
+        }],
+        url: [{
+          required: true,
+          message: "La url del mapa base es requrido"
+        }]
       }
     };
   },
@@ -153,15 +189,15 @@ export default {
   watch: {
     modalAddBaseLayer: function (newState, oldState) {
       if (!newState) {
-        this.$refs.form.resetFields();
-        return false;
+        this.$refs.form.resetFields()
+        return false
       }
     }
   },
 
   computed: {
     ...mapState({
-      modalAddBaseLayer: state => state.modalsVisibility.modalAddBaseLayer
+      modalAddBaseLayer: state => state.modalsVisibilities.modalAddBaseLayer
     })
   },
 
@@ -169,57 +205,54 @@ export default {
     ...mapActions({
       replaceShowModalAddBaseMap:
         "modalsManagementLayer/replaceShowModalAddBaseMap",
-      getBaseMaps: "baseLayers/getBaseMaps"
+      getBaseLayers: "baseLayers/getBaseLayers"
     }),
 
-    submitForm() {
+    submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.createBaseMap();
+          this.createBaseMap()
         }
-      });
+      })
     },
 
-    createBaseMap() {
-      this.processingForm = true;
-      this.form.minZoom = this.rangeZoom[0];
-      this.form.maxZoom = this.rangeZoom[1];
+    createBaseMap () {
+      this.processingForm = true
+      this.form.minZoom = this.rangeZoom[0]
+      this.form.maxZoom = this.rangeZoom[1]
 
-      const data = this.form;
+      const data = this.form
 
       return new Promise((resolve, reject) => {
-        this.$baseMapAPI
+        this.$baseLayerAPI
           .create({ data })
           .then(response => {
-            this.processingForm = false;
-            const { status } = response.data;
-            if (status) {
-              this.replaceShowModalAddBaseMap({ show: false });
-              this.$toast.success(`Mapa Base registrado con éxito`);
-              this.getBaseMaps();
-            }
-            resolve(response);
+            this.processingForm = false
+            this.$_modalVisibilityMixin_close('modalAddBaseLayer')
+            this.$toast.success(`Mapa Base registrado con éxito`)
+            this.getBaseLayers()
+            resolve(response)
           })
           .catch(error => {
-            this.processingForm = false;
-            reject(error);
-          });
-      });
+            this.processingForm = false
+            reject(error)
+          })
+      })
     },
 
-    previewBaseMap() {
+    previewBaseMap () {
       if (!this.form.url) {
-        return false;
+        return false
       }
 
       if (!this.map) {
-        let latlng = L.latLng(-16.39, -71.53);
-        this.map = L.map("map").setView(latlng, 5);
+        let latlng = L.latLng(-16.39, -71.53)
+        this.map = L.map("map").setView(latlng, 5)
       }
 
       L.tileLayer(this.form.url, {
         attribution: "&copy; contributors"
-      }).addTo(this.map);
+      }).addTo(this.map)
     }
   }
 };
