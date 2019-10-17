@@ -217,7 +217,7 @@ export default {
     ...mapActions({
       replaceShowModalAddBaseMap:
         "modalsManagementLayer/replaceShowModalAddBaseMap",
-      getBaseMaps: "baseMaps/getBaseMaps"
+      getBaseMaps: "baseLayers/getBaseMaps"
     }),
 
     submitForm () {

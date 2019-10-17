@@ -122,14 +122,14 @@ export default {
 
   computed: {
     ...mapState({
-      loadingBaseMaps: state => state.baseMaps.loadingBaseMaps
+      loadingBaseMaps: state => state.baseLayers.loadingBaseMaps
     }),
 
     filteredData: function () {
       let search = this.search.toString().toLowerCase()
-      let baseMaps = this.$store.state.baseMaps.baseMaps
+      let baseLayers = this.$store.state.baseLayers.baseLayers
       this.currentPage = 1
-      return baseMaps.filter(item => {
+      return baseLayers.filter(item => {
         // checking description
         if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
           return item
@@ -154,7 +154,7 @@ export default {
     ...mapActions({
       replaceShowModalAddBaseMap: 'modalsManagementLayer/replaceShowModalAddBaseMap',
       replaceShowModalEditUser: 'modalsManagementLayer/replaceShowModalEditUser',
-      getBaseMaps: 'baseMaps/getBaseMaps',
+      getBaseMaps: 'baseLayers/getBaseMaps',
     }),
     handleEdit (index, row) {
       this.replaceShowModalEditUser({ show: true })
