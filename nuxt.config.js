@@ -1,12 +1,12 @@
 import { timeout } from "q";
 
 export default {
-  // "dev": "nuxt --hostname 0.0.0.0 --port 9100"
-  //server: {
-  //  port: 8400, // default: 3000
-  //  host: '0.0.0.0', // default: localhost
-  //},
-  mode:'spa',
+  // "dev": "nuxt --hostname 0.0.0.0 --port 9100",
+  server: {
+    // port: 8400,  default: 3000
+    host: '0.0.0.0', // default: localhost
+  },
+  mode: 'spa',
 
   head: {
     title: process.env.npm_package_name || '',
@@ -64,7 +64,7 @@ export default {
   },
 
   auth: {
-    plugins: [ '~/plugins/auth.js' ],
+    plugins: ['~/plugins/auth.js'],
     redirect: {
       login: '/login',
       logout: '/login',

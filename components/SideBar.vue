@@ -92,8 +92,8 @@
           <i class="fas fa-database"></i><span slot="title">Gestión de Datos</span>
         </div>
         <el-menu-item
-          :route="{ path: '/managementData/georeferentialImages' }"
-          index="/managementData/georeferentialImages"
+          :route="{ path: '/managementData/georeferencedImages' }"
+          index="/managementData/georeferencedImages"
         >
           Imágenes Georeferenciales
         </el-menu-item>

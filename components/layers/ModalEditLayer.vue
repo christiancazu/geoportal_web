@@ -195,6 +195,7 @@ export default {
     currentLayer (newState, oldState) {
       this.form.order = this.currentLayer.order
       this.form.title = this.currentLayer.title
+      this.form.name = this.currentLayer.title
       this.form.description = this.currentLayer.description
       this.form.groupLayerId = this.currentLayer.groupLayerId
     }

@@ -6,7 +6,7 @@ import {
 } from '../types/mutation-types'
 
 export const state = () => ({
-  georeferentialImages: [],
+  georeferencedImages: [],
   loadingGeoreferentialImages: false,
   currentGeoreferentialImage: null,
 })
@@ -15,8 +15,8 @@ export const actions = {
   async getGeoreferentialImages ({ commit }, payload) {
     commit('REPLACE_LOADING_GEOREFERENTIAL_IMAGE', { loading: true })
     try {
-      const { data } = await this.$georeferentialImageAPI.index(payload)
-      commit('REPLACE_GEOREFERENTIAL_IMAGE', { georeferentialImages: data.data || [] })
+      const { data } = await this.$georeferencedImageAPI.get(payload)
+      commit('REPLACE_GEOREFERENTIAL_IMAGE', { georeferencedImages: data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {
@@ -29,8 +29,8 @@ export const actions = {
 }
 
 export const mutations = {
-  [REPLACE_GEOREFERENTIAL_IMAGE] (state, { georeferentialImages }) {
-    state.georeferentialImages = georeferentialImages
+  [REPLACE_GEOREFERENTIAL_IMAGE] (state, { georeferencedImages }) {
+    state.georeferencedImages = georeferencedImages
   },
   [REPLACE_LOADING_GEOREFERENTIAL_IMAGE] (state, { loading }) {
     state.loadingGeoreferentialImages = loading

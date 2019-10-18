@@ -27,8 +27,8 @@ export const state = () => ({
   modalEditGroupLayer: false,
   modalPublishRasterLayer: false,
   // GeoreferentialImage
-  modalAddGeoreferentialImage: false,
-  modalEditGeoreferentialImage: false,
+  modalAddGeoreferencedImage: false,
+  modalEditGeoreferencedImage: false,
   // reports
   modalViewReport: false
 })

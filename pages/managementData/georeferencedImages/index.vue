@@ -5,7 +5,7 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="$_modalVisibilityMixin_open('modalAddGeoreferentialImage')"
+        @click="$_modalVisibilityMixin_open('modalAddGeoreferencedImage')"
       >Nuevo imagen georeferencial</el-button>
     </template>
     <template v-slot:content>
@@ -59,11 +59,11 @@
                 icon="el-icon-edit"
                 size="small"
                 type="primary"
-                @click="onLoadModalEditUser(scope.$index, scope.row)"
+                @click="onLoadModalGeoreferencedImage(scope.$index, scope.row)"
               />
               <BtnConfirm
                 :item-selected="scope.row"
-                @confirmed-action="deleteUser"
+                @confirmed-action="deleteGeoreferencedImage"
                 accion="deleted"
                 title="¿Eliminar cuenta de usuario?"
                 body-text="¿Esta seguro?, realizada la operación no se podra revertir"
@@ -85,8 +85,8 @@
       </el-container>
     </template>
     <template v-slot:modals>
-      <ModalAddGeoreferentialImage />
-      <ModalEditGeoreferentialImage />
+      <ModalAddGeoreferencedImage />
+      <ModalEditGeoreferencedImage />
     </template>
   </BasePage>
 </template>
@@ -95,14 +95,14 @@
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
-import ModalAddGeoreferentialImage from '@/components/data/ModalAddGeoreferentialImage.vue'
-import ModalEditGeoreferentialImage from '@/components/data/ModalEditGeoreferentialImage.vue'
+import ModalAddGeoreferencedImage from '@/components/data/ModalAddGeoreferencedImage.vue'
+import ModalEditGeoreferencedImage from '@/components/data/ModalEditGeoreferencedImage.vue'
 export default {
   components: {
     BasePage,
     BtnConfirm,
-    ModalAddGeoreferentialImage,
-    ModalEditGeoreferentialImage
+    ModalAddGeoreferencedImage,
+    ModalEditGeoreferencedImage
   },
    head: {
     title: 'Imágenes | GEOVISOR',
@@ -148,14 +148,14 @@ export default {
 
   methods: {
     ...mapActions({
-      getGeoreferentialImages: 'georeferentialImages/getGeoreferentialImages',
+      getGeoreferentialImages: 'georeferencedImages/getGeoreferentialImages',
     }),
 
-    onLoadModalEditUser (index, item) {
-      this.$_modalVisibilityMixin_open('modalEditGeoreferentialImage')
+    onLoadModalGeoreferencedImage (index, item) {
+      this.$_modalVisibilityMixin_open('modalEditGeoreferencedImage')
     },
 
-    deleteUser (item) {
+    deleteGeoreferencedImage (item) {
       new Promise((resolve, reject) => {
         this.$userAPI.delete({ id: item.itemSelected.id })
           .then(response => {

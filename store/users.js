@@ -26,7 +26,7 @@ export const actions = {
     try {
       const { data } = await this.$userAPI.index(payload)
 
-      commit('REPLACE_USERS', { users: data.data || [] })
+      commit('REPLACE_USERS', { users: data || [] })
       commit('REPLACE_LOADING_USERS', { loading: false })
 
     } catch (error) {
@@ -41,7 +41,7 @@ export const actions = {
 
     try {
       const { data } = await this.$userAPI.getUser(payload)
-      commit('REPLACE_USER', { user: data.data || [] })
+      commit('REPLACE_USER', { user: data || [] })
       commit('REPLACE_LOADING_USER', { loading: false })
 
     } catch (error) {

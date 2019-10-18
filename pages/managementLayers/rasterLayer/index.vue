@@ -48,13 +48,13 @@
           />
           <el-table-column
             label="¿Publicado?"
-            prop="status"
+            prop="isPublished"
           >
             <template slot-scope="scope">
               <el-switch
                 disabled
-                v-model="scope.row.status"
-                :active-text="scope.row.status? 'Si' :'No'"
+                v-model="scope.row.isPublished"
+                :active-text="scope.row.isPublished? 'Si' :'No'"
               >
               </el-switch>
             </template>
@@ -76,7 +76,7 @@
                 circle
                 icon="el-icon-edit"
                 size="small"
-                :disabled="scope.row.status"
+                :disabled="scope.row.isPublished"
                 type="primary"
                 @click="onLoadModalPublishRasterLayer(scope.$index, scope.row)"
               />

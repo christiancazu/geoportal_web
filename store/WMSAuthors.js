@@ -14,7 +14,7 @@ export const actions = {
 
     try {
       const { data } = await this.$WMSAuthorAPI.index(payload)
-      commit('REPLACE_WMS_AUTHORS', { WMSAuthors: data.data || [] })
+      commit('REPLACE_WMS_AUTHORS', { WMSAuthors: data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {

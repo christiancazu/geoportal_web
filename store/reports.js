@@ -16,7 +16,7 @@ export const actions = {
 
     try {
       const { data } = await this.$reportAPI.index(payload)
-      commit('REPLACE_REPORTS', { reports: data.data || [] })
+      commit('REPLACE_REPORTS', { reports: data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {

@@ -14,7 +14,7 @@ export const actions = {
 
     try {
       const { data } = await this.$WMSCategoryAPI.index(payload)
-      commit('REPLACE_WMS_CATEGORIES', { WMSCategories: data.data || [] })
+      commit('REPLACE_WMS_CATEGORIES', { WMSCategories: data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {
