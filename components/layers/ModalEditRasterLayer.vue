@@ -216,13 +216,14 @@ export default {
       if (isFormValid) {
         const data = this.$_objectToFormDataMixin_transform();
 
-        try {          
+        try {
           await this.updateRasterLayer({
             id: this.currentRasterLayer.id,
             data
           })
           this.$refs.form.resetFields()
           this.$toast.success(this.$SUCCESS.LAYER.UPDATED)
+          this.$_modalVisibilityMixin_close('modalEditRasterLayer')
 
           await this.getRasterLayers()
 

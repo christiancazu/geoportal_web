@@ -273,6 +273,8 @@ export default {
           this.$refs.form.resetFields()
           this.getLayers()
           this.$toast.success(this.$SUCCESS.LAYER.REGISTERED)
+          this.$_modalVisibilityMixin_close('modalAddLayer')
+
 
         } catch (error) {
           const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER

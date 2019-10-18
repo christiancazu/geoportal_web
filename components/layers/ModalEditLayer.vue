@@ -223,6 +223,7 @@ export default {
           })
           this.$refs.form.resetFields()
           this.$toast.success(this.$SUCCESS.LAYER.UPDATED)
+          this.$_modalVisibilityMixin_close('modalEditLayer')
 
           await this.getLayers()
 

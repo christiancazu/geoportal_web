@@ -272,6 +272,7 @@ export default {
 
           this.$refs.form.resetFields()
           this.getRasterLayers()
+            this.$_modalVisibilityMixin_close('modalAddRasterLayer')
           this.$toast.success(this.$SUCCESS.LAYER.REGISTERED)
 
         } catch (error) {
