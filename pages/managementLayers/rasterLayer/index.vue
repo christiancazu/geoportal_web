@@ -117,12 +117,15 @@ import BasePage from '@/components/base/BasePage.vue'
 import ModalPublishRasterLayer from '@/components/layers/ModalPublishRasterLayer.vue'
 import ModalAddRasterLayer from '@/components/layers/ModalAddRasterLayer.vue'
 import ModalEditRasterLayer from '@/components/layers/ModalEditRasterLayer.vue'
+import BtnConfirm from "@/components/base/BaseBtnConfirm";
+
 export default {
   components: {
     BasePage,
     ModalPublishRasterLayer,
     ModalAddRasterLayer,
-    ModalEditRasterLayer
+    ModalEditRasterLayer,
+    BtnConfirm
   },
   head: {
     title: 'Capas raster | GEOVISOR',
