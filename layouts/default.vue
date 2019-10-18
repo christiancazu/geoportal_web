@@ -9,10 +9,11 @@
     >
       <SideBar
         @is-collapse="onChangeCollapse"
+        v-if="loggedIn"
       />
       <el-main
         class="pa-0"
-        :class="{'main-container': true}"
+        :class="{'main-container': loggedIn}"
       >
         <nuxt />
       </el-main>

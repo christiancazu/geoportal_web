@@ -192,7 +192,7 @@ export default {
 
     deleteBaseMap (item) {
       new Promise((resolve, reject) => {
-        this.$baseMapAPI
+        this.$baseLayerAPI
           .delete({ id: item.itemSelected.id })
           .then(response => {
             resolve(response);
