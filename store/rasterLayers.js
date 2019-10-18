@@ -15,7 +15,7 @@ export const actions = {
   async getRasterLayers ({ commit }, payload) {
     commit('REPLACE_LOADING_RASTER_LAYER', { loading: true })
     try {
-      const { data } = await this.$rasterLayerAPI.index(payload)
+      const { data } = await this.$rasterLayerAPI.get(payload)
       let rasterLayers = data.data || []
       rasterLayers.forEach(val => {
         val.name = val.name || "--"
@@ -30,7 +30,15 @@ export const actions = {
   },
   replaceCurrentRasterLayer ({ commit }, payload) {
     commit('REPLACE_CURRENT_RASTER_LAYER', payload)
-  }
+  },
+
+  async updateRasterLayer ({ commit }, payload) {
+    try {
+      await this.$rasterLayerAPI.update(payload)
+    } catch (error) { 
+      throw error
+    }
+  },
 }
 
 export const mutations = {

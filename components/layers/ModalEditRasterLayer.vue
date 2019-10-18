@@ -1,8 +1,8 @@
 <template>
   <BaseModal
-    title="Modificar capa vectorial"
-    :show-modal="modalEditLayer"
-    name-state="modalEditLayer"
+    title="Modificar capa raster"
+    :show-modal="modalEditRasterLayer"
+    name-state="modalEditRasterLayer"
   >
     <template v-slot:content>
       <el-form
@@ -105,7 +105,7 @@
       <el-button
         :disabled="processingForm"
         size="small"
-        @click="$_modalVisibilityMixin_close('modalEditLayer')"
+        @click="$_modalVisibilityMixin_close('modalEditRasterLayer')"
       >
         CANCELAR
       </el-button>
@@ -175,15 +175,15 @@ export default {
 
   computed: {
     ...mapState({
-      currentLayer: state => state.layers.currentLayer,
+      currentRasterLayer: state => state.rasterLayers.currentRasterLayer,
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      modalEditLayer: state => state.modalsVisibilities.modalEditLayer
+      modalEditRasterLayer: state => state.modalsVisibilities.modalEditRasterLayer
     })
   },
 
   watch: {
-    modalEditLayer (newState, oldState) {
+    modalEditRasterLayer (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         this.fileLayerSelected = null
@@ -192,19 +192,19 @@ export default {
       this.getGroupLayers()
     },
 
-    currentLayer (newState, oldState) {
-      this.form.order = this.currentLayer.order
-      this.form.title = this.currentLayer.title
-      this.form.description = this.currentLayer.description
-      this.form.groupLayerId = this.currentLayer.groupLayerId
+    currentRasterLayer (newState, oldState) {
+      this.form.order = this.currentRasterLayer.order
+      this.form.title = this.currentRasterLayer.title
+      this.form.description = this.currentRasterLayer.description
+      this.form.groupLayerId = this.currentRasterLayer.groupLayerId
     }
   },
 
   methods: {
     ...mapActions({
       getGroupLayers: 'groupLayers/getGroupLayers',
-      getLayers: "layers/getLayers",
-      updateLayer: "layers/updateLayer"
+      getRasterLayers: 'rasterLayers/getRasterLayers',
+      updateRasterLayer: 'rasterLayers/updateRasterLayer',
     }),
 
     async submitForm () {
@@ -217,14 +217,14 @@ export default {
         const data = this.$_objectToFormDataMixin_transform();
 
         try {          
-          await this.updateLayer({
-            id: this.currentLayer.id,
+          await this.updateRasterLayer({
+            id: this.currentRasterLayer.id,
             data
           })
           this.$refs.form.resetFields()
           this.$toast.success(this.$SUCCESS.LAYER.UPDATED)
 
-          await this.getLayers()
+          await this.getRasterLayers()
 
         } catch (error) {
           const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER

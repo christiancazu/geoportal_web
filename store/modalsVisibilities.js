@@ -19,6 +19,9 @@ export const state = () => ({
   modalAddLayer: false,
   modalEditLayer: false,
   modalDeleteLayer: false,
+  // raster layers
+  modalAddRasterLayer: false,
+  modalEditRasterLayer: false,
   // group layer
   modalAddGroupLayer: false,
   modalEditGroupLayer: false,

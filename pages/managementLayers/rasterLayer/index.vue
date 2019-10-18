@@ -1,5 +1,15 @@
 <template>
   <BasePage title="Capas Raster">
+    <template v-slot:itemsActions>
+      <el-button
+        size="mini"
+        type="primary"
+        icon="el-icon-plus"
+        @click="$_modalVisibilityMixin_open('modalAddRasterLayer')"
+      >
+        Nueva capa raster
+      </el-button>
+    </template>
     <template v-slot:content>
       <el-container direction="vertical">
         <el-row
@@ -59,9 +69,23 @@
                 circle
                 icon="el-icon-edit"
                 size="small"
+                type="primary"
+                @click="onLoadModalEditRasterLayer(scope.$index, scope.row)"
+              />
+              <el-button
+                circle
+                icon="el-icon-edit"
+                size="small"
                 :disabled="scope.row.status"
                 type="primary"
                 @click="onLoadModalPublishRasterLayer(scope.$index, scope.row)"
+              />
+              <btn-confirm
+                :item-selected="scope.row"
+                @confirmed-action="deleteSelectedRasterLayer"
+                accion="deleted"
+                title="¿Eliminar Capa Raster?"
+                body-text="¿Esta seguro de continuar con la operación?"
               />
             </template>
           </el-table-column>
@@ -81,6 +105,8 @@
     </template>
     <template v-slot:modals>
       <ModalPublishRasterLayer />
+      <ModalAddRasterLayer />
+      <ModalEditRasterLayer />
     </template>
   </BasePage>
 </template>
@@ -89,10 +115,14 @@
 import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
 import ModalPublishRasterLayer from '@/components/layers/ModalPublishRasterLayer.vue'
+import ModalAddRasterLayer from '@/components/layers/ModalAddRasterLayer.vue'
+import ModalEditRasterLayer from '@/components/layers/ModalEditRasterLayer.vue'
 export default {
   components: {
     BasePage,
-    ModalPublishRasterLayer
+    ModalPublishRasterLayer,
+    ModalAddRasterLayer,
+    ModalEditRasterLayer
   },
   head: {
     title: 'Capas raster | GEOVISOR',
@@ -140,6 +170,21 @@ export default {
     onLoadModalPublishRasterLayer (index, item) {
       this.replaceCurrentRasterLayer({ rasterLayer: item })
       this.$_modalVisibilityMixin_open('modalPublishRasterLayer')
+    },
+
+    onLoadModalEditRasterLayer: function (index, groupLayer) {
+      this.replaceCurrentRasterLayer({ rasterLayer: item })
+      this.$_modalVisibilityMixin_open('modalEditRasterLayer')
+    },
+
+    deleteSelectedRasterLayer: function (item) {
+      new Promise((resolve, reject) => {
+        this.$rasterLayerAPI.delete({ id: item.itemSelected.id })
+          .then(response => {
+            resolve(response)
+            this.getRasterLayers()
+          }).catch(error => reject(error))
+      })
     },
 
     // pagination 

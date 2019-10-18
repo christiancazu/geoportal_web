@@ -65,7 +65,7 @@
                   icon="el-icon-edit"
                   size="small"
                   type="primary"
-                  @click="editGroupLayer(scope.$index, scope.row)"
+                  @click="onLoadModalEditGroupLayer(scope.$index, scope.row)"
                 />
                 <BtnConfirm
                   :item-selected="scope.row"
@@ -166,7 +166,7 @@ export default {
       this.$_modalVisibilityMixin_open('modalViewPendingRequest')
     },
 
-    editGroupLayer: function (index, groupLayer) {
+    onLoadModalEditGroupLayer: function (index, groupLayer) {
       this.replaceCurrentGroupLayer({ groupLayer })
       this.$_modalVisibilityMixin_open('modalEditGroupLayer')
     },
