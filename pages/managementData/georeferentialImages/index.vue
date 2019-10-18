@@ -5,7 +5,7 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="replaceShowModalAddGeoreferentialImage({ show: true })"
+        @click="$_modalVisibilityMixin_open('modalAddGeoreferentialImage')"
       >Nuevo imagen georeferencial</el-button>
     </template>
     <template v-slot:content>
@@ -148,13 +148,11 @@ export default {
 
   methods: {
     ...mapActions({
-      replaceShowModalAddGeoreferentialImage: 'modalsManagementData/replaceShowModalAddGeoreferentialImage',
-      replaceShowModalEditGeoreferentialImage: 'modalsManagementData/replaceShowModalEditGeoreferentialImage',
       getGeoreferentialImages: 'georeferentialImages/getGeoreferentialImages',
     }),
 
     onLoadModalEditUser (index, item) {
-      this.replaceShowModalEditGeoreferentialImage({ show: true })
+      this.$_modalVisibilityMixin_open('modalEditGeoreferentialImage')
     },
 
     deleteUser (item) {

@@ -5,7 +5,7 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="replaceShowModalAddUser({ show: true })"
+        @click="$_modalVisibilityMixin_open('modalAddUser')"
       >Nuevo Usuario</el-button>
     </template>
     <template v-slot:content>
@@ -163,15 +163,13 @@ export default {
 
   methods: {
     ...mapActions({
-      replaceShowModalAddUser: 'modalsManagementUser/replaceShowModalAddUser',
-      replaceShowModalEditUser: 'modalsManagementUser/replaceShowModalEditUser',
       getUsers: 'users/getUsers',
       getUser: 'users/getUser'
     }),
 
     onLoadModalEditUser (index, item) {
       this.getUser({ id: item.id }).then(response => {
-        this.replaceShowModalEditUser({ show: true })
+        this.$_modalVisibilityMixin_open('modalEditUser')
       })
     },
 

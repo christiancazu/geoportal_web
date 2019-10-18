@@ -1,10 +1,9 @@
 <template>
   <BaseModal
     title="Agregar Autor"
+    name-state="modalAddWMSAuthor"
     :show-modal="modalAddWMSAuthor"
     :append-to-body="true"
-    @action-modal="SHOW_MODAL_WMS('modalAddWMSAuthor')"
-    @close-modal="HIDE_MODAL_WMS('modalAddWMSAuthor'); $refs.modal.resetFields()"
   >
     <template v-slot:content>
       <el-form
@@ -18,32 +17,15 @@
         :disabled="processingFormWMSAuthor"
       >
         <!-- name -->
-        <el-form-item
-          label="Nombre"
-          prop="name"
-        >
-          <el-input
-            v-model="form.name"
-            type="text"
-            autocomplete="off"
-          />
+        <el-form-item label="Nombre" prop="name">
+          <el-input v-model="form.name" type="text" autocomplete="off" />
         </el-form-item>
 
         <!-- weburl -->
-        <el-form-item 
-          label="URL"
-          prop="webUrl"  
-        >
-          <el-input
-            v-model="form.webUrl"
-            type="text"
-            autocomplete="off"
-          />
+        <el-form-item label="URL" prop="webUrl">
+          <el-input v-model="form.webUrl" type="text" autocomplete="off" />
         </el-form-item>
-        <el-form-item 
-          label="Descripción"
-          prop="description"
-        >
+        <el-form-item label="Descripción" prop="description">
           <el-input
             v-model="form.description"
             type="textarea"
@@ -59,24 +41,20 @@
       <el-button
         size="small"
         :disabled="processingFormWMSAuthor"
-        @click="HIDE_MODAL_WMS('modalAddWMSAuthor')"
-      >
-        CANCELAR
-      </el-button>
+        @click="$_modalVisibilityMixin_close('modalAddWMSAuthor')"
+      >CANCELAR</el-button>
       <el-button
         type="primary"
         size="small"
         native-type="submit"
         :loading="processingFormWMSAuthor"
         @click.prevent="submitFormWMSAuthor"
-      >
-        GUARDAR
-      </el-button>
+      >GUARDAR</el-button>
     </template>
   </BaseModal>
 </template>
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
 import { SUCCESS } from "@/config/messages";
 
@@ -85,7 +63,7 @@ export default {
     BaseModal
   },
 
-  data () {
+  data() {
     return {
       processingFormWMSAuthor: false,
       form: {
@@ -95,16 +73,18 @@ export default {
         isPublic: "True"
       },
       rules: {
-        name: [{
-          required: true,
-          message: "El nombre es requerido"
-        }]
+        name: [
+          {
+            required: true,
+            message: "El nombre es requerido"
+          }
+        ]
       }
     };
   },
 
   computed: {
-    ...mapState('modalsWMSServices', {
+    ...mapState("modalsVisibilities", {
       modalAddWMSAuthor: state => state.modalAddWMSAuthor
     })
   },
@@ -114,32 +94,23 @@ export default {
       getWMSAuthors: "WMSAuthors/getWMSAuthors"
     }),
 
-    ...mapMutations('modalsWMSServices', {
-      SHOW_MODAL_WMS: 'SHOW_MODAL_WMS',
-      HIDE_MODAL_WMS: 'HIDE_MODAL_WMS'
-    }),
+    async submitFormWMSAuthor() {
+      let isFormValid = false;
+      await this.$refs.modal.validate(result => (isFormValid = result));
 
-    async submitFormWMSAuthor () {
-      let isFormValid = false
-      await this.$refs.modal.validate(result => isFormValid = result)
-    
       if (isFormValid) {
+        // #TODO REFACTORED TO ACTION STORE
 
-        // #TODO REFACTORED TO ACTION STORE 
-
-        this.processingFormWMSAuthor = true
+        this.processingFormWMSAuthor = true;
         this.createWMSAuthor().then(response => {
-          const { status } = response;
-          if (status) {
-            this.$refs.modal.resetFields();
-            this.getWMSAuthors();
-            this.$toast.success(SUCCESS.AUTHOR.REGISTERED)
-          }
+          this.$refs.modal.resetFields();
+          this.getWMSAuthors();
+          this.$toast.success(SUCCESS.AUTHOR.REGISTERED);
         });
       }
     },
 
-    createWMSAuthor () {
+    createWMSAuthor() {
       const formData = new FormData();
 
       Object.keys(this.form).forEach(val => {
@@ -150,15 +121,15 @@ export default {
         this.$WMSAuthorAPI
           .create({ data: formData })
           .then(response => {
-            this.processingFormWMSAuthor = false
+            this.processingFormWMSAuthor = false;
             resolve(response);
           })
           .catch(error => {
-            this.processingFormWMSAuthor = false
-            reject(error)
+            this.processingFormWMSAuthor = false;
+            reject(error);
           });
       });
-    },
+    }
   }
 };
 </script>

@@ -5,7 +5,7 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="replaceShowModalAddGroupLayer({ show: true })"
+        @click="$_modalVisibilityMixin_open('modalAddGroupLayer')"
       >Nuevo Grupo de capa</el-button>
     </template>
     <template v-slot:content>
@@ -159,18 +159,16 @@ export default {
     ...mapActions({
       getGroupLayers: "groupLayers/getGroupLayers",
       replaceCurrentGroupLayer: "groupLayers/replaceCurrentGroupLayer",
-      replaceShowModalAddGroupLayer: "modalsManagementLayer/replaceShowModalAddGroupLayer",
-      replaceShowModalEditGroupLayer: "modalsManagementLayer/replaceShowModalEditGroupLayer"
     }),
 
     onLoadModalViewRequestPending (index, item) {
       this.replaceCurrentPendingRequest({ request: item })
-      this.replaceShowModalViewPendingRequest({ show: true })
+      this.$_modalVisibilityMixin_open('modalViewPendingRequest')
     },
 
     editGroupLayer: function (index, groupLayer) {
       this.replaceCurrentGroupLayer({ groupLayer })
-      this.replaceShowModalEditGroupLayer({ show: true })
+      this.$_modalVisibilityMixin_open('modalEditGroupLayer')
     },
 
     deleteGroupLayer: function (item) {

@@ -97,18 +97,6 @@
         >
           Imágenes Georeferenciales
         </el-menu-item>
-        <el-menu-item
-          :route="{ path: '/managementData/backups' }"
-          index="/managementData/backups"
-        >
-          Copias de Seguridad
-        </el-menu-item>
-        <el-menu-item
-          :route="{ path: '/managementData/settingBackups' }"
-          index="/managementData/settingBackups"
-        >
-          Configuración
-        </el-menu-item>
       </el-submenu>
       <el-menu-item
         index="/WMSServices"

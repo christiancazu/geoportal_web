@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Modificar Grupo de Capas"
-    :show-modal="showModalEditGroupLayer"
-    @action-modal="replaceShowModalEditGroupLayer"
+    name-state="modalEditGroupLayer"
+    :show-modal="modalEditGroupLayer"
   >
     <template v-slot:content>
       <el-form
@@ -97,7 +97,7 @@
       <el-button
         :disabled="processingForm"
         size="small"
-        @click="replaceShowModalEditGroupLayer({ show: false })"
+        @click="$_modalVisibilityMixin_close('modalEditGroupLayer')"
       >CANCELAR</el-button>
       <el-button
         type="primary"
@@ -147,12 +147,12 @@ export default {
       currentGroupLayer: state => state.groupLayers.currentGroupLayer,
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      showModalEditGroupLayer: state => state.modalsManagementLayer.showModalEditGroupLayer
+      modalEditGroupLayer: state => state.modalsVisibilities.modalEditGroupLayer
     })
   },
 
   watch: {
-    showModalEditGroupLayer: function (newState, oldState) {
+    modalEditGroupLayer: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         return false;
@@ -160,7 +160,7 @@ export default {
       }
     },
     currentGroupLayer: function (newState, oldState) {
-      if (this.showModalEditGroupLayer) {
+      if (this.modalEditGroupLayer) {
         this.form.order = this.currentGroupLayer.order
         this.form.title = this.currentGroupLayer.title
         this.form.categoryId = this.currentGroupLayer.categoryId || 1
@@ -172,7 +172,6 @@ export default {
   methods: {
     ...mapActions({
       getGroupLayers: "groupLayers/getGroupLayers",
-      replaceShowModalEditGroupLayer: "modalsManagementLayer/replaceShowModalEditGroupLayer",
     }),
 
     submitForm () {
@@ -183,7 +182,7 @@ export default {
             const { status } = response.data;
             if (status) {
               this.$refs.form.resetFields();
-              this.replaceShowModalEditGroupLayer({ show: false });
+              this.$_modalVisibilityMixin_close('modalEditGroupLayer');
               this.getGroupLayers();
               this.$toast.success(`El grupo de capas ha sido modificado con éxito`)
             }

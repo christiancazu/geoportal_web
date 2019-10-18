@@ -8,12 +8,11 @@
       style="min-height:100%"
     >
       <SideBar
-        v-if="loggedIn"
         @is-collapse="onChangeCollapse"
       />
       <el-main
         class="pa-0"
-        :class="{'main-container': loggedIn}"
+        :class="{'main-container': true}"
       >
         <nuxt />
       </el-main>
@@ -41,10 +40,6 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      replaceBreakpoints: "modalsManagementUser/replaceBreakpoints",
-    }),
-
     onChangeCollapse (value) {
       this.isCollapse = value
     }

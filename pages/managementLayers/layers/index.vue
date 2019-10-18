@@ -173,9 +173,6 @@ export default {
 
   methods: {
     ...mapActions({
-      replaceShowModalAddLayer: 'modalsManagementLayer/replaceShowModalAddLayer',
-      replaceShowModalEditLayer: 'modalsManagementLayer/replaceShowModalEditLayer',
-      replaceShowModalDeleteLayer: 'modalsManagementLayer/replaceShowModalDeleteLayer',
       replaceCurrentLayer: 'layers/replaceCurrentLayer',
       getLayers: 'layers/getLayers',
       getLayer: 'layers/getLayer',

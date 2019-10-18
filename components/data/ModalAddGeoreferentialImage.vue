@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Registrar nueva imagen georeferencial"
-    :show-modal="showModalAddGeoreferentialImage"
-    @action-modal="replaceShowModalAddGeoreferentialImage"
+    name-state="modalAddGeoreferentialImage"
+    :show-modal="modalAddGeoreferentialImage"
   >
     <template v-slot:content>
       <el-form
@@ -17,11 +17,7 @@
         @submit.prevent="submitForm"
       >
         <!-- image -->
-        <el-form-item
-          label="Imagen de Perfil"
-          class="text-xs-center"
-          prop="image"
-        >
+        <el-form-item label="Imagen de Perfil" class="text-xs-center" prop="image">
           <el-upload
             class="avatar-uploader"
             action
@@ -30,45 +26,21 @@
             name="image"
             :before-upload="beforeAvatarUpload"
           >
-            <img
-              v-if="imageSelected"
-              :src="imageSelected"
-              class="avatar"
-            />
-            <i
-              v-else
-              class="el-icon-plus avatar-uploader-icon"
-            ></i>
+            <img v-if="imageSelected" :src="imageSelected" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
         <!-- name -->
-        <el-form-item
-          label="Nombre"
-          prop="name"
-        >
-          <el-input
-            v-model="form.name"
-            type="text"
-            autocomplete="off"
-          />
+        <el-form-item label="Nombre" prop="name">
+          <el-input v-model="form.name" type="text" autocomplete="off" />
         </el-form-item>
 
         <!-- instituto -->
-        <el-form-item
-          label="Institución"
-          prop="institute"
-        >
-          <el-input
-            v-model="form.institute"
-            type="text"
-            autocomplete="off"
-          />
+        <el-form-item label="Institución" prop="institute">
+          <el-input v-model="form.institute" type="text" autocomplete="off" />
         </el-form-item>
         <!-- objetivo -->
-        <el-form-item
-          label="Descripción"
-          prop="subject"
-        >
+        <el-form-item label="Descripción" prop="subject">
           <el-input
             v-model="form.subject"
             type="textarea"
@@ -85,7 +57,7 @@
         class="ma-2"
         size="small"
         :disabled="processingForm"
-        @click="replaceShowModalAddGeoreferentialImage({ show: false })"
+        @click="$_modalVisibilityMixin_close('modalAddGeoreferentialImage')"
       >CANCELAR</el-button>
       <el-button
         class="ma-2"
@@ -106,7 +78,7 @@ export default {
   components: {
     BaseModal
   },
-  data () {
+  data() {
     return {
       imageSelected: "",
       processingForm: false,
@@ -127,77 +99,99 @@ export default {
       },
 
       rules: {
-        username: [{
-          required: true,
-          message: "El nombre de usuario es requerido"
-        }],
-        name: [{
-          required: true,
-          message: "El nombre es requerido"
-        }],
-        lastName: [{
-          required: true,
-          message: "El nombre es requerido"
-        }],
-        password: [{
-          required: true,
-          min: 6,
-          message: "La contraseña es requerida"
-        }],
-        passwordConfirmation: [{
-          required: true,
-          validator: (rule, value, callback) => {
-            if (value !== this.form.password) {
-              return callback(new Error("La contraseña no coincide"));
-            }
-            callback();
+        username: [
+          {
+            required: true,
+            message: "El nombre de usuario es requerido"
           }
-        }],
-        email: [{
-          required: true,
-          pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-          message: "El correo electrónico debe ser válido"
-        }],
-        subject: [{
-          required: true,
-          min: 10,
-          message: "Detalle el motivo para acceder al Geoportal UNAT"
-        }],
-        institute: [{
-          required: true,
-          message: "La institución es requerida"
-        }],
-        region: [{
-          required: true,
-          message: "Seleccione su región"
-        }],
-        province: [{
-          required: true,
-          validator: (rule, value, callback) => {
-            if (!this.form.region) {
-              return callback(new Error("Seleccione su Provincia"));
-            }
-            callback();
+        ],
+        name: [
+          {
+            required: true,
+            message: "El nombre es requerido"
           }
-        }],
-        districtId: [{
-          required: true,
-          validator: (rule, value, callback) => {
-            if (!this.form.province) {
-              return callback(new Error("Seleccione su Distrito"));
-            }
-            callback();
+        ],
+        lastName: [
+          {
+            required: true,
+            message: "El nombre es requerido"
           }
-        }]
+        ],
+        password: [
+          {
+            required: true,
+            min: 6,
+            message: "La contraseña es requerida"
+          }
+        ],
+        passwordConfirmation: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              if (value !== this.form.password) {
+                return callback(new Error("La contraseña no coincide"));
+              }
+              callback();
+            }
+          }
+        ],
+        email: [
+          {
+            required: true,
+            pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            message: "El correo electrónico debe ser válido"
+          }
+        ],
+        subject: [
+          {
+            required: true,
+            min: 10,
+            message: "Detalle el motivo para acceder al Geoportal UNAT"
+          }
+        ],
+        institute: [
+          {
+            required: true,
+            message: "La institución es requerida"
+          }
+        ],
+        region: [
+          {
+            required: true,
+            message: "Seleccione su región"
+          }
+        ],
+        province: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              if (!this.form.region) {
+                return callback(new Error("Seleccione su Provincia"));
+              }
+              callback();
+            }
+          }
+        ],
+        districtId: [
+          {
+            required: true,
+            validator: (rule, value, callback) => {
+              if (!this.form.province) {
+                return callback(new Error("Seleccione su Distrito"));
+              }
+              callback();
+            }
+          }
+        ]
       }
     };
   },
 
   watch: {
-    showModalAddGeoreferentialImage: function (newState, oldState) {
+    modalAddGeoreferentialImage: function(newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
-        this.imageSelected = ""
+        this.imageSelected = "";
         return false;
       }
       this.getRegions();
@@ -212,13 +206,13 @@ export default {
       loadingProvinces: state => state.regions.loadingProvinces,
       districts: state => state.regions.districts,
       loadingDistricts: state => state.regions.loadingDistricts,
-      showModalAddGeoreferentialImage: state => state.modalsManagementData.showModalAddGeoreferentialImage
+      modalAddGeoreferentialImage: state =>
+        state.modalsVisibilities.modalAddGeoreferentialImage
     })
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalAddGeoreferentialImage: "modalsManagementData/replaceShowModalAddGeoreferentialImage",
       getRegions: "regions/getRegions",
       getProvinces: "regions/getProvinces",
       getDistricts: "regions/getDistricts",
@@ -227,15 +221,15 @@ export default {
       getUsers: "users/getUsers"
     }),
 
-    submitForm () {
+    submitForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.processingForm = true
+          this.processingForm = true;
           this.createUser().then(response => {
             const { status } = response.data;
             if (status) {
-              this.replaceShowModalAddGeoreferentialImage({ show: false });
-              this.$toast.success(`El usuario se registro con éxito`)
+              this.$_modalVisibilityMixin_close("modalAddGeoreferentialImage");
+              this.$toast.success(`El usuario se registro con éxito`);
               this.getUsers();
             }
           });
@@ -243,34 +237,34 @@ export default {
       });
     },
 
-    createUser () {
+    createUser() {
       const formData = new FormData();
       let keys = Object.keys(this.form);
       keys.forEach(val => {
         formData.append(val, this.form[val]);
-      })
+      });
 
       const data = formData;
       return new Promise((resolve, reject) => {
         this.$userAPI
           .create({ data })
           .then(response => {
-            this.processingForm = false
+            this.processingForm = false;
             resolve(response);
           })
           .catch(error => {
-            this.processingForm = false
-            reject(error)
+            this.processingForm = false;
+            reject(error);
           });
       });
     },
 
-    launchUploadAvatar (option) {
+    launchUploadAvatar(option) {
       this.imageSelected = URL.createObjectURL(option.file);
       this.form.image = option.file;
     },
 
-    beforeAvatarUpload (file) {
+    beforeAvatarUpload(file) {
       const isJPG = file.type === "image/png" || file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -283,7 +277,7 @@ export default {
       return isJPG && isLt2M;
     },
 
-    onchangeRegions (region) {
+    onchangeRegions(region) {
       const params = {
         id: region.id
       };
@@ -295,7 +289,7 @@ export default {
       this.getProvinces({ params });
     },
 
-    onchangeProvinces (province) {
+    onchangeProvinces(province) {
       const params = {
         id: province.id
       };

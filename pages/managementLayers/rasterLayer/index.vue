@@ -133,14 +133,13 @@ export default {
 
   methods: {
     ...mapActions({
-      replaceShowModalPublishRasterLayer: 'modalsManagementLayer/replaceShowModalPublishRasterLayer',
       replaceCurrentRasterLayer: 'rasterLayers/replaceCurrentRasterLayer',
       getRasterLayers: 'rasterLayers/getRasterLayers',
     }),
 
     onLoadModalPublishRasterLayer (index, item) {
       this.replaceCurrentRasterLayer({ rasterLayer: item })
-      this.replaceShowModalPublishRasterLayer({ show: true })
+      this.$_modalVisibilityMixin_open('modalPublishRasterLayer')
     },
 
     // pagination 

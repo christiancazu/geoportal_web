@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Modificar datos de usuario"
-    :show-modal="showModalEditUser"
-    @action-modal="replaceShowModalEditUser"
+    name-state="modalEditUser"
+    :show-modal="modalEditUser"
   >
     <template v-slot:content>
       <el-form
@@ -17,17 +17,10 @@
         @submit.prevent="submitForm"
         v-if="user"
       >
-        <el-row
-          :gutter="10"
-          align="bottom"
-          justify="center"
-        >
+        <el-row :gutter="10" align="bottom" justify="center">
           <el-col :md="12">
             <!-- image -->
-            <el-form-item
-              label="Imagen de Perfil"
-              class="text-xs-center"
-            >
+            <el-form-item label="Imagen de Perfil" class="text-xs-center">
               <el-upload
                 class="avatar-uploader"
                 action
@@ -36,99 +29,47 @@
                 name="image"
                 :before-upload="beforeAvatarUpload"
               >
-                <img
-                  v-if="imageSelected"
-                  :src="imageSelected"
-                  class="avatar"
-                />
-                <i
-                  v-else
-                  class="el-icon-plus avatar-uploader-icon"
-                ></i>
+                <img v-if="imageSelected" :src="imageSelected" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item>
           </el-col>
           <el-col :md="12">
             <!-- username -->
             <el-form-item label="Nombre de Usuario">
-              <el-input
-                v-model="user.username"
-                type="text"
-                disabled
-                autocomplete="off"
-              />
+              <el-input v-model="user.username" type="text" disabled autocomplete="off" />
             </el-form-item>
 
             <!-- email -->
             <el-form-item label="Correo Electrónico">
-              <el-input
-                disabled
-                v-model="user.email"
-                type="text"
-              />
+              <el-input disabled v-model="user.email" type="text" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
+          <el-col :xs="24" :sm="8">
             <!-- name -->
-            <el-form-item
-              label="Nombres"
-              prop="name"
-            >
-              <el-input
-                v-model="form.name"
-                type="text"
-                autocomplete="off"
-              />
+            <el-form-item label="Nombres" prop="name">
+              <el-input v-model="form.name" type="text" autocomplete="off" />
             </el-form-item>
           </el-col>
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
+          <el-col :xs="24" :sm="8">
             <!-- lasname -->
-            <el-form-item
-              label="Apellido"
-              prop="lastName"
-            >
-              <el-input
-                v-model="form.lastName"
-                type="text"
-                autocomplete="off"
-              />
+            <el-form-item label="Apellido" prop="lastName">
+              <el-input v-model="form.lastName" type="text" autocomplete="off" />
             </el-form-item>
           </el-col>
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
+          <el-col :xs="24" :sm="8">
             <!-- lasname -->
-            <el-form-item
-              label="Segundo apellido"
-              prop="lastNameAditional"
-            >
-              <el-input
-                v-model="form.lastNameAditional"
-                type="text"
-                autocomplete="off"
-              />
+            <el-form-item label="Segundo apellido" prop="lastNameAditional">
+              <el-input v-model="form.lastNameAditional" type="text" autocomplete="off" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="10">
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
+          <el-col :xs="24" :sm="8">
             <!-- regionId -->
-            <el-form-item
-              label="Región"
-              prop="regionId"
-            >
+            <el-form-item label="Región" prop="regionId">
               <el-select
                 v-model="regionId"
                 value-key="id"
@@ -146,15 +87,9 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
+          <el-col :xs="24" :sm="8">
             <!-- porvincia -->
-            <el-form-item
-              label="Provincia"
-              prop="provinceId"
-            >
+            <el-form-item label="Provincia" prop="provinceId">
               <el-select
                 v-model="provinceId"
                 value-key="id"
@@ -172,16 +107,9 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col
-            :xs="24"
-            :sm="8"
-          >
+          <el-col :xs="24" :sm="8">
             <!-- distrito -->
-            <el-form-item
-              label="Distrito"
-              prop="districtId"
-              ref="districtId"
-            >
+            <el-form-item label="Distrito" prop="districtId" ref="districtId">
               <el-select
                 v-model="form.districtId"
                 value-key="id"
@@ -201,15 +129,8 @@
           </el-col>
         </el-row>
         <el-row :gutter="10">
-          <el-col
-            :xs="12"
-            :sm="12"
-            :md="12"
-          >
-            <el-form-item
-              class="text-xs-center"
-              label="Privilegio"
-            >
+          <el-col :xs="12" :sm="12" :md="12">
+            <el-form-item class="text-xs-center" label="Privilegio">
               <el-switch
                 class="text-xs-center"
                 style="display: block"
@@ -220,19 +141,11 @@
                 active-text="Usuario"
                 inactive-value="AD"
                 active-value="US"
-              >
-              </el-switch>
+              ></el-switch>
             </el-form-item>
           </el-col>
-          <el-col
-            :xs="12"
-            :sm="12"
-            :md="12"
-          >
-            <el-form-item
-              class="text-xs-center label-success"
-              label="Cuenta"
-            >
+          <el-col :xs="12" :sm="12" :md="12">
+            <el-form-item class="text-xs-center label-success" label="Cuenta">
               <el-switch
                 class="text-xs-center"
                 style="display: block"
@@ -243,8 +156,7 @@
                 active-text="Inactiva"
                 inactive-value="AC"
                 active-value="IN"
-              >
-              </el-switch>
+              ></el-switch>
             </el-form-item>
           </el-col>
         </el-row>
@@ -255,7 +167,7 @@
         class="ma-2"
         :disabled="processingForm"
         size="small"
-        @click="replaceShowModalEditUser({ show: false })"
+        @click="$_modalVisibilityMixin_close('modalEditUser')"
       >CANCELAR</el-button>
       <el-button
         type="primary"
@@ -276,49 +188,55 @@ export default {
   components: {
     BaseModal
   },
-  data () {
+  data() {
     return {
       imageSelected: "",
       provinceId: 0,
       regionId: 0,
       processingForm: false,
       form: {
-        userTypeId: '',
-        districtId: '',
-        name: '',
-        lastName: '',
-        lastNameAditional: '',
-        uploadImage: '',
-        status: 'AC'
+        userTypeId: "",
+        districtId: "",
+        name: "",
+        lastName: "",
+        lastNameAditional: "",
+        uploadImage: "",
+        status: "AC"
       },
 
       rules: {
-        name: [{
-          required: true,
-          message: "El nombre es requerido"
-        }],
-        lastName: [{
-          required: true,
-          message: "El nombre es requerido"
-        }],
-        districtId: [{
-          required: true,
-          message: "El campo es requerido",
-        }],
+        name: [
+          {
+            required: true,
+            message: "El nombre es requerido"
+          }
+        ],
+        lastName: [
+          {
+            required: true,
+            message: "El nombre es requerido"
+          }
+        ],
+        districtId: [
+          {
+            required: true,
+            message: "El campo es requerido"
+          }
+        ]
       }
     };
   },
 
   watch: {
-    showModalEditUser: function (newState, oldState) {
+    modalEditUser: function(newState, oldState) {
       if (!newState) {
-        this.$refs.form.resetFields()
-        this.imageSelected = ""
-        this.replaceUser({ user: null })
-        return false
+        this.$refs.form.resetFields();
+        this.imageSelected = "";
+        this.replaceUser({ user: null });
+        return false;
       }
-      this.getRegions()
-      this.setFormField()
+      this.getRegions();
+      this.setFormField();
     }
   },
 
@@ -331,13 +249,12 @@ export default {
       loadingProvinces: state => state.regions.loadingProvinces,
       districts: state => state.regions.districts,
       loadingDistricts: state => state.regions.loadingDistricts,
-      showModalEditUser: state => state.modalsManagementUser.showModalEditUser
+      modalEditUser: state => state.modalsVisibilities.modalEditUser
     })
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalEditUser: "modalsManagementUser/replaceShowModalEditUser",
       getRegions: "regions/getRegions",
       getProvinces: "regions/getProvinces",
       getDistricts: "regions/getDistricts",
@@ -348,70 +265,70 @@ export default {
       replaceUser: "users/replaceUser"
     }),
 
-    setFormField () {
-      this.form.userTypeId = this.user.userTypeId
-      this.form.districtId = this.user.districtId || ''
-      this.form.name = this.user.name
-      this.form.lastName = this.user.lastName
-      this.form.lastNameAditional = this.user.lastNameAditional
-      this.imageSelected = this.user.image
-      this.form.status = this.user.status
+    setFormField() {
+      this.form.userTypeId = this.user.userTypeId;
+      this.form.districtId = this.user.districtId || "";
+      this.form.name = this.user.name;
+      this.form.lastName = this.user.lastName;
+      this.form.lastNameAditional = this.user.lastNameAditional;
+      this.imageSelected = this.user.image;
+      this.form.status = this.user.status;
 
-      this.provinceId = this.user.provinceId || ''
-      this.regionId = this.user.regionId || ''
+      this.provinceId = this.user.provinceId || "";
+      this.regionId = this.user.regionId || "";
 
       this.getProvinces({ params: { id: this.user.regionId } });
       this.getDistricts({ params: { id: this.user.provinceId } });
     },
 
-    submitForm () {
+    submitForm() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.processingForm = true
-          this.updateUser()
+          this.processingForm = true;
+          this.updateUser();
         }
       });
     },
 
-    updateUser () {
-      const data = new FormData()
+    updateUser() {
+      const data = new FormData();
       let keys = Object.keys(this.form);
       keys.forEach(val => {
         data.append(val, this.form[val]);
       });
-      const id = this.user.id
+      const id = this.user.id;
 
       return new Promise((resolve, reject) => {
         this.$userAPI
           .update({ data, id })
           .then(response => {
-            this.processingForm = false
+            this.processingForm = false;
             if (response.data.status) {
               this.$refs.form.resetFields();
-              this.replaceShowModalEditUser({ show: false })
-              this.getUsers()
-              this.$toast.success(`El usuario ha sido actualizado con éxito`)
+              this.$_modalVisibilityMixin_close("modalEditUser");
+
+              this.getUsers();
+              this.$toast.success(`El usuario ha sido actualizado con éxito`);
             } else {
-              this.getUser({ id: this.user.id })
-                .then(response => {
-                  this.setFormField()
-                })
+              this.getUser({ id: this.user.id }).then(response => {
+                this.setFormField();
+              });
             }
             resolve(response);
           })
           .catch(error => {
-            this.processingForm = false
-            reject(error)
+            this.processingForm = false;
+            reject(error);
           });
       });
     },
 
-    launchUploadAvatar (option) {
+    launchUploadAvatar(option) {
       this.imageSelected = URL.createObjectURL(option.file);
       this.form.uploadImage = option.file;
     },
 
-    beforeAvatarUpload (file) {
+    beforeAvatarUpload(file) {
       const isJPG = file.type === "image/png" || file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -424,17 +341,17 @@ export default {
       return isJPG && isLt2M;
     },
 
-    onChangeRegion (regionId) {
-      this.provinceId = ''
-      this.$refs.districtId.resetField()
-      this.form.districtId = ''
+    onChangeRegion(regionId) {
+      this.provinceId = "";
+      this.$refs.districtId.resetField();
+      this.form.districtId = "";
       this.replaceDistricts({ districts: null });
       this.getProvinces({ params: { id: regionId } });
     },
 
-    onChangeProvince (provinceId) {
-      this.$refs.districtId.resetField()
-      this.form.districtId = ''
+    onChangeProvince(provinceId) {
+      this.$refs.districtId.resetField();
+      this.form.districtId = "";
       this.getDistricts({ params: { id: provinceId } });
     }
   }

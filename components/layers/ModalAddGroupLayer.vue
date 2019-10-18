@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Registrar nuevo grupo de capa"
-    :show-modal="showModalAddGroupLayer"
-    @action-modal="replaceShowModalAddGroupLayer"
+    name-state="modalAddGroupLayer"
+    :show-modal="modalAddGroupLayer"
   >
     <template v-slot:content>
       <el-form
@@ -97,7 +97,7 @@
       <el-button
         :disabled="processingForm"
         size="small"
-        @click="replaceShowModalAddGroupLayer({ show: false })"
+        @click="$_modalVisibilityMixin_close('modalAddGroupLayer')"
       >CANCELAR</el-button>
       <el-button
         type="primary"
@@ -145,12 +145,12 @@ export default {
     ...mapState({
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      showModalAddGroupLayer: state => state.modalsManagementLayer.showModalAddGroupLayer
+      modalAddGroupLayer: state => state.modalsVisibilities.modalAddGroupLayer
     })
   },
 
   watch: {
-    showModalAddGroupLayer: function (newState, oldState) {
+    modalAddGroupLayer: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields()
         return false;
@@ -160,7 +160,6 @@ export default {
 
   methods: {
     ...mapActions({
-      replaceShowModalAddGroupLayer: "modalsManagementLayer/replaceShowModalAddGroupLayer",
       getGroupLayers: "groupLayers/getGroupLayers"
     }),
 
@@ -172,7 +171,7 @@ export default {
             const { status } = response.data
             if (status) {
               this.$refs.form.resetFields();
-              this.replaceShowModalAddGroupLayer({ show: false })
+              this.$_modalVisibilityMixin_close('modalAddGroupLayer')
               this.getGroupLayers()
               this.$toast.success(`El grupo de capa se registro con éxito`)
             }

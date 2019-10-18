@@ -5,7 +5,7 @@
         size="mini"
         type="primary"
         icon="el-icon-plus"
-        @click="SHOW_MODAL_WMS('modalAddWMSService')"
+        @click="$_modalVisibilityMixin_open('modalAddWMSService')"
       >
         Nuevo Servicio WMS
       </el-button>
@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage'
 import BtnConfirm from "@/components/base/BaseBtnConfirm";
 import ModalAddWMSService from '@/components/WMSServices/ModalAddWMSService'
@@ -159,9 +159,6 @@ export default {
   methods: {
     ...mapActions({
       getWMSServices: 'WMSServices/getWMSServices',
-    }),
-    ...mapMutations({
-      SHOW_MODAL_WMS: 'modalsWMSServices/SHOW_MODAL_WMS'
     }),
 
     deleteWMSServices (item) {

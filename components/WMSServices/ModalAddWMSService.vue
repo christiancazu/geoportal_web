@@ -1,9 +1,8 @@
 <template>
   <BaseModal
     title="Registrar Servicios WMS"
+    name-state="modalAddWMSService"
     :show-modal="modalAddWMSService"
-    @action-modal="SHOW_MODAL_WMS('modalAddWMSService')"
-    @close-modal="HIDE_MODAL_WMS('modalAddWMSService'); $refs.form.resetFields()"
   >
     <template v-slot:content>
       <el-form
@@ -71,7 +70,7 @@
                   class="pa-0 pl-1 ma-0"
                   style="font-size: 1.7rem;"
                   :disabled="processingForm"
-                  @click="SHOW_MODAL_WMS('modalAddWMSAuthor')"
+                  @click="$_modalVisibilityMixin_open('modalAddWMSAuthor')"
                 ></el-button>
               </el-container>
             </el-form-item>
@@ -106,7 +105,7 @@
                   class="pa-0 pl-1 ma-0"
                   style="font-size: 1.7rem;"
                   :disabled="processingForm"
-                  @click="SHOW_MODAL_WMS('modalAddWMSCategory')"
+                  @click="$_modalVisibilityMixin_open('modalAddWMSCategory')"
                 ></el-button>
               </el-container>
             </el-form-item>
@@ -140,7 +139,7 @@
       <el-button
         size="small"
         :disabled="processingForm"
-        @click="HIDE_MODAL_WMS('modalAddWMSService')"
+        @click="$_modalVisibilityMixin_close('modalAddWMSService')"
       >
         CANCELAR
       </el-button>
@@ -226,7 +225,7 @@ export default {
       loadingWMSAuthors: state => state.WMSAuthors.loadingWMSAuthors,
       WMSCategories: state => state.WMSCategories.WMSCategories,
       loadingWMSCategories: state => state.WMSCategories.loadingWMSCategories,
-      modalAddWMSService: state => state.modalsWMSServices.modalAddWMSService
+      modalAddWMSService: state => state.modalsVisibilities.modalAddWMSService
     })
   },
 
@@ -235,10 +234,6 @@ export default {
       getWMSCategories: "WMSCategories/getWMSCategories",
       getWMSAuthors: "WMSAuthors/getWMSAuthors",
       getWMSServices: "WMSServices/getWMSServices"
-    }),
-    ...mapMutations({
-      SHOW_MODAL_WMS: "modalsWMSServices/SHOW_MODAL_WMS",
-      HIDE_MODAL_WMS: "modalsWMSServices/HIDE_MODAL_WMS"
     }),
 
     submitForm() {

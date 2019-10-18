@@ -2,16 +2,8 @@
   <BasePage title="Solicitudes pendientes">
     <template v-slot:content>
       <el-container direction="vertical">
-        <el-row
-          type="flex"
-          justify="end"
-          :gutter="10"
-        >
-          <el-col
-            :xs="24"
-            :sm="12"
-            :md="8"
-          >
+        <el-row type="flex" justify="end" :gutter="10">
+          <el-col :xs="24" :sm="12" :md="8">
             <div>
               <el-input
                 v-model="search"
@@ -23,28 +15,15 @@
             </div>
           </el-col>
         </el-row>
-        <el-table
-          :data="filteredData"
-          v-loading="loadingPendingRequests"
-        >
-          <el-table-column
-            label="Institución"
-            prop="institute"
-          />
+        <el-table :data="filteredData" v-loading="loadingPendingRequests">
+          <el-table-column label="Institución" prop="institute" />
           <el-table-column label="Nombres y Apellidos">
-            <template slot-scope="scope">
-              {{`${scope.row.name} ${scope.row.lastName} ${scope.row.lastNameAditional}`}}
-            </template>
+            <template
+              slot-scope="scope"
+            >{{`${scope.row.name} ${scope.row.lastName} ${scope.row.lastNameAditional}`}}</template>
           </el-table-column>
-          <el-table-column
-            label="Correo Electrónico"
-            prop="email"
-          />
-          <el-table-column
-            label="Acción"
-            align="center"
-            width="120"
-          >
+          <el-table-column label="Correo Electrónico" prop="email" />
+          <el-table-column label="Acción" align="center" width="120">
             <template slot-scope="scope">
               <el-button
                 circle
@@ -67,8 +46,7 @@
           :current-page="currentPage"
           @current-change="onChangeCurrentPage"
           @size-change="onChangePageSize"
-        >
-        </el-pagination>
+        ></el-pagination>
       </el-container>
     </template>
     <template v-slot:modals>
@@ -88,73 +66,102 @@ export default {
   },
 
   head: {
-    title: 'Solicitudes | GEOVISOR',
+    title: "Solicitudes | GEOVISOR"
   },
 
-  data () {
+  data() {
     return {
       search: "",
       pagesize: 10,
-      currentPage: 1,
+      currentPage: 1
     };
   },
 
   computed: {
     ...mapState({
-      loadingPendingRequests: state => state.userRequests.loadingPendingRequests,
+      loadingPendingRequests: state => state.userRequests.loadingPendingRequests
     }),
 
-    filteredData: function () {
-      let search = this.search.toString().toLowerCase()
-      let pendingRequests = this.$store.state.userRequests.pendingRequests
+    filteredData: function() {
+      let search = this.search.toString().toLowerCase();
+      let pendingRequests = this.$store.state.userRequests.pendingRequests;
       return pendingRequests.filter(item => {
         // checking name
-        if (item.name && item.name.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.name &&
+          item.name
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
         // checking lastName
-        if (item.lastName && item.lastName.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.lastName &&
+          item.lastName
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
         // checking lastNameAditional
-        if (item.lastNameAditional && item.lastNameAditional.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.lastNameAditional &&
+          item.lastNameAditional
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
         // checking institute
-        if (item.institute && item.institute.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.institute &&
+          item.institute
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
         // checking subject
-        if (item.subject && item.subject.toString().toLowerCase().includes(search)) {
-          return item
+        if (
+          item.subject &&
+          item.subject
+            .toString()
+            .toLowerCase()
+            .includes(search)
+        ) {
+          return item;
         }
-      })
+      });
     }
   },
 
-  created () {
-    this.getPendingRequests()
+  created() {
+    this.getPendingRequests();
   },
 
   methods: {
     ...mapActions({
       getPendingRequests: "userRequests/getPendingRequests",
       replaceCurrentPendingRequest: "userRequests/replaceCurrentPendingRequest",
-      replaceShowModalViewPendingRequest: "modalsManagementUser/replaceShowModalViewPendingRequest"
     }),
 
-    onLoadModalViewRequestPending (index, item) {
-      this.replaceCurrentPendingRequest({ request: item })
-      this.replaceShowModalViewPendingRequest({ show: true })
+    onLoadModalViewRequestPending(index, item) {
+      this.replaceCurrentPendingRequest({ request: item });
+      this.$_modalVisibilityMixin_open("modalViewPendingRequest");
     },
 
-    // pagination 
-    onChangeCurrentPage: function (currentPage) {
+    // pagination
+    onChangeCurrentPage: function(currentPage) {
       this.currentPage = currentPage;
     },
-    onChangePageSize: function (pagesize) {
+    onChangePageSize: function(pagesize) {
       this.pagesize = pagesize;
-    },
+    }
   }
 };
 </script>

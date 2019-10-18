@@ -1,8 +1,8 @@
 -<template>
   <BaseModal
     title="Modificar datos de la imagen Georeferenciada"
-    :show-modal="showModalEditGeoreferentialImage"
-    @action-modal="replaceShowModalEditGeoreferentialImage"
+    name-state="modalEditGeoreferentialImage"
+    :show-modal="modalEditGeoreferentialImage"
   >
     <template v-slot:content>
       <el-form
@@ -85,7 +85,7 @@
         class="ma-2"
         :disabled="processingForm"
         size="small"
-        @click="replaceShowModalEditGeoreferentialImage({ show: false })"
+        @click="$_modalVisibilityMixin_close('modalEditGeoreferentialImage')"
       >CANCELAR</el-button>
       <el-button
         type="primary"
@@ -140,7 +140,7 @@ export default {
   },
 
   watch: {
-    showModalEditGeoreferentialImage: function (newState, oldState) {
+    modalEditGeoreferentialImage: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields()
         this.imageSelected = ""
@@ -161,13 +161,12 @@ export default {
       loadingProvinces: state => state.regions.loadingProvinces,
       districts: state => state.regions.districts,
       loadingDistricts: state => state.regions.loadingDistricts,
-      showModalEditGeoreferentialImage: state => state.modalsManagementData.showModalEditGeoreferentialImage
+      modalEditGeoreferentialImage: state => state.modalsVisibilities.modalEditGeoreferentialImage
     })
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalEditGeoreferentialImage: "modalsManagementData/replaceShowModalEditGeoreferentialImage",
       getRegions: "regions/getRegions",
       getProvinces: "regions/getProvinces",
       getDistricts: "regions/getDistricts",
@@ -218,7 +217,7 @@ export default {
             this.processingForm = false
             if (response.data.status) {
               this.$refs.form.resetFields();
-              this.replaceShowModalEditGeoreferentialImage({ show: false })
+              this.$_modalVisibilityMixin_close('odalEditGeoreferentialImage')
               this.getUsers()
               this.$toast.success(`El usuario ha sido actualizado con éxito`)
             } else {

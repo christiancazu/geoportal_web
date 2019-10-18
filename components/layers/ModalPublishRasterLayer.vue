@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Publicar capa raster"
-    :show-modal="showModalPublishRasterLayer"
-    @action-modal="replaceShowModalPublishRasterLayer"
+    name-state="modalPublishRasterLayer"
+    :show-modal="modalPublishRasterLayer"
   >
     <template v-slot:content>
       <el-form
@@ -45,7 +45,7 @@
       <el-button
         size="small"
         :disabled="processingForm"
-        @click="replaceShowModalPublishRasterLayer({ show: false })"
+        @click="$_modalVisibilityMixin_close('modalPublishRasterLayer')"
       >CANCELAR</el-button>
       <el-button
         size="small"
@@ -82,7 +82,7 @@ export default {
   },
 
   watch: {
-    showModalPublishRasterLayer: function (newState, oldState) {
+    modalPublishRasterLayer: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         return false;
@@ -94,15 +94,13 @@ export default {
 
   computed: {
     ...mapState({
-      showModalPublishRasterLayer: state => state.modalsManagementLayer.showModalPublishRasterLayer,
+      modalPublishRasterLayer: state => state.modalsVisibilities.modalPublishRasterLayer,
       currentRasterLayer: state => state.rasterLayers.currentRasterLayer
     })
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalPublishRasterLayer:
-        "modalsManagementLayer/replaceShowModalPublishRasterLayer",
       getRasterLayers: "rasterLayers/getRasterLayers"
     }),
 
@@ -128,7 +126,7 @@ export default {
             this.processingForm = false
             const { status } = response.data;
             if (status) {
-              this.replaceShowModalPublishRasterLayer({ show: false })
+              this.$_modalVisibilityMixin_close('modalPublishRasterLayer')
               this.$toast.success(`Capa raster ha sido publicado con éxito`)
               this.getRasterLayers()
             }

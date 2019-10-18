@@ -203,8 +203,6 @@ export default {
 
   methods: {
     ...mapActions({
-      replaceShowModalAddBaseMap:
-        "modalsManagementLayer/replaceShowModalAddBaseMap",
       getBaseLayers: "baseLayers/getBaseLayers"
     }),
 

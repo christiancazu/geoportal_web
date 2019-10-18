@@ -2,9 +2,8 @@
   <BaseModal
     title="Registrar Categoría WMS"
     :show-modal="modalAddWMSCategory"
+    name-state="modalAddWMSCategory"
     :append-to-body="true"
-    @action-modal="SHOW_MODAL_WMS('modalAddWMSCategory')"
-    @close-modal="HIDE_MODAL_WMS('modalAddWMSCategory'); $refs.formWMSCategory.resetFields()"
   >
     <template v-slot:content>
       <el-form
@@ -19,15 +18,8 @@
         @submit.prevent="submitFormWMSCategory"
       >
         <!-- name -->
-        <el-form-item
-          label="Nombre"
-          prop="name"
-        >
-          <el-input
-            v-model="form.name"
-            type="text"
-            autocomplete="off"
-          />
+        <el-form-item label="Nombre" prop="name">
+          <el-input v-model="form.name" type="text" autocomplete="off" />
         </el-form-item>
 
         <el-form-item label="Descripción">
@@ -46,7 +38,7 @@
       <el-button
         size="small"
         :disabled="processingForm"
-        @click="HIDE_MODAL_WMS('modalAddWMSCategory')"
+        @click="$_modalVisibilityMixin_close('modalAddWMSCategory')"
       >CANCELAR</el-button>
       <el-button
         size="small"
@@ -70,7 +62,7 @@ export default {
     BasePopover
   },
 
-  data () {
+  data() {
     return {
       processingForm: false,
       form: {
@@ -80,16 +72,18 @@ export default {
       },
 
       rules: {
-        name: [{
-          required: true,
-          message: "El nombre es requerido"
-        }]
+        name: [
+          {
+            required: true,
+            message: "El nombre es requerido"
+          }
+        ]
       }
     };
   },
 
   computed: {
-    ...mapState('modalsWMSServices', {
+    ...mapState("modalsVisibilities", {
       modalAddWMSCategory: state => state.modalAddWMSCategory
     })
   },
@@ -99,28 +93,22 @@ export default {
       getWMSCategories: "WMSCategories/getWMSCategories"
     }),
 
-    ...mapMutations({
-      SHOW_MODAL_WMS: 'modalsWMSServices/SHOW_MODAL_WMS',
-      HIDE_MODAL_WMS: 'modalsWMSServices/HIDE_MODAL_WMS'
-    }),
-
-    submitFormWMSCategory () {
+    submitFormWMSCategory() {
       this.$refs.formWMSCategory.validate(valid => {
         if (valid) {
-          this.processingForm = true
+          this.processingForm = true;
           this.createWMSCategory().then(response => {
-            const { status } = response.data;
-            if (status) {
-              this.$refs.formWMSCategory.resetFields();
-              this.getWMSCategories();
-              this.$toast.success(this.$toast.success(SUCCESS.CATEGORY.REGISTERED))
-            }
+            this.$refs.formWMSCategory.resetFields();
+            this.getWMSCategories();
+            this.$toast.success(
+              this.$toast.success(SUCCESS.CATEGORY.REGISTERED)
+            );
           });
         }
       });
     },
 
-    createWMSCategory () {
+    createWMSCategory() {
       const formData = new FormData();
 
       let keys = Object.keys(this.form);
@@ -132,12 +120,12 @@ export default {
         this.$WMSCategoryAPI
           .create({ data: formData })
           .then(response => {
-            this.processingForm = false
+            this.processingForm = false;
             resolve(response);
           })
           .catch(error => {
-            this.processingForm = false
-            reject(error)
+            this.processingForm = false;
+            reject(error);
           });
       });
     }

@@ -54,7 +54,7 @@ export default {
         { title: 'Ver Reportes', link: '/managementData/georeferentialImages' },
         { title: 'Ver Servicios', link: '/WMSServices' },
         { title: 'Ver Solicitudes pendientes', link: '/managementUsers/pendingUsers' },
-        { title: 'Capas Base', link: '/managementLayers/baseMap' },
+        { title: 'Capas Base', link: '/managementLayers/baseLayers' },
         { title: 'Ver Capas rastes', link: '/managementLayers/rasterLayer' }
       ]
     }

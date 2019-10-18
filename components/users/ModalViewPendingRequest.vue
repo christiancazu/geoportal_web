@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Detalle de solicitud"
-    :show-modal="showModalViewPendingRequest"
-    @action-modal="replaceShowModalViewPendingRequest"
+    name-state="modalViewPendingRequest"
+    :show-modal="modalViewPendingRequest"
     v-if="currentPendingRequest"
   >
     <template v-slot:content>
@@ -87,7 +87,7 @@ export default {
   },
 
   watch: {
-    showModalViewPendingRequest: function (newState, oldState) {
+    modalViewPendingRequest: function (newState, oldState) {
       if (!newState) {
         return false;
       }
@@ -97,13 +97,12 @@ export default {
   computed: {
     ...mapState({
       currentPendingRequest: state => state.userRequests.currentPendingRequest,
-      showModalViewPendingRequest: state => state.modalsManagementUser.showModalViewPendingRequest
+      modalViewPendingRequest: state => state.modalsVisibilities.modalViewPendingRequest
     })
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalViewPendingRequest: "modalsManagementUser/replaceShowModalViewPendingRequest",
       getPendingRequests: "userRequests/getPendingRequests",
     }),
 
@@ -130,7 +129,7 @@ export default {
           .then(response => {
             this.processingRejection = false
             this.$toast.success(`La solicitud se rechazó con éxito`)
-            this.replaceShowModalViewPendingRequest({ show: false })
+            this.$_modalVisibilityMixin_close('modalViewPendingRequest')
             resolve(response)
             this.getPendingRequests()
           }).catch(error => {
@@ -156,7 +155,7 @@ export default {
           .then(response => {
             this.processingAcceptance = false
             this.$toast.success(`La solicitud se aprobó con éxito`)
-            this.replaceShowModalViewPendingRequest({ show: false })
+            this.$_modalVisibilityMixin_close('modalViewPendingRequest')
             this.getPendingRequests()
             resolve(response)
           }).catch(error => {

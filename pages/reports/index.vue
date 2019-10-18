@@ -143,12 +143,11 @@ export default {
     ...mapActions({
       getReports: "reports/getReports",
       replaceCurrentReport: "reports/replaceCurrentReport",
-      replaceShowModalViewReport: "reports/replaceShowModalViewReport"
     }),
 
     onLoadModalViewReport: function (report) {
       this.replaceCurrentReport({ report })
-      this.replaceShowModalViewReport({ show: true })
+      this.$_modalVisibilityMixin_open('modalViewReport')
     },
 
     // pagination 

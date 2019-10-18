@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Detalle del reporte"
-    :show-modal="showModalViewReport"
-    @action-modal="replaceShowModalViewReport"
+    :name-state="modalViewReport"
+    :show-modal="modalViewReport"
     v-if="currentReport"
   >
     <template v-slot:content>
@@ -46,13 +46,12 @@ export default {
   computed: {
     ...mapState({
       currentReport: state => state.reports.currentReport,
-      showModalViewReport: state => state.reports.showModalViewReport
+      modalViewReport: state => state.reports.modalViewReport
     })
   },
 
   methods: {
     ...mapActions({
-      replaceShowModalViewReport: "reports/replaceShowModalViewReport",
       getPendingRequests: "reports/getPendingRequests",
     })
   }
