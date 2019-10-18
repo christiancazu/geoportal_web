@@ -175,7 +175,7 @@ export default {
 
   computed: {
     ...mapState({
-      currentLayer: state => state.layers.currentLayer,
+      currentLayer: state => state.vectorialLayers.currentLayer,
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
       modalEditLayer: state => state.modalsVisibilities.modalEditLayer
@@ -204,8 +204,8 @@ export default {
   methods: {
     ...mapActions({
       getGroupLayers: 'groupLayers/getGroupLayers',
-      getLayers: "layers/getLayers",
-      updateLayer: "layers/updateLayer"
+      getVectorialLayers: "vectorialLayers/getVectorialLayers",
+      updateVectorialLayer: "vectorialLayers/updateVectorialLayer"
     }),
 
     async submitForm () {
@@ -218,7 +218,7 @@ export default {
         const data = this.$_objectToFormDataMixin_transform();
 
         try {          
-          await this.updateLayer({
+          await this.updateVectorialLayer({
             id: this.currentLayer.id,
             data
           })
@@ -226,7 +226,7 @@ export default {
           this.$toast.success(this.$SUCCESS.LAYER.UPDATED)
           this.$_modalVisibilityMixin_close('modalEditLayer')
 
-          await this.getLayers()
+          await this.getVectorialLayers()
 
         } catch (error) {
           const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER

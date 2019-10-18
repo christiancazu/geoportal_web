@@ -166,7 +166,6 @@
 </template>
 <script>
 import BaseModal from "@/components/base/BaseModal.vue";
-import BasePopover from "@/components/base/BasePopover.vue";
 import ModalAddWMSAuthor from "@/components/WMSServices/ModalAddWMSAuthor.vue";
 import ModalAddWMSCategory from "@/components/WMSServices/ModalAddWMSCategory.vue";
 import { mapState, mapActions, mapMutations } from "vuex";
@@ -175,7 +174,6 @@ import { SUCCESS } from "@/config/messages";
 export default {
   components: {
     BaseModal,
-    BasePopover,
     ModalAddWMSAuthor,
     ModalAddWMSCategory
   },

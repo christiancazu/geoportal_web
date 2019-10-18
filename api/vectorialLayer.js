@@ -1,37 +1,37 @@
-import { LAYER } from '@/config/endpoints'
+import { VECTORIAL_LAYER } from '@/config/endpoints'
 
 export default $axios => ({
   get (payload = {}) {
     return $axios({
-      url: `${LAYER}/`,
+      url: `${VECTORIAL_LAYER}/`,
       method: 'GET',
       data: payload.data || {}
     })
   },
   getById (payload = {}) {
     return $axios({
-      url: `${LAYER}/${payload.id}/`,
+      url: `${VECTORIAL_LAYER}/${payload.id}/`,
       method: 'GET',
       data: payload.data || {}
     })
   },
   create (payload = {}) {
     return $axios({
-      url: `${LAYER}/`,
+      url: `${VECTORIAL_LAYER}/`,
       method: 'POST',
       data: payload.data || {}
     })
   },
   update (payload = {}) {
     return $axios({
-      url: `${LAYER}/${payload.id}/`,
+      url: `${VECTORIAL_LAYER}/${payload.id}/`,
       method: 'PUT',
       data: payload.data || {}
     })
   },
   delete (payload = {}) {
     return $axios({
-      url: `${LAYER}/${payload.id}/`,
+      url: `${VECTORIAL_LAYER}/${payload.id}/`,
       method: 'DELETE',
       data: payload.data || {}
     })

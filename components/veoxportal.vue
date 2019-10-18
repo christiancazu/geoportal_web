@@ -158,9 +158,9 @@ export default {
     );
 
     var layers = {
-      "Capa 0": source.getLayer("0"),
-      "Capa 1": source.getLayer("1"),
-      "Capa 2": source.getLayer("2")
+      "Capa 0": source.getVectorialLayer("0"),
+      "Capa 1": source.getVectorialLayer("1"),
+      "Capa 2": source.getVectorialLayer("2")
     };
     L.control.layers(layers).addTo(map);
   }

@@ -140,14 +140,14 @@ export default {
 
   computed: {
     ...mapState({
-      layers: state => state.layers.layers,
-      loadingLayers: state => state.layers.loadingLayers,
-      currentLayer: state => state.layers.currentLayer
+      layers: state => state.vectorialLayers.layers,
+      loadingLayers: state => state.vectorialLayers.loadingLayers,
+      currentLayer: state => state.vectorialLayers.currentLayer
     }),
 
     filteredData () {
       let search = this.search.toString().toLowerCase()
-      let layers = this.$store.state.layers.layers
+      let layers = this.$store.state.vectorialLayers.layers
       this.currentPage = 1
 
       return layers.filter(item => {
@@ -168,21 +168,21 @@ export default {
   },
 
   created () {
-    this.getLayers()
+    this.getVectorialLayers()
   },
 
   methods: {
     ...mapActions({
-      replaceCurrentLayer: 'layers/replaceCurrentLayer',
-      getLayers: 'layers/getLayers',
-      getLayer: 'layers/getLayer',
-      deleteLayer: 'layers/deleteLayer'
+      replaceCurrentLayer: 'vectorialLayers/replaceCurrentLayer',
+      getVectorialLayers: 'vectorialLayers/getVectorialLayers',
+      getVectorialLayer: 'vectorialLayers/getVectorialLayer',
+      deleteVectorialLayer: 'vectorialLayers/deleteVectorialLayer'
     }),
 
     async onLoadModalEditLayer (index, item) {
       try {
         // #TODO: spinner onRequest
-        await this.getLayer({ id: item.id })
+        await this.getVectorialLayer({ id: item.id })
         this.$_modalVisibilityMixin_open('modalEditLayer')
       
       } catch (error) {
@@ -197,7 +197,7 @@ export default {
     async onLoadModalDeleteLayer (index, item) {
       try {
         // #TODO: spinner onRequest
-        await this.getLayer({ id: item.id })
+        await this.getVectorialLayer({ id: item.id })
         // this.$_modalVisibilityMixin_open('modalDeleteLayer')
       
       } catch (error) {
@@ -212,10 +212,10 @@ export default {
     async deleteSelectedLayer(item) {
       try {
         // #TODO: spinner onRequest
-        await this.deleteLayer({ id: item.itemSelected.id })
+        await this.deleteVectorialLayer({ id: item.itemSelected.id })
         this.$toast.success(this.$SUCCESS.LAYER.DELETED)
 
-        await this.getLayers()
+        await this.getVectorialLayers()
 
       } catch (error) {
         const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER

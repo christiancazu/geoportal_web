@@ -254,7 +254,7 @@ export default {
   methods: {
 
     ...mapActions({
-      getLayers: "layers/getLayers",
+      getVectorialLayers: "vectorialLayers/getVectorialLayers",
       getGroupLayers: 'groupLayers/getGroupLayers'
     }),
 
@@ -268,10 +268,10 @@ export default {
         const data = this.$_objectToFormDataMixin_transform();
         
         try {
-          await this.$layerAPI.create({ data })
+          await this.$vectorialLayerAPI.create({ data })
 
           this.$refs.form.resetFields()
-          this.getLayers()
+          this.getVectorialLayers()
           this.$toast.success(this.$SUCCESS.LAYER.REGISTERED)
           this.$_modalVisibilityMixin_close('modalAddLayer')
 

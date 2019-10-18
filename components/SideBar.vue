@@ -63,8 +63,8 @@
           <i class="fas fa-layer-group"></i><span slot="title">Gestión de Capas</span>
         </div>
         <el-menu-item
-          :route="{ path: '/managementLayers/layers' }"
-          index="/managementLayers/layers"
+          :route="{ path: '/managementLayers/vectorialLayers' }"
+          index="/managementLayers/vectorialLayers"
         >
           Capas Vectoriales
         </el-menu-item>

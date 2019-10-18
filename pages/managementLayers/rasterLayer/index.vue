@@ -175,7 +175,7 @@ export default {
       this.$_modalVisibilityMixin_open('modalPublishRasterLayer')
     },
 
-    onLoadModalEditRasterLayer: function (index, groupLayer) {
+    onLoadModalEditRasterLayer: function (index, item) {
       this.replaceCurrentRasterLayer({ rasterLayer: item })
       this.$_modalVisibilityMixin_open('modalEditRasterLayer')
     },

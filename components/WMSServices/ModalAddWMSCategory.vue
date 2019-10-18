@@ -53,13 +53,11 @@
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
 import BaseModal from "@/components/base/BaseModal.vue";
-import BasePopover from "@/components/base/BasePopover.vue";
 import { SUCCESS } from "@/config/messages";
 
 export default {
   components: {
     BaseModal,
-    BasePopover
   },
 
   data() {

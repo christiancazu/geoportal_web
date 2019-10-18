@@ -11,45 +11,45 @@ export const state = () => ({
 })
 
 export const actions = {
-  async getLayers ({ commit }, payload) {
-    commit('REPLACE_LOADING_LAYERS', { loading: true })
+  async getVectorialLayers ({ commit }, payload) {
+    commit(REPLACE_LOADING_LAYERS, { loading: true })
     try {
-      const { data } = await this.$layerAPI.get(payload)
-      commit('REPLACE_LAYERS', { layers: data || [] })
+      const { data } = await this.$vectorialLayerAPI.get(payload)
+      commit(REPLACE_LAYERS, { layers: data || [] })
     } catch (error) {
       if (!error.response) return
     } finally {
-      commit('REPLACE_LOADING_LAYERS', { loading: false })
+      commit(REPLACE_LOADING_LAYERS, { loading: false })
     }
   },
 
-  async getLayer ({ commit }, payload) {
+  async getVectorialLayer ({ commit }, payload) {
     try {
-      const { data } = await this.$layerAPI.getById(payload)
-      commit('REPLACE_CURRENT_LAYER', { layer: data })
+      const { data } = await this.$vectorialLayerAPI.getById(payload)
+      commit(REPLACE_CURRENT_LAYER, { layer: data })
     } catch (error) { 
       throw error
     }
   },
 
-  async updateLayer ({ commit }, payload) {
+  async updateVectorialLayer ({ commit }, payload) {
     try {
-      await this.$layerAPI.update(payload)
+      await this.$vectorialLayerAPI.update(payload)
     } catch (error) { 
       throw error
     }
   },
 
-  async deleteLayer ({ commit }, payload) {
+  async deleteVectorialLayer ({ commit }, payload) {
     try {
-      await this.$layerAPI.delete(payload)
+      await this.$vectorialLayerAPI.delete(payload)
     } catch (error) { 
       throw error
     }
   },
 
   replaceCurrentLayer ({ commit }, payload) {
-    commit('REPLACE_CURRENT_LAYER', payload)
+    commit(REPLACE_CURRENT_LAYER, payload)
   }
 }
 
