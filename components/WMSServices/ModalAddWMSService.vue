@@ -161,7 +161,7 @@
       <modal-add-w-m-s-category />
 
     </template>
-    
+
   </BaseModal>
 </template>
 <script>
@@ -180,7 +180,7 @@ export default {
     ModalAddWMSCategory
   },
 
-  data() {
+  data () {
     return {
       processingForm: false,
       form: {
@@ -211,7 +211,7 @@ export default {
   },
 
   watch: {
-    modalAddWMSService(newState, oldState) {
+    modalAddWMSService (newState, oldState) {
       if (newState) {
         this.getWMSCategories();
         this.getWMSAuthors();
@@ -236,24 +236,21 @@ export default {
       getWMSServices: "WMSServices/getWMSServices"
     }),
 
-    submitForm() {
+    submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.processingForm = true;
           this.createWMSService().then(response => {
             console.warn(response);
-            const { status } = response.data;
-            if (status) {
-              this.$refs.form.resetFields();
-              this.getWMSServices();
-              this.$toast.success(SUCCESS.SERVICE.REGISTERED);
-            }
+            this.$refs.form.resetFields();
+            this.getWMSServices();
+            this.$toast.success(SUCCESS.SERVICE.REGISTERED);
           });
         }
       });
     },
 
-    createWMSService() {
+    createWMSService () {
       const formData = new FormData();
 
       let keys = Object.keys(this.form);

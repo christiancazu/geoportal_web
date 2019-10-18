@@ -14,7 +14,8 @@
         label-width="120px"
         class="demo-ruleForm"
         :disabled="processingForm"
-        @submit.prevent="submitForm">
+        @submit.prevent="submitForm"
+      >
 
         <el-form-item
           label="Título"
@@ -124,12 +125,9 @@ export default {
           .publish({ data })
           .then(response => {
             this.processingForm = false
-            const { status } = response.data;
-            if (status) {
-              this.$_modalVisibilityMixin_close('modalPublishRasterLayer')
-              this.$toast.success(`Capa raster ha sido publicado con éxito`)
-              this.getRasterLayers()
-            }
+            this.$_modalVisibilityMixin_close('modalPublishRasterLayer')
+            this.$toast.success(`Capa raster ha sido publicado con éxito`)
+            this.getRasterLayers()
             resolve(response)
           })
           .catch(error => {

@@ -59,7 +59,7 @@
             width="120"
           >
             <template slot-scope="scope">
-              <div v-if="scope.row.categoryId">
+              <div v-if="scope.row.categoryGroup.id">
                 <el-button
                   circle
                   icon="el-icon-edit"

@@ -62,7 +62,7 @@
         >
           <el-container>
             <el-select
-              v-model="form.categoryId"
+              v-model="form.categoryGroupId"
               :loading="loadingGroupLayers"
               value-key="id"
               filterable
@@ -123,7 +123,7 @@ export default {
       form: {
         order: 1,
         title: "",
-        categoryId: '',
+        categoryGroupId: '',
         description: ''
 
       },
@@ -163,7 +163,7 @@ export default {
       if (this.modalEditGroupLayer) {
         this.form.order = this.currentGroupLayer.order
         this.form.title = this.currentGroupLayer.title
-        this.form.categoryId = this.currentGroupLayer.categoryId || 1
+        this.form.categoryGroupId = this.currentGroupLayer.categoryGroupId || 1
         this.form.description = this.currentGroupLayer.title
       }
     }
@@ -179,13 +179,10 @@ export default {
         if (valid) {
           this.processingForm = true
           this.editLayer().then(response => {
-            const { status } = response.data;
-            if (status) {
-              this.$refs.form.resetFields();
-              this.$_modalVisibilityMixin_close('modalEditGroupLayer');
-              this.getGroupLayers();
-              this.$toast.success(`El grupo de capas ha sido modificado con éxito`)
-            }
+            this.$refs.form.resetFields();
+            this.$_modalVisibilityMixin_close('modalEditGroupLayer');
+            this.getGroupLayers();
+            this.$toast.success(`El grupo de capas ha sido modificado con éxito`)
           });
         }
       });
@@ -205,7 +202,7 @@ export default {
 
       return new Promise((resolve, reject) => {
         this.$groupLayerAPI
-          .edit({ data, id })
+          .update({ data, id })
           .then(response => {
             this.processingForm = false
             resolve(response);

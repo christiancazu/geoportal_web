@@ -61,7 +61,7 @@
         >
           <el-container>
             <el-select
-              v-model="form.categoryId"
+              v-model="form.categoryGroupId"
               value-key="id"
               filterable
               :loading="loadingGroupLayers"
@@ -124,7 +124,7 @@ export default {
         order: '1',
         title: "",
         description: "",
-        categoryId: ''
+        categoryGroupId: ''
       },
 
       rules: {
@@ -168,13 +168,10 @@ export default {
         if (valid) {
           this.processingForm = true
           this.createGroupLayer().then(response => {
-            const { status } = response.data
-            if (status) {
-              this.$refs.form.resetFields();
-              this.$_modalVisibilityMixin_close('modalAddGroupLayer')
-              this.getGroupLayers()
-              this.$toast.success(`El grupo de capa se registro con éxito`)
-            }
+            this.$refs.form.resetFields();
+            this.$_modalVisibilityMixin_close('modalAddGroupLayer')
+            this.getGroupLayers()
+            this.$toast.success(`El grupo de capa se registro con éxito`)
           });
         }
       });

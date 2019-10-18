@@ -17,7 +17,11 @@
         @submit.prevent="submitForm"
       >
         <!-- image -->
-        <el-form-item label="Imagen de Perfil" class="text-xs-center" prop="image">
+        <el-form-item
+          label="Imagen de Perfil"
+          class="text-xs-center"
+          prop="image"
+        >
           <el-upload
             class="avatar-uploader"
             action
@@ -26,21 +30,45 @@
             name="image"
             :before-upload="beforeAvatarUpload"
           >
-            <img v-if="imageSelected" :src="imageSelected" class="avatar" />
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <img
+              v-if="imageSelected"
+              :src="imageSelected"
+              class="avatar"
+            />
+            <i
+              v-else
+              class="el-icon-plus avatar-uploader-icon"
+            ></i>
           </el-upload>
         </el-form-item>
         <!-- name -->
-        <el-form-item label="Nombre" prop="name">
-          <el-input v-model="form.name" type="text" autocomplete="off" />
+        <el-form-item
+          label="Nombre"
+          prop="name"
+        >
+          <el-input
+            v-model="form.name"
+            type="text"
+            autocomplete="off"
+          />
         </el-form-item>
 
         <!-- instituto -->
-        <el-form-item label="Institución" prop="institute">
-          <el-input v-model="form.institute" type="text" autocomplete="off" />
+        <el-form-item
+          label="Institución"
+          prop="institute"
+        >
+          <el-input
+            v-model="form.institute"
+            type="text"
+            autocomplete="off"
+          />
         </el-form-item>
         <!-- objetivo -->
-        <el-form-item label="Descripción" prop="subject">
+        <el-form-item
+          label="Descripción"
+          prop="subject"
+        >
           <el-input
             v-model="form.subject"
             type="textarea"
@@ -78,7 +106,7 @@ export default {
   components: {
     BaseModal
   },
-  data() {
+  data () {
     return {
       imageSelected: "",
       processingForm: false,
@@ -188,7 +216,7 @@ export default {
   },
 
   watch: {
-    modalAddGeoreferentialImage: function(newState, oldState) {
+    modalAddGeoreferentialImage: function (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         this.imageSelected = "";
@@ -221,23 +249,20 @@ export default {
       getUsers: "users/getUsers"
     }),
 
-    submitForm() {
+    submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
           this.processingForm = true;
           this.createUser().then(response => {
-            const { status } = response.data;
-            if (status) {
-              this.$_modalVisibilityMixin_close("modalAddGeoreferentialImage");
-              this.$toast.success(`El usuario se registro con éxito`);
-              this.getUsers();
-            }
+            this.$_modalVisibilityMixin_close("modalAddGeoreferentialImage");
+            this.$toast.success(`El usuario se registro con éxito`);
+            this.getUsers();
           });
         }
       });
     },
 
-    createUser() {
+    createUser () {
       const formData = new FormData();
       let keys = Object.keys(this.form);
       keys.forEach(val => {
@@ -259,12 +284,12 @@ export default {
       });
     },
 
-    launchUploadAvatar(option) {
+    launchUploadAvatar (option) {
       this.imageSelected = URL.createObjectURL(option.file);
       this.form.image = option.file;
     },
 
-    beforeAvatarUpload(file) {
+    beforeAvatarUpload (file) {
       const isJPG = file.type === "image/png" || file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -277,7 +302,7 @@ export default {
       return isJPG && isLt2M;
     },
 
-    onchangeRegions(region) {
+    onchangeRegions (region) {
       const params = {
         id: region.id
       };
@@ -289,7 +314,7 @@ export default {
       this.getProvinces({ params });
     },
 
-    onchangeProvinces(province) {
+    onchangeProvinces (province) {
       const params = {
         id: province.id
       };
