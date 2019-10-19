@@ -14,7 +14,7 @@
         :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
-        :disabled="processingForm"
+        :disabled="$store.state.spinners.processingForm"
         @submit.prevent="submitForm"
       >
         <el-row :gutter="14">
@@ -95,7 +95,7 @@
     </template>
     <template v-slot:actions>
       <el-button
-        :disabled="processingForm"
+        :disabled="$store.state.spinners.processingForm"
         size="small"
         @click="$_modalVisibilityMixin_close('modalEditGroupLayer')"
       >CANCELAR</el-button>
@@ -103,7 +103,7 @@
         type="primary"
         size="small"
         native-type="submit"
-        :loading="processingForm"
+        :loading="$store.state.spinners.processingForm"
         @click.prevent="submitForm"
       >GUARDAR</el-button>
     </template>
@@ -119,7 +119,6 @@ export default {
   },
   data () {
     return {
-      processingForm: false,
       form: {
         order: 1,
         title: "",
@@ -177,7 +176,6 @@ export default {
     submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.processingForm = true
           this.editLayer().then(response => {
             this.$refs.form.resetFields();
             this.$_modalVisibilityMixin_close('modalEditGroupLayer');
@@ -204,11 +202,9 @@ export default {
         this.$groupLayerAPI
           .update({ data, id })
           .then(response => {
-            this.processingForm = false
             resolve(response);
           })
           .catch(error => {
-            this.processingForm = false
             reject(error)
           });
       });

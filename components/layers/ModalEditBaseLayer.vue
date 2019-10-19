@@ -13,7 +13,7 @@
         :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
-        :disabled="processingForm"
+        :disabled="$store.state.spinners.processingForm"
         @submit.prevent="submitForm"
       >
         <el-row
@@ -130,12 +130,12 @@
     <template v-slot:actions>
       <el-button
         size="small"
-        :disabled="processingForm"
+        :disabled="$store.state.spinners.processingForm"
         @click="$_modalVisibilityMixin_close('modalEditBaseLayer')"
       >CANCELAR</el-button>
       <el-button
         size="small"
-        :loading="processingForm"
+        :loading="$store.state.spinners.processingForm"
         type="primary"
         native-type="submit"
         @click.prevent="submitForm"
@@ -165,7 +165,6 @@ export default {
       tileLayer: null,
       checked: false,
       rangeZoom: [],
-      processingForm: false,
       form: {},
       marks: {
         1: "min: 1",
@@ -215,7 +214,6 @@ export default {
     },
 
     updateBaseLayer () {
-      this.processingForm = true
       this.form.minZoom = this.rangeZoom[0]
       this.form.maxZoom = this.rangeZoom[1]
 
@@ -226,14 +224,12 @@ export default {
         this.$baseLayerAPI
           .update({ data, id })
           .then(response => {
-            this.processingForm = false
             this.$_modalVisibilityMixin_close('modalEditBaseLayer')
             this.$toast.success(`Mapa Base registrado con éxito`)
             this.getBaseLayers()
             resolve(response)
           })
           .catch(error => {
-            this.processingForm = false
             reject(error)
           })
       })

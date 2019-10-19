@@ -215,7 +215,7 @@
             :loading="processingForm"
             type="primary"
             size="small"
-            @click="submitForm"
+            @click.prevent="submitForm"
           >
             GUARDAR
           </el-button>
@@ -225,8 +225,9 @@
   </base-page>
 </template>
 <script>
-import BasePage from '@/components/base/BasePage.vue'
+import BasePage from '@/components/base/BasePage'
 import { mapState, mapActions } from 'vuex'
+
 export default {
   components: {
     BasePage

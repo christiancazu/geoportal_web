@@ -34,7 +34,7 @@
         <el-table
           :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
-          v-loading="loadingLayers"
+          v-loading="$store.state.spinners.loadingTable"
         >
           <el-table-column
             label="N°"
@@ -51,9 +51,22 @@
             prop="title"
           />
           <el-table-column
-            label="Nombre style"
+            label="Descripción"
             prop="description"
           />
+          <el-table-column
+            label="Publicado"
+            prop="publicado"
+          >
+            <template slot-scope="scope">
+              <el-tag
+              style="text-align: center"
+                :type="scope.row.isPublished ? 'success' : 'info'"
+                effect="dark">
+                {{ scope.row.isPublished ? 'si' : 'no' }}
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             label="Acción"
             align="center"
@@ -115,7 +128,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import BasePage from '@/components/base/BasePage.vue'
+import BasePage from '@/components/base/BasePage'
 import ModalAddLayer from '@/components/layers/ModalAddLayer'
 import ModalEditLayer from '@/components/layers/ModalEditLayer'
 import BtnConfirm from "@/components/base/BaseBtnConfirm";
@@ -132,16 +145,17 @@ export default {
   },
   data () {
     return {
+      val: true,
       search: '',
       pagesize: 10,
       currentPage: 1
+      
     }
   },
 
   computed: {
     ...mapState({
       layers: state => state.vectorialLayers.layers,
-      loadingLayers: state => state.vectorialLayers.loadingLayers,
       currentLayer: state => state.vectorialLayers.currentLayer
     }),
 
@@ -168,7 +182,7 @@ export default {
   },
 
   created () {
-    this.getVectorialLayers()
+    this.fetchVectorialLayers()
   },
 
   methods: {
@@ -179,37 +193,27 @@ export default {
       deleteVectorialLayer: 'vectorialLayers/deleteVectorialLayer'
     }),
 
+    async fetchVectorialLayers () {
+      try {
+        await this.getVectorialLayers()
+        currentFilteredData
+      } catch (e) {}
+    },
+
     async onLoadModalEditLayer (index, item) {
       try {
-        // #TODO: spinner onRequest
         await this.getVectorialLayer({ id: item.id })
         this.$_modalVisibilityMixin_open('modalEditLayer')
-      
-      } catch (error) {
-        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
-        this.$toast.error(errorMessage)
-
-      } finally {
-        // #TODO: spinner offRequest
-      }
+      } catch (e) {}
     },
 
     async onLoadModalDeleteLayer (index, item) {
       try {
-        // #TODO: spinner onRequest
-        await this.getVectorialLayer({ id: item.id })
-        // this.$_modalVisibilityMixin_open('modalDeleteLayer')
-      
-      } catch (error) {
-        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
-        this.$toast.error(errorMessage)
-
-      } finally {
-        // #TODO: spinner offRequest
-      }
+        await this.getVectorialLayer({ id: item.id })      
+      } catch (e) {}
     },
 
-    async deleteSelectedLayer(item) {
+    async deleteSelectedLayer (item) {
       try {
         // #TODO: spinner onRequest
         await this.deleteVectorialLayer({ id: item.itemSelected.id })
@@ -221,19 +225,30 @@ export default {
         const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
         this.$toast.error(errorMessage)
 
-      } finally {
+      } 
         // #TODO: spinner offRequest
-      }
+      
+    },
+
+    test() {
+      console.warn('ga')
     },
 
     // pagination 
-    onChangeCurrentPage: function (currentPage) {
+    onChangeCurrentPage (currentPage) {
       this.currentPage = currentPage;
     },
 
-    onChangePageSize: function (pagesize) {
+    onChangePageSize (pagesize) {
       this.pagesize = pagesize;
     },
   }
 }
 </script>
+
+<style>
+.el-switch__label.is-active {
+  font-weight: inherit;
+  color: black
+}
+</style>

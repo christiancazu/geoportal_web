@@ -33,7 +33,7 @@
         </el-row>
         <el-table
           :data="filteredData"
-          v-loading="loadingGroupLayers"
+          v-loading="$store.state.spinners.loadingTable"
         >
           <el-table-column
             label="N°"
@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 import BasePage from "@/components/base/BasePage.vue";
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalAddGroupLayer from "@/components/layers/ModalAddGroupLayer.vue";
@@ -127,10 +127,6 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-    }),
-
     filteredData: function () {
       let search = this.search.toString().toLowerCase()
       let groupLayers = this.$store.state.groupLayers.groupLayers

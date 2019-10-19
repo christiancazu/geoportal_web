@@ -34,7 +34,7 @@
         <el-table
           :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
-          v-loading="loadingBaselayers"
+          v-loading="$store.state.spinners.loadingTable"
         >
           <el-table-column
             label="Nombre"
@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import BasePage from "@/components/base/BasePage.vue";
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalAddBaseLayer from "@/components/layers/ModalAddBaseLayer.vue";
@@ -134,11 +134,7 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      loadingBaselayers: state => state.baseLayers.loadingBaselayers
-    }),
-
-    filteredData: function () {
+    filteredData () {
       let search = this.search.toString().toLowerCase();
       let baseLayers = this.$store.state.baseLayers.baseLayers;
       this.currentPage = 1;

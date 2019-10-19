@@ -13,7 +13,7 @@
         :rules="rules"
         label-width="120px"
         class="demo-ruleForm"
-        :disabled="processingForm"
+        :disabled="$store.state.spinners.processingForm"
         @submit.prevent="submitForm"
       >
         <el-row :gutter="14">
@@ -103,7 +103,7 @@
     </template>
     <template v-slot:actions>
       <el-button
-        :disabled="processingForm"
+        :disabled="$store.state.spinners.processingForm"
         size="small"
         @click="$_modalVisibilityMixin_close('modalEditRasterLayer')"
       >
@@ -113,7 +113,7 @@
         type="primary"
         size="small"
         native-type="submit"
-        :loading="processingForm"
+        :loading="$store.state.spinners.processingForm"
         @click.prevent="submitForm"
       >
         GUARDAR
@@ -135,7 +135,6 @@ export default {
 
   data () {
     return {
-      processingForm: false,
       fileLayerSelected: null,
       fileStyleSelected: null,
       showFormStyle: false,
@@ -208,7 +207,6 @@ export default {
     }),
 
     async submitForm () {
-      this.processingForm = false
       let isFormValid = false
 
       await this.$refs.form.validate(result => isFormValid = result)
@@ -227,13 +225,7 @@ export default {
 
           await this.getRasterLayers()
 
-        } catch (error) {
-          const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
-          this.$toast.error(errorMessage)
-
-        } finally {
-          this.processingForm = false
-        }
+        } catch (e) {}
       }
     },
 
