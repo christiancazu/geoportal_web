@@ -36,7 +36,7 @@
         <el-table
           :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
-          v-loading="loadingRasterLayers"
+          v-loading="$store.state.spinners.loadingTable"
         >
           <el-table-column
             label="Nombre"
@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage.vue'
 import ModalPublishRasterLayer from '@/components/layers/ModalPublishRasterLayer.vue'
 import ModalAddRasterLayer from '@/components/layers/ModalAddRasterLayer.vue'
@@ -139,11 +139,7 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      loadingRasterLayers: state => state.rasterLayers.loadingRasterLayers
-    }),
-
-    filteredData: function () {
+    filteredData () {
       let search = this.search.toString().toLowerCase()
       let rasterLayers = this.$store.state.rasterLayers.rasterLayers
       this.currentPage = 1

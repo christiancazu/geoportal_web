@@ -66,7 +66,7 @@
               <label>INICIAR SESIÓN</label>
             </div>
             <el-form
-              ref="formLogin"
+              ref="form"
               label-position="top"
               :model="form"
               :rules="rules"
@@ -110,7 +110,7 @@
               </p> -->
               <el-form-item class="text-xs-center mb-0">
                 <el-button
-                  :loading="processingForm"
+                  :loading="$store.state.spinners.processingForm"
                   type="primary"
                   size="small"
                   native-type="submit"
@@ -136,9 +136,6 @@
 </template>
 
 <script>
-import { Promise } from 'q';
-import { ERRORS, SUCCESS } from '~/config/messages'
-
 export default {
   head: {
     title: 'Iniciar Sesión',
@@ -167,32 +164,25 @@ export default {
   },
 
   methods: {
-    submitForm () {
-      this.$refs.formLogin.validate((valid) => {
-        if (valid) {
-          this.login()
-        }
-      })
-    },
-    
-    async login () {
-      try {
-        this.processingForm = true
+    async submitForm () {
+      this.processingForm = true
+      let isFormValid = false
 
-        await this.$auth.loginWith('local', {
-          data: {
-            username: this.form.email,
-            password: this.form.password
-          }
-        })
-        this.$toast.success(SUCCESS.WELLCOME)
-        
-      } catch (error) {
-        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : ERRORS.ERROR_TRY_LATER
-        this.$toast.error(errorMessage)
-      } finally {
-        this.processingForm = false
+      await this.$refs.form.validate(result => isFormValid = result)
+
+      if (isFormValid) {
+        try {
+          await this.$auth.loginWith('local', {
+            data: {
+              username: this.form.email,
+              password: this.form.password
+            }
+          })
+          this.$toast.success(this.$SUCCESS.WELLCOME)
+          
+        } catch (e) {}
       }
+      this.processingForm = false
     }
   }
 }

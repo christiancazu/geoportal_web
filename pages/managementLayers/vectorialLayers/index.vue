@@ -34,7 +34,7 @@
         <el-table
           :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
-          v-loading="loadingLayers"
+          v-loading="$store.state.spinners.loadingTable"
         >
           <el-table-column
             label="N°"
@@ -51,13 +51,30 @@
             prop="title"
           />
           <el-table-column
-            label="Nombre style"
+            label="Descripción"
             prop="description"
-          />
+          >
+          <template slot-scope="scope">
+            <span v-html="$options.filters.shrinkText(scope.row.description)"></span>
+          </template>
+          </el-table-column>
+          <el-table-column
+            label="Publicado"
+            prop="publicado"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <el-tag
+                :type="scope.row.isPublished ? 'success' : 'info'"
+                effect="plain">
+                {{ scope.row.isPublished ? 'si' : 'no' }}
+              </el-tag>
+            </template>
+          </el-table-column>
           <el-table-column
             label="Acción"
             align="center"
-            width="120"
+            width="180"
           >
             <template slot-scope="scope">
               <el-tooltip content="Editar" placement="bottom">
@@ -66,27 +83,44 @@
                   icon="el-icon-edit"
                   size="small"
                   type="primary"
-                  @click="onLoadModalEditLayer(scope.$index, scope.row)"
+                  @click="onLoadModalEditLayer(scope.row)"
                 />
               </el-tooltip>
+
               <el-tooltip content="Eliminar" placement="bottom">
                 <el-button
                   circle
                   icon="el-icon-delete"
                   size="small"
                   type="danger"
-                  @click="onLoadModalDeleteLayer(scope.$index, scope.row)"
+                  @click="onLoadModalDeleteLayer(scope.row)"
                 />
-
                 <btn-confirm
                   :item-selected="scope.row"
                   @confirmed-action="deleteSelectedLayer"
                   accion="deleted"
-                  title="¿Eliminar Capa?"
-                  body-text="¿Esta seguro de continuar con la operación?"
-                />
-                
+                  title="Eliminar Capa"
+                  body-text="¿Está seguro de eliminar esta capa?"
+                />                
               </el-tooltip>
+
+              <el-tooltip content="Publicar" placement="bottom">
+                <el-button
+                  circle
+                  icon="shared"
+                  size="small"
+                  type="accepted"
+                />
+               <btn-confirm
+                  :item-selected="scope.row"
+                  :disabled="scope.row.isPublished"
+                  @confirmed-action="publishSelectedLayer"
+                  accion="shared"
+                  title="Publicar Capa"
+                  body-text="¿Está seguro de publicar esta capa?"
+                />
+              </el-tooltip>
+
             </template>
           </el-table-column>
         </el-table>
@@ -115,7 +149,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import BasePage from '@/components/base/BasePage.vue'
+import BasePage from '@/components/base/BasePage'
 import ModalAddLayer from '@/components/layers/ModalAddLayer'
 import ModalEditLayer from '@/components/layers/ModalEditLayer'
 import BtnConfirm from "@/components/base/BaseBtnConfirm";
@@ -130,18 +164,26 @@ export default {
   head: {
     title: 'Capas vectoriales | GEOVISOR',
   },
+
+  filters: {
+    shrinkText (text) {
+      return text.length > 16 ? `${text.substring(0, 16)} <i class="fas fa-ellipsis-h"></i>` : text
+    }
+  },
+
   data () {
     return {
+      val: true,
       search: '',
       pagesize: 10,
       currentPage: 1
+      
     }
   },
 
   computed: {
     ...mapState({
       layers: state => state.vectorialLayers.layers,
-      loadingLayers: state => state.vectorialLayers.loadingLayers,
       currentLayer: state => state.vectorialLayers.currentLayer
     }),
 
@@ -168,7 +210,7 @@ export default {
   },
 
   created () {
-    this.getVectorialLayers()
+    this.fetchVectorialLayers()
   },
 
   methods: {
@@ -176,64 +218,72 @@ export default {
       replaceCurrentLayer: 'vectorialLayers/replaceCurrentLayer',
       getVectorialLayers: 'vectorialLayers/getVectorialLayers',
       getVectorialLayer: 'vectorialLayers/getVectorialLayer',
+      publishVectorialLayer: 'vectorialLayers/publishVectorialLayer',
       deleteVectorialLayer: 'vectorialLayers/deleteVectorialLayer'
     }),
 
-    async onLoadModalEditLayer (index, item) {
+    async fetchVectorialLayers () {
       try {
-        // #TODO: spinner onRequest
+        await this.getVectorialLayers()
+        currentFilteredData
+      } 
+      catch (e) {}
+    },
+
+    async onLoadModalEditLayer (item) {
+      try {
         await this.getVectorialLayer({ id: item.id })
         this.$_modalVisibilityMixin_open('modalEditLayer')
-      
-      } catch (error) {
-        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
-        this.$toast.error(errorMessage)
-
-      } finally {
-        // #TODO: spinner offRequest
-      }
+      } 
+      catch (e) {}
     },
 
-    async onLoadModalDeleteLayer (index, item) {
+    async onLoadModalDeleteLayer (item) {
       try {
-        // #TODO: spinner onRequest
-        await this.getVectorialLayer({ id: item.id })
-        // this.$_modalVisibilityMixin_open('modalDeleteLayer')
-      
-      } catch (error) {
-        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
-        this.$toast.error(errorMessage)
-
-      } finally {
-        // #TODO: spinner offRequest
-      }
+        await this.getVectorialLayer({ id: item.id })      
+      } 
+      catch (e) {}
     },
 
-    async deleteSelectedLayer(item) {
+    async deleteSelectedLayer (item) {
       try {
-        // #TODO: spinner onRequest
         await this.deleteVectorialLayer({ id: item.itemSelected.id })
         this.$toast.success(this.$SUCCESS.LAYER.DELETED)
 
         await this.getVectorialLayers()
+      } 
+      catch (e) {}
+    },
 
-      } catch (error) {
-        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
-        this.$toast.error(errorMessage)
+    // # TODO fix data to send to endpoint
+    async publishSelectedLayer (item) {
+      try {
+        await this.publishVectorialLayer({ 
+          data: {
+            pk: item.itemSelected.id
+          } 
+        })
+        this.$toast.success(this.$SUCCESS.LAYER.PUBLISHED)
 
-      } finally {
-        // #TODO: spinner offRequest
-      }
+        await this.getVectorialLayers()
+      } 
+      catch (e) {}
     },
 
     // pagination 
-    onChangeCurrentPage: function (currentPage) {
+    onChangeCurrentPage (currentPage) {
       this.currentPage = currentPage;
     },
 
-    onChangePageSize: function (pagesize) {
+    onChangePageSize (pagesize) {
       this.pagesize = pagesize;
     },
   }
 }
 </script>
+
+<style scoped>
+.el-tag--dark {
+  font-size: 1rem !important;
+}
+</style>

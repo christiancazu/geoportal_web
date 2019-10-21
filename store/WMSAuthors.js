@@ -1,24 +1,19 @@
 import {
-  REPLACE_WMS_AUTHORS,
-  REPLACE_LOADING_WMS_AUTHORS
+  REPLACE_WMS_AUTHORS
 } from '../types/mutation-types'
 
 export const state = () => ({
-  WMSAuthors: [],
-  loadingWMSAuthors: false,
+  WMSAuthors: []
 })
 
 export const actions = {
   async getWMSAuthors ({ commit }, payload) {
-    commit('REPLACE_LOADING_WMS_AUTHORS', { loading: true })
-
     try {
       const { data } = await this.$WMSAuthorAPI.index(payload)
-      commit('REPLACE_WMS_AUTHORS', { WMSAuthors: data || [] })
-    } catch (error) {
-      if (!error.response) return
-    } finally {
-      commit('REPLACE_LOADING_WMS_AUTHORS', { loading: false })
+      commit(REPLACE_WMS_AUTHORS, { WMSAuthors: data || [] })
+    } 
+    catch (error) {
+      throw error
     }
   }
 }
@@ -26,8 +21,5 @@ export const actions = {
 export const mutations = {
   [REPLACE_WMS_AUTHORS] (state, { WMSAuthors }) {
     state.WMSAuthors = WMSAuthors
-  },
-  [REPLACE_LOADING_WMS_AUTHORS] (state, { loading }) {
-    state.loadingWMSAuthors = loading
-  },
+  }
 }

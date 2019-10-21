@@ -1,49 +1,59 @@
 import Vue from 'vue'
-import { ERRORS } from '~/config/messages'
+import { VECTORIAL_LAYER } from '@/config/endpoints'
 
 export default ({ $axios, store }) => {
   // timout for request
   $axios.defaults.timeout = 30000
 
-  $axios.onRequest((config) => {
-    const token = store.$auth.getToken('local')
+  $axios.onRequest((config) => {    
+    if (config.method === 'get') {
+      // getting the endpoint name to assign his own spinner loader state
+      // const endpoints = config.url.replace(/config.baseURL|.$/, '')
 
-    if (token) {
-      config.headers.Authorization = `${token}`
+      // switch (endpoints) {
+      //   case VECTORIAL_LAYER:
+      //     store.commit('spinners/ENABLE_LOADING_TABLE')
+      //     break;
+      
+      //   default:
+      //     break;
+      // }
+      store.commit('spinners/ENABLE_LOADING_TABLE')
+    } else {
+      store.commit('spinners/ENABLE_PROCESSING_FORM')
     }
-
-    // console.log('Making request to ' + config.url)
   })
 
   $axios.onResponse((response) => {
-    // const code = response.status
-    // const status = response.data.status
-    // const message = response.data.message
-    // console.warn(code);
-    // if (code === 200 && status) {
-    //   Vue.prototype.$toasted.info(message)
-    // }
+    store.commit('spinners/DISABLE_PROCESSING_FORM')
+    store.commit('spinners/DISABLE_LOADING_TABLE')
   })
 
   $axios.onError((error) => {
-    // time expired for request
-    if (error.code === 'ECONNABORTED') {
-      Vue.prototype.$toasted.error(ERRORS.ERROR_TRY_LATER)
-      return
-    }
-
+    store.commit('spinners/DISABLE_PROCESSING_FORM')
+    store.commit('spinners/DISABLE_LOADING_TABLE')
     const code = parseInt(error.response && error.response.status)
 
-    if (code === 401) {
-      redirect('/login')
-    }
+    // handle message error from server or default error message
+    let errorMessage = ""
 
-    if (code === 404) {
-      Vue.prototype.$toasted.error(ERRORS.ROUTE_NOT_FOUND)
+    switch (code) {
+      case 'ECONNABORTED': // time expired for request
+        errorMessage = Vue.prototype.$ERRORS.ERROR_TRY_LATER
+        break
+      case 401:
+        errorMessage = Vue.prototype.$ERRORS.TIME_EXPIRED_TRY_AGAIN
+        redirect('/login')
+        break
+      case 404:
+        errorMessage = Vue.prototype.$ERRORS.ROUTE_NOT_FOUND
+        break
+      case 422:
+        errorMessage = Vue.prototype.$ERRORS.INVALID_DATA
+        break
+      default:
+        errorMessage = typeof error.response !== 'undefined' ? error.response.data : Vue.prototype.$ERRORS.ERROR_TRY_LATER
     }
-
-    if (code === 422) {
-      Vue.prototype.$toasted.error(ERRORS.INVALID_DATA)
-    }
+    Vue.prototype.$toasted.error(errorMessage)
   })
 }
