@@ -13,7 +13,8 @@ export const actions = {
     try {
       const { data } = await this.$vectorialLayerAPI.get()
       commit(REPLACE_LAYERS, { layers: data || [] })
-    } catch (error) {
+    } 
+    catch (error) {
       throw error
     } 
   },
@@ -22,7 +23,17 @@ export const actions = {
     try {
       const { data } = await this.$vectorialLayerAPI.getById(payload)
       commit(REPLACE_CURRENT_LAYER, { layer: data })
-    } catch (error) {
+    } 
+    catch (error) {
+      throw error
+    }
+  },
+
+  async publishVectorialLayer ({ commit }, payload) {
+    try {
+      await this.$vectorialLayerAPI.publish(payload)
+    } 
+    catch (error) {
       throw error
     }
   },
@@ -30,7 +41,8 @@ export const actions = {
   async updateVectorialLayer ({ commit }, payload) {
     try {
       await this.$vectorialLayerAPI.update(payload)
-    } catch (error) {
+    } 
+    catch (error) {
       throw error
     }
   },
@@ -38,7 +50,8 @@ export const actions = {
   async deleteVectorialLayer ({ commit }, payload) {
     try {
       await this.$vectorialLayerAPI.delete(payload)
-    } catch (error) {
+    } 
+    catch (error) {
       throw error
     }
   },

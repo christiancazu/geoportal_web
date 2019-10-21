@@ -22,6 +22,13 @@ export default $axios => ({
       data: payload.data || {}
     })
   },
+  publish (payload = {}) {
+    return $axios({
+      url: `${VECTORIAL_LAYER}/publish/`,
+      method: 'POST',
+      data: payload.data || {}
+    })
+  },
   update (payload = {}) {
     return $axios({
       url: `${VECTORIAL_LAYER}/${payload.id}/`,

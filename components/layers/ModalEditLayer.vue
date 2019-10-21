@@ -86,7 +86,6 @@
             :rows="3"
             autocomplete="off"
             :maxlength="300"
-            :show-word-limit="true"
           />
         </el-form-item>
         <el-form-item

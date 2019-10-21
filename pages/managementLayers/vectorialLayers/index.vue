@@ -53,16 +53,20 @@
           <el-table-column
             label="Descripción"
             prop="description"
-          />
+          >
+          <template slot-scope="scope">
+            <span v-html="$options.filters.shrinkText(scope.row.description)"></span>
+          </template>
+          </el-table-column>
           <el-table-column
             label="Publicado"
             prop="publicado"
+            align="center"
           >
             <template slot-scope="scope">
               <el-tag
-              style="text-align: center"
                 :type="scope.row.isPublished ? 'success' : 'info'"
-                effect="dark">
+                effect="plain">
                 {{ scope.row.isPublished ? 'si' : 'no' }}
               </el-tag>
             </template>
@@ -70,7 +74,7 @@
           <el-table-column
             label="Acción"
             align="center"
-            width="120"
+            width="180"
           >
             <template slot-scope="scope">
               <el-tooltip content="Editar" placement="bottom">
@@ -79,27 +83,44 @@
                   icon="el-icon-edit"
                   size="small"
                   type="primary"
-                  @click="onLoadModalEditLayer(scope.$index, scope.row)"
+                  @click="onLoadModalEditLayer(scope.row)"
                 />
               </el-tooltip>
+
               <el-tooltip content="Eliminar" placement="bottom">
                 <el-button
                   circle
                   icon="el-icon-delete"
                   size="small"
                   type="danger"
-                  @click="onLoadModalDeleteLayer(scope.$index, scope.row)"
+                  @click="onLoadModalDeleteLayer(scope.row)"
                 />
-
                 <btn-confirm
                   :item-selected="scope.row"
                   @confirmed-action="deleteSelectedLayer"
                   accion="deleted"
-                  title="¿Eliminar Capa?"
-                  body-text="¿Esta seguro de continuar con la operación?"
-                />
-                
+                  title="Eliminar Capa"
+                  body-text="¿Está seguro de eliminar esta capa?"
+                />                
               </el-tooltip>
+
+              <el-tooltip content="Publicar" placement="bottom">
+                <el-button
+                  circle
+                  icon="shared"
+                  size="small"
+                  type="accepted"
+                />
+               <btn-confirm
+                  :item-selected="scope.row"
+                  :disabled="scope.row.isPublished"
+                  @confirmed-action="publishSelectedLayer"
+                  accion="shared"
+                  title="Publicar Capa"
+                  body-text="¿Está seguro de publicar esta capa?"
+                />
+              </el-tooltip>
+
             </template>
           </el-table-column>
         </el-table>
@@ -143,6 +164,13 @@ export default {
   head: {
     title: 'Capas vectoriales | GEOVISOR',
   },
+
+  filters: {
+    shrinkText (text) {
+      return text.length > 16 ? `${text.substring(0, 16)} <i class="fas fa-ellipsis-h"></i>` : text
+    }
+  },
+
   data () {
     return {
       val: true,
@@ -190,6 +218,7 @@ export default {
       replaceCurrentLayer: 'vectorialLayers/replaceCurrentLayer',
       getVectorialLayers: 'vectorialLayers/getVectorialLayers',
       getVectorialLayer: 'vectorialLayers/getVectorialLayer',
+      publishVectorialLayer: 'vectorialLayers/publishVectorialLayer',
       deleteVectorialLayer: 'vectorialLayers/deleteVectorialLayer'
     }),
 
@@ -197,41 +226,48 @@ export default {
       try {
         await this.getVectorialLayers()
         currentFilteredData
-      } catch (e) {}
+      } 
+      catch (e) {}
     },
 
-    async onLoadModalEditLayer (index, item) {
+    async onLoadModalEditLayer (item) {
       try {
         await this.getVectorialLayer({ id: item.id })
         this.$_modalVisibilityMixin_open('modalEditLayer')
-      } catch (e) {}
+      } 
+      catch (e) {}
     },
 
-    async onLoadModalDeleteLayer (index, item) {
+    async onLoadModalDeleteLayer (item) {
       try {
         await this.getVectorialLayer({ id: item.id })      
-      } catch (e) {}
+      } 
+      catch (e) {}
     },
 
     async deleteSelectedLayer (item) {
       try {
-        // #TODO: spinner onRequest
         await this.deleteVectorialLayer({ id: item.itemSelected.id })
         this.$toast.success(this.$SUCCESS.LAYER.DELETED)
 
         await this.getVectorialLayers()
-
-      } catch (error) {
-        const errorMessage = typeof error.response !== 'undefined' ? error.response.data : this.$ERRORS.ERROR_TRY_LATER
-        this.$toast.error(errorMessage)
-
       } 
-        // #TODO: spinner offRequest
-      
+      catch (e) {}
     },
 
-    test() {
-      console.warn('ga')
+    // # TODO fix data to send to endpoint
+    async publishSelectedLayer (item) {
+      try {
+        await this.publishVectorialLayer({ 
+          data: {
+            pk: item.itemSelected.id
+          } 
+        })
+        this.$toast.success(this.$SUCCESS.LAYER.PUBLISHED)
+
+        await this.getVectorialLayers()
+      } 
+      catch (e) {}
     },
 
     // pagination 
@@ -246,9 +282,8 @@ export default {
 }
 </script>
 
-<style>
-.el-switch__label.is-active {
-  font-weight: inherit;
-  color: black
+<style scoped>
+.el-tag--dark {
+  font-size: 1rem !important;
 }
 </style>

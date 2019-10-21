@@ -2,6 +2,7 @@
   <el-button
     :type="type"
     :icon="icon"
+    :disabled="disabled"
     size="small"
     circle
     @click="open"
@@ -27,6 +28,10 @@ export default {
       type: Object,
       default: null
     },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     input: {
       type: Boolean,
       default: false
@@ -48,27 +53,34 @@ export default {
   },
 
   computed: {
-    type: function () {
+    type () {
       if (this.accion === "deleted" || this.accion === "rejected") {
         return "danger";
-      } else if (this.accion === "accepted") {
+      } else if (this.accion === "accepted" || 'shared') {
         return "success";
       } else {
         return "info";
       }
     },
-    icon: function () {
-      if (this.accion === "deleted") {
-        return "el-icon-delete";
-      } else if (this.accion === "accepted") {
-        return "el-icon-check";
-      } else if (this.accion === "rejected") {
-        return "el-icon-close";
-      } else {
-        return "el-icon-info";
+    icon () {
+      switch (this.accion) {
+        case 'deleted':
+          return "el-icon-delete";
+          break;
+        case 'accepted':
+          return "el-icon-check"
+          break;
+        case 'rejected':
+          return "el-icon-close"
+          break;
+        case 'shared':
+          return "el-icon-share"
+          break;
+        default:
+          return "el-icon-info"
       }
     },
-    typeConfirm: function () {
+    typeConfirm () {
       if (this.accion === "deleted" || this.accion === "rejected") {
         return "error";
       } else if (this.accion === "accepted") {

@@ -36,8 +36,6 @@ export default ({ $axios, store }) => {
 
     // handle message error from server or default error message
     let errorMessage = ""
-    
-  console.warn('errorr', error.response); 
 
     switch (code) {
       case 'ECONNABORTED': // time expired for request

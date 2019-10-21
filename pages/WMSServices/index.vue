@@ -36,7 +36,7 @@
           :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
           style="width: 100%"
           lazy
-          v-loading="loadingWMSServices"
+          v-loading="$store.state.spinners.loadingTable"
         >
           <el-table-column
             label="URL"
@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage'
 import BtnConfirm from "@/components/base/BaseBtnConfirm";
 import ModalAddWMSService from '@/components/WMSServices/ModalAddWMSService'
@@ -132,10 +132,6 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      loadingWMSServices: state => state.WMSServices.loadingWMSServices
-    }),
-
     filteredData () {
       let search = this.search.toString().toLowerCase()
       let WMSServices = this.$store.state.WMSServices.WMSServices
