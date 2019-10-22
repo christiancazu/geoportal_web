@@ -104,9 +104,13 @@
       </el-container>
     </template>
     <template v-slot:modals>
-      <ModalPublishRasterLayer />
-      <ModalAddRasterLayer />
-      <ModalEditRasterLayer />
+
+      <modal-publish-raster-layer />
+      
+      <modal-add-raster-layer />
+
+      <modal-edit-raster-layer />
+    
     </template>
   </BasePage>
 </template>

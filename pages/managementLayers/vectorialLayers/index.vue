@@ -1,41 +1,19 @@
 <template>
-  <BasePage title="Capas vectoriales">
-    <template v-slot:itemsActions>
-      <el-button
-        size="mini"
-        type="primary"
-        icon="el-icon-plus"
-        @click="$_modalVisibilityMixin_open('modalAddLayer')"
-      >
-        Nueva Capa
-      </el-button>
+  <base-page page-header-title="Capas vectoriales">
+
+    <template v-slot:page-header>
+      <base-page-header 
+        modal-add-state-name="modalAddLayer"
+        btn-name="Nueva Capa"
+      />
     </template>
-    <template v-slot:content>
-      <el-container direction="vertical">
-        <el-row
-          type="flex"
-          justify="end"
-          :gutter="10"
-        >
-          <el-col
-            :xs="24" :sm="12" :md="8"
-          >
-            <div>
-              <el-input
-                v-model="search"
-                prefix-icon="el-icon-search"
-                size="small"
-                placeholder="Buscar..."
-                clearable
-              />
-            </div>
-          </el-col>
-        </el-row>
-        <el-table
-          :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-          style="width: 100%"
-          v-loading="$store.state.spinners.loadingTable"
-        >
+
+    <template v-slot:page-body>
+      <base-page-body 
+        :data-context="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+        @text-to-search="search = $event"
+      >
+        <template v-slot:table>
           <el-table-column
             label="N°"
             align="center"
@@ -89,11 +67,8 @@
 
               <el-tooltip content="Eliminar" placement="bottom">
                 <el-button
-                  circle
-                  icon="el-icon-delete"
-                  size="small"
-                  type="danger"
-                  @click="onLoadModalDeleteLayer(scope.row)"
+                  edit
+                  delete
                 />
                 <btn-confirm
                   :item-selected="scope.row"
@@ -123,28 +98,19 @@
 
             </template>
           </el-table-column>
-        </el-table>
-        <el-pagination
-          small
-          class="pt-4 text-xs-right"
-          :pager-size="100"
-          :page-size="pagesize"
-          layout="prev, pager, next, sizes"
-          :total="filteredData.length"
-          :current-page="currentPage"
-          @current-change="onChangeCurrentPage"
-          @size-change="onChangePageSize"
-        />
-      </el-container>
+        </template>
+      </base-page-body>
     </template>
-    <template v-slot:modals>
+
+    <template v-slot:page-modals>
 
       <modal-add-layer />
       
       <modal-edit-layer />
     
     </template>
-  </BasePage>
+
+  </base-page>
 </template>
 
 <script>
@@ -152,14 +118,18 @@ import { mapState, mapActions } from 'vuex'
 import BasePage from '@/components/base/BasePage'
 import ModalAddLayer from '@/components/layers/ModalAddLayer'
 import ModalEditLayer from '@/components/layers/ModalEditLayer'
-import BtnConfirm from "@/components/base/BaseBtnConfirm";
+import BtnConfirm from "@/components/base/BaseBtnConfirm"
+import BasePageHeader from "@/components/base/BasePageHeader"
+import BasePageBody from "@/components/base/BasePageBody"
 
 export default {
   components: {
     BasePage,
     ModalAddLayer,
     ModalEditLayer,
-    BtnConfirm
+    BtnConfirm,
+    BasePageHeader,
+    BasePageBody
   },
   head: {
     title: 'Capas vectoriales | GEOVISOR',
@@ -176,8 +146,6 @@ export default {
       val: true,
       search: '',
       pagesize: 10,
-      currentPage: 1
-      
     }
   },
 
@@ -268,16 +236,7 @@ export default {
         await this.getVectorialLayers()
       } 
       catch (e) {}
-    },
-
-    // pagination 
-    onChangeCurrentPage (currentPage) {
-      this.currentPage = currentPage;
-    },
-
-    onChangePageSize (pagesize) {
-      this.pagesize = pagesize;
-    },
+    }
   }
 }
 </script>
