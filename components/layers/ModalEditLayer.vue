@@ -173,7 +173,7 @@ export default {
 
   computed: {
     ...mapState({
-      currentLayer: state => state.vectorialLayers.currentLayer,
+      currentItemContext: state => state.vectorialLayers.currentItemContext,
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
       modalEditLayer: state => state.modalsVisibilities.modalEditLayer
@@ -190,12 +190,12 @@ export default {
       this.getGroupLayers()
     },
 
-    currentLayer (newState, oldState) {
-      this.form.order = this.currentLayer.order
-      this.form.title = this.currentLayer.title
-      this.form.name = this.currentLayer.title
-      this.form.description = this.currentLayer.description
-      this.form.groupLayerId = this.currentLayer.groupLayerId
+    currentItemContext (newState, oldState) {
+      this.form.order = this.currentItemContext.order
+      this.form.title = this.currentItemContext.title
+      this.form.name = this.currentItemContext.title
+      this.form.description = this.currentItemContext.description
+      this.form.groupLayerId = this.currentItemContext.groupLayerId
     }
   },
 
@@ -216,7 +216,7 @@ export default {
 
         try {          
           await this.updateVectorialLayer({
-            id: this.currentLayer.id,
+            id: this.currentItemContext.id,
             data
           })
           this.$refs.form.resetFields()

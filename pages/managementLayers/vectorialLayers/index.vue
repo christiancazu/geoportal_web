@@ -9,9 +9,9 @@
     </template>
 
     <template v-slot:page-body>
-      <base-page-body 
-        :data-context="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-        @text-to-search="search = $event"
+      <base-page-body-table
+        :data-context="$_pageBodyTableMixin_filteredData"
+        @text-to-search="pageBodyTableMixin_textToSearch = $event"
       >
         <template v-slot:table>
           <el-table-column
@@ -33,7 +33,7 @@
             prop="description"
           >
           <template slot-scope="scope">
-            <span v-html="$options.filters.shrinkText(scope.row.description)"></span>
+            <span v-html="$options.filters.$_pageBodyTableMixin_shrinkText(scope.row.description)"></span>
           </template>
           </el-table-column>
           <el-table-column
@@ -99,7 +99,7 @@
             </template>
           </el-table-column>
         </template>
-      </base-page-body>
+      </base-page-body-table>
     </template>
 
     <template v-slot:page-modals>
@@ -114,93 +114,43 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import BasePage from '@/components/base/BasePage'
 import ModalAddLayer from '@/components/layers/ModalAddLayer'
 import ModalEditLayer from '@/components/layers/ModalEditLayer'
-import BtnConfirm from "@/components/base/BaseBtnConfirm"
-import BasePageHeader from "@/components/base/BasePageHeader"
-import BasePageBody from "@/components/base/BasePageBody"
+
+import pageBodyTableMixin from '@/mixins/pageBodyTableMixin'
+
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
-    BasePage,
     ModalAddLayer,
-    ModalEditLayer,
-    BtnConfirm,
-    BasePageHeader,
-    BasePageBody
+    ModalEditLayer
   },
+
+  mixins: [pageBodyTableMixin],
+  
   head: {
     title: 'Capas vectoriales | GEOVISOR',
   },
 
-  filters: {
-    shrinkText (text) {
-      return text.length > 16 ? `${text.substring(0, 16)} <i class="fas fa-ellipsis-h"></i>` : text
-    }
-  },
-
   data () {
     return {
-      val: true,
-      search: '',
-      pagesize: 10,
+      storeBase: 'vectorialLayers',
+      criteriaProps: ['title', 'name', 'description'],
     }
-  },
-
-  computed: {
-    ...mapState({
-      layers: state => state.vectorialLayers.layers,
-      currentLayer: state => state.vectorialLayers.currentLayer
-    }),
-
-    filteredData () {
-      let search = this.search.toString().toLowerCase()
-      let layers = this.$store.state.vectorialLayers.layers
-      this.currentPage = 1
-
-      return layers.filter(item => {
-        // checking title
-        if (item.title && item.title.toString().toLowerCase().includes(search)) {
-          return item
-        }
-        // checking name
-        if (item.name && item.name.toString().toLowerCase().includes(search)) {
-          return item
-        }
-        // checking description
-        if (item.description && item.description.toString().toLowerCase().includes(search)) {
-          return item
-        }
-      })
-    },
-  },
-
-  created () {
-    this.fetchVectorialLayers()
   },
 
   methods: {
     ...mapActions({
       replaceCurrentLayer: 'vectorialLayers/replaceCurrentLayer',
-      getVectorialLayers: 'vectorialLayers/getVectorialLayers',
       getVectorialLayer: 'vectorialLayers/getVectorialLayer',
       publishVectorialLayer: 'vectorialLayers/publishVectorialLayer',
-      deleteVectorialLayer: 'vectorialLayers/deleteVectorialLayer'
+      deleteVectorialLayer: 'vectorialLayers/deleteVectorialLayer',
     }),
-
-    async fetchVectorialLayers () {
-      try {
-        await this.getVectorialLayers()
-        currentFilteredData
-      } 
-      catch (e) {}
-    },
 
     async onLoadModalEditLayer (item) {
       try {
-        await this.getVectorialLayer({ id: item.id })
+        await this.getItemContext(item.id)
         this.$_modalVisibilityMixin_open('modalEditLayer')
       } 
       catch (e) {}
@@ -228,7 +178,7 @@ export default {
       try {
         await this.publishVectorialLayer({ 
           data: {
-            pk: item.itemSelected.id
+            'pk': item.itemSelected.id
           } 
         })
         this.$toast.success(this.$SUCCESS.LAYER.PUBLISHED)

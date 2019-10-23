@@ -1,28 +1,28 @@
 import {
-  REPLACE_LAYERS,
-  REPLACE_CURRENT_LAYER
+  UPDATE_DATA_CONTEXT,
+  UPDATE_CURRENT_ITEM_CONTEXT
 } from '../types/mutation-types'
 
 export const state = () => ({
-  layers: [],
-  currentLayer: null
+  dataContext: [],
+  currentItemContext: null
 })
 
 export const actions = {
-  async getVectorialLayers ({ commit }) {
+  async getDataContext ({ commit }) {
     try {
       const { data } = await this.$vectorialLayerAPI.get()
-      commit(REPLACE_LAYERS, { layers: data || [] })
+      commit(UPDATE_DATA_CONTEXT, { dataContext: data || [] })
     } 
     catch (error) {
       throw error
     } 
   },
 
-  async getVectorialLayer ({ commit }, payload) {
+  async getItemContext ({ commit }, payload) {
     try {
       const { data } = await this.$vectorialLayerAPI.getById(payload)
-      commit(REPLACE_CURRENT_LAYER, { layer: data })
+      commit(UPDATE_CURRENT_ITEM_CONTEXT, { itemContext: data })
     } 
     catch (error) {
       throw error
@@ -57,15 +57,15 @@ export const actions = {
   },
 
   replaceCurrentLayer ({ commit }, payload) {
-    commit(REPLACE_CURRENT_LAYER, payload)
+    commit(UPDATE_CURRENT_ITEM_CONTEXT, payload)
   }
 }
 
 export const mutations = {
-  [REPLACE_LAYERS] (state, { layers }) {
-    state.layers = layers
+  [UPDATE_DATA_CONTEXT] (state, { dataContext }) {
+    state.dataContext = dataContext
   },
-  [REPLACE_CURRENT_LAYER] (state, { layer }) {
-    state.currentLayer = layer
+  [UPDATE_CURRENT_ITEM_CONTEXT] (state, { itemContext }) {
+    state.currentItemContext = itemContext
   }
 }

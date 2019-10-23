@@ -10,18 +10,18 @@
       >
         <div>
           <el-input
-            v-model="search"
+            v-model="textToSearch"
             prefix-icon="el-icon-search"
             size="small"
             placeholder="Buscar..."
             clearable
-            @input="$emit('text-to-search', search)"
+            @input="$emit('text-to-search', textToSearch)"
           />
         </div>
       </el-col>
     </el-row>
     <el-table
-      :data="dataContext"
+      :data="dataContext.slice((currentPage-1) * pagesize, currentPage * pagesize)"
       style="width: 100%"
       v-loading="$store.state.spinners.loadingTable"
     >
@@ -48,6 +48,8 @@
 
 <script>
 export default {
+  name: 'BasePageBodyTable',
+
   props: {
     dataContext: {
       type: Array
@@ -58,7 +60,13 @@ export default {
     return {
       pagesize: 10,
       currentPage: 1,
-      search: ''
+      textToSearch: ''
+    }
+  },
+
+  watch: {
+    dataContext () {
+      this.currentPage = 1
     }
   },
 

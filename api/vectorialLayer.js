@@ -23,6 +23,7 @@ export default $axios => ({
     })
   },
   publish (payload = {}) {
+    console.warn(payload.data);
     return $axios({
       url: `${VECTORIAL_LAYER}/publish/`,
       method: 'POST',
