@@ -18,7 +18,6 @@ export const state = () => ({
   // vectorial
   modalAddLayer: false,
   modalEditLayer: false,
-  modalDeleteLayer: false,
   // raster layers
   modalAddRasterLayer: false,
   modalEditRasterLayer: false,

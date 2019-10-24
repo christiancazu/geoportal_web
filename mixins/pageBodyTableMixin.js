@@ -14,6 +14,12 @@ export default {
   },
 
   filters: {
+    /**
+     * shrink text if is major that 16 characters
+     * to prevent long heights of rows on table
+     * 
+     * @param {String} text 
+     */
     $_pageBodyTableMixin_shrinkText (text) {
       return text.length > 16 ? `${text.substring(0, 16)}<i class="fas fa-ellipsis-h"></i>` : text
     }
@@ -36,13 +42,17 @@ export default {
       } 
     }),
 
-    $_pageBodyTableMixin_filteredData () {
+    /**
+     * filtering data based on @param {Array} filterCriteriaProps
+     * 
+     */
+    $_pageBodyTableMixin_filteredDataContext () {
       let textToSearchLowerCase = this.pageBodyTableMixin_textToSearch.toLowerCase()
       
       return this.dataContext
         .filter(layer => {
           for (let index = 0; index < this.pageBodyTableMixin_criteriaLength; index++) {
-            if (layer[this.criteriaProps[index]].includes(textToSearchLowerCase)) {
+            if (layer[this.filterCriteriaProps[index]].includes(textToSearchLowerCase)) {
               return true
             }
           }
@@ -57,21 +67,54 @@ export default {
 
   methods: {
     ...mapActions({
-      getDataContext () {
-        this.$store.dispatch(`${this.storeBase}/getDataContext`)
+      async $_pageBodyTableMixin_getDataContext () {
+        await this.$store.dispatch(`${this.storeBase}/getDataContext`)
       },
-      getItemContext (store, id) {
-        this.$store.dispatch(`${this.storeBase}/getItemContext`, { id })
+      async $_pageBodyTableMixin_getItemContext (store, id) {
+        await this.$store.dispatch(`${this.storeBase}/getItemContext`, { id })
+      },
+      async $_pageBodyTableMixin_deleteItemContext (store, id) {
+        await this.$store.dispatch(`${this.storeBase}/deleteItemContext`, { id })
       }
     }),
 
+    /**
+     * fetch the currentItemContext by his id
+     * set state modalEditStateName as true to be displayed
+     * 
+     * @param {Number} id 
+     */
+    async $_pageBodyTableMixin_onLoadModalEditItemContext ({ id }) {
+      try {
+        await this.$_pageBodyTableMixin_getItemContext(id)
+        this.$_modalVisibilityMixin_open(this.modalEditStateName)
+      } 
+      catch (e) {}
+    },
+
+    /**
+     * receives the selected itemContext from btn-confirm component
+     * to be deleted & fetch DataContext again to update everything
+     * 
+     * @param {Object} itemSelected 
+     */
+    async $_pageBodyTableMixin_confirmedActionDeleteItemContext ({ itemSelected }) {
+      try {
+        await this.$_pageBodyTableMixin_deleteItemContext(itemSelected.id)
+        this.$toast.success(this.$SUCCESS[this.messageBaseName].DELETED)
+
+        await this.$_pageBodyTableMixin_getDataContext()
+      } 
+      catch (e) {}
+    },
+
     initPageSettings () {
-      this.pageBodyTableMixin_criteriaLength = this.criteriaProps.length
+      this.pageBodyTableMixin_criteriaLength = this.filterCriteriaProps.length
     },
 
     async fetchDataContext () {
       try {
-        await this.getDataContext()
+        await this.$_pageBodyTableMixin_getDataContext()
       } 
       catch (e) {}
     },

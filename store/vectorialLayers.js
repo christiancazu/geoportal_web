@@ -47,7 +47,7 @@ export const actions = {
     }
   },
 
-  async deleteVectorialLayer ({ commit }, payload) {
+  async deleteItemContext ({}, payload) {
     try {
       await this.$vectorialLayerAPI.delete(payload)
     } 

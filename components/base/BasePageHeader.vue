@@ -5,7 +5,7 @@
     icon="el-icon-plus"
     @click="$_modalVisibilityMixin_open(modalAddStateName)"
   >
-    {{ btnName }}
+    {{ btnAddName }}
   </el-button>
 </template>
 
@@ -16,7 +16,7 @@ export default {
       type: String,
       required: true
     },
-    btnName: {
+    btnAddName: {
       type: String,
       required: true
     }
