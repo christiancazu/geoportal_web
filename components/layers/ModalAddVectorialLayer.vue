@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Registrar nueva capa vectorial"
-    :show-modal="modalAddLayer"
-    name-state="modalAddLayer"
+    :show-modal="modalAddVectorialLayer"
+    name-state="modalAddVectorialLayer"
   >
     <template v-slot:content>
       <el-form
@@ -159,7 +159,7 @@
       <el-button
         :disabled="$store.state.spinners.processingForm"
         size="small"
-        @click="$_modalVisibilityMixin_close('modalAddLayer')"
+        @click="$_modalVisibilityMixin_close('modalAddVectorialLayer')"
       >
         CANCELAR
       </el-button>
@@ -235,12 +235,12 @@ export default {
     ...mapState({
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      modalAddLayer: state => state.modalsVisibilities.modalAddLayer
+      modalAddVectorialLayer: state => state.modalsVisibilities.modalAddVectorialLayer
     })
   },
 
   watch: {
-    modalAddLayer (newState, oldState) {
+    modalAddVectorialLayer (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         this.fileLayerSelected = null
@@ -271,7 +271,7 @@ export default {
           this.$refs.form.resetFields()
           this.getVectorialLayers()
           this.$toast.success(this.$SUCCESS.LAYER.REGISTERED)
-          this.$_modalVisibilityMixin_close('modalAddLayer')
+          this.$_modalVisibilityMixin_close('modalAddVectorialLayer')
 
         } catch (e) {}
       }

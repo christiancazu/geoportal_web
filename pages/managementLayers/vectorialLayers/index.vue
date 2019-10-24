@@ -87,9 +87,9 @@
 
     <template v-slot:page-modals>
 
-      <modal-add-layer />
+      <modal-add-vectorial-layer />
       
-      <modal-edit-layer />
+      <modal-edit-vectorial-layer />
     
     </template>
 
@@ -97,18 +97,19 @@
 </template>
 
 <script>
-import ModalAddLayer from '@/components/layers/ModalAddLayer'
-import ModalEditLayer from '@/components/layers/ModalEditLayer'
+import ModalAddVectorialLayer from '@/components/layers/ModalAddVectorialLayer'
+import ModalEditVectorialLayer from '@/components/layers/ModalEditVectorialLayer'
 
 import pageBodyTableMixin from '@/mixins/pageBodyTableMixin'
+import pageLayersMixin from '@/mixins/pageLayersMixin'
 
 export default {
   components: {
-    ModalAddLayer,
-    ModalEditLayer
+    ModalAddVectorialLayer,
+    ModalEditVectorialLayer
   },
 
-  mixins: [pageBodyTableMixin],
+  mixins: [pageBodyTableMixin, pageLayersMixin],
   
   head: {
     title: 'Capas vectoriales | GEOVISOR',
@@ -116,30 +117,17 @@ export default {
 
   data () {
     return {
+      //page-header
       pageTitle: 'Capas vectoriales',
       btnAddName: 'Nueva capa vectorial',
+      // toast
       messageBaseName: 'LAYER',
+      // store module
       storeBase: 'vectorialLayers',
-      modalAddStateName: 'modalAddLayer',
-      modalEditStateName: 'modalEditLayer',
+      modalAddStateName: 'modalAddVectorialLayer',
+      modalEditStateName: 'modalEditVectorialLayer',
+      // criterias to search based on columns of table
       filterCriteriaProps: ['title', 'name', 'description'],
-    }
-  },
-
-  methods: {
-    // # TODO fix data to send to endpoint
-    async publishSelectedLayer ({ itemSelected }) {
-      try {
-        await this.publishVectorialLayer({ 
-          data: {
-            pk: itemSelected.id
-          } 
-        })
-        this.$toast.success(this.$SUCCESS.LAYER.PUBLISHED)
-
-        await this.getVectorialLayers()
-      } 
-      catch (e) {}
     }
   }
 }

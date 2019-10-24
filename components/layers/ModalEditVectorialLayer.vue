@@ -1,8 +1,8 @@
 <template>
   <BaseModal
     title="Modificar capa vectorial"
-    :show-modal="modalEditLayer"
-    name-state="modalEditLayer"
+    :show-modal="modalEditVectorialLayer"
+    name-state="modalEditVectorialLayer"
   >
     <template v-slot:content>
       <el-form
@@ -104,7 +104,7 @@
       <el-button
         :disabled="$store.state.spinners.processingForm"
         size="small"
-        @click="$_modalVisibilityMixin_close('modalEditLayer')"
+        @click="$_modalVisibilityMixin_close('modalEditVectorialLayer')"
       >
         CANCELAR
       </el-button>
@@ -176,12 +176,12 @@ export default {
       currentItemContext: state => state.vectorialLayers.currentItemContext,
       groupLayers: state => state.groupLayers.groupLayers,
       loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      modalEditLayer: state => state.modalsVisibilities.modalEditLayer
+      modalEditVectorialLayer: state => state.modalsVisibilities.modalEditVectorialLayer
     })
   },
 
   watch: {
-    modalEditLayer (newState, oldState) {
+    modalEditVectorialLayer (newState, oldState) {
       if (!newState) {
         this.$refs.form.resetFields();
         this.fileLayerSelected = null
@@ -221,7 +221,7 @@ export default {
           })
           this.$refs.form.resetFields()
           this.$toast.success(this.$SUCCESS.LAYER.UPDATED)
-          this.$_modalVisibilityMixin_close('modalEditLayer')
+          this.$_modalVisibilityMixin_close('modalEditVectorialLayer')
 
           await this.getVectorialLayers()
 

@@ -8,24 +8,24 @@ export const state = () => ({
   modalAddUser: false,
   modalEditUser: false,
   modalViewPendingRequest: false,
-  // serviceswms
+  // services wms
   modalAddWMSService: false,
   modalAddWMSCategory: false,
   modalAddWMSAuthor: false,
-  // baselayers
+  // base layers
   modalAddBaseLayer: false,
   modalEditBaseLayer: false,
-  // vectorial
-  modalAddLayer: false,
-  modalEditLayer: false,
+  // vectorial layers
+  modalAddVectorialLayer: false,
+  modalEditVectorialLayer: false,
   // raster layers
   modalAddRasterLayer: false,
   modalEditRasterLayer: false,
-  // group layer
+  // group layers
   modalAddGroupLayer: false,
   modalEditGroupLayer: false,
   modalPublishRasterLayer: false,
-  // GeoreferentialImage
+  // Georeferential image
   modalAddGeoreferencedImage: false,
   modalEditGeoreferencedImage: false,
   // reports
