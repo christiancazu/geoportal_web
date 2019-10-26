@@ -9,6 +9,16 @@ export const state = () => ({
 })
 
 export const actions = {
+  async createItemContext ({ dispatch }, form) {
+    try {
+      await this.$vectorialLayerAPI.create(form)
+      dispatch('getDataContext')
+    } 
+    catch (error) {
+      throw error
+    } 
+  },
+
   async getDataContext ({ commit }) {
     try {
       const { data } = await this.$vectorialLayerAPI.get()
@@ -19,9 +29,9 @@ export const actions = {
     } 
   },
 
-  async getItemContext ({ commit }, payload) {
+  async getItemContext ({ commit }, id) {
     try {
-      const { data } = await this.$vectorialLayerAPI.getById(payload)
+      const { data } = await this.$vectorialLayerAPI.getById(id)
       commit(UPDATE_CURRENT_ITEM_CONTEXT, { itemContext: data })
     } 
     catch (error) {
@@ -29,7 +39,7 @@ export const actions = {
     }
   },
 
-  async publishVectorialLayer ({ commit }, payload) {
+  async publishVectorialLayer ({}, payload) {
     try {
       await this.$vectorialLayerAPI.publish(payload)
     } 
@@ -38,7 +48,7 @@ export const actions = {
     }
   },
 
-  async updateVectorialLayer ({ commit }, payload) {
+  async updateVectorialLayer ({}, payload) {
     try {
       await this.$vectorialLayerAPI.update(payload)
     } 
@@ -62,10 +72,7 @@ export const actions = {
 }
 
 export const mutations = {
-  [UPDATE_DATA_CONTEXT] (state, { dataContext }) {
-    state.dataContext = dataContext
-  },
-  [UPDATE_CURRENT_ITEM_CONTEXT] (state, { itemContext }) {
-    state.currentItemContext = itemContext
-  }
+  [UPDATE_DATA_CONTEXT]: (state, { dataContext }) => state.dataContext = dataContext,
+
+  [UPDATE_CURRENT_ITEM_CONTEXT]: (state, { itemContext }) => state.currentItemContext = itemContext
 }

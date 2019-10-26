@@ -3,7 +3,12 @@ import BasePageHeader from "@/components/base/BasePageHeader"
 import BasePageBodyTable from "@/components/base/BasePageBodyTable"
 import BtnConfirm from "@/components/base/BaseBtnConfirm"
 
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
+
+import { 
+  SET_DYNAMIC_MAIN_MODAL,
+  SET_CURRENT_PAGE_MODALS_FOLDER_NAME
+} from '@/types/mutation-types'
 
 export default {
   components: {
@@ -78,6 +83,15 @@ export default {
       }
     }),
 
+    ...mapMutations({
+      $_pageBodyTableMixin_setDynamicMainModal () {
+        this.$store.commit(`modalsVisibilities/${SET_DYNAMIC_MAIN_MODAL}`, this.modalEditStateName)
+      },
+
+      $_pageBodyTableMixin_setCurrentPageModalsFolderName () {
+        this.$store.commit(`modalsVisibilities/${SET_CURRENT_PAGE_MODALS_FOLDER_NAME}`, this.currentPageModalsFolderName)
+      }
+    }),
     /**
      * fetch the currentItemContext by his id
      * set state modalEditStateName as true to be displayed
@@ -87,7 +101,10 @@ export default {
     async $_pageBodyTableMixin_onLoadModalEditItemContext ({ id }) {
       try {
         await this.$_pageBodyTableMixin_getItemContext(id)
-        this.$_modalVisibilityMixin_open(this.modalEditStateName)
+
+        this.$_pageBodyTableMixin_setDynamicMainModal()
+        // using little delay to prevent stranger transition when open modal
+        await new Promise(() => setTimeout(() => this.$_modalVisibilityMixin_open(this.modalEditStateName), 250))
       } 
       catch (e) {}
     },
@@ -110,6 +127,7 @@ export default {
 
     initPageSettings () {
       this.pageBodyTableMixin_criteriaLength = this.filterCriteriaProps.length
+      this.$_pageBodyTableMixin_setCurrentPageModalsFolderName()
     },
 
     async fetchDataContext () {

@@ -85,30 +85,22 @@
       </base-page-body-table>
     </template>
 
-    <template v-slot:page-modals>
+    <!-- <template v-slot:page-modals>
 
       <modal-add-vectorial-layer />
       
       <modal-edit-vectorial-layer />
     
-    </template>
+    </template> -->
 
   </base-page>
 </template>
 
 <script>
-import ModalAddVectorialLayer from '@/components/layers/ModalAddVectorialLayer'
-import ModalEditVectorialLayer from '@/components/layers/ModalEditVectorialLayer'
-
 import pageBodyTableMixin from '@/mixins/pageBodyTableMixin'
 import pageLayersMixin from '@/mixins/pageLayersMixin'
 
 export default {
-  components: {
-    ModalAddVectorialLayer,
-    ModalEditVectorialLayer
-  },
-
   mixins: [pageBodyTableMixin, pageLayersMixin],
   
   head: {
@@ -128,6 +120,8 @@ export default {
       modalEditStateName: 'modalEditVectorialLayer',
       // criterias to search based on columns of table
       filterCriteriaProps: ['title', 'name', 'description'],
+      // current page modals folder name
+      currentPageModalsFolderName: 'layers'
     }
   }
 }

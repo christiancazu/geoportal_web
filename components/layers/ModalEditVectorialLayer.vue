@@ -124,16 +124,18 @@
 import { mapState, mapActions } from "vuex";
 import BaseModal from "@/components/base/BaseModal";
 import objectToFormDataMixin from '@/mixins/objectToFormDataMixin'
+import formMixin from '@/mixins/formMixin'
 
 export default {
   components: {
     BaseModal
   },
 
-  mixins: [objectToFormDataMixin],
+  mixins: [objectToFormDataMixin, formMixin],
 
   data () {
     return {
+      modalAddStateName: 'modalEditVectorialLayer',
       fileLayerSelected: null,
       fileStyleSelected: null,
       showFormStyle: false,

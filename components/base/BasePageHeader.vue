@@ -3,13 +3,19 @@
     size="mini"
     type="primary"
     icon="el-icon-plus"
-    @click="$_modalVisibilityMixin_open(modalAddStateName)"
+    @click="onLoadFormAddItemContext()"
   >
     {{ btnAddName }}
   </el-button>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
+import { 
+  SET_DYNAMIC_MAIN_MODAL
+} from '@/types/mutation-types'
+
 export default {
   props: {
     modalAddStateName: {
@@ -20,6 +26,20 @@ export default {
       type: String,
       required: true
     }
+  },
+
+  methods: {
+    ...mapMutations({
+      setDynamicMainModal () {
+        this.$store.commit(`modalsVisibilities/${SET_DYNAMIC_MAIN_MODAL}`, this.modalAddStateName)
+      },
+    }),
+
+    async onLoadFormAddItemContext () {
+      this.setDynamicMainModal()
+      // using little delay to prevent stranger transition when open modal
+      await new Promise(() => setTimeout(() => this.$_modalVisibilityMixin_open(this.modalAddStateName), 250))      
+    },
   }
 }
 </script>

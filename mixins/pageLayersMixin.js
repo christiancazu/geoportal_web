@@ -1,5 +1,8 @@
 export default {
   methods: {
+    data: () => ({
+      pageLayersMixin_pageModalsFolderName: 'layers'
+    }),
     // # TODO fix data to send to endpoint
     async publishSelectedLayer ({ itemSelected }) {
       try {

@@ -1,4 +1,4 @@
-export default async ({ app, redirect, store, $auth }) => {
+export default async ({ app, redirect, $auth }) => {
   if (process.server) {
     return
   }

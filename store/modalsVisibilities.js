@@ -1,9 +1,15 @@
 import {
   OPEN_MODAL,
-  CLOSE_MODAL
+  CLOSE_MODAL,
+  SET_DYNAMIC_MAIN_MODAL,
+  SET_CURRENT_PAGE_MODALS_FOLDER_NAME
 } from '../types/mutation-types'
 
 export const state = () => ({
+  // current dynamic main modal to display
+  mainModal: 'ModalAddVectorialLayer',
+  // current modals folder name
+  pageModalsFolderName: 'layers',
   // users
   modalAddUser: false,
   modalEditUser: false,
@@ -32,8 +38,16 @@ export const state = () => ({
   modalViewReport: false
 })
 
+export const getters = {
+  currentMainModalCapitalize: state => state.mainModal.charAt(0).toUpperCase() + state.mainModal.slice(1)
+}
+
 export const mutations = {
   [OPEN_MODAL]: (state, payload) => state[payload] = true,
 
-  [CLOSE_MODAL]: (state, payload) => state[payload] = false
+  [CLOSE_MODAL]: (state, payload) => state[payload] = false,
+
+  [SET_DYNAMIC_MAIN_MODAL]: (state, payload) => state.mainModal = payload,
+
+  [SET_CURRENT_PAGE_MODALS_FOLDER_NAME]: (state, payload) => state.pageModalsFolderName = payload
 }
