@@ -10,7 +10,6 @@ export default {
       let isFormValid = false
 
       await this.$refs.form.validate(result => isFormValid = result)
-      console.warn(this.form);
       // if (isFormValid) {
       //   const data = this.$_objectToFormDataMixin_transform();
         

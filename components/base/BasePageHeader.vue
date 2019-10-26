@@ -35,10 +35,11 @@ export default {
       },
     }),
 
-    async onLoadFormAddItemContext () {
+    onLoadFormAddItemContext () {
       this.setDynamicMainModal()
       // using little delay to prevent stranger transition when open modal
-      await new Promise(() => setTimeout(() => this.$_modalVisibilityMixin_open(this.modalAddStateName), 250))      
+      // present when using dynamic components
+      new Promise(() => setTimeout(() => this.$_modalVisibilityMixin_open(this.modalAddStateName), 250))      
     },
   }
 }

@@ -31,12 +31,10 @@
 <script>
 import { mapState, mapGetters } from "vuex"
 import SideBar from "@/components/SideBar"
-import ModalAddVectorialLayer from '@/components/layers/ModalAddVectorialLayer'
 
 export default {
   components: {
-    SideBar,
-    ModalAddVectorialLayer
+    SideBar
   },
 
   data () {
@@ -57,14 +55,19 @@ export default {
      * load dynamic component from the state setted
      * example: @/components/layers/ModalAddVectorialLayer
      */
-    componentFile() {
-      return () => import(`@/components/${this.$store.state.modalsVisibilities.pageModalsFolderName}/${this.currentMainModalCapitalize}`)
+    componentFile () {
+      const componentNameCapitalized = this.capitalize(this.$store.state.modalsVisibilities.mainModal)
+      return () => import(`@/components/${this.$store.state.modalsVisibilities.pageModalsFolderName}/${componentNameCapitalized}`)
     }
   },
 
   methods: {
     onChangeCollapse (value) {
       this.isCollapse = value
+    },
+
+    capitalize (text) {
+      return text.charAt(0).toUpperCase() + text.slice(1)
     }
   }
 }

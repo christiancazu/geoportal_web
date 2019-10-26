@@ -149,7 +149,6 @@
         />
       </el-form-item>
     </template>
-    
   </base-form>
 </template>
 <script>
@@ -166,7 +165,7 @@ export default {
       modalStateName: 'modalAddVectorialLayer',
       storeBase: 'vectorialLayers',
       storeAction: 'create',
-      formTitle: 'Registrar nueva capa vectorial',
+      formTitle: 'Registrar capa vectorial',
       messageToastBaseName: 'LAYER',
       messageToastAction: 'REGISTERED',
 

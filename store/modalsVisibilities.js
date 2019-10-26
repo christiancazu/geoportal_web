@@ -38,10 +38,6 @@ export const state = () => ({
   modalViewReport: false
 })
 
-export const getters = {
-  currentMainModalCapitalize: state => state.mainModal.charAt(0).toUpperCase() + state.mainModal.slice(1)
-}
-
 export const mutations = {
   [OPEN_MODAL]: (state, payload) => state[payload] = true,
 

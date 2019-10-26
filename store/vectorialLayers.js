@@ -39,27 +39,30 @@ export const actions = {
     }
   },
 
-  async publishVectorialLayer ({}, payload) {
+  async publishItemContext ({ dispatch }, form) {
     try {
-      await this.$vectorialLayerAPI.publish(payload)
+      await this.$vectorialLayerAPI.publish(form)
+      dispatch('getDataContext')
     } 
     catch (error) {
       throw error
     }
   },
 
-  async updateVectorialLayer ({}, payload) {
+  async updateItemContext ({ dispatch }, form) {
     try {
-      await this.$vectorialLayerAPI.update(payload)
+      await this.$vectorialLayerAPI.update(form)
+      dispatch('getDataContext')
     } 
     catch (error) {
       throw error
     }
   },
 
-  async deleteItemContext ({}, payload) {
+  async deleteItemContext ({ dispatch }, id) {
     try {
-      await this.$vectorialLayerAPI.delete(payload)
+      await this.$vectorialLayerAPI.delete(id)
+      dispatch('getDataContext')
     } 
     catch (error) {
       throw error

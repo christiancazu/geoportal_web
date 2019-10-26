@@ -1,145 +1,116 @@
 <template>
-  <BaseModal
-    title="Modificar capa vectorial"
-    :show-modal="modalEditVectorialLayer"
-    name-state="modalEditVectorialLayer"
+  <base-form
+    :form-title="formTitle"
+    :form="form"
+    :rules="rules"
+    :store-base="storeBase"
+    :modal-state-name="modalStateName"
+    :store-action="storeAction"
+    :message-toast-base-name="messageToastBaseName"
+    :message-toast-action="messageToastAction"
+    @reset-form="resetForm()"
+    :can-publish="!currentItemContext.isPublished"
   >
-    <template v-slot:content>
-      <el-form
-        ref="form"
-        label-position="top"
-        status-icon
-        :model="form"
-        :rules="rules"
-        label-width="120px"
-        class="demo-ruleForm"
-        :disabled="$store.state.spinners.processingForm"
-        @submit.prevent="submitForm"
-      >
-        <el-row :gutter="14">
-          <el-col
-            :xs="24"
-            :md="{span:12, offset:12}"
-            :sm="24"
-            :lg="{span:12, offset:12}"
-            class="text-xs-center"
+    <template slot="content">
+      <el-row :gutter="14">
+        <el-col
+          :xs="24"
+          :md="{span:12, offset:12}"
+          :sm="24"
+          :lg="{span:12, offset:12}"
+          class="text-xs-center"
+        >
+          <el-form-item
+            prop="order"
+            size="mini"
+            :inline-message="true"
           >
-            <el-form-item
-              prop="order"
+            <label
+              class="pr-2"
+              for=""
+            >N° de orden: </label>
+            <el-input-number
               size="mini"
-              :inline-message="true"
-            >
-              <label
-                class="pr-2"
-                for=""
-              >N° de orden: </label>
-              <el-input-number
-                size="mini"
-                v-model="form.order"
-                controls-position="right"
-                :min="1"
-                type="number"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item
-          label="Título"
-          prop="title"
-        >
-          <el-input
-            v-model="form.title"
-            type="text"
-            autocomplete="off"
-            :rules="rules.title"
-          />
-        </el-form-item>
-        <el-form-item
-          label="Grupo"
-          prop="groupLayerId"
-        >
-          <el-container>
-            <el-select
-              v-model="form.groupLayerId"
-              value-key="id"
-              :loading="loadingGroupLayers"
-              filterable
-              placeholder="Select"
-            >
-              <el-option
-                v-for="item in groupLayers"
-                :key="item.id"
-                :label="item.title"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-container>
-        </el-form-item>
-        <!-- Descripción -->
-        <el-form-item
-          label="Descripción"
-          prop="description"
-        >
-          <el-input
-            v-model="form.description"
-            type="textarea"
-            :rows="3"
-            autocomplete="off"
-            :maxlength="300"
-          />
-        </el-form-item>
-        <el-form-item
-          label="¿Habilitado?"
-          prop="status"
-        >
-          <el-switch
-            v-model="form.status"
-            :active-text="form.status? 'SI': 'NO'"
+              v-model="form.order"
+              controls-position="right"
+              :min="1"
+              type="number"
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-form-item
+        label="Título"
+        prop="title"
+      >
+        <el-input
+          v-model="form.title"
+          type="text"
+          autocomplete="off"
+          :rules="rules.title"
+        />
+      </el-form-item>
+      <el-form-item
+        label="Grupo"
+        prop="groupLayerId"
+      >
+        <el-container>
+          <el-select
+            v-model="form.groupLayerId"
+            value-key="id"
+            :loading="$store.state.spinners.loadingTable"
+            filterable
+            placeholder="Select"
           >
-          </el-switch>
-        </el-form-item>
-      </el-form>
-    </template>
-    <template v-slot:actions>
-      <el-button
-        :disabled="$store.state.spinners.processingForm"
-        size="small"
-        @click="$_modalVisibilityMixin_close('modalEditVectorialLayer')"
+            <el-option
+              v-for="item in groupLayers"
+              :key="item.id"
+              :label="item.title"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </el-container>
+      </el-form-item>
+      <!-- Descripción -->
+      <el-form-item
+        label="Descripción"
+        prop="description"
       >
-        CANCELAR
-      </el-button>
-      <el-button
-        type="primary"
-        size="small"
-        native-type="submit"
-        :loading="$store.state.spinners.processingForm"
-        @click.prevent="submitForm"
-      >
-        GUARDAR
-      </el-button>
+        <el-input
+          v-model="form.description"
+          type="textarea"
+          :rows="3"
+          autocomplete="off"
+          :maxlength="300"
+        />
+      </el-form-item>
     </template>
-  </BaseModal>
+  </base-form>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-import BaseModal from "@/components/base/BaseModal";
-import objectToFormDataMixin from '@/mixins/objectToFormDataMixin'
-import formMixin from '@/mixins/formMixin'
+import BaseForm from "@/components/base/BaseForm"
+
+import { mapState, mapActions } from "vuex"
 
 export default {
   components: {
-    BaseModal
+    BaseForm
   },
-
-  mixins: [objectToFormDataMixin, formMixin],
 
   data () {
     return {
-      modalAddStateName: 'modalEditVectorialLayer',
+      modalStateName: 'modalEditVectorialLayer',
+      storeBase: 'vectorialLayers',
+      storeAction: 'update',
+      formTitle: 'Actualizar capa vectorial',
+      messageToastBaseName: 'LAYER',
+      messageToastAction: 'UPDATED',
+
       fileLayerSelected: null,
       fileStyleSelected: null,
       showFormStyle: false,
       form: {
+        id: null,
         order: null,
         title: "",
         name: "",
@@ -173,63 +144,64 @@ export default {
     };
   },
 
+  created () {
+    this.getGroupLayers()
+    this.assignFormFields()
+  },
+
   computed: {
     ...mapState({
       currentItemContext: state => state.vectorialLayers.currentItemContext,
-      groupLayers: state => state.groupLayers.groupLayers,
-      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      modalEditVectorialLayer: state => state.modalsVisibilities.modalEditVectorialLayer
-    })
+      groupLayers: state => state.groupLayers.dataContext,
+      })
   },
 
   watch: {
-    modalEditVectorialLayer (newState, oldState) {
-      if (!newState) {
-        this.$refs.form.resetFields();
-        this.fileLayerSelected = null
-        return false;
-      }
-      this.getGroupLayers()
-    },
-
     currentItemContext (newState, oldState) {
-      this.form.order = this.currentItemContext.order
-      this.form.title = this.currentItemContext.title
-      this.form.name = this.currentItemContext.title
-      this.form.description = this.currentItemContext.description
-      this.form.groupLayerId = this.currentItemContext.groupLayerId
+      this.assignFormFields()
     }
   },
 
   methods: {
     ...mapActions({
-      getGroupLayers: 'groupLayers/getGroupLayers',
+      getGroupLayers: 'groupLayers/getDataContext',
       getVectorialLayers: "vectorialLayers/getVectorialLayers",
       updateVectorialLayer: "vectorialLayers/updateVectorialLayer"
     }),
 
-    async submitForm () {
-      let isFormValid = false
+    assignFormFields () {
+      Object.keys(this.form).forEach(key => this.form[key] = this.currentItemContext[key])
+    },
 
-      await this.$refs.form.validate(result => isFormValid = result)
-
-      if (isFormValid) {
-        const data = this.$_objectToFormDataMixin_transform();
-
-        try {          
-          await this.updateVectorialLayer({
-            id: this.currentItemContext.id,
-            data
-          })
-          this.$refs.form.resetFields()
-          this.$toast.success(this.$SUCCESS.LAYER.UPDATED)
-          this.$_modalVisibilityMixin_close('modalEditVectorialLayer')
-
-          await this.getVectorialLayers()
-
-        } catch (e) {}
+    resetForm () {
+      if (this.form.shapeFile) {
+        this.form.shapeFile = null
+        this.fileLayerSelected = null
       }
     },
+
+    // async submitForm () {
+    //   let isFormValid = false
+
+    //   await this.$refs.form.validate(result => isFormValid = result)
+
+    //   if (isFormValid) {
+    //     const data = this.$_objectToFormDataMixin_transform();
+
+    //     try {          
+    //       await this.updateVectorialLayer({
+    //         id: this.currentItemContext.id,
+    //         data
+    //       })
+    //       this.$refs.form.resetFields()
+    //       this.$toast.success(this.$SUCCESS.LAYER.UPDATED)
+    //       this.$_modalVisibilityMixin_close('modalEditVectorialLayer')
+
+    //       await this.getVectorialLayers()
+
+    //     } catch (e) {}
+    //   }
+    // },
 
     launchUploadAvatar (option) {
       this.form.file = option.file;

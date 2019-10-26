@@ -76,7 +76,6 @@ export default {
       this.currentPage = currentPage
     },
     onChangePageSize (pagesizex) {
-      console.warn(pagesizex);
       this.pagesize = pagesizex
     }
   }

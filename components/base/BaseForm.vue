@@ -21,32 +21,44 @@
 
     </el-form>
 
-    <el-button
-      size="small"
-      @click="$_modalVisibilityMixin_close(modalStateName)"
-    >
-      CANCELAR
-    </el-button>
-    <el-button
-      type="primary"
-      size="small"
-      native-type="submit"
-      :loading="$store.state.spinners.processingForm"
-      @click="submit"
-    >
-      GUARDAR
-    </el-button>
+    <!-- actions -->
+    <div class="text-xs-center">
+      <el-button
+        size="small"
+        @click="$_modalVisibilityMixin_close(modalStateName)"
+      >
+        CANCELAR
+      </el-button>
+      <el-button
+        type="primary"
+        size="small"
+        native-type="submit"
+        :loading="$store.state.spinners.processingForm"
+        @click="submitForm"
+      >
+        GUARDAR
+      </el-button>
+
+      <template v-if="canPublish">
+        <el-button
+          type="success"
+          size="small"
+          :loading="$store.state.spinners.processingForm"
+          @click="submitPublish"
+        >
+          PUBLICAR
+        </el-button>
+      </template>
+
+
+    </div>
   </el-dialog>
 </template>
 
 <script>
-import objectToFormDataMixin from '@/mixins/objectToFormDataMixin'
-
 import { mapActions } from 'vuex'
 
 export default {
-  mixins: [objectToFormDataMixin],
-
   props: {
     form: {
       type: Object, required: true
@@ -72,6 +84,9 @@ export default {
     messageToastAction: {
       type: String, required: true
     },
+    canPublish: {
+      type: Boolean, default: false
+    }
   },
 
   methods: {
@@ -79,9 +94,12 @@ export default {
       async createItemContext (store, form) {
         await this.$store.dispatch(`${this.storeBase}/${this.storeAction}ItemContext`, { data: form })
       },
+      async publishItemContext (store, form) {
+        await this.$store.dispatch(`${this.storeBase}/publishItemContext`, { data: form })
+      },
     }),
 
-    async submit () {
+    async submitForm () {
       let isFormValid = false
 
       await this.$refs.form.validate(result => isFormValid = result)
@@ -93,11 +111,22 @@ export default {
 
           this.resetForm()
           this.$toast.success(this.$SUCCESS[this.messageToastBaseName][this.messageToastAction])
-          this.getVectorialLayers()
           this.$_modalVisibilityMixin_close(this.modalStateName)
         } 
         catch (e) {}
       }
+    },
+
+    async submitPublish () {
+      try {
+        const formData = new FormData()
+        formData.append('pk', this.form.id)
+
+        await this.publishItemContext(formData)
+        this.$toast.success(this.$SUCCESS[this.messageToastBaseName].PUBLISHED)
+        this.$_modalVisibilityMixin_close(this.modalStateName)          
+      } 
+      catch (e) {}
     },
 
     objectToFormData () {

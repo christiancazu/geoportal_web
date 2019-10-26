@@ -103,8 +103,10 @@ export default {
         await this.$_pageBodyTableMixin_getItemContext(id)
 
         this.$_pageBodyTableMixin_setDynamicMainModal()
+
         // using little delay to prevent stranger transition when open modal
-        await new Promise(() => setTimeout(() => this.$_modalVisibilityMixin_open(this.modalEditStateName), 250))
+        // present when using dynamic components
+        new Promise(() => setTimeout(() => this.$_modalVisibilityMixin_open(this.modalEditStateName), 250))
       } 
       catch (e) {}
     },
