@@ -42,8 +42,8 @@ export default {
       dataContext (state) {
         return state[this.storeBase].dataContext
       }, 
-      currentItemContext (state) {
-        return state[this.storeBase].currentItemContext
+      itemContext (state) {
+        return state[this.storeBase].itemContext
       } 
     }),
 
@@ -55,9 +55,9 @@ export default {
       let textToSearchLowerCase = this.pageBodyTableMixin_textToSearch.toLowerCase()
       
       return this.dataContext
-        .filter(layer => {
+        .filter(itemContext => {
           for (let index = 0; index < this.pageBodyTableMixin_criteriaLength; index++) {
-            if (layer[this.filterCriteriaProps[index]].includes(textToSearchLowerCase)) {
+            if (itemContext[this.filterCriteriaProps[index]].includes(textToSearchLowerCase)) {
               return true
             }
           }
@@ -93,7 +93,7 @@ export default {
       }
     }),
     /**
-     * fetch the currentItemContext by his id
+     * fetch the itemContext by his id
      * set state modalEditStateName as true to be displayed
      * 
      * @param {Number} id 
@@ -106,7 +106,7 @@ export default {
 
         // using little delay to prevent stranger transition when open modal
         // present when using dynamic components
-        new Promise(() => setTimeout(() => this.$_modalVisibilityMixin_open(this.modalEditStateName), 250))
+        setTimeout(() => this.$_modalVisibilityMixin_open(this.modalEditStateName), 250)
       } 
       catch (e) {}
     },

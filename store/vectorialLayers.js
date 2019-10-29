@@ -1,14 +1,17 @@
 import {
   UPDATE_DATA_CONTEXT,
-  UPDATE_CURRENT_ITEM_CONTEXT
+  UPDATE_ITEM_CONTEXT,
+  UPDATE_PUBLISHED_ITEM_CONTEXT
 } from '../types/mutation-types'
 
 export const state = () => ({
   dataContext: [],
-  currentItemContext: null
+  itemContext: {}
 })
 
 export const actions = {
+ 
+
   async createItemContext ({ dispatch }, form) {
     try {
       await this.$vectorialLayerAPI.create(form)
@@ -16,7 +19,7 @@ export const actions = {
     } 
     catch (error) {
       throw error
-    } 
+    }
   },
 
   async getDataContext ({ commit }) {
@@ -32,7 +35,7 @@ export const actions = {
   async getItemContext ({ commit }, id) {
     try {
       const { data } = await this.$vectorialLayerAPI.getById(id)
-      commit(UPDATE_CURRENT_ITEM_CONTEXT, { itemContext: data })
+      commit(UPDATE_ITEM_CONTEXT, { itemContext: data })
     } 
     catch (error) {
       throw error
@@ -67,15 +70,13 @@ export const actions = {
     catch (error) {
       throw error
     }
-  },
-
-  replaceCurrentLayer ({ commit }, payload) {
-    commit(UPDATE_CURRENT_ITEM_CONTEXT, payload)
   }
 }
 
 export const mutations = {
   [UPDATE_DATA_CONTEXT]: (state, { dataContext }) => state.dataContext = dataContext,
 
-  [UPDATE_CURRENT_ITEM_CONTEXT]: (state, { itemContext }) => state.currentItemContext = itemContext
+  [UPDATE_ITEM_CONTEXT]: (state, { itemContext }) => state.itemContext = itemContext,
+  
+  [UPDATE_PUBLISHED_ITEM_CONTEXT]: (state, payload) => state.itemContext.isPublished = payload
 }

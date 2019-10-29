@@ -1,5 +1,5 @@
 <template>
-  <base-page :page-header-title="pageTitle">
+  <base-page :page-header-title="pageHeaderTitle">
 
     <template v-slot:page-header>
       <base-page-header 
@@ -85,23 +85,14 @@
       </base-page-body-table>
     </template>
 
-    <!-- <template v-slot:page-modals>
-
-      <modal-add-vectorial-layer />
-      
-      <modal-edit-vectorial-layer />
-    
-    </template> -->
-
   </base-page>
 </template>
 
 <script>
 import pageBodyTableMixin from '@/mixins/pageBodyTableMixin'
-import pageLayersMixin from '@/mixins/pageLayersMixin'
 
 export default {
-  mixins: [pageBodyTableMixin, pageLayersMixin],
+  mixins: [pageBodyTableMixin],
   
   head: {
     title: 'Capas vectoriales | GEOVISOR',
@@ -110,7 +101,7 @@ export default {
   data () {
     return {
       //page-header
-      pageTitle: 'Capas vectoriales',
+      pageHeaderTitle: 'Capas vectoriales',
       btnAddName: 'Nueva capa vectorial',
       // toast
       messageBaseName: 'LAYER',

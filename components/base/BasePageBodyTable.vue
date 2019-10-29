@@ -65,8 +65,9 @@ export default {
   },
 
   watch: {
-    dataContext () {
-      this.currentPage = 1
+    dataContext (n, o) {
+      // if is using filtered data set currentPage = 1
+      if (n.length < o.length) this.currentPage = 1
     }
   },
 
@@ -75,8 +76,8 @@ export default {
     onChangeCurrentPage (currentPage) {
       this.currentPage = currentPage
     },
-    onChangePageSize (pagesizex) {
-      this.pagesize = pagesizex
+    onChangePageSize (pagesize) {
+      this.pagesize = pagesize
     }
   }
 }

@@ -124,14 +124,11 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import BaseModal from "@/components/base/BaseModal";
-import objectToFormDataMixin from '@/mixins/objectToFormDataMixin'
 
 export default {
   components: {
     BaseModal
   },
-
-  mixins: [objectToFormDataMixin],
 
   data () {
     return {

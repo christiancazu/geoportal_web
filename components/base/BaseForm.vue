@@ -39,7 +39,7 @@
         GUARDAR
       </el-button>
 
-      <template v-if="canPublish">
+      <template v-if="!publish && storeAction !== 'create'">
         <el-button
           type="success"
           size="small"
@@ -49,14 +49,14 @@
           PUBLICAR
         </el-button>
       </template>
-
-
+      
     </div>
   </el-dialog>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
+import { UPDATE_PUBLISHED_ITEM_CONTEXT } from '@/types/mutation-types'
 
 export default {
   props: {
@@ -83,15 +83,23 @@ export default {
     },
     messageToastAction: {
       type: String, required: true
-    },
-    canPublish: {
-      type: Boolean, default: false
+    }
+  },
+
+  computed: {
+    publish: {
+      get () {
+        return this.$store.state[this.storeBase].itemContext.isPublished
+      },
+      set (value) {
+        this.$store.commit(`${this.storeBase}/${UPDATE_PUBLISHED_ITEM_CONTEXT}`, value)
+      }
     }
   },
 
   methods: {
     ...mapActions({
-      async createItemContext (store, form) {
+      async submitItemContext (store, form) {
         await this.$store.dispatch(`${this.storeBase}/${this.storeAction}ItemContext`, { data: form })
       },
       async publishItemContext (store, form) {
@@ -107,11 +115,11 @@ export default {
         const formData = this.objectToFormData();
         
         try {
-          await this.createItemContext(formData)
+          await this.submitItemContext(formData)
 
           this.resetForm()
           this.$toast.success(this.$SUCCESS[this.messageToastBaseName][this.messageToastAction])
-          this.$_modalVisibilityMixin_close(this.modalStateName)
+          // this.$_modalVisibilityMixin_close(this.modalStateName)
         } 
         catch (e) {}
       }
@@ -124,7 +132,10 @@ export default {
 
         await this.publishItemContext(formData)
         this.$toast.success(this.$SUCCESS[this.messageToastBaseName].PUBLISHED)
-        this.$_modalVisibilityMixin_close(this.modalStateName)          
+        // setting as published the itemContext
+        this.publish = true
+        // # consult if is neccesary close modal when is published
+        // this.$_modalVisibilityMixin_close(this.modalStateName)          
       } 
       catch (e) {}
     },
@@ -142,8 +153,7 @@ export default {
     resetForm () {
       this.$emit('reset-form')
       this.$refs.form.resetFields()
-    }
-  
+    }  
   }
 }
 </script>

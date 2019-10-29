@@ -9,9 +9,8 @@
     :message-toast-base-name="messageToastBaseName"
     :message-toast-action="messageToastAction"
     @reset-form="resetForm()"
-    :can-publish="!currentItemContext.isPublished"
   >
-    <template slot="content">
+    <template v-slot:content>
       <el-row :gutter="14">
         <el-col
           :xs="24"
@@ -67,7 +66,7 @@
               :key="item.id"
               :label="item.title"
               :value="item.id"
-            ></el-option>
+            />
           </el-select>
         </el-container>
       </el-form-item>
@@ -151,13 +150,13 @@ export default {
 
   computed: {
     ...mapState({
-      currentItemContext: state => state.vectorialLayers.currentItemContext,
+      itemContext: state => state.vectorialLayers.itemContext,
       groupLayers: state => state.groupLayers.dataContext,
       })
   },
 
   watch: {
-    currentItemContext (newState, oldState) {
+    itemContext () {
       this.assignFormFields()
     }
   },
@@ -170,7 +169,7 @@ export default {
     }),
 
     assignFormFields () {
-      Object.keys(this.form).forEach(key => this.form[key] = this.currentItemContext[key])
+      Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
     },
 
     resetForm () {
@@ -180,36 +179,13 @@ export default {
       }
     },
 
-    // async submitForm () {
-    //   let isFormValid = false
-
-    //   await this.$refs.form.validate(result => isFormValid = result)
-
-    //   if (isFormValid) {
-    //     const data = this.$_objectToFormDataMixin_transform();
-
-    //     try {          
-    //       await this.updateVectorialLayer({
-    //         id: this.currentItemContext.id,
-    //         data
-    //       })
-    //       this.$refs.form.resetFields()
-    //       this.$toast.success(this.$SUCCESS.LAYER.UPDATED)
-    //       this.$_modalVisibilityMixin_close('modalEditVectorialLayer')
-
-    //       await this.getVectorialLayers()
-
-    //     } catch (e) {}
-    //   }
-    // },
-
-    launchUploadAvatar (option) {
-      this.form.file = option.file;
-      this.fileLayerSelected = option.file
-      const nameFile = option.file.name.split('.')
-      this.form.name = nameFile[0]
-      this.form.title = nameFile[0]
-    }
+    // launchUploadAvatar (option) {
+    //   this.form.file = option.file;
+    //   this.fileLayerSelected = option.file
+    //   const nameFile = option.file.name.split('.')
+    //   this.form.name = nameFile[0]
+    //   this.form.title = nameFile[0]
+    // }
   }
 };
 </script>

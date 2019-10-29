@@ -10,7 +10,7 @@
     :message-toast-action="messageToastAction"
     @reset-form="resetForm()"
   >
-    <template slot="content">
+    <template v-slot:content>
       <el-row :gutter="14">
         <el-col
           :xs="24"
@@ -128,7 +128,7 @@
                   :key="item.id"
                   :label="item.title"
                   :value="item.id"
-                ></el-option>
+                />
               </el-select>
             </el-container>
           </el-form-item>

@@ -1,6 +1,6 @@
 import {
   UPDATE_DATA_CONTEXT,
-  UPDATE_CURRENT_ITEM_CONTEXT
+  UPDATE_ITEM_CONTEXT
 } from '../types/mutation-types'
 
 export const state = () => ({
@@ -19,12 +19,12 @@ export const actions = {
   },
   
   updateCurrentItemContext ({ commit }, payload) {
-    commit(UPDATE_CURRENT_ITEM_CONTEXT, payload)
+    commit(UPDATE_ITEM_CONTEXT, payload)
   }
 }
 
 export const mutations = {
   [UPDATE_DATA_CONTEXT]: (state, { dataContext }) => state.dataContext = dataContext,
   
-  [UPDATE_CURRENT_ITEM_CONTEXT]: (state, { groupLayer }) => state.currentItemContext = groupLayer
+  [UPDATE_ITEM_CONTEXT]: (state, { groupLayer }) => state.currentItemContext = groupLayer
 }

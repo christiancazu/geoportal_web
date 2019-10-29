@@ -18,7 +18,7 @@ export default ({ $axios, store, $auth }) => {
       //   default:
       //     break;
       // }
-      store.commit('spinners/ENABLE_LOADING_TABLE')
+      // store.commit('spinners/ENABLE_LOADING_TABLE')
     } else {
       store.commit('spinners/ENABLE_PROCESSING_FORM')
     }
