@@ -39,7 +39,7 @@
         GUARDAR
       </el-button>
 
-      <template v-if="!publish && storeAction !== 'create'">
+      <template v-if="canPublish">
         <el-button
           type="success"
           size="small"
@@ -87,9 +87,9 @@ export default {
   },
 
   computed: {
-    publish: {
+    canPublish: {
       get () {
-        return this.$store.state[this.storeBase].itemContext.isPublished
+        return !this.$store.state[this.storeBase].itemContext.isPublished && this.storeAction === 'update'
       },
       set (value) {
         this.$store.commit(`${this.storeBase}/${UPDATE_PUBLISHED_ITEM_CONTEXT}`, value)
@@ -133,7 +133,7 @@ export default {
         await this.publishItemContext(formData)
         this.$toast.success(this.$SUCCESS[this.messageToastBaseName].PUBLISHED)
         // setting as published the itemContext
-        this.publish = true
+        this.canPublish = false
         // # consult if is neccesary close modal when is published
         // this.$_modalVisibilityMixin_close(this.modalStateName)          
       } 

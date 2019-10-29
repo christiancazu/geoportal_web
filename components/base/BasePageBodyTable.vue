@@ -47,27 +47,37 @@
 </template>
 
 <script>
+import { UPDATE_CURRENT_PAGE_ON_TABLE } from '@/types/mutation-types'
+import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
+
 export default {
   name: 'BasePageBodyTable',
 
   props: {
     dataContext: {
       type: Array
-    }
+    },
+    storeBase: {
+      type: String,
+      required: true
+    },
   },
 
   data () {
     return {
-      pagesize: 10,
-      currentPage: 1,
+      pagesize: ROWS_PER_PAGE_ON_TABLE,
       textToSearch: ''
     }
   },
 
-  watch: {
-    dataContext (n, o) {
-      // if is using filtered data set currentPage = 1
-      if (n.length < o.length) this.currentPage = 1
+  computed: {
+    currentPage: {
+      get () {
+        return this.$store.state[this.storeBase].currentPageOnTable
+      },
+      set(value) {
+        this.$store.commit(`${this.storeBase}/${UPDATE_CURRENT_PAGE_ON_TABLE}`, value)
+      }
     }
   },
 

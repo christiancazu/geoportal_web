@@ -1,17 +1,17 @@
 import {
   UPDATE_DATA_CONTEXT,
   UPDATE_ITEM_CONTEXT,
-  UPDATE_PUBLISHED_ITEM_CONTEXT
+  UPDATE_PUBLISHED_ITEM_CONTEXT,
+  UPDATE_CURRENT_PAGE_ON_TABLE
 } from '../types/mutation-types'
 
 export const state = () => ({
   dataContext: [],
-  itemContext: {}
+  itemContext: {},
+  currentPageOnTable: 1
 })
 
 export const actions = {
- 
-
   async createItemContext ({ dispatch }, form) {
     try {
       await this.$vectorialLayerAPI.create(form)
@@ -78,5 +78,7 @@ export const mutations = {
 
   [UPDATE_ITEM_CONTEXT]: (state, { itemContext }) => state.itemContext = itemContext,
   
-  [UPDATE_PUBLISHED_ITEM_CONTEXT]: (state, payload) => state.itemContext.isPublished = payload
+  [UPDATE_PUBLISHED_ITEM_CONTEXT]: (state, payload) => state.itemContext.isPublished = !payload,
+
+  [UPDATE_CURRENT_PAGE_ON_TABLE]: (state, payload) => state.currentPageOnTable = payload
 }

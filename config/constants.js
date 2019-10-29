@@ -1,0 +1,1 @@
+export const ROWS_PER_PAGE_ON_TABLE = 10

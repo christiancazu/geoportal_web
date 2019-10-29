@@ -3,8 +3,8 @@
 
     <template v-slot:page-header>
       <base-page-header 
-        :modal-add-state-name="modalAddStateName"
         :btn-add-name="btnAddName"
+        @on-load-add-modal-state-name="$_pageBodyTableMixin_onLoadModalAddItemContext()"
       />
     </template>
 
@@ -12,6 +12,7 @@
       <base-page-body-table
         :data-context="$_pageBodyTableMixin_filteredDataContext"
         @text-to-search="pageBodyTableMixin_textToSearch = $event"
+        :store-base="storeBase"
       >
         <template v-slot:table>
           <el-table-column

@@ -7,8 +7,11 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 
 import { 
   SET_DYNAMIC_MAIN_MODAL,
-  SET_CURRENT_PAGE_MODALS_FOLDER_NAME
+  SET_CURRENT_PAGE_MODALS_FOLDER_NAME,
+  UPDATE_CURRENT_PAGE_ON_TABLE
 } from '@/types/mutation-types'
+
+import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
 
 export default {
   components: {
@@ -54,7 +57,7 @@ export default {
     $_pageBodyTableMixin_filteredDataContext () {
       let textToSearchLowerCase = this.pageBodyTableMixin_textToSearch.toLowerCase()
       
-      return this.dataContext
+      const dataContextFiltered = this.dataContext
         .filter(itemContext => {
           for (let index = 0; index < this.pageBodyTableMixin_criteriaLength; index++) {
             if (itemContext[this.filterCriteriaProps[index]].includes(textToSearchLowerCase)) {
@@ -62,6 +65,12 @@ export default {
             }
           }
         })
+      
+      // if have dataContextFiltered set as current page the first 
+      if (dataContextFiltered < this.dataContext)
+        this.$store.commit(`${this.storeBase}/${UPDATE_CURRENT_PAGE_ON_TABLE}`, 1)
+      
+      return dataContextFiltered
     }
   },
 
@@ -84,14 +93,20 @@ export default {
     }),
 
     ...mapMutations({
-      $_pageBodyTableMixin_setDynamicMainModal () {
-        this.$store.commit(`modalsVisibilities/${SET_DYNAMIC_MAIN_MODAL}`, this.modalEditStateName)
+      $_pageBodyTableMixin_setDynamicMainModal (store, modalStateName) {
+        this.$store.commit(`modalsVisibilities/${SET_DYNAMIC_MAIN_MODAL}`, modalStateName)
       },
 
       $_pageBodyTableMixin_setCurrentPageModalsFolderName () {
         this.$store.commit(`modalsVisibilities/${SET_CURRENT_PAGE_MODALS_FOLDER_NAME}`, this.currentPageModalsFolderName)
       }
     }),
+
+    $_pageBodyTableMixin_onLoadModalAddItemContext () {
+      this.$_pageBodyTableMixin_setDynamicMainModal(this.modalAddStateName)
+      this.setVisibilityModalStateNameAfterDelay(this.modalAddStateName)     
+    },
+
     /**
      * fetch the itemContext by his id
      * set state modalEditStateName as true to be displayed
@@ -102,11 +117,8 @@ export default {
       try {
         await this.$_pageBodyTableMixin_getItemContext(id)
 
-        this.$_pageBodyTableMixin_setDynamicMainModal()
-
-        // using little delay to prevent stranger transition when open modal
-        // present when using dynamic components
-        setTimeout(() => this.$_modalVisibilityMixin_open(this.modalEditStateName), 250)
+        this.$_pageBodyTableMixin_setDynamicMainModal(this.modalEditStateName)
+        this.setVisibilityModalStateNameAfterDelay(this.modalEditStateName)
       } 
       catch (e) {}
     },
@@ -123,6 +135,16 @@ export default {
         this.$toast.success(this.$SUCCESS[this.messageBaseName].DELETED)
 
         await this.$_pageBodyTableMixin_getDataContext()
+        
+        let currentPage = this.$store.state[this.storeBase].currentPageOnTable
+
+        // if number of pages is minor that the current page, (when delete)
+        if (this.dataContext.length / ROWS_PER_PAGE_ON_TABLE <= (currentPage - 1)) {
+          currentPage--
+        }
+        // setting currentPage before to submit deleteItemContext and getDataContext
+        // to set it again as currentPage to prevent go to page 1 when fetch the dataContext
+        this.$store.commit(`${this.storeBase}/${UPDATE_CURRENT_PAGE_ON_TABLE}`, currentPage)
       } 
       catch (e) {}
     },
@@ -138,5 +160,15 @@ export default {
       } 
       catch (e) {}
     },
+
+    /**
+     * using little delay to prevent stranger transition when open modal
+     * present when using dynamic components
+
+     * @param {String} modalStateName 
+     */
+    setVisibilityModalStateNameAfterDelay(modalStateName) {
+      setTimeout(() => this.$_modalVisibilityMixin_open(modalStateName), 250)
+    }
   }
 }
