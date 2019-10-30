@@ -1,102 +1,88 @@
 <template>
-  <base-page 
+  <base-page-actions 
     :page-header-title="pageHeaderTitle"
+    :btn-add-name="btnAddName"
     :store-base="storeBase"
+    :modal-add-state-name="modalAddStateName"
+    :modal-edit-state-name="modalEditStateName"
+    :filter-criteria-props="filterCriteriaProps"
+    :current-page-modals-folder-name="currentPageModalsFolderName"
     :message-base-name="messageBaseName"
   >
-
-    <template v-slot:page-header="{ openModalAddItemContext }">
-      <base-page-header 
-        :btn-add-name="btnAddName"
-        @add-item-context="openModalAddItemContext(modalAddStateName)"
+    <template v-slot:page-table="{ 
+      openModalEditItemContext,
+      confirmedActionDeleteItemContext,
+      textToSearch
+    }">
+      <el-table-column
+        label="N°"
+        align="center"
+        width="50px"
+        prop="order"
       />
-    </template>
-
-    <template
-      v-slot:page-body="{ 
-        openModalEditItemContext,
-        confirmedActionDeleteItemContext,
-        textToSearch
-      }"
-    >
-      <base-page-body-table
-        :data-context="$_pageBodyTableMixin_filteredDataContext"
-        @text-to-search="textToSearch($event)"
-        :store-base="storeBase"
+      <el-table-column
+        label="Nombre"
+        prop="name"
+      />
+      <el-table-column
+        label="Título"
+        prop="title"
+      />
+      <el-table-column
+        label="Descripción"
+        prop="description"
       >
-        <template v-slot:table>
-          <el-table-column
-            label="N°"
-            align="center"
-            width="50px"
-            prop="order"
-          />
-          <el-table-column
-            label="Nombre"
-            prop="name"
-          />
-          <el-table-column
-            label="Título"
-            prop="title"
-          />
-          <el-table-column
-            label="Descripción"
-            prop="description"
-          >
-          <template slot-scope="scope">
-            <span v-html="$options.filters.$_pageBodyTableMixin_shrinkText(scope.row.description)"></span>
-          </template>
-          </el-table-column>
-          <el-table-column
-            label="Publicado"
-            prop="publicado"
-            align="center"
-          >
-            <template slot-scope="scope">
-              <el-tag
-                :type="scope.row.isPublished ? 'success' : 'info'"
-                effect="plain">
-                {{ scope.row.isPublished ? 'si' : 'no' }}
-              </el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="Acción"
-            align="center"
-            width="120"
-          >
-            <template slot-scope="scope">
-              <el-tooltip content="Editar" placement="bottom">
-                <el-button
-                  circle
-                  icon="el-icon-edit"
-                  size="small"
-                  type="primary"
-                  @click="openModalEditItemContext(scope.row, modalEditStateName)"
-                />
-              </el-tooltip>
-
-              <el-tooltip content="Eliminar" placement="bottom">
-                <el-button
-                  edit
-                  delete
-                />
-                <btn-confirm
-                  :item-selected="scope.row"
-                  @confirmed-action="confirmedActionDeleteItemContext"
-                  accion="deleted"
-                  title="Eliminar Capa"
-                  body-text="¿Está seguro de eliminar esta capa?"
-                />                
-              </el-tooltip>
-
-            </template>
-          </el-table-column>
+      <template slot-scope="scope">
+        <span v-html="$options.filters.$_pageBodyTableMixin_shrinkText(scope.row.description)"></span>
+      </template>
+      </el-table-column>
+      <el-table-column
+        label="Publicado"
+        prop="publicado"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <el-tag
+            :type="scope.row.isPublished ? 'success' : 'info'"
+            effect="plain">
+            {{ scope.row.isPublished ? 'si' : 'no' }}
+          </el-tag>
         </template>
-      </base-page-body-table>
-    </template>
+      </el-table-column>
+      <el-table-column
+        label="Acción"
+        align="center"
+        width="120"
+      >
+        <template slot-scope="scope">
+          <el-tooltip content="Editar" placement="bottom">
+            <el-button
+              circle
+              icon="el-icon-edit"
+              size="small"
+              type="primary"
+              @click="openModalEditItemContext(scope.row)"
+            />
+          </el-tooltip>
 
-  </base-page>
+          <el-tooltip content="Eliminar" placement="bottom">
+            <el-button
+              edit
+              delete
+            />
+            <base-btn-confirm
+              :item-selected="scope.row"
+              @confirmed-action="confirmedActionDeleteItemContext"
+              accion="deleted"
+              title="Eliminar Capa"
+              body-text="¿Está seguro de eliminar esta capa?"
+            />                
+          </el-tooltip>
+
+        </template>
+      </el-table-column>
+    </template>
+  </base-page-actions>
 </template>
 
 <script>

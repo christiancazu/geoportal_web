@@ -1,5 +1,5 @@
 <template>
-  <base-page title="PORTAL ADMINISTRADOR">
+  <base-page-dashboard title="PORTAL ADMINISTRADOR">
     <!-- <template v-slot:itemsActions>
     </template> -->
     <template v-slot:content>
@@ -30,15 +30,15 @@
         </el-row>
       </el-container>
     </template>
-  </base-page>
+  </base-page-dashboard>
 </template>
 
 <script>
-import BasePage from '@/components/base/BasePage'
+import BasePageDashboard from '@/components/base/BasePageDashboard'
 
 export default {
   components: {
-    BasePage
+    BasePageDashboard
   },
 
   head: {

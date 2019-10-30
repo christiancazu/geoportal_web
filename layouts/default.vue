@@ -21,7 +21,7 @@
 
         <!-- dynamic current modal -->
         <template v-if="loggedIn">
-          <component :is="formDynamicComponent" />
+          <component :is="formModalDynamicComponent" />
         </template>
 
       </el-main>
@@ -55,7 +55,7 @@ export default {
      * load dynamic component from the state setted
      * example: @/components/layers/ModalAddVectorialLayer
      */
-    formDynamicComponent () {
+    formModalDynamicComponent () {
       const componentNameCapitalized = this.capitalize(this.$store.state.modalsVisibilities.mainModal)
       return () => import(`@/components/${this.$store.state.modalsVisibilities.pageModalsFolderName}/${componentNameCapitalized}`)
     }
