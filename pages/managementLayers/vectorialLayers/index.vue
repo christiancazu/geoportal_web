@@ -1,17 +1,27 @@
 <template>
-  <base-page :page-header-title="pageHeaderTitle">
+  <base-page 
+    :page-header-title="pageHeaderTitle"
+    :store-base="storeBase"
+    :message-base-name="messageBaseName"
+  >
 
-    <template v-slot:page-header>
+    <template v-slot:page-header="{ openModalAddItemContext }">
       <base-page-header 
         :btn-add-name="btnAddName"
-        @on-load-add-modal-state-name="$_pageBodyTableMixin_onLoadModalAddItemContext()"
+        @add-item-context="openModalAddItemContext(modalAddStateName)"
       />
     </template>
 
-    <template v-slot:page-body>
+    <template
+      v-slot:page-body="{ 
+        openModalEditItemContext,
+        confirmedActionDeleteItemContext,
+        textToSearch
+      }"
+    >
       <base-page-body-table
         :data-context="$_pageBodyTableMixin_filteredDataContext"
-        @text-to-search="pageBodyTableMixin_textToSearch = $event"
+        @text-to-search="textToSearch($event)"
         :store-base="storeBase"
       >
         <template v-slot:table>
@@ -62,7 +72,7 @@
                   icon="el-icon-edit"
                   size="small"
                   type="primary"
-                  @click="$_pageBodyTableMixin_onLoadModalEditItemContext(scope.row)"
+                  @click="openModalEditItemContext(scope.row, modalEditStateName)"
                 />
               </el-tooltip>
 
@@ -73,7 +83,7 @@
                 />
                 <btn-confirm
                   :item-selected="scope.row"
-                  @confirmed-action="$_pageBodyTableMixin_confirmedActionDeleteItemContext"
+                  @confirmed-action="confirmedActionDeleteItemContext"
                   accion="deleted"
                   title="Eliminar Capa"
                   body-text="¿Está seguro de eliminar esta capa?"

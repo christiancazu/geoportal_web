@@ -3,7 +3,7 @@
     size="mini"
     type="primary"
     icon="el-icon-plus"
-    @click="$emit('on-load-add-modal-state-name')"
+    @click="$emit('add-item-context')"
   >
     {{ btnAddName }}
   </el-button>
@@ -13,8 +13,7 @@
 export default {
   props: {
     btnAddName: {
-      type: String,
-      required: true
+      type: String, required: true
     }
   }
 }

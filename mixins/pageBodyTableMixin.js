@@ -107,48 +107,6 @@ export default {
       this.setVisibilityModalStateNameAfterDelay(this.modalAddStateName)     
     },
 
-    /**
-     * fetch the itemContext by his id
-     * set state modalEditStateName as true to be displayed
-     * 
-     * @param {Number} id 
-     */
-    async $_pageBodyTableMixin_onLoadModalEditItemContext ({ id }) {
-      try {
-        await this.$_pageBodyTableMixin_getItemContext(id)
-
-        this.$_pageBodyTableMixin_setDynamicMainModal(this.modalEditStateName)
-        this.setVisibilityModalStateNameAfterDelay(this.modalEditStateName)
-      } 
-      catch (e) {}
-    },
-
-    /**
-     * receives the selected itemContext from btn-confirm component
-     * to be deleted & fetch DataContext again to update everything
-     * 
-     * @param {Object} itemSelected 
-     */
-    async $_pageBodyTableMixin_confirmedActionDeleteItemContext ({ itemSelected }) {
-      try {
-        await this.$_pageBodyTableMixin_deleteItemContext(itemSelected.id)
-        this.$toast.success(this.$SUCCESS[this.messageBaseName].DELETED)
-
-        await this.$_pageBodyTableMixin_getDataContext()
-        
-        let currentPage = this.$store.state[this.storeBase].currentPageOnTable
-
-        // if number of pages is minor that the current page, (when delete)
-        if (this.dataContext.length / ROWS_PER_PAGE_ON_TABLE <= (currentPage - 1)) {
-          currentPage--
-        }
-        // setting currentPage before to submit deleteItemContext and getDataContext
-        // to set it again as currentPage to prevent go to page 1 when fetch the dataContext
-        this.$store.commit(`${this.storeBase}/${UPDATE_CURRENT_PAGE_ON_TABLE}`, currentPage)
-      } 
-      catch (e) {}
-    },
-
     initPageSettings () {
       this.pageBodyTableMixin_criteriaLength = this.filterCriteriaProps.length
       this.$_pageBodyTableMixin_setCurrentPageModalsFolderName()
@@ -159,16 +117,6 @@ export default {
         await this.$_pageBodyTableMixin_getDataContext()
       } 
       catch (e) {}
-    },
-
-    /**
-     * using little delay to prevent stranger transition when open modal
-     * present when using dynamic components
-
-     * @param {String} modalStateName 
-     */
-    setVisibilityModalStateNameAfterDelay(modalStateName) {
-      setTimeout(() => this.$_modalVisibilityMixin_open(modalStateName), 250)
     }
   }
 }

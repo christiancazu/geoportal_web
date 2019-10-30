@@ -62,10 +62,9 @@ export const actions = {
     }
   },
 
-  async deleteItemContext ({ dispatch }, id) {
+  async deleteItemContext ({}, id) {
     try {
       await this.$vectorialLayerAPI.delete(id)
-      dispatch('getDataContext')
     } 
     catch (error) {
       throw error
