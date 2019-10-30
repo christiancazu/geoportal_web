@@ -117,7 +117,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import BasePage from '@/components/base/BasePage.vue'
+import BasePage from '@/components/base/pages/BasePage.vue'
 import ModalPublishRasterLayer from '@/components/layers/ModalPublishRasterLayer.vue'
 import ModalAddRasterLayer from '@/components/layers/ModalAddRasterLayer.vue'
 import ModalEditRasterLayer from '@/components/layers/ModalEditRasterLayer.vue'

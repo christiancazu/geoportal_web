@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import BasePage from '@/components/base/BasePage'
+import BasePage from '@/components/base/pages/BasePage'
 
 export default {
   components: {

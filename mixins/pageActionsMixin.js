@@ -1,4 +1,4 @@
-import BasePageActions from '@/components/base/BasePageActions'
+import BasePageActions from '@/components/base/pages/BasePageActions'
 import BaseBtnConfirm from "@/components/base/BaseBtnConfirm"
 
 export default {

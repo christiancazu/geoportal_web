@@ -57,7 +57,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import BasePage from "@/components/base/BasePage.vue";
+import BasePage from "@/components/base/pages/BasePage.vue";
 import ModalViewPendingRequest from "@/components/users/ModalViewPendingRequest.vue";
 export default {
   components: {

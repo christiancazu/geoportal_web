@@ -61,29 +61,13 @@
         width="120"
       >
         <template slot-scope="scope">
-          <el-tooltip content="Editar" placement="bottom">
-            <el-button
-              circle
-              icon="el-icon-edit"
-              size="small"
-              type="primary"
-              @click="openModalEditItemContext(scope.row)"
-            />
-          </el-tooltip>
-
-          <el-tooltip content="Eliminar" placement="bottom">
-            <el-button
-              edit
-              delete
-            />
-            <base-btn-confirm
+            <group-actions-buttons
               :item-selected="scope.row"
+              dialog-delete-title="Eliminar Capa"
+              dialog-delete-body-text="¿Está seguro de eliminar esta capa?"
+              @open-edit-modal="openModalEditItemContext(scope.row)"
               @confirmed-action="confirmedActionDeleteItemContext"
-              accion="deleted"
-              title="Eliminar Capa"
-              body-text="¿Está seguro de eliminar esta capa?"
-            />                
-          </el-tooltip>
+            />
         </template>
       </el-table-column>
     </template>
@@ -92,8 +76,13 @@
 
 <script>
 import pageActionsMixin from '@/mixins/pageActionsMixin'
+import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
 export default {
+  components: {
+    GroupActionsButtons
+  },
+
   mixins: [pageActionsMixin],
   
   head: {

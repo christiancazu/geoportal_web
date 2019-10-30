@@ -108,7 +108,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import BasePage from "@/components/base/BasePage.vue";
+import BasePage from "@/components/base/pages/BasePage.vue";
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalAddBaseLayer from "@/components/layers/ModalAddBaseLayer.vue";
 import ModalEditBaseLayer from "@/components/layers/ModalEditBaseLayer.vue";

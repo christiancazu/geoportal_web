@@ -116,7 +116,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import BasePage from "@/components/base/BasePage.vue";
+import BasePage from "@/components/base/pages/BasePage.vue";
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 export default {
   components: {
