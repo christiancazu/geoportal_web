@@ -2,7 +2,7 @@ import {
   OPEN_MODAL,
   CLOSE_MODAL,
   SET_DYNAMIC_MAIN_MODAL,
-  SET_CURRENT_PAGE_MODALS_FOLDER_NAME
+  SET_PAGE_MODALS_FOLDER_NAME
 } from '../types/mutation-types'
 
 export const state = () => ({
@@ -45,5 +45,5 @@ export const mutations = {
 
   [SET_DYNAMIC_MAIN_MODAL]: (state, payload) => state.mainModal = payload,
 
-  [SET_CURRENT_PAGE_MODALS_FOLDER_NAME]: (state, payload) => state.pageModalsFolderName = payload
+  [SET_PAGE_MODALS_FOLDER_NAME]: (state, payload) => state.pageModalsFolderName = payload
 }

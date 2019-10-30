@@ -1,32 +1,9 @@
 <template>
-  <div :class="[
-    { 'page-body-center': fitContent },
-    ['ma-4']
-  ]">
-
-    <el-card 
-      shadow="always" 
-      :class="{ 'fit-page-body': fitContent }"
+  <base-page
+    :page-header-title="pageHeaderTitle"
+    :page-header-btn-add-name="pageHeaderBtnAddName"
+    @open-add-modal="openModalAddItemContext()"
     >
-      <div
-        class="space-between"
-        slot="header"
-      >
-        <p class="mt-1 mb-0 font-weight-bold text-uppercase">
-          {{ pageHeaderTitle }}
-        </p>
-
-        <el-button
-          size="mini"
-          type="primary"
-          icon="el-icon-plus"
-          @click="openModalAddItemContext()"
-        >
-          {{ btnAddName }}
-        </el-button>
-      
-      </div>
-
       <el-container direction="vertical">
         <el-row
           type="flex"
@@ -43,21 +20,22 @@
                 size="small"
                 placeholder="Buscar..."
                 clearable
-                @input="$emit('text-to-search', textToSearch)"
+                @input="textToSearch = $event"
               />
             </div>
           </el-col>
         </el-row>
         <el-table
-          :data="dataContext.slice((currentPage-1) * pagesize, currentPage * pagesize)"
+          :data="filteredDataContext.slice((currentPage-1) * pagesize, currentPage * pagesize)"
           style="width: 100%"
           v-loading="$store.state.spinners.loadingTable"
         >
           
-        <slot name="page-table" 
-          :openModalEditItemContext="openModalEditItemContext"
-          :confirmedActionDeleteItemContext="confirmedActionDeleteItemContext"
-         />
+          <slot name="page-table" 
+            :openModalEditItemContext="openModalEditItemContext"
+            :confirmedActionDeleteItemContext="confirmedActionDeleteItemContext"
+            :shrinkText="$options.filters.shrinkText"
+          />
 
         </el-table>
 
@@ -75,17 +53,16 @@
         />
 
       </el-container>
-
-    </el-card>
-  
-  </div>
+  </base-page>
 </template>
 
 <script>
+import BasePage from '@/components/base/BasePage'
+
 import { 
   SET_DYNAMIC_MAIN_MODAL,
-  SET_CURRENT_PAGE_MODALS_FOLDER_NAME,
-  UPDATE_CURRENT_PAGE_ON_TABLE,
+  SET_PAGE_MODALS_FOLDER_NAME,
+  SET_CURRENT_PAGE_ON_TABLE,
 } from '@/types/mutation-types'
 
 import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
@@ -93,11 +70,15 @@ import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
 import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
+  components: {
+    BasePage
+  },
+
   props: {
     pageHeaderTitle: {
       type: String, default: 'set title prop'
     },
-    btnAddName: {
+    pageHeaderBtnAddName: {
       type: String, default: 'set add name btn'
     },
     storeBase: {
@@ -115,11 +96,23 @@ export default {
     filterCriteriaProps: {
       type: Array, default: () => []
     },
-    currentPageModalsFolderName: {
+    pageModalsFolderName: {
       type: String, required: true
     },
     fitContent: {
       type: Boolean, default: false
+    }
+  },
+
+  filters: {
+    /**
+     * shrink text if is major that 16 characters
+     * to prevent long heights of rows on table
+     * 
+     * @param {String} text 
+     */
+    shrinkText (text) {
+      return text.length > 16 ? `${text.substring(0, 16)}<i class="fas fa-ellipsis-h"></i>` : text
     }
   },
 
@@ -146,7 +139,7 @@ export default {
         return this.$store.state[this.storeBase].currentPageOnTable
       },
       set(value) {
-        this.$store.commit(`${this.storeBase}/${UPDATE_CURRENT_PAGE_ON_TABLE}`, value)
+        this.$store.commit(`${this.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, value)
       }
     },
 
@@ -156,7 +149,7 @@ export default {
      */
     filteredDataContext () {
       let textToSearchLowerCase = this.textToSearch.toLowerCase()
-      
+
       const dataContextFiltered = this.dataContext
         .filter(itemContext => {
           for (let index = 0; index < this.criteriaLength; index++) {
@@ -168,7 +161,7 @@ export default {
       
       // if have dataContextFiltered set as current page the first 
       if (dataContextFiltered < this.dataContext)
-        this.$store.commit(`${this.storeBase}/${UPDATE_CURRENT_PAGE_ON_TABLE}`, 1)
+        this.$store.commit(`${this.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, 1)
       
       return dataContextFiltered
     }
@@ -197,7 +190,7 @@ export default {
         this.$store.commit(`modalsVisibilities/${SET_DYNAMIC_MAIN_MODAL}`, modalStateName)
       },
       setCurrentPageModalsFolderName () {
-        this.$store.commit(`modalsVisibilities/${SET_CURRENT_PAGE_MODALS_FOLDER_NAME}`, this.currentPageModalsFolderName)
+        this.$store.commit(`modalsVisibilities/${SET_PAGE_MODALS_FOLDER_NAME}`, this.pageModalsFolderName)
       }
     }),
 
@@ -241,17 +234,17 @@ export default {
         await this.deleteItemContext(itemSelected.id)
         this.$toast.success(this.$SUCCESS[this.messageBaseName].DELETED)
 
-        // await this.$_pageBodyTableMixin_getDataContext()
+        await this.getDataContext()
         
-        // let currentPage = this.$store.state[this.storeBase].currentPageOnTable
+        let currentPage = this.$store.state[this.storeBase].currentPageOnTable
 
-        // // if number of pages is minor that the current page, (when delete)
-        // if (this.dataContext.length / ROWS_PER_PAGE_ON_TABLE <= (currentPage - 1)) {
-        //   currentPage--
-        // }
-        // // setting currentPage before to submit deleteItemContext and getDataContext
-        // // to set it again as currentPage to prevent go to page 1 when fetch the dataContext
-        // this.$store.commit(`${this.storeBase}/${UPDATE_CURRENT_PAGE_ON_TABLE}`, currentPage)
+        // if number of pages is minor that the current page, (when delete)
+        if (this.dataContext.length / ROWS_PER_PAGE_ON_TABLE <= (currentPage - 1)) {
+          currentPage--
+        }
+        // setting currentPage before to submit deleteItemContext and getDataContext
+        // to set it again as currentPage to prevent go to page 1 when fetch the dataContext
+        this.$store.commit(`${this.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, currentPage)
       } 
       catch (e) {}
     },

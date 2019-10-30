@@ -1,8 +1,9 @@
 <template>
-  <base-page-dashboard title="PORTAL ADMINISTRADOR">
+  <base-page
+    :page-header-title="pageHeaderTitle"
+  >
     <!-- <template v-slot:itemsActions>
     </template> -->
-    <template v-slot:content>
       <el-container
         direction="vertical"
         class="card-dashboard"
@@ -29,16 +30,15 @@
           </el-col>
         </el-row>
       </el-container>
-    </template>
-  </base-page-dashboard>
+  </base-page>
 </template>
 
 <script>
-import BasePageDashboard from '@/components/base/BasePageDashboard'
+import BasePage from '@/components/base/BasePage'
 
 export default {
   components: {
-    BasePageDashboard
+    BasePage
   },
 
   head: {
@@ -47,6 +47,7 @@ export default {
 
   data () {
     return {
+      pageHeaderTitle: 'PORTAL ADMINISTRADOR', 
       items: [
         { title: 'Ver usuarios', link: '/managementUsers/users' },
         { title: 'Ver capas', link: '/managementUsers/layers' },

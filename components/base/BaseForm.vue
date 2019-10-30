@@ -56,7 +56,7 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
-import { UPDATE_PUBLISHED_ITEM_CONTEXT } from '@/types/mutation-types'
+import { SET_PUBLISHED_ITEM_CONTEXT } from '@/types/mutation-types'
 
 export default {
   props: {
@@ -92,13 +92,16 @@ export default {
         return !this.$store.state[this.storeBase].itemContext.isPublished && this.storeAction === 'update'
       },
       set (value) {
-        this.$store.commit(`${this.storeBase}/${UPDATE_PUBLISHED_ITEM_CONTEXT}`, value)
+        this.$store.commit(`${this.storeBase}/${SET_PUBLISHED_ITEM_CONTEXT}`, value)
       }
     }
   },
 
   methods: {
     ...mapActions({
+      async getDataContext () {
+        await this.$store.dispatch(`${this.storeBase}/getDataContext`)
+      },
       async submitItemContext (store, form) {
         await this.$store.dispatch(`${this.storeBase}/${this.storeAction}ItemContext`, { data: form })
       },
@@ -119,6 +122,8 @@ export default {
 
           this.resetForm()
           this.$toast.success(this.$SUCCESS[this.messageToastBaseName][this.messageToastAction])
+          
+          await this.getDataContext()
           // this.$_modalVisibilityMixin_close(this.modalStateName)
         } 
         catch (e) {}
@@ -134,6 +139,8 @@ export default {
         this.$toast.success(this.$SUCCESS[this.messageToastBaseName].PUBLISHED)
         // setting as published the itemContext
         this.canPublish = false
+
+        await this.getDataContext()
         // # consult if is neccesary close modal when is published
         // this.$_modalVisibilityMixin_close(this.modalStateName)          
       } 

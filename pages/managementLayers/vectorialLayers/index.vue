@@ -1,41 +1,46 @@
 <template>
   <base-page-actions 
     :page-header-title="pageHeaderTitle"
-    :btn-add-name="btnAddName"
+    :page-header-btn-add-name="pageHeaderBtnAddName"
     :store-base="storeBase"
     :modal-add-state-name="modalAddStateName"
     :modal-edit-state-name="modalEditStateName"
     :filter-criteria-props="filterCriteriaProps"
-    :current-page-modals-folder-name="currentPageModalsFolderName"
+    :page-modals-folder-name="pageModalsFolderName"
     :message-base-name="messageBaseName"
   >
     <template v-slot:page-table="{ 
       openModalEditItemContext,
       confirmedActionDeleteItemContext,
-      textToSearch
+      shrinkText
     }">
+
       <el-table-column
         label="N°"
         align="center"
         width="50px"
         prop="order"
       />
+
       <el-table-column
         label="Nombre"
         prop="name"
       />
+
       <el-table-column
         label="Título"
         prop="title"
       />
+
       <el-table-column
         label="Descripción"
         prop="description"
       >
-      <template slot-scope="scope">
-        <span v-html="$options.filters.$_pageBodyTableMixin_shrinkText(scope.row.description)"></span>
-      </template>
+        <template slot-scope="scope">
+          <span v-html="shrinkText(scope.row.description)"></span>
+        </template>
       </el-table-column>
+
       <el-table-column
         label="Publicado"
         prop="publicado"
@@ -49,6 +54,7 @@
           </el-tag>
         </template>
       </el-table-column>
+
       <el-table-column
         label="Acción"
         align="center"
@@ -78,7 +84,6 @@
               body-text="¿Está seguro de eliminar esta capa?"
             />                
           </el-tooltip>
-
         </template>
       </el-table-column>
     </template>
@@ -86,10 +91,10 @@
 </template>
 
 <script>
-import pageBodyTableMixin from '@/mixins/pageBodyTableMixin'
+import pageActionsMixin from '@/mixins/pageActionsMixin'
 
 export default {
-  mixins: [pageBodyTableMixin],
+  mixins: [pageActionsMixin],
   
   head: {
     title: 'Capas vectoriales | GEOVISOR',
@@ -99,7 +104,7 @@ export default {
     return {
       //page-header
       pageHeaderTitle: 'Capas vectoriales',
-      btnAddName: 'Nueva capa vectorial',
+      pageHeaderBtnAddName: 'Nueva capa vectorial',
       // toast
       messageBaseName: 'LAYER',
       // store module
@@ -109,7 +114,7 @@ export default {
       // criterias to search based on columns of table
       filterCriteriaProps: ['title', 'name', 'description'],
       // current page modals folder name
-      currentPageModalsFolderName: 'layers'
+      pageModalsFolderName: 'layers'
     }
   }
 }

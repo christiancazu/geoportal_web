@@ -1,6 +1,6 @@
 import {
-  UPDATE_DATA_CONTEXT,
-  UPDATE_ITEM_CONTEXT
+  SET_DATA_CONTEXT,
+  SET_ITEM_CONTEXT
 } from '../types/mutation-types'
 
 export const state = () => ({
@@ -12,19 +12,19 @@ export const actions = {
   async getDataContext ({ commit }, payload) {
     try {
       const { data } = await this.$groupLayerAPI.get(payload)
-      commit(UPDATE_DATA_CONTEXT, { dataContext: data || [] })
+      commit(SET_DATA_CONTEXT, { dataContext: data || [] })
     } catch (error) {
       throw error
     }
   },
   
   updateCurrentItemContext ({ commit }, payload) {
-    commit(UPDATE_ITEM_CONTEXT, payload)
+    commit(SET_ITEM_CONTEXT, payload)
   }
 }
 
 export const mutations = {
-  [UPDATE_DATA_CONTEXT]: (state, { dataContext }) => state.dataContext = dataContext,
+  [SET_DATA_CONTEXT]: (state, { dataContext }) => state.dataContext = dataContext,
   
-  [UPDATE_ITEM_CONTEXT]: (state, { groupLayer }) => state.currentItemContext = groupLayer
+  [SET_ITEM_CONTEXT]: (state, { groupLayer }) => state.currentItemContext = groupLayer
 }
