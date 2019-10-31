@@ -36,13 +36,13 @@ export default {
 
   props: {
     DialogDeleteTitle: {
-      type: String, required: true,
+      type: String
     },
     DialogDeleteBodyText: {
-      type: String, required: true,
+      type: String
     },
     ItemSelected: {
-      type: Object, required: true,
+      type: Object
     },
   }
 }

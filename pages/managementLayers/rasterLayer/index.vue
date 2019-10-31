@@ -1,202 +1,90 @@
 <template>
-  <BasePage title="Capas Raster">
-    <template v-slot:itemsActions>
-      <el-button
-        size="mini"
-        type="primary"
-        icon="el-icon-plus"
-        @click="$_modalVisibilityMixin_open('modalAddRasterLayer')"
+  <base-page-actions 
+    :page-header-title="pageHeaderTitle"
+    :page-header-btn-add-name="pageHeaderBtnAddName"
+    :store-base="storeBase"
+    :modal-add-state-name="modalAddStateName"
+    :modal-edit-state-name="modalEditStateName"
+    :filter-criteria-props="filterCriteriaProps"
+    :page-modals-folder-name="pageModalsFolderName"
+    :message-base-name="messageBaseName"
+  >
+    <template v-slot:page-table="{ 
+      openModalEditItemContext,
+      confirmedActionDeleteItemContext,
+      shrinkText
+    }">
+      <el-table-column
+        label="Nombre"
+        prop="name"
+      />
+      <el-table-column
+        label="Título"
+        prop="title"
+      />
+      <el-table-column
+        label="Publicado"
+        prop="publicado"
+        align="center"
       >
-        Nueva capa raster
-      </el-button>
-    </template>
-    <template v-slot:content>
-      <el-container direction="vertical">
-        <el-row
-          type="flex"
-          justify="end"
-          :gutter="10"
-        >
-          <el-col
-            :xs="24"
-            :sm="12"
-            :md="8"
-          >
-            <div>
-              <el-input
-                v-model="search"
-                prefix-icon="el-icon-search"
-                size="small"
-                placeholder="Buscar..."
-                clearable
-              />
-            </div>
-          </el-col>
-        </el-row>
-        <el-table
-          :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-          style="width: 100%"
-          v-loading="$store.state.spinners.loadingTable"
-        >
-          <el-table-column
-            label="Nombre"
-            prop="name"
+        <template slot-scope="scope">
+          <el-tag
+            :type="scope.row.isPublished ? 'success' : 'info'"
+            effect="plain">
+            {{ scope.row.isPublished ? 'si' : 'no' }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="Acción"
+        align="center"
+        width="120"
+      >
+        <template slot-scope="scope">
+          <group-actions-buttons
+            :item-selected="scope.row"
+            dialog-delete-title="Eliminar Capa Raster"
+            dialog-delete-body-text="¿Está seguro de eliminar esta capa?"
+            @open-edit-modal="openModalEditItemContext(scope.row)"
+            @confirmed-action="confirmedActionDeleteItemContext"
           />
-          <el-table-column
-            label="Título"
-            prop="title"
-          />
-          <el-table-column
-            label="¿Publicado?"
-            prop="isPublished"
-          >
-            <template slot-scope="scope">
-              <el-switch
-                disabled
-                v-model="scope.row.isPublished"
-                :active-text="scope.row.isPublished? 'Si' :'No'"
-              >
-              </el-switch>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="Acción"
-            align="center"
-            width="120"
-          >
-            <template slot-scope="scope">
-              <el-button
-                circle
-                icon="el-icon-edit"
-                size="small"
-                type="primary"
-                @click="onLoadModalEditRasterLayer(scope.$index, scope.row)"
-              />
-              <el-button
-                circle
-                icon="el-icon-edit"
-                size="small"
-                :disabled="scope.row.isPublished"
-                type="primary"
-                @click="onLoadModalPublishRasterLayer(scope.$index, scope.row)"
-              />
-              <btn-confirm
-                :item-selected="scope.row"
-                @confirmed-action="deleteSelectedRasterLayer"
-                accion="deleted"
-                title="¿Eliminar Capa Raster?"
-                body-text="¿Esta seguro de continuar con la operación?"
-              />
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          small
-          class="pt-4 text-xs-right"
-          :pager-size="100"
-          :page-size="pagesize"
-          layout="prev, pager, next, sizes"
-          :total="filteredData.length"
-          :current-page="currentPage"
-          @current-change="onChangeCurrentPage"
-          @size-change="onChangePageSize"
-        />
-      </el-container>
+        </template>
+      </el-table-column>
     </template>
-    <template v-slot:modals>
-
-      <modal-publish-raster-layer />
-      
-      <modal-add-raster-layer />
-
-      <modal-edit-raster-layer />
-    
-    </template>
-  </BasePage>
+  </base-page-actions>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import BasePage from '@/components/base/pages/BasePage.vue'
-import ModalPublishRasterLayer from '@/components/layers/ModalPublishRasterLayer.vue'
-import ModalAddRasterLayer from '@/components/layers/ModalAddRasterLayer.vue'
-import ModalEditRasterLayer from '@/components/layers/ModalEditRasterLayer.vue'
-import BtnConfirm from "@/components/base/BaseBtnConfirm";
+import pageActionsMixin from '@/mixins/pageActionsMixin'
+import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
 export default {
-  components: {
-    BasePage,
-    ModalPublishRasterLayer,
-    ModalAddRasterLayer,
-    ModalEditRasterLayer,
-    BtnConfirm
+   components: {
+    GroupActionsButtons
   },
+
+  mixins: [pageActionsMixin],
+
   head: {
     title: 'Capas raster | GEOVISOR',
   },
+
   data () {
     return {
-      search: "",
-      pagesize: 10,
-      currentPage: 1
-    };
-  },
-
-  computed: {
-    filteredData () {
-      let search = this.search.toString().toLowerCase()
-      let rasterLayers = this.$store.state.rasterLayers.rasterLayers
-      this.currentPage = 1
-      return rasterLayers.filter(item => {
-        // checking title
-        if (item.title && item.title.toString().toLowerCase().includes(search)) {
-          return item
-        }
-        // checking name
-        if (item.name && item.name.toString().toLowerCase().includes(search)) {
-          return item
-        }
-      });
+      //page-header
+      pageHeaderTitle: 'Capas raster',
+      pageHeaderBtnAddName: 'Nueva capa raster',
+      // toast
+      messageBaseName: 'LAYER',
+      // store module
+      storeBase: 'rasterLayers',
+      modalAddStateName: 'modalAddRasterLayer',
+      modalEditStateName: 'modalEditRasterLayer',
+      // criterias to search based on columns of table
+      filterCriteriaProps: ['title', 'name'],
+      // current page modals folder name
+      pageModalsFolderName: 'layers'
     }
-  },
-
-  created () {
-    this.getRasterLayers();
-  },
-
-  methods: {
-    ...mapActions({
-      replaceCurrentRasterLayer: 'rasterLayers/replaceCurrentRasterLayer',
-      getRasterLayers: 'rasterLayers/getRasterLayers',
-    }),
-
-    onLoadModalPublishRasterLayer (index, item) {
-      this.replaceCurrentRasterLayer({ rasterLayer: item })
-      this.$_modalVisibilityMixin_open('modalPublishRasterLayer')
-    },
-
-    onLoadModalEditRasterLayer: function (index, item) {
-      this.replaceCurrentRasterLayer({ rasterLayer: item })
-      this.$_modalVisibilityMixin_open('modalEditRasterLayer')
-    },
-
-    deleteSelectedRasterLayer: function (item) {
-      new Promise((resolve, reject) => {
-        this.$rasterLayerAPI.delete({ id: item.itemSelected.id })
-          .then(response => {
-            resolve(response)
-            this.getRasterLayers()
-          }).catch(error => reject(error))
-      })
-    },
-
-    // pagination 
-    onChangeCurrentPage: function (currentPage) {
-      this.currentPage = currentPage;
-    },
-    onChangePageSize: function (pagesize) {
-      this.pagesize = pagesize;
-    },
   }
 }
 </script>

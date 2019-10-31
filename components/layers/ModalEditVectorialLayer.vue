@@ -150,9 +150,11 @@ export default {
 
   computed: {
     ...mapState({
-      itemContext: state => state.vectorialLayers.itemContext,
-      groupLayers: state => state.groupLayers.dataContext,
-      })
+      itemContext (state) {
+        return state[this.storeBase].itemContext
+      }, 
+      groupLayers: state => state.groupLayers.dataContext
+    })
   },
 
   watch: {
@@ -163,9 +165,7 @@ export default {
 
   methods: {
     ...mapActions({
-      getGroupLayers: 'groupLayers/getDataContext',
-      getVectorialLayers: "vectorialLayers/getVectorialLayers",
-      updateVectorialLayer: "vectorialLayers/updateVectorialLayer"
+      getGroupLayers: 'groupLayers/getDataContext'
     }),
 
     assignFormFields () {
@@ -187,5 +187,5 @@ export default {
     //   this.form.title = nameFile[0]
     // }
   }
-};
+}
 </script>

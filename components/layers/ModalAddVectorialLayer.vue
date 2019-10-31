@@ -51,12 +51,12 @@
           >
             <el-upload
               ref="uploadFile"
-              class="upload-demo"
-              drag
-              action
+              class="upload-demo"              
               :http-request="launchUploadAvatar"
               :show-file-list="false"
               :before-upload="beforeFileLayerUpload"
+              drag
+              action
             >
               <i class="el-icon-upload"></i>
               <div class="el-upload__text pa-2">
@@ -66,7 +66,7 @@
             </el-upload>
 
             <ul
-              v-if="fileLayerSelected"
+              v-if="fileSelected"
               class="el-upload-list el-upload-list--text px-3"
             >
               <li
@@ -75,7 +75,7 @@
               >
                 <a class="el-upload-list__item-name">
                   <i class="el-icon-document"></i>
-                  {{ fileLayerSelected.name }}
+                  {{ fileSelected.name }}
                 </a>
                 <label class="el-upload-list__item-status-label">
                   <i class="el-icon-upload-success el-icon-circle-check"></i>
@@ -152,8 +152,9 @@
   </base-form>
 </template>
 <script>
-import { mapState, mapActions } from "vuex"
 import BaseForm from '@/components/base/BaseForm'
+
+import { mapState, mapActions } from "vuex"
 
 export default {
   components: {
@@ -169,9 +170,10 @@ export default {
       messageToastBaseName: 'LAYER',
       messageToastAction: 'REGISTERED',
 
-      fileLayerSelected: null,
+      fileSelected: null,
       fileStyleSelected: null,
       showFormStyle: false,
+
       form: {
         title: "",
         order: 0,
@@ -229,13 +231,13 @@ export default {
     resetForm () {
       if (this.form.shapeFile) {
         this.form.shapeFile = null
-        this.fileLayerSelected = null
+        this.fileSelected = null
       }
     },
 
     launchUploadAvatar (option) {
       this.form.shapeFile = option.file;
-      this.fileLayerSelected = option.file
+      this.fileSelected = option.file
       const nameFile = option.file.name.split('.')
       this.form.name = nameFile[0]
       this.form.title = nameFile[0]

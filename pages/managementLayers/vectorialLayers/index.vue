@@ -61,13 +61,13 @@
         width="120"
       >
         <template slot-scope="scope">
-            <group-actions-buttons
-              :item-selected="scope.row"
-              dialog-delete-title="Eliminar Capa"
-              dialog-delete-body-text="¿Está seguro de eliminar esta capa?"
-              @open-edit-modal="openModalEditItemContext(scope.row)"
-              @confirmed-action="confirmedActionDeleteItemContext"
-            />
+          <group-actions-buttons
+            :item-selected="scope.row"
+            dialog-delete-title="Eliminar Capa Vectorial"
+            dialog-delete-body-text="¿Está seguro de eliminar esta capa?"
+            @open-edit-modal="openModalEditItemContext(scope.row)"
+            @confirmed-action="confirmedActionDeleteItemContext"
+          />
         </template>
       </el-table-column>
     </template>

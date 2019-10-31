@@ -1,47 +1,80 @@
 import {
-  REPLACE_RASTER_LAYER,
-  REPLACE_CURRENT_RASTER_LAYER
+  SET_DATA_CONTEXT,
+  SET_ITEM_CONTEXT,
+  SET_PUBLISHED_ITEM_CONTEXT,
+  SET_CURRENT_PAGE_ON_TABLE
 } from '../types/mutation-types'
 
 export const state = () => ({
-  rasterLayers: [],
-  currentRasterLayer: null,
+  dataContext: [],
+  itemContext: {},
+  currentPageOnTable: 1
 })
 
 export const actions = {
-  async getRasterLayers ({ commit }, payload) {
+  async createItemContext ({}, form) {
+    try {
+      await this.$rasterLayerAPI.create(form)
+    } 
+    catch (error) {
+      throw error
+    }
+  },
+
+  async getDataContext ({ commit }) {
     try {
       const { data } = await this.$rasterLayerAPI.get()
-      let rasterLayers = data || []
-      rasterLayers.forEach(val => {
-        val.name = val.name || "--"
-        val.title = val.title || "--"
-      })
-      commit(REPLACE_RASTER_LAYER, { rasterLayers })
-    } catch (error) {
+      commit(SET_DATA_CONTEXT, { dataContext: data || [] })
+    } 
+    catch (error) {
       throw error
     } 
   },
 
-  replaceCurrentRasterLayer ({ commit }, payload) {
-    commit(REPLACE_CURRENT_RASTER_LAYER, payload)
-  },
-
-  async updateRasterLayer ({ commit }, payload) {
+  async getItemContext ({ commit }, id) {
     try {
-      await this.$rasterLayerAPI.update(payload)
-    } catch (error) {
+      const { data } = await this.$rasterLayerAPI.getById(id)
+      commit(SET_ITEM_CONTEXT, { itemContext: data })
+    } 
+    catch (error) {
       throw error
     }
   },
+
+  async publishItemContext ({}, form) {
+    try {
+      await this.$rasterLayerAPI.publish(form)
+    } 
+    catch (error) {
+      throw error
+    }
+  },
+
+  async updateItemContext ({}, form) {
+    try {
+      await this.$rasterLayerAPI.update(form)
+    } 
+    catch (error) {
+      throw error
+    }
+  },
+
+  async deleteItemContext ({}, id) {
+    try {
+      await this.$rasterLayerAPI.delete(id)
+    } 
+    catch (error) {
+      throw error
+    }
+  }
 }
 
 export const mutations = {
-  [REPLACE_RASTER_LAYER] (state, { rasterLayers }) {
-    state.rasterLayers = rasterLayers
-  },
+  [SET_DATA_CONTEXT]: (state, { dataContext }) => state.dataContext = dataContext,
 
-  [REPLACE_CURRENT_RASTER_LAYER] (state, { rasterLayer }) {
-    state.currentRasterLayer = rasterLayer
-  }
+  [SET_ITEM_CONTEXT]: (state, { itemContext }) => state.itemContext = itemContext,
+
+  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => state.itemContext.isPublished = !payload,
+
+  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => state.currentPageOnTable = payload
 }

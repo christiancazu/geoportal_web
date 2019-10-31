@@ -1,21 +1,16 @@
 <template>
-  <BaseModal
-    title="Modificar capa raster"
-    :show-modal="modalEditRasterLayer"
-    name-state="modalEditRasterLayer"
+  <base-form
+    :form-title="formTitle"
+    :form="form"
+    :rules="rules"
+    :store-base="storeBase"
+    :modal-state-name="modalStateName"
+    :store-action="storeAction"
+    :message-toast-base-name="messageToastBaseName"
+    :message-toast-action="messageToastAction"
+    @reset-form="resetForm()"
   >
     <template v-slot:content>
-      <el-form
-        ref="form"
-        label-position="top"
-        status-icon
-        :model="form"
-        :rules="rules"
-        label-width="120px"
-        class="demo-ruleForm"
-        :disabled="$store.state.spinners.processingForm"
-        @submit.prevent="submitForm"
-      >
         <el-row :gutter="14">
           <el-col
             :xs="24"
@@ -59,10 +54,10 @@
           prop="groupLayerId"
         >
           <el-container>
-            <el-select
+              <el-select
               v-model="form.groupLayerId"
               value-key="id"
-              :loading="loadingGroupLayers"
+              :loading="$store.state.spinners.loadingTable"
               filterable
               placeholder="Select"
             >
@@ -89,53 +84,34 @@
             :show-word-limit="true"
           />
         </el-form-item>
-        <el-form-item
-          label="¿Habilitado?"
-          prop="status"
-        >
-          <el-switch
-            v-model="form.status"
-            :active-text="form.status? 'SI': 'NO'"
-          >
-          </el-switch>
-        </el-form-item>
-      </el-form>
-    </template>
-    <template v-slot:actions>
-      <el-button
-        :disabled="$store.state.spinners.processingForm"
-        size="small"
-        @click="$_modalVisibilityMixin_close('modalEditRasterLayer')"
-      >
-        CANCELAR
-      </el-button>
-      <el-button
-        type="primary"
-        size="small"
-        native-type="submit"
-        :loading="$store.state.spinners.processingForm"
-        @click.prevent="submitForm"
-      >
-        GUARDAR
-      </el-button>
-    </template>
-  </BaseModal>
+      </template>
+  </base-form>
 </template>
+
 <script>
-import { mapState, mapActions } from "vuex";
-import BaseModal from "@/components/base/BaseModal";
+import BaseForm from "@/components/base/BaseForm"
+
+import { mapState, mapActions } from "vuex"
 
 export default {
   components: {
-    BaseModal
+    BaseForm
   },
 
   data () {
     return {
+      modalStateName: 'modalEditRasterLayer',
+      storeBase: 'rasterLayers',
+      storeAction: 'update',
+      formTitle: 'Actualizar capa raster',
+      messageToastBaseName: 'LAYER',
+      messageToastAction: 'UPDATED',
+
       fileLayerSelected: null,
       fileStyleSelected: null,
       showFormStyle: false,
       form: {
+        id: null,
         order: null,
         title: "",
         name: "",
@@ -169,70 +145,49 @@ export default {
     };
   },
 
+  created () {
+    this.getGroupLayers()
+    this.assignFormFields()
+  },
+
   computed: {
     ...mapState({
-      currentRasterLayer: state => state.rasterLayers.currentRasterLayer,
-      groupLayers: state => state.groupLayers.groupLayers,
-      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      modalEditRasterLayer: state => state.modalsVisibilities.modalEditRasterLayer
+      itemContext (state) {
+        return state[this.storeBase].itemContext
+      }, 
+      groupLayers: state => state.groupLayers.dataContext
     })
   },
 
   watch: {
-    modalEditRasterLayer (newState, oldState) {
-      if (!newState) {
-        this.$refs.form.resetFields();
-        this.fileLayerSelected = null
-        return false;
-      }
-      this.getGroupLayers()
-    },
-
-    currentRasterLayer (newState, oldState) {
-      this.form.order = this.currentRasterLayer.order
-      this.form.title = this.currentRasterLayer.title
-      this.form.description = this.currentRasterLayer.description
-      this.form.groupLayerId = this.currentRasterLayer.groupLayerId
+    itemContext () {
+      this.assignFormFields()
     }
   },
 
   methods: {
     ...mapActions({
-      getGroupLayers: 'groupLayers/getGroupLayers',
-      getRasterLayers: 'rasterLayers/getRasterLayers',
-      updateRasterLayer: 'rasterLayers/updateRasterLayer',
+      getGroupLayers: 'groupLayers/getDataContext'
     }),
 
-    async submitForm () {
-      let isFormValid = false
+    assignFormFields () {
+      Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
+    },
 
-      await this.$refs.form.validate(result => isFormValid = result)
-
-      if (isFormValid) {
-        const data = this.$_objectToFormDataMixin_transform();
-
-        try {
-          await this.updateRasterLayer({
-            id: this.currentRasterLayer.id,
-            data
-          })
-          this.$refs.form.resetFields()
-          this.$toast.success(this.$SUCCESS.LAYER.UPDATED)
-          this.$_modalVisibilityMixin_close('modalEditRasterLayer')
-
-          await this.getRasterLayers()
-
-        } catch (e) {}
+    resetForm () {
+      if (this.form.shapeFile) {
+        this.form.shapeFile = null
+        this.fileLayerSelected = null
       }
     },
 
-    launchUploadAvatar (option) {
-      this.form.file = option.file;
-      this.fileLayerSelected = option.file
-      const nameFile = option.file.name.split('.')
-      this.form.name = nameFile[0]
-      this.form.title = nameFile[0]
-    }
+    // launchUploadAvatar (option) {
+    //   this.form.file = option.file;
+    //   this.fileLayerSelected = option.file
+    //   const nameFile = option.file.name.split('.')
+    //   this.form.name = nameFile[0]
+    //   this.form.title = nameFile[0]
+    // }
   }
-};
+}
 </script>
