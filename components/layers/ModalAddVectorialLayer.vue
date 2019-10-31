@@ -235,10 +235,10 @@ export default {
       }
     },
 
-    launchUploadAvatar (option) {
-      this.form.shapeFile = option.file;
-      this.fileSelected = option.file
-      const nameFile = option.file.name.split('.')
+    launchUploadAvatar ({ file }) {
+      this.form.shapeFile = file;
+      this.fileSelected = file
+      const nameFile = file.name.split('.')
       this.form.name = nameFile[0]
       this.form.title = nameFile[0]
     },
