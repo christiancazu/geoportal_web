@@ -49,21 +49,11 @@
             class="text-xs-center upload-file"
             prop="file"
           >
-            <el-upload
-              ref="uploadFile"
-              class="upload-demo"              
-              :http-request="launchUploadAvatar"
-              :show-file-list="false"
-              :before-upload="beforeFileLayerUpload"
-              drag
-              action
-            >
-              <i class="el-icon-upload"></i>
-              <div class="el-upload__text pa-2">
-                <p class="ma-0">Suelta tu archivo .zip ó .shp aquí <br> ó <br><em>haz clic para cargar</em>
-                </p>
-              </div>
-            </el-upload>
+
+            <upload-file 
+              :available-file-extensions="availableFileExtensions"
+              @on-file-valid="onFileValid"
+             />
 
             <ul
               v-if="fileSelected"
@@ -153,23 +143,28 @@
 </template>
 <script>
 import BaseForm from '@/components/base/BaseForm'
+import UploadFile from '@/components/UploadFile'
 
 import { mapState, mapActions } from "vuex"
 
 export default {
   components: {
-    BaseForm
+    BaseForm, UploadFile
   },
 
   data () {
     return {
+      formTitle: 'Registrar capa vectorial',
+      // state context
       modalStateName: 'modalAddVectorialLayer',
       storeBase: 'vectorialLayers',
       storeAction: 'create',
-      formTitle: 'Registrar capa vectorial',
+      // message context
       messageToastBaseName: 'LAYER',
       messageToastAction: 'REGISTERED',
-
+      // file settings
+      fileType: 'shapeFile',
+      availableFileExtensions: ['.shp', '.zip'],
       fileSelected: null,
       fileStyleSelected: null,
       showFormStyle: false,
@@ -235,26 +230,12 @@ export default {
       }
     },
 
-    launchUploadAvatar ({ file }) {
-      this.form.shapeFile = file;
-      this.fileSelected = file
-      const nameFile = file.name.split('.')
-      this.form.name = nameFile[0]
-      this.form.title = nameFile[0]
-    },
-
-    beforeFileLayerUpload (file) {
-      // const extension = (name.substring(name.lastIndexOf("."))).toLowerCase()
-      const extension = `.${file.name.split('.').pop()}`
-      const isSHP = extension === '.shp'
-      const isZIP = extension === '.zip' || file.type === 'application/zip'
-
-      let valid = isSHP || isZIP
-
-      if (!valid) {
-        this.$message.error("Solo se acepta archivos .zip ó .shp");
-      }
-      return valid
+    onFileValid(file) {
+      this.form[this.fileType] = file;
+      this.fileSelected = file;
+      const nameFile = file.name.split(".");
+      this.form.name = nameFile[0];
+      this.form.title = nameFile[0];
     },
 
     beforeFileStyleUpload (file) {

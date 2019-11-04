@@ -2,15 +2,14 @@
   <el-upload
     ref="uploadFile"
     class="upload-demo"              
-    :http-request="launchUploadAvatar"
+    :http-request="onFileValid"
     :show-file-list="false"
     :before-upload="beforeFileUpload"
-    drag
-    action
+    drag action
   >
     <i class="el-icon-upload"></i>
     <div class="el-upload__text pa-2">
-      <p class="ma-0">Suelta tu archivo .zip ó .shp aquí <br> ó <br><em>haz clic para cargar</em>
+      <p class="ma-0">Suelta tu archivo {{ extensionsString }} aquí <br> ó <br><em>haz clic para cargar</em>
       </p>
     </div>
   </el-upload>
@@ -19,32 +18,38 @@
 <script>
 export default {
   props: {
-    availableExtensions: {
+    availableFileExtensions: {
       type: Array, required: true
+    } 
+  },
+
+  data() {
+    return {
+      extensionsString: ''
     }
+  },
+
+  mounted () {
+    this.availableFileExtensions.forEach(e => {
+      this.extensionsString += e + " ó "
+    })
+    this.extensionsString = this.extensionsString.substring(0, this.extensionsString.length - 2)
   },
   
   methods: {
-    launchUploadAvatar ({ file }) {
-      this.form.shapeFile = file;
-      this.fileSelected = file
-      const nameFile = file.name.split('.')
-      this.form.name = nameFile[0]
-      this.form.title = nameFile[0]
+    onFileValid ({ file }) {
+      this.$emit('on-file-valid', file)
     },
 
-    beforeFileLayerUpload (file) {
-      // const extension = (name.substring(name.lastIndexOf("."))).toLowerCase()
-      const extension = `.${file.name.split('.').pop()}`
-      const isSHP = extension === '.shp'
-      const isZIP = extension === '.zip' || file.type === 'application/zip'
+    beforeFileUpload (file) {
+      const currentExtension = `.${file.name.split('.').pop()}`
 
-      let valid = isSHP || isZIP
+      const isValid = this.availableFileExtensions.includes(currentExtension) || file.type === 'application/zip'
 
-      if (!valid) {
+      if (!isValid) {
         this.$message.error("Solo se acepta archivos .zip ó .shp");
       }
-      return valid
+      return isValid
     },
   }
 }
