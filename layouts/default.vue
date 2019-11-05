@@ -20,16 +20,19 @@
         <nuxt />
 
         <!-- dynamic current modal -->
-        <template v-if="loggedIn">
-          <component :is="formModalDynamicComponent" />
-        </template>
+        <!-- <template v-if=""> -->
+          <component :is="mainModalDynamicComponent" />
+          
+          <component :is="secondModalDynamicComponent" />
+        <!-- </template> -->
+        
 
       </el-main>
     </el-container>
   </div>
 </template>
 <script>
-import { mapState, mapGetters } from "vuex"
+import { mapState } from "vuex"
 import SideBar from "@/components/SideBar"
 
 export default {
@@ -47,17 +50,23 @@ export default {
     ...mapState({
       loggedIn: state => state.auth.loggedIn,    
     }),
-    ...mapGetters({
-      currentMainModalCapitalize: 'modalsVisibilities/currentMainModalCapitalize'
-    }),
 
     /**
-     * load dynamic component from the state setted
+     * load dynamic main modal component from the state setted
      * example: @/components/layers/ModalAddVectorialLayer
      */
-    formModalDynamicComponent () {
+    mainModalDynamicComponent () {
       const componentNameCapitalized = this.capitalize(this.$store.state.modalsVisibilities.mainModal)
-      return () => import(`@/components/${this.$store.state.modalsVisibilities.pageModalsFolderName}/${componentNameCapitalized}`)
+      return () => import(`@/components/${this.$store.state.modalsVisibilities.modalMainFolderName}/${componentNameCapitalized}`)
+    },
+
+    /**
+     * load dynamic second modal component from the state setted
+     * example: @/components/layers/ModalAddVectorialLayer 
+     */
+    secondModalDynamicComponent () {
+      const componentNameCapitalized = this.capitalize(this.$store.state.modalsVisibilities.secondModal)
+      return () => import(`@/components/${this.$store.state.modalsVisibilities.modalSecondFolderName}/${componentNameCapitalized}`)
     }
   },
 

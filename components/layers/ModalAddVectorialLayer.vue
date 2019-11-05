@@ -53,7 +53,7 @@
             <upload-file 
               :available-file-extensions="availableFileExtensions"
               @on-file-valid="onFileValid"
-             />
+            />
 
             <ul
               v-if="fileSelected"
@@ -120,6 +120,10 @@
                   :value="item.id"
                 />
               </el-select>
+
+              <!-- open second modal -->
+              <btn-open-second-modal :modal-second="modalSecond" />
+
             </el-container>
           </el-form-item>
         </el-col>
@@ -144,21 +148,27 @@
 <script>
 import BaseForm from '@/components/base/BaseForm'
 import UploadFile from '@/components/UploadFile'
+import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
 
 import { mapState, mapActions } from "vuex"
 
 export default {
   components: {
-    BaseForm, UploadFile
+    BaseForm, UploadFile, BtnOpenSecondModal
   },
 
   data () {
     return {
       formTitle: 'Registrar capa vectorial',
       // state context
-      modalStateName: 'modalAddVectorialLayer',
       storeBase: 'vectorialLayers',
+      modalStateName: 'modalAddVectorialLayer',
       storeAction: 'create',
+      modalSecond: {
+        folderName: 'layers',
+        stateName: 'modalEditVectorialLayer',
+        tooltip: 'Agregar'
+      },
       // message context
       messageToastBaseName: 'LAYER',
       messageToastAction: 'REGISTERED',
@@ -233,9 +243,9 @@ export default {
     onFileValid(file) {
       this.form[this.fileType] = file;
       this.fileSelected = file;
-      const nameFile = file.name.split(".");
-      this.form.name = nameFile[0];
-      this.form.title = nameFile[0];
+      const nameFile = file.name.split(".")[0];
+      this.form.name = nameFile;
+      this.form.title = nameFile;
     },
 
     beforeFileStyleUpload (file) {

@@ -2,14 +2,18 @@ import {
   OPEN_MODAL,
   CLOSE_MODAL,
   SET_DYNAMIC_MAIN_MODAL,
-  SET_PAGE_MODALS_FOLDER_NAME
-} from '../types/mutation-types'
+  SET_DYNAMIC_SECOND_MODAL,
+  SET_MODAL_MAIN_FOLDER_NAME,
+  SET_MODAL_SECOND_FOLDER_NAME
+} from "../types/mutation-types";
 
 export const state = () => ({
   // current dynamic main modal to display
-  mainModal: 'ModalAddVectorialLayer',
+  mainModal: "ModalAddVectorialLayer",
+  secondModal: "ModalEditVectorialLayer",
   // current modals folder name
-  pageModalsFolderName: 'layers',
+  modalMainFolderName: "layers",
+  modalSecondFolderName: "layers",
   // users
   modalAddUser: false,
   modalEditUser: false,
@@ -22,7 +26,7 @@ export const state = () => ({
   modalAddBaseLayer: false,
   modalEditBaseLayer: false,
   // vectorial layers
-  modalAddVectorialLayer: false,
+  modalAddVectorialLayer: true,
   modalEditVectorialLayer: false,
   // raster layers
   modalAddRasterLayer: false,
@@ -36,14 +40,20 @@ export const state = () => ({
   modalEditGeoreferencedImage: false,
   // reports
   modalViewReport: false
-})
+});
 
 export const mutations = {
-  [OPEN_MODAL]: (state, payload) => state[payload] = true,
+  [OPEN_MODAL]: (state, payload) => (state[payload] = true),
 
-  [CLOSE_MODAL]: (state, payload) => state[payload] = false,
+  [CLOSE_MODAL]: (state, payload) => (state[payload] = false),
 
-  [SET_DYNAMIC_MAIN_MODAL]: (state, payload) => state.mainModal = payload,
+  [SET_DYNAMIC_MAIN_MODAL]: (state, payload) => (state.mainModal = payload),
 
-  [SET_PAGE_MODALS_FOLDER_NAME]: (state, payload) => state.pageModalsFolderName = payload
-}
+  [SET_DYNAMIC_SECOND_MODAL]: (state, payload) => (state.secondModal = payload),
+
+  [SET_MODAL_MAIN_FOLDER_NAME]: (state, payload) =>
+    (state.modalMainFolderName = payload),
+
+  [SET_MODAL_SECOND_FOLDER_NAME]: (state, payload) =>
+    (state.modalSecondFolderName = payload)
+};

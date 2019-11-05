@@ -61,7 +61,7 @@ import BasePage from '@/components/base/pages/BasePage'
 
 import { 
   SET_DYNAMIC_MAIN_MODAL,
-  SET_PAGE_MODALS_FOLDER_NAME,
+  SET_MODAL_MAIN_FOLDER_NAME,
   SET_CURRENT_PAGE_ON_TABLE,
 } from '@/types/mutation-types'
 
@@ -190,7 +190,7 @@ export default {
         this.$store.commit(`modalsVisibilities/${SET_DYNAMIC_MAIN_MODAL}`, modalStateName)
       },
       setCurrentPageModalsFolderName () {
-        this.$store.commit(`modalsVisibilities/${SET_PAGE_MODALS_FOLDER_NAME}`, this.pageModalsFolderName)
+        this.$store.commit(`modalsVisibilities/${SET_MODAL_MAIN_FOLDER_NAME}`, this.pageModalsFolderName)
       }
     }),
 
