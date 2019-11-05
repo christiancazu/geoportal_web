@@ -152,6 +152,12 @@ import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
 
 import { mapState, mapActions } from "vuex"
 
+import { 
+  title,
+  groupLayerId,
+  order,
+  name } from '@/config/form.rules'
+
 export default {
   components: {
     BaseForm, UploadFile, BtnOpenSecondModal
@@ -189,31 +195,10 @@ export default {
       },
 
       rules: {
-        title: [{
-          required: true,
-          message: "El nombre de usuario es requerido"
-        }],
-        groupLayerId: [{
-          required: true,
-          message: "Seleccione un Grupo de capa"
-        }],
-        order: [{
-          required: true,
-          type: 'number',
-          message: " "
-        }],
-        name: [{
-          required: true,
-          // pattern: /^[z0-9\s.,\/#!$%\^&\*;:{}=\-+'´`~()”“"…]+$/g,
-          validator: (rule, value, callback) => {
-            let text = value.split('')
-            let itContainsBlanks = text.every(val => /[a-zA-Z0-9_]/g.test(val))
-            if (!itContainsBlanks) {
-              return callback(new Error("Solo se admite letras y subguion '_'"))
-            }
-            callback();
-          }
-        }]
+        title,
+        groupLayerId,
+        order,
+        name
       }
     };
   },

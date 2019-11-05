@@ -91,6 +91,11 @@ import BaseForm from "@/components/base/BaseForm"
 
 import { mapState, mapActions } from "vuex"
 
+import { 
+  title,
+  name,
+  order } from '@/config/form.rules'
+
 export default {
   components: {
     BaseForm
@@ -119,26 +124,9 @@ export default {
       },
 
       rules: {
-        title: [{
-          required: true,
-          message: "El nombre de usuario es requerido"
-        }],
-        name: [{
-          required: true,
-          // pattern: /^[z0-9\s.,\/#!$%\^&\*;:{}=\-+'´`~()”“"…]+$/g,
-          validator: (rule, value, callback) => {
-            let text = value.split('')
-            let itContainsBlanks = text.every(val => /[a-zA-Z0-9_]/g.test(val))
-            if (!itContainsBlanks) {
-              return callback(new Error("Solo se admite letras y subguion '_'"))
-            }
-            callback();
-          }
-        }],
-        order: [{
-          required: true,
-          message: " "
-        }],
+        title,
+        name,
+        order,
       }
     };
   },
