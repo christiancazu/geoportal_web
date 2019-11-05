@@ -1,21 +1,13 @@
 <template>
-  <BaseModal
-    title="Registrar nuevo grupo de capa"
-    name-state="modalAddGroupLayer"
-    :show-modal="modalAddGroupLayer"
+  <base-form
+    :form-title="formTitle"
+    :form="form"
+    :rules="rules"
+    :context="context"
+    :message-toast="messageToast"
+    @reset-form="resetForm()"
   >
     <template v-slot:content>
-      <el-form
-        ref="form"
-        label-position="top"
-        status-icon
-        :model="form"
-        :rules="rules"
-        label-width="120px"
-        class="demo-ruleForm"
-        :disabled="$store.state.spinners.processingForm"
-        @submit.prevent="submitForm"
-      >
         <el-row :gutter="14">
           <el-col
             :xs="24"
@@ -64,12 +56,11 @@
               v-model="form.categoryGroupId"
               value-key="id"
               filterable
-              :loading="loadingGroupLayers"
+              :loading="$store.state.spinners.loadingTable"
               placeholder="Select"
             >
               <el-option
-                v-for="item in groupLayers"
-                :key="item.id"
+                v-for="item in groupLayers" :key="item.id"
                 :label="item.title"
                 :value="item.id"
               ></el-option>
@@ -91,34 +82,38 @@
             :show-word-limit="true"
           />
         </el-form-item>
-      </el-form>
     </template>
-    <template v-slot:actions>
-      <el-button
-        :disabled="$store.state.spinners.processingForm"
-        size="small"
-        @click="$_modalVisibilityMixin_close('modalAddGroupLayer')"
-      >CANCELAR</el-button>
-      <el-button
-        type="primary"
-        size="small"
-        native-type="submit"
-        :loading="$store.state.spinners.processingForm"
-        @click.prevent="submitForm"
-      >GUARDAR</el-button>
-    </template>
-  </BaseModal>
+  </base-form>
 </template>
+
 <script>
-import { mapState, mapActions } from "vuex";
-import BaseModal from "@/components/base/BaseModal.vue";
+import BaseForm from '@/components/base/BaseForm'
+
+import { 
+  mapState,
+  mapActions } from "vuex"
+
+import { 
+  title,
+  order } from '@/config/form.rules'
 
 export default {
   components: {
-    BaseModal
+    BaseForm
   },
   data () {
     return {
+      formTitle: 'Registrar nuevo grupo de capa',
+
+      context: {
+        storeBase: 'groupLayers',
+        modalStateName: 'modalAddGroupLayer',
+        storeAction: 'create',
+      },
+      messageToast: {
+        baseName: 'LAYER',
+        action: 'REGISTERED'
+      },
       form: {
         order: '1',
         title: "",
@@ -127,76 +122,26 @@ export default {
       },
 
       rules: {
-        title: [{
-          required: true,
-          message: "El nombre de usuario es requerido"
-        }],
-        order: [{
-          required: true,
-          type: 'number',
-          message: " "
-        }],
+        title,
+        order
       }
     };
   },
 
   computed: {
     ...mapState({
-      groupLayers: state => state.groupLayers.groupLayers,
-      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      modalAddGroupLayer: state => state.modalsVisibilities.modalAddGroupLayer
+      groupLayers: state => state.groupLayers.dataContext
     })
   },
 
-  watch: {
-    modalAddGroupLayer: function (newState, oldState) {
-      if (!newState) {
-        this.$refs.form.resetFields()
-        return false;
-      }
-    }
+  mounted () {
+    this.getGroupLayers()
   },
 
   methods: {
     ...mapActions({
-      getGroupLayers: "groupLayers/getGroupLayers"
+      getGroupLayers: 'groupLayers/getDataContext'
     }),
-
-    submitForm () {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.createGroupLayer().then(response => {
-            this.$refs.form.resetFields();
-            this.$_modalVisibilityMixin_close('modalAddGroupLayer')
-            this.getGroupLayers()
-            this.$toast.success(`El grupo de capa se registro con éxito`)
-          });
-        }
-      });
-    },
-
-    createGroupLayer () {
-      const formData = new FormData();
-
-      let keys = Object.keys(this.form);
-      keys.forEach(val => {
-        if (!!this.form[val])
-          formData.append(val, this.form[val]);
-      });
-
-      const data = formData;
-
-      return new Promise((resolve, reject) => {
-        this.$groupLayerAPI
-          .create({ data })
-          .then(response => {
-            resolve(response)
-          })
-          .catch(error => {
-            reject(error)
-          });
-      });
-    }
   }
-};
+}
 </script>

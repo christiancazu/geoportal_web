@@ -3,11 +3,8 @@
     :form-title="formTitle"
     :form="form"
     :rules="rules"
-    :store-base="storeBase"
-    :modal-state-name="modalStateName"
-    :store-action="storeAction"
-    :message-toast-base-name="messageToastBaseName"
-    :message-toast-action="messageToastAction"
+    :context="context"
+    :message-toast="messageToast"
     @reset-form="resetForm()"
   >
     <template v-slot:content>
@@ -114,8 +111,7 @@
                 placeholder="Select"
               >
                 <el-option
-                  v-for="item in groupLayers"
-                  :key="item.id"
+                  v-for="item in groupLayers" :key="item.id"
                   :label="item.title"
                   :value="item.id"
                 />
@@ -166,18 +162,21 @@ export default {
   data () {
     return {
       formTitle: 'Registrar capa vectorial',
-      // state context
-      storeBase: 'vectorialLayers',
-      modalStateName: 'modalAddVectorialLayer',
-      storeAction: 'create',
+
+      context: {
+        storeBase: 'vectorialLayers',
+        modalStateName: 'modalAddVectorialLayer',
+        storeAction: 'create',
+      },
       modalSecond: {
         folderName: 'layers',
-        stateName: 'modalEditVectorialLayer',
+        stateName: 'modalAddGroupLayer',
         tooltip: 'Agregar'
       },
-      // message context
-      messageToastBaseName: 'LAYER',
-      messageToastAction: 'REGISTERED',
+      messageToast: {
+        baseName: 'LAYER',
+        action: 'REGISTERED'
+      },
       // file settings
       fileType: 'shapeFile',
       availableFileExtensions: ['.shp', '.zip'],

@@ -1,7 +1,6 @@
 <template>
   <base-page
-    :page-header-title="pageHeaderTitle"
-    :page-header-btn-add-name="pageHeaderBtnAddName"
+    :page-header="pageHeader"
     @open-add-modal="openModalAddItemContext()"
     >
       <el-container direction="vertical">
@@ -75,29 +74,30 @@ export default {
   },
 
   props: {
-    pageHeaderTitle: {
-      type: String, default: 'set title prop'
+    pageHeader: {
+      type: Object, 
+      default: () => ({
+        title: { type: String, required: true },
+        btnAddName: { type: String, required: true }
+      })
     },
-    pageHeaderBtnAddName: {
-      type: String, default: 'set add name btn'
+    modalMain: {
+      type: Object, 
+      default: () => ({
+        storeBase: { type: String, required: true },
+        modalAddStateName: { type: String, required: true },
+        modalEditStateName: { type: String, required: true },
+        folderName: { type: String, required: true }
+      })
     },
-    storeBase: {
-      type: String, required: true
-    },
-    modalAddStateName: {
-      type: String, required: true
-    },
-    modalEditStateName: {
-      type: String, required: true
-    },
-    messageBaseName: {
-      type: String, required: true
+    messageToast: {
+      type: Object, 
+      default: () => ({
+        baseName: { type: String, required: true }
+      })
     },
     filterCriteriaProps: {
       type: Array, default: () => []
-    },
-    pageModalsFolderName: {
-      type: String, required: true
     },
     fitContent: {
       type: Boolean, default: false
@@ -127,19 +127,19 @@ export default {
   computed: {
     ...mapState({
       dataContext (state) {
-        return state[this.storeBase].dataContext
-      }, 
+        return state[this.modalMain.storeBase].dataContext
+      },
       itemContext (state) {
-        return state[this.storeBase].itemContext
+        return state[this.modalMain.storeBase].itemContext
       } 
     }),
 
     currentPage: {
       get () {
-        return this.$store.state[this.storeBase].currentPageOnTable
+        return this.$store.state[this.modalMain.storeBase].currentPageOnTable
       },
       set(value) {
-        this.$store.commit(`${this.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, value)
+        this.$store.commit(`${this.modalMain.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, value)
       }
     },
 
@@ -161,7 +161,7 @@ export default {
       
       // if have dataContextFiltered set as current page the first 
       if (dataContextFiltered < this.dataContext)
-        this.$store.commit(`${this.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, 1)
+        this.$store.commit(`${this.modalMain.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, 1)
       
       return dataContextFiltered
     }
@@ -175,13 +175,13 @@ export default {
   methods: {
     ...mapActions({
       async getDataContext () {
-        await this.$store.dispatch(`${this.storeBase}/getDataContext`)
+        await this.$store.dispatch(`${this.modalMain.storeBase}/getDataContext`)
       },
       async getItemContext ({}, id) {
-        await this.$store.dispatch(`${this.storeBase}/getItemContext`, { id })
+        await this.$store.dispatch(`${this.modalMain.storeBase}/getItemContext`, { id })
       },
       async deleteItemContext ({}, id) {
-        await this.$store.dispatch(`${this.storeBase}/deleteItemContext`, { id })
+        await this.$store.dispatch(`${this.modalMain.storeBase}/deleteItemContext`, { id })
       }
     }),
 
@@ -190,7 +190,7 @@ export default {
         this.$store.commit(`modalsVisibilities/${SET_DYNAMIC_MAIN_MODAL}`, modalStateName)
       },
       setCurrentPageModalsFolderName () {
-        this.$store.commit(`modalsVisibilities/${SET_MODAL_MAIN_FOLDER_NAME}`, this.pageModalsFolderName)
+        this.$store.commit(`modalsVisibilities/${SET_MODAL_MAIN_FOLDER_NAME}`, this.modalMain.folderName)
       }
     }),
 
@@ -201,8 +201,8 @@ export default {
      * @param {String} modalAddStateName
      */
     openModalAddItemContext () {
-      this.setDynamicMainModal(this.modalAddStateName)
-      this.setVisibleModalStateNameAfterDelay(this.modalAddStateName)     
+      this.setDynamicMainModal(this.modalMain.modalAddStateName)
+      this.setVisibleModalStateName(this.modalMain.modalAddStateName)     
     },
 
     /**
@@ -217,8 +217,8 @@ export default {
       try {
         await this.getItemContext(id)
 
-        this.setDynamicMainModal(this.modalEditStateName)
-        this.setVisibleModalStateNameAfterDelay(this.modalEditStateName)
+        this.setDynamicMainModal(this.modalMain.modalEditStateName)
+        this.setVisibleModalStateName(this.modalMain.modalEditStateName)
       } 
       catch (e) {}   
     },
@@ -232,11 +232,11 @@ export default {
     async confirmedActionDeleteItemContext({ itemSelected }) {
       try {
         await this.deleteItemContext(itemSelected.id)
-        this.$toast.success(this.$SUCCESS[this.messageBaseName].DELETED)
+        this.$toast.success(this.$SUCCESS[this.messageToast.baseName].DELETED)
 
         await this.getDataContext()
         
-        let currentPage = this.$store.state[this.storeBase].currentPageOnTable
+        let currentPage = this.$store.state[this.modalMain.storeBase].currentPageOnTable
 
         // if number of pages is minor that the current page, (when delete)
         if (this.dataContext.length / ROWS_PER_PAGE_ON_TABLE <= (currentPage - 1)) {
@@ -244,7 +244,7 @@ export default {
         }
         // setting currentPage before to submit deleteItemContext and getDataContext
         // to set it again as currentPage to prevent go to page 1 when fetch the dataContext
-        this.$store.commit(`${this.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, currentPage)
+        this.$store.commit(`${this.modalMain.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, currentPage)
       } 
       catch (e) {}
     },
@@ -267,7 +267,7 @@ export default {
 
      * @param {String} modalStateName 
      */
-    setVisibleModalStateNameAfterDelay(modalStateName) {
+    setVisibleModalStateName(modalStateName) {
       setTimeout(() => this.$_modalVisibilityMixin_open(modalStateName), 250)
     },
 

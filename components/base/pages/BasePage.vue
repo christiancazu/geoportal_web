@@ -12,17 +12,17 @@
         slot="header"
       >
         <p class="mt-1 mb-0 font-weight-bold text-uppercase">
-          {{ pageHeaderTitle }}
+          {{ pageHeader.title }}
         </p>
 
-        <template v-if="pageHeaderBtnAddName">
+        <template v-if="pageHeader.btnAddName">
           <el-button
             size="mini"
             type="primary"
             icon="el-icon-plus"
             @click="$emit('open-add-modal')"
           >
-            {{ pageHeaderBtnAddName }}
+            {{ pageHeader.btnAddName }}
           </el-button>
         </template>
       </div>
@@ -36,11 +36,12 @@
 <script>
 export default {
   props: {
-    pageHeaderTitle: {
-      type: String, required: true
-    },
-    pageHeaderBtnAddName: {
-      type: String, required: false
+    pageHeader: {
+      type: Object, 
+      default: () => ({
+        title: { type: String, required: true },
+        btnAddName: { type: String, required: true }
+      })
     },
     fitContent: {
       type: Boolean,

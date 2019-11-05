@@ -34,6 +34,13 @@ export const order = [
   }
 ];
 
+export const url = [
+  {
+    required: true,
+    message: "La url del mapa base es requrido"
+  }
+];
+
 export const name = [
   {
     required: true,

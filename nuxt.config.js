@@ -31,8 +31,7 @@ export default {
       },
       {
         rel: "stylesheet",
-        href:
-          'https://fonts.googleapis.com/css?family=Open+Sans|Poppins|Roboto&display=swap" rel="stylesheet'
+        href: 'https://fonts.googleapis.com/css?family=Open+Sans|Poppins|Roboto&display=swap" rel="stylesheet'
       }
     ],
     script: [
@@ -69,7 +68,7 @@ export default {
     baseURL:
       process.env.NODE_ENV === "production"
         ? "http://192.168.1.130:8300/geoportal/api/"
-        : "http://104.197.114.116:9100/api/"
+        : "http://192.168.1.130:8300/api/"
   },
 
   auth: {

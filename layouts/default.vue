@@ -19,12 +19,12 @@
         <!-- pages routing -->
         <nuxt />
 
-        <!-- dynamic current modal -->
-        <!-- <template v-if=""> -->
+        <!-- dynamic current modals -->
+        <template v-if="loggedIn">
           <component :is="mainModalDynamicComponent" />
           
           <component :is="secondModalDynamicComponent" />
-        <!-- </template> -->
+        </template>
         
 
       </el-main>

@@ -10,7 +10,7 @@ import {
 export const state = () => ({
   // current dynamic main modal to display
   mainModal: "ModalAddVectorialLayer",
-  secondModal: "ModalEditVectorialLayer",
+  secondModal: "ModalAddVectorialLayer",
   // current modals folder name
   modalMainFolderName: "layers",
   modalSecondFolderName: "layers",
@@ -26,7 +26,7 @@ export const state = () => ({
   modalAddBaseLayer: false,
   modalEditBaseLayer: false,
   // vectorial layers
-  modalAddVectorialLayer: true,
+  modalAddVectorialLayer: false,
   modalEditVectorialLayer: false,
   // raster layers
   modalAddRasterLayer: false,

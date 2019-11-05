@@ -1,13 +1,9 @@
 <template>
   <base-page-actions 
-    :page-header-title="pageHeaderTitle"
-    :page-header-btn-add-name="pageHeaderBtnAddName"
-    :store-base="storeBase"
-    :modal-add-state-name="modalAddStateName"
-    :modal-edit-state-name="modalEditStateName"
+    :page-header="pageHeader"
+    :modal-main="modalMain"
     :filter-criteria-props="filterCriteriaProps"
-    :page-modals-folder-name="pageModalsFolderName"
-    :message-base-name="messageBaseName"
+    :messageToast="messageToast"
   >
     <template v-slot:page-table="{ 
       openModalEditItemContext,
@@ -91,19 +87,24 @@ export default {
 
   data () {
     return {
-      //page-header
-      pageHeaderTitle: 'Capas vectoriales',
-      pageHeaderBtnAddName: 'Nueva capa vectorial',
-      // toast
-      messageBaseName: 'LAYER',
-      // store module
-      storeBase: 'vectorialLayers',
-      modalAddStateName: 'modalAddVectorialLayer',
-      modalEditStateName: 'modalEditVectorialLayer',
+      pageHeader: {
+        title: 'Capas vectoriales',
+        btnAddName: 'Nueva capa vectorial'
+      },
+
+      // main modal settings
+      modalMain: {
+        storeBase: 'vectorialLayers',
+        modalAddStateName: 'modalAddVectorialLayer',
+        modalEditStateName: 'modalEditVectorialLayer',
+        folderName: 'layers',
+      },
+
+      messageToast: {
+        baseName: 'LAYER'
+      },
       // criterias to search based on columns of table
       filterCriteriaProps: ['title', 'name', 'description'],
-      // current page modals folder name
-      pageModalsFolderName: 'layers'
     }
   }
 }

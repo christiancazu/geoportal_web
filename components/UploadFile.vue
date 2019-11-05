@@ -47,7 +47,7 @@ export default {
       const isValid = this.availableFileExtensions.includes(currentExtension) || file.type === 'application/zip'
 
       if (!isValid) {
-        this.$message.error("Solo se acepta archivos .zip ó .shp");
+        this.$message.error(`Solo se acepta archivos ${this.extensionsString}`);
       }
       return isValid
     },

@@ -2,8 +2,8 @@
   <el-dialog
     :title="formTitle"
     :close-on-click-modal="false"
-    :visible="$store.state.modalsVisibilities[modalStateName]"
-    @close="$_modalVisibilityMixin_close(modalStateName)"
+    :visible="$store.state.modalsVisibilities[context.modalStateName]"
+    @close="$_modalVisibilityMixin_close(context.modalStateName)"
     top="2vh"
   >
     <el-form
@@ -25,7 +25,7 @@
     <div class="text-xs-center">
       <el-button
         size="small"
-        @click="$_modalVisibilityMixin_close(modalStateName)"
+        @click="$_modalVisibilityMixin_close(context.modalStateName)"
       >
         CANCELAR
       </el-button>
@@ -66,33 +66,34 @@ export default {
     rules: {
       type: Object
     },
-    storeBase: {
-      type: String,  required: true
-    },
-    storeAction: {
-      type: String,  required: true
-    },
-    modalStateName: {
-      type: String, required: true
-    },
     formTitle: {
       type: String, default: ""
     },
-    messageToastBaseName: {
-      type: String, required: true
+
+    context: {
+      type: Object, 
+      default: () => ({
+        storeBase: { type: String, required: true },
+        modalStateName: { type: String, required: true },
+        storeAction: { type: String, required: true }
+      })
     },
-    messageToastAction: {
-      type: String, required: true
+    messageToast: {
+      type: Object, 
+      default: () => ({
+        baseName: { type: String, required: true },
+        action: { type: String, required: true }
+      })
     }
   },
 
   computed: {
     canPublish: {
       get () {
-        return !this.$store.state[this.storeBase].itemContext.isPublished && this.storeAction === 'update'
+        return !this.$store.state[this.context.storeBase].itemContext.isPublished && this.context.storeAction === 'update'
       },
       set (value) {
-        this.$store.commit(`${this.storeBase}/${SET_PUBLISHED_ITEM_CONTEXT}`, value)
+        this.$store.commit(`${this.context.storeBase}/${SET_PUBLISHED_ITEM_CONTEXT}`, value)
       }
     }
   },
@@ -100,13 +101,13 @@ export default {
   methods: {
     ...mapActions({
       async getDataContext () {
-        await this.$store.dispatch(`${this.storeBase}/getDataContext`)
+        await this.$store.dispatch(`${this.context.storeBase}/getDataContext`)
       },
       async submitItemContext (store, form) {
-        await this.$store.dispatch(`${this.storeBase}/${this.storeAction}ItemContext`, { data: form })
+        await this.$store.dispatch(`${this.context.storeBase}/${this.context.storeAction}ItemContext`, { data: form })
       },
       async publishItemContext (store, form) {
-        await this.$store.dispatch(`${this.storeBase}/publishItemContext`, { data: form })
+        await this.$store.dispatch(`${this.context.storeBase}/publishItemContext`, { data: form })
       },
     }),
 
@@ -121,10 +122,10 @@ export default {
           await this.submitItemContext(formData)
 
           this.resetForm()
-          this.$toast.success(this.$SUCCESS[this.messageToastBaseName][this.messageToastAction])
+          this.$toast.success(this.$SUCCESS[this.messageToast.baseName][this.messageToast.action])
           
           await this.getDataContext()
-          // this.$_modalVisibilityMixin_close(this.modalStateName)
+          // this.$_modalVisibilityMixin_close(this.context.modalStateName)
         } 
         catch (e) {}
       }
@@ -136,13 +137,13 @@ export default {
         formData.append('pk', this.form.id)
 
         await this.publishItemContext(formData)
-        this.$toast.success(this.$SUCCESS[this.messageToastBaseName].PUBLISHED)
+        this.$toast.success(this.$SUCCESS[this.messageToast.baseName].PUBLISHED)
         // setting as published the itemContext
         this.canPublish = false
 
         await this.getDataContext()
         // # consult if is neccesary close modal when is published
-        // this.$_modalVisibilityMixin_close(this.modalStateName)          
+        // this.$_modalVisibilityMixin_close(this.context.modalStateName)          
       } 
       catch (e) {}
     },
