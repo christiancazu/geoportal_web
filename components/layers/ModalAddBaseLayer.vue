@@ -121,7 +121,9 @@
 <script>
 import BaseForm from '@/components/base/BaseForm'
 
-import { mapState, mapActions } from "vuex"
+import { 
+  mapState, 
+  mapActions } from "vuex"
 
 import { 
   name,
@@ -135,11 +137,24 @@ export default {
   data () {
     return {
       // #todo settings
+      formTitle: 'Registrar mapa base',
+
+      context: {
+        storeBase: 'baseLayers',
+        modalStateName: 'modalAddBaseLayer',
+        storeAction: 'create',
+      },
+
+      messageToast: {
+        baseName: 'LAYER',
+        action: 'REGISTERED'
+      },
 
       map: null,
       tileLayer: null,
       checked: false,
       rangeZoom: [5, 18],
+
       form: {
         name: "",
         url: "",
@@ -161,34 +176,8 @@ export default {
     };
   },
 
-  watch: {
-    modalAddBaseLayer: function (newState, oldState) {
-      if (!newState) {
-        this.$refs.form.resetFields()
-        return false
-      }
-    }
-  },
-
-  computed: {
-    ...mapState({
-      modalAddBaseLayer: state => state.modalsVisibilities.modalAddBaseLayer
-    })
-  },
 
   methods: {
-    ...mapActions({
-      getBaseLayers: "baseLayers/getBaseLayers"
-    }),
-
-    submitForm () {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.createBaseMap()
-        }
-      })
-    },
-
     createBaseMap () {
       this.form.minZoom = this.rangeZoom[0]
       this.form.maxZoom = this.rangeZoom[1]
@@ -227,6 +216,7 @@ export default {
   }
 };
 </script>
+
 <style lang="scss">
 .map {
   height: 200px;

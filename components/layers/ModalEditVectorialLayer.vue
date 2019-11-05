@@ -3,11 +3,8 @@
     :form-title="formTitle"
     :form="form"
     :rules="rules"
-    :store-base="storeBase"
-    :modal-state-name="modalStateName"
-    :store-action="storeAction"
-    :message-toast-base-name="messageToastBaseName"
-    :message-toast-action="messageToastAction"
+    :context="context"
+    :message-toast="messageToast"
     @reset-form="resetForm()"
   >
     <template v-slot:content>
@@ -89,7 +86,9 @@
 <script>
 import BaseForm from "@/components/base/BaseForm"
 
-import { mapState, mapActions } from "vuex"
+import { 
+  mapState, 
+  mapActions } from "vuex"
 
 import { 
   title,
@@ -103,12 +102,17 @@ export default {
 
   data () {
     return {
-      modalStateName: 'modalEditVectorialLayer',
-      storeBase: 'vectorialLayers',
-      storeAction: 'update',
       formTitle: 'Actualizar capa vectorial',
-      messageToastBaseName: 'LAYER',
-      messageToastAction: 'UPDATED',
+
+      context: {
+        storeBase: 'vectorialLayers',
+        modalStateName: 'modalEditVectorialLayer',
+        storeAction: 'update',
+      },
+      messageToast: {
+        baseName: 'LAYER',
+        action: 'UPDATED'
+      },
 
       fileLayerSelected: null,
       fileStyleSelected: null,
@@ -139,7 +143,7 @@ export default {
   computed: {
     ...mapState({
       itemContext (state) {
-        return state[this.storeBase].itemContext
+        return state[this.context.storeBase].itemContext
       }, 
       groupLayers: state => state.groupLayers.dataContext
     })
@@ -160,12 +164,12 @@ export default {
       Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
     },
 
-    resetForm () {
-      if (this.form.shapeFile) {
-        this.form.shapeFile = null
-        this.fileLayerSelected = null
-      }
-    },
+    // resetForm () {
+    //   if (this.form.shapeFile) {
+    //     this.form.shapeFile = null
+    //     this.fileLayerSelected = null
+    //   }
+    // },
 
     // launchUploadAvatar (option) {
     //   this.form.file = option.file;

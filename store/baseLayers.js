@@ -1,24 +1,50 @@
 import {
-  REPLACE_BASE_LAYERS
-} from '../types/mutation-types'
+  SET_DATA_CONTEXT,
+  SET_ITEM_CONTEXT,
+  SET_PUBLISHED_ITEM_CONTEXT,
+  SET_CURRENT_PAGE_ON_TABLE
+} from "../types/mutation-types";
 
 export const state = () => ({
-  baseLayers: []
-})
+  dataContext: [],
+  itemContext: {},
+  currentPageOnTable: 1
+});
 
 export const actions = {
-  async getBaseLayers ({ commit }, payload) {
+  async createItemContext({}, form) {
     try {
-      const { data } = await this.$baseLayerAPI.get(payload)
-      commit('REPLACE_BASE_LAYERS', { baseLayers: data || [] })
+      await this.$baseLayerAPI.create(form);
     } catch (error) {
-      throw error
+      throw error;
+    }
+  },
+
+  async getDataContext({ commit }) {
+    try {
+      const { data } = await this.$baseLayerAPI.get();
+      commit(SET_DATA_CONTEXT, { dataContext: data || [] });
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async getItemContext({ commit }, id) {
+    try {
+      const { data } = await this.$baseLayerAPI.getById(id);
+      commit(SET_ITEM_CONTEXT, { itemContext: data });
+    } catch (error) {
+      throw error;
     }
   }
-}
+};
 
 export const mutations = {
-  [REPLACE_BASE_LAYERS] (state, { baseLayers }) {
-    state.baseLayers = baseLayers
-  }
-}
+  [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
+
+  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext),
+
+  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
+
+  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
+};

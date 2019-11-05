@@ -104,7 +104,7 @@ export default {
         baseName: 'LAYER'
       },
       // criterias to search based on columns of table
-      filterCriteriaProps: ['title', 'name', 'description'],
+      filterCriteriaProps: ['title', 'name', 'description']
     }
   }
 }

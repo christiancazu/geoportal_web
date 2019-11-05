@@ -1,25 +1,14 @@
 <template>
-  <BaseModal
-    title="Editar capa base"
-    name-state="modalEditBaseLayer"
-    :show-modal="modalEditBaseLayer"
+  <base-form
+    :form-title="formTitle"
+    :form="form"
+    :rules="rules"
+    :context="context"
+    :message-toast="messageToast"
+    @reset-form="resetForm()"
   >
     <template v-slot:content>
-      <el-form
-        ref="form"
-        label-position="top"
-        status-icon
-        :model="form"
-        :rules="rules"
-        label-width="120px"
-        class="demo-ruleForm"
-        :disabled="$store.state.spinners.processingForm"
-        @submit.prevent="submitForm"
-      >
-        <el-row
-          :gutter="10"
-          style="display:flex;"
-        >
+        <el-row :gutter="10">
           <el-col
             :xs="24"
             :sm="12"
@@ -95,7 +84,9 @@
         <el-checkbox
           class="mb-3"
           v-model="checked"
-        >¿Necesita Autenticación?</el-checkbox>
+        >
+          ¿Necesita Autenticación?
+        </el-checkbox>
         <el-form-item
           label="Token"
           prop="authenticationToken"
@@ -125,92 +116,92 @@
             :active-text="form.isActive ? 'Mapa Base Activo': ' Mapa Base Inactivo' "
           ></el-switch>
         </el-form-item>
-      </el-form>
     </template>
-    <template v-slot:actions>
-      <el-button
-        size="small"
-        :disabled="$store.state.spinners.processingForm"
-        @click="$_modalVisibilityMixin_close('modalEditBaseLayer')"
-      >CANCELAR</el-button>
-      <el-button
-        size="small"
-        :loading="$store.state.spinners.processingForm"
-        type="primary"
-        native-type="submit"
-        @click.prevent="submitForm"
-      >GUARDAR</el-button>
-    </template>
-  </BaseModal>
+  </base-form>
 </template>
+
 <script>
-import { mapState, mapActions } from "vuex";
-import BaseModal from "@/components/base/BaseModal.vue";
+import BaseForm from "@/components/base/BaseForm"
+
+import { 
+  mapState, 
+  mapActions } from "vuex"
+
+import {
+  name,
+  url } from '@/config/form.rules'
 
 export default {
   components: {
-    BaseModal
-  },
-
-  props: {
-    baseLayerSelected: {
-      type: Object,
-      default: null
-    },
+    BaseForm
   },
 
   data () {
     return {
+      formTitle: 'Editar mapa base',
+
+      context: {
+        storeBase: 'baseLayers',
+        modalStateName: 'modalEditBaseLayer',
+        storeAction: 'update',
+      },
+      messageToast: {
+        baseName: 'LAYER',
+        action: 'UPDATED'
+      },
+
       map: null,
       tileLayer: null,
       checked: false,
       rangeZoom: [],
-      form: {},
+
       marks: {
         1: "min: 1",
         20: "20 max"
       },
+
+      form: {
+        name: "",
+        url: "",
+        description: "",
+        author: "",
+        minZoom: "",
+        maxZoom: "",
+        authenticationToken: "",
+        isActive: true
+      },
+      
       rules: {
-        name: [{
-          required: true,
-          message: "El nombre de usuario es requerido"
-        }],
-        url: [{
-          required: true,
-          message: "La url del mapa base es requrido"
-        }]
+        name,
+        url
       }
     };
   },
 
-  watch: {
-    modalEditBaseLayer: function (newState, oldState) {
-      if (!newState) {
-        this.$refs.form.resetFields()
-      } else {
-        this.form = { ...this.baseLayerSelected }
-        this.rangeZoom = [`${this.baseLayerSelected.minZoom}`, `${this.baseLayerSelected.maxZoom}`]
-      }
-    }
+  created () {
+    this.assignFormFields()
   },
 
   computed: {
     ...mapState({
-      modalEditBaseLayer: state => state.modalsVisibilities.modalEditBaseLayer
+      itemContext (state) {
+        return state[this.context.storeBase].itemContext
+      }
     })
   },
 
-  methods: {
-    ...mapActions({
-      getBaseLayers: "baseLayers/getBaseLayers"
-    }),
+  watch: {
+    itemContext () {
+      this.assignFormFields()
+    }
+  },
 
-    submitForm () {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.updateBaseLayer()
-        }
-      })
+  methods: {
+    assignFormFields () {
+      Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
+      this.rangeZoom = []
+      this.rangeZoom.push(this.form.minZoom)
+      this.rangeZoom.push(this.form.maxZoom)
     },
 
     updateBaseLayer () {
@@ -252,6 +243,7 @@ export default {
   }
 };
 </script>
+
 <style lang="scss">
 .map {
   height: 200px;

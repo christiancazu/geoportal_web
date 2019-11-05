@@ -146,7 +146,9 @@ import BaseForm from '@/components/base/BaseForm'
 import UploadFile from '@/components/UploadFile'
 import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
 
-import { mapState, mapActions } from "vuex"
+import { 
+  mapState, 
+  mapActions } from "vuex"
 
 import { 
   title,
@@ -156,7 +158,9 @@ import {
 
 export default {
   components: {
-    BaseForm, UploadFile, BtnOpenSecondModal
+    BaseForm, 
+    UploadFile, 
+    BtnOpenSecondModal
   },
 
   data () {
@@ -208,7 +212,7 @@ export default {
     })
   },
 
-  mounted () {
+  created () {
     this.getGroupLayers()
   },
 

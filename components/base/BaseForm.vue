@@ -90,6 +90,7 @@ export default {
   computed: {
     canPublish: {
       get () {
+        if (typeof this.$store.state[this.context.storeBase].itemContext.isPublished === 'undefined') return false
         return !this.$store.state[this.context.storeBase].itemContext.isPublished && this.context.storeAction === 'update'
       },
       set (value) {
