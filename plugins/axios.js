@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import { VECTORIAL_LAYER } from '@/config/endpoints'
+// import { VECTORIAL_LAYER } from '@/config/endpoints'
 
-export default ({ $axios, store }) => {
+export default ({ $axios, store, $auth }) => {
   // timout for request
   $axios.defaults.timeout = 30000
 
@@ -18,13 +18,13 @@ export default ({ $axios, store }) => {
       //   default:
       //     break;
       // }
-      store.commit('spinners/ENABLE_LOADING_TABLE')
+      // store.commit('spinners/ENABLE_LOADING_TABLE')
     } else {
       store.commit('spinners/ENABLE_PROCESSING_FORM')
     }
   })
 
-  $axios.onResponse((response) => {
+  $axios.onResponse((/* response */) => {
     store.commit('spinners/DISABLE_PROCESSING_FORM')
     store.commit('spinners/DISABLE_LOADING_TABLE')
   })
@@ -36,13 +36,15 @@ export default ({ $axios, store }) => {
 
     // handle message error from server or default error message
     let errorMessage = ""
-
     switch (code) {
       case 'ECONNABORTED': // time expired for request
         errorMessage = Vue.prototype.$ERRORS.ERROR_TRY_LATER
         break
       case 401:
-        errorMessage = Vue.prototype.$ERRORS.TIME_EXPIRED_TRY_AGAIN
+        // #TODO: logic for unauthorized request, need check middleware checkAuth
+        // localStorage.clear();
+        // errorMessage = Vue.prototype.$ERRORS.UNAUTHORIZED
+        // Vue.prototype.$toasted.error(errorMessage)
         redirect('/login')
         break
       case 404:

@@ -4,13 +4,15 @@ export default $axios => ({
     get (payload = {}) {
       return $axios({
         url: `${RASTER_LAYER}/`,
-        method: 'GET'
+        method: 'GET',
+        data: payload.data || {}
       })
     },
     getById (payload = {}) {
       return $axios({
         url: `${RASTER_LAYER}/${payload.id}/`,
-        method: 'GET'
+        method: 'GET',
+        data: payload.data || {}
       })
     },
     create (payload = {}) {
@@ -22,7 +24,7 @@ export default $axios => ({
     },
     publish (payload = {}) {
       return $axios({
-        url: `${RASTER_LAYER}/publish`,
+        url: `${RASTER_LAYER}/publish/`,
         method: 'POST',
         data: payload.data || {}
       })
@@ -37,7 +39,8 @@ export default $axios => ({
     delete (payload = {}) {
       return $axios({
         url: `${RASTER_LAYER}/${payload.id}/`,
-        method: 'DELETE'
+        method: 'DELETE',
+        data: payload.data || {}
       })
     },
   

@@ -93,7 +93,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import BasePage from '@/components/base/BasePage.vue'
+import BasePage from '@/components/base/pages/BasePage.vue'
 import BtnConfirm from "@/components/base/BaseBtnConfirm.vue";
 import ModalAddGeoreferencedImage from '@/components/data/ModalAddGeoreferencedImage.vue'
 import ModalEditGeoreferencedImage from '@/components/data/ModalEditGeoreferencedImage.vue'

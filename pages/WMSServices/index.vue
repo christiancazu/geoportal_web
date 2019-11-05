@@ -108,7 +108,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import BasePage from '@/components/base/BasePage'
+import BasePage from '@/components/base/pages/BasePage'
 import BtnConfirm from "@/components/base/BaseBtnConfirm";
 import ModalAddWMSService from '@/components/WMSServices/ModalAddWMSService'
 

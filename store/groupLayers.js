@@ -1,34 +1,28 @@
-import {
-  REPLACE_GROUP_LAYER,
-  REPLACE_CURRENT_GROUP_LAYER
-} from '../types/mutation-types'
+import { SET_DATA_CONTEXT, SET_ITEM_CONTEXT } from "../types/mutation-types";
 
 export const state = () => ({
-  groupLayers: [],
-  currentGroupLayer: null
-})
+  dataContext: [],
+  itemContext: {},
+  currentPageOnTable: 1
+});
 
 export const actions = {
-  async getGroupLayers ({ commit }, payload) {
+  async getDataContext({ commit }) {
     try {
-      const { data } = await this.$groupLayerAPI.get(payload)
-      commit('REPLACE_GROUP_LAYER', { groupLayers: data || [] })
+      const { data } = await this.$groupLayerAPI.get();
+      commit(SET_DATA_CONTEXT, { dataContext: data || [] });
     } catch (error) {
-      throw error
+      throw error;
     }
   },
-  
-  replaceCurrentGroupLayer ({ commit }, payload) {
-    commit('REPLACE_CURRENT_GROUP_LAYER', payload)
+
+  updateItemContext({ commit }, payload) {
+    commit(SET_ITEM_CONTEXT, payload);
   }
-}
+};
 
 export const mutations = {
-  [REPLACE_GROUP_LAYER] (state, { groupLayers }) {
-    state.groupLayers = groupLayers
-  },
-  
-  [REPLACE_CURRENT_GROUP_LAYER] (state, { groupLayer }) {
-    state.currentGroupLayer = groupLayer
-  },
-}
+  [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
+
+  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext)
+};

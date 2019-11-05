@@ -8,13 +8,12 @@
   >
     <slot name="content" />
 
-    <template slot="footer">
-      <div class="text-xs-center">
-        <slot name="actions" />
-      </div>
-    </template>
+    <div class="text-xs-center">
+      <slot name="actions" />
+    </div>
 
     <slot name="modals" />
+
   </el-dialog>
 </template>
 
@@ -40,7 +39,6 @@ export default {
     }
   },
 
-
   computed: {
     showModalNow: {
       get() {
@@ -53,14 +51,3 @@ export default {
   }
 };
 </script>
-<style lang="scss">
-$color-danger: #ff3547;
-$color-success: #00c851;
-$color-info: #33b5e5;
-.danger {
-  background: $color-danger;
-}
-.info {
-  background: $color-info;
-}
-</style>

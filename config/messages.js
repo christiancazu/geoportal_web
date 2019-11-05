@@ -2,7 +2,8 @@ export const ERRORS = {
   ERROR_TRY_LATER: 'Ha ocurrido un error!<br>Intente de nuevo más tarde',
   INVALID_DATA: 'Los datos son inválidos',
   TIME_EXPIRED_TRY_AGAIN: 'El tiempo para esta petición ha expirado<br>Intente de nuevo',
-  ROUTE_NOT_FOUND: 'La ruta no ha sido encontrada'
+  ROUTE_NOT_FOUND: 'La ruta no ha sido encontrada',
+  UNAUTHORIZED: 'No tiene autorización para esta solicitud'
 }
 
 export const SUCCESS = {

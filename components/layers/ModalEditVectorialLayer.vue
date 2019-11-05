@@ -54,7 +54,7 @@
         prop="groupLayerId"
       >
         <el-container>
-            <el-select
+          <el-select
             v-model="form.groupLayerId"
             value-key="id"
             :loading="$store.state.spinners.loadingTable"
@@ -66,7 +66,7 @@
               :key="item.id"
               :label="item.title"
               :value="item.id"
-            ></el-option>
+            />
           </el-select>
         </el-container>
       </el-form-item>
@@ -81,17 +81,20 @@
           :rows="3"
           autocomplete="off"
           :maxlength="300"
-          :show-word-limit="true"
         />
       </el-form-item>
     </template>
   </base-form>
 </template>
-
 <script>
 import BaseForm from "@/components/base/BaseForm"
 
 import { mapState, mapActions } from "vuex"
+
+import { 
+  title,
+  name,
+  order } from '@/config/form.rules'
 
 export default {
   components: {
@@ -100,10 +103,10 @@ export default {
 
   data () {
     return {
-      modalStateName: 'modalEditRasterLayer',
-      storeBase: 'rasterLayers',
+      modalStateName: 'modalEditVectorialLayer',
+      storeBase: 'vectorialLayers',
       storeAction: 'update',
-      formTitle: 'Actualizar capa raster',
+      formTitle: 'Actualizar capa vectorial',
       messageToastBaseName: 'LAYER',
       messageToastAction: 'UPDATED',
 
@@ -121,26 +124,9 @@ export default {
       },
 
       rules: {
-        title: [{
-          required: true,
-          message: "El nombre de usuario es requerido"
-        }],
-        name: [{
-          required: true,
-          // pattern: /^[z0-9\s.,\/#!$%\^&\*;:{}=\-+'´`~()”“"…]+$/g,
-          validator: (rule, value, callback) => {
-            let text = value.split('')
-            let itContainsBlanks = text.every(val => /[a-zA-Z0-9_]/g.test(val))
-            if (!itContainsBlanks) {
-              return callback(new Error("Solo se admite letras y subguion '_'"))
-            }
-            callback();
-          }
-        }],
-        order: [{
-          required: true,
-          message: " "
-        }],
+        title,
+        name,
+        order,
       }
     };
   },

@@ -225,7 +225,7 @@
   </base-page>
 </template>
 <script>
-import BasePage from '@/components/base/BasePage'
+import BasePage from '@/components/base/pages/BasePage'
 import { mapState, mapActions } from 'vuex'
 
 export default {

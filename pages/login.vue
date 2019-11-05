@@ -136,6 +136,8 @@
 </template>
 
 <script>
+import { email, password } from '@/config/form.rules'
+
 export default {
   head: {
     title: 'Iniciar Sesión',
@@ -151,14 +153,8 @@ export default {
       },
 
       rules: {
-        email: [{
-          required: true,
-          message: 'Ingrese su nombre de usuario'
-        }],
-        password: [{
-          required: true,
-          message: "Ingrese su contraseña"
-        }]
+        email,
+        password
       }
     }
   },

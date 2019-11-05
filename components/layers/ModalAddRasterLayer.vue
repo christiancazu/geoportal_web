@@ -1,21 +1,16 @@
 <template>
-  <BaseModal
-    title="Registrar nueva capa raster"
-    :show-modal="modalAddRasterLayer"
-    name-state="modalAddRasterLayer"
+  <base-form
+    :form-title="formTitle"
+    :form="form"
+    :rules="rules"
+    :store-base="storeBase"
+    :modal-state-name="modalStateName"
+    :store-action="storeAction"
+    :message-toast-base-name="messageToastBaseName"
+    :message-toast-action="messageToastAction"
+    @reset-form="resetForm()"
   >
     <template v-slot:content>
-      <el-form
-        ref="form"
-        label-position="top"
-        status-icon
-        :model="form"
-        :rules="rules"
-        label-width="120px"
-        class="demo-ruleForm"
-        :disabled="$store.state.spinners.processingForm"
-        @submit.prevent="submitForm"
-      >
         <el-row :gutter="14">
           <el-col
             :xs="24"
@@ -71,7 +66,7 @@
               </el-upload>
 
               <ul
-                v-if="fileRasterLayerSelected"
+                v-if="fileSelected"
                 class="el-upload-list el-upload-list--text px-3"
               >
                 <li
@@ -80,7 +75,7 @@
                 >
                   <a class="el-upload-list__item-name">
                     <i class="el-icon-document"></i>
-                    {{ fileRasterLayerSelected.name }}
+                    {{ fileSelected.name }}
                   </a>
                   <label class="el-upload-list__item-status-label">
                     <i class="el-icon-upload-success el-icon-circle-check"></i>
@@ -124,7 +119,7 @@
                 <el-select
                   v-model="form.groupLayerId"
                   value-key="id"
-                  :loading="loadingGroupLayers"
+                  :loading="$store.state.spinners.loadingTable"
                   filterable
                   placeholder="Select"
                 >
@@ -153,45 +148,32 @@
             :show-word-limit="true"
           />
         </el-form-item>
-      </el-form>
     </template>
-    <template v-slot:actions>
-      <el-button
-        :disabled="$store.state.spinners.processingForm"
-        size="small"
-        @click="$_modalVisibilityMixin_close('modalAddRasterLayer')"
-      >
-        CANCELAR
-      </el-button>
-      <el-button
-        type="primary"
-        size="small"
-        native-type="submit"
-        :loading="$store.state.spinners.processingForm"
-        @click.prevent="submitForm"
-      >
-        GUARDAR
-      </el-button>
-    </template>
-  </BaseModal>
+  </base-form>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-import BaseModal from "@/components/base/BaseModal.vue";
-import objectToFormDataMixin from '@/mixins/objectToFormDataMixin'
+import BaseForm from '@/components/base/BaseForm'
+
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
-    BaseModal
+    BaseForm
   },
-
-  mixins: [objectToFormDataMixin],
 
   data () {
     return {
-      fileRasterLayerSelected: null,
+      modalStateName: 'modalAddRasterLayer',
+      storeBase: 'rasterLayers',
+      storeAction: 'create',
+      formTitle: 'Registrar capa raster',
+      messageToastBaseName: 'LAYER',
+      messageToastAction: 'REGISTERED',
+
+      fileSelected: null,
       fileStyleSelected: null,
       showFormStyle: false,
+      
       form: {
         title: "",
         order: 0,
@@ -228,58 +210,34 @@ export default {
           }
         }]
       }
-    };
+    }
   },
 
   computed: {
     ...mapState({
-      groupLayers: state => state.groupLayers.groupLayers,
-      loadingGroupLayers: state => state.groupLayers.loadingGroupLayers,
-      modalAddRasterLayer: state => state.modalsVisibilities.modalAddRasterLayer
+      groupLayers: state => state.groupLayers.dataContext
     })
   },
 
-  watch: {
-    modalAddRasterLayer (newState, oldState) {
-      if (!newState) {
-        this.$refs.form.resetFields();
-        this.fileRasterLayerSelected = null
-        return false;
-      }
-      this.getGroupLayers()
-    }
+  mounted () {
+    this.getGroupLayers()
   },
 
   methods: {
-
     ...mapActions({
-      getRasterLayers: 'rasterLayers/getRasterLayers',
-      getGroupLayers: 'groupLayers/getGroupLayers'
+      getGroupLayers: 'groupLayers/getDataContext'
     }),
 
-    async submitForm () {
-      let isFormValid = false
-
-      await this.$refs.form.validate(result => isFormValid = result)
-
-      if (isFormValid) {
-        const data = this.$_objectToFormDataMixin_transform();
-        
-        try {
-          await this.$rasterLayerAPI.create({ data })
-
-          this.$refs.form.resetFields()
-          this.getRasterLayers()
-            this.$_modalVisibilityMixin_close('modalAddRasterLayer')
-          this.$toast.success(this.$SUCCESS.LAYER.REGISTERED)
-
-        } catch (e) {}
+    resetForm () {
+      if (this.form.rasterFile) {
+        this.form.rasterFile = null
+        this.fileSelected = null
       }
     },
 
     launchUploadAvatar (option) {
       this.form.rasterFile = option.file;
-      this.fileRasterLayerSelected = option.file
+      this.fileSelected = option.file
       const nameFile = option.file.name.split('.')
       this.form.name = nameFile[0]
       this.form.title = nameFile[0]

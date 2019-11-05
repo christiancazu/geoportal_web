@@ -1,71 +1,74 @@
 import {
-  REPLACE_LAYERS,
-  REPLACE_CURRENT_LAYER
-} from '../types/mutation-types'
+  SET_DATA_CONTEXT,
+  SET_ITEM_CONTEXT,
+  SET_PUBLISHED_ITEM_CONTEXT,
+  SET_CURRENT_PAGE_ON_TABLE
+} from "../types/mutation-types";
 
 export const state = () => ({
-  layers: [],
-  currentLayer: null
-})
+  dataContext: [],
+  itemContext: {},
+  currentPageOnTable: 1
+});
 
 export const actions = {
-  async getVectorialLayers ({ commit }) {
+  async createItemContext({}, form) {
     try {
-      const { data } = await this.$vectorialLayerAPI.get()
-      commit(REPLACE_LAYERS, { layers: data || [] })
-    } 
-    catch (error) {
-      throw error
-    } 
-  },
-
-  async getVectorialLayer ({ commit }, payload) {
-    try {
-      const { data } = await this.$vectorialLayerAPI.getById(payload)
-      commit(REPLACE_CURRENT_LAYER, { layer: data })
-    } 
-    catch (error) {
-      throw error
+      await this.$vectorialLayerAPI.create(form);
+    } catch (error) {
+      throw error;
     }
   },
 
-  async publishVectorialLayer ({ commit }, payload) {
+  async getDataContext({ commit }) {
     try {
-      await this.$vectorialLayerAPI.publish(payload)
-    } 
-    catch (error) {
-      throw error
+      const { data } = await this.$vectorialLayerAPI.get();
+      commit(SET_DATA_CONTEXT, { dataContext: data || [] });
+    } catch (error) {
+      throw error;
     }
   },
 
-  async updateVectorialLayer ({ commit }, payload) {
+  async getItemContext({ commit }, id) {
     try {
-      await this.$vectorialLayerAPI.update(payload)
-    } 
-    catch (error) {
-      throw error
+      const { data } = await this.$vectorialLayerAPI.getById(id);
+      commit(SET_ITEM_CONTEXT, { itemContext: data });
+    } catch (error) {
+      throw error;
     }
   },
 
-  async deleteVectorialLayer ({ commit }, payload) {
+  async publishItemContext({}, form) {
     try {
-      await this.$vectorialLayerAPI.delete(payload)
-    } 
-    catch (error) {
-      throw error
+      await this.$vectorialLayerAPI.publish(form);
+    } catch (error) {
+      throw error;
     }
   },
 
-  replaceCurrentLayer ({ commit }, payload) {
-    commit(REPLACE_CURRENT_LAYER, payload)
+  async updateItemContext({}, form) {
+    try {
+      await this.$vectorialLayerAPI.update(form);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async deleteItemContext({}, id) {
+    try {
+      await this.$vectorialLayerAPI.delete(id);
+    } catch (error) {
+      throw error;
+    }
   }
-}
+};
 
 export const mutations = {
-  [REPLACE_LAYERS] (state, { layers }) {
-    state.layers = layers
-  },
-  [REPLACE_CURRENT_LAYER] (state, { layer }) {
-    state.currentLayer = layer
-  }
-}
+  [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
+
+  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext),
+
+  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
+
+  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
+};

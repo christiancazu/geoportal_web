@@ -89,7 +89,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import BasePage from "@/components/base/BasePage.vue";
+import BasePage from "@/components/base/pages/BasePage.vue";
 import ModalViewReport from "@/components/reports/ModalViewReport.vue";
 export default {
   components: {
