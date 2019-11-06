@@ -91,7 +91,6 @@ export default {
         title: 'Capas vectoriales',
         btnAddName: 'Nueva capa vectorial'
       },
-
       // main modal settings
       modalMain: {
         storeBase: 'vectorialLayers',
@@ -99,7 +98,6 @@ export default {
         editComponent: 'ModalEditVectorialLayer',
         folderName: 'layers',
       },
-
       messageToast: {
         baseName: 'LAYER'
       },

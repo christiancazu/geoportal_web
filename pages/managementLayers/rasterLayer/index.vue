@@ -1,13 +1,9 @@
 <template>
   <base-page-actions 
-    :page-header-title="pageHeaderTitle"
-    :page-header-btn-add-name="pageHeaderBtnAddName"
-    :store-base="storeBase"
-    :modal-add-state-name="modalAddStateName"
-    :modal-edit-state-name="modalEditStateName"
+    :page-header="pageHeader"
+    :modal-main="modalMain"
     :filter-criteria-props="filterCriteriaProps"
-    :page-modals-folder-name="pageModalsFolderName"
-    :message-base-name="messageBaseName"
+    :messageToast="messageToast"
   >
     <template v-slot:page-table="{ 
       openModalEditItemContext,
@@ -71,19 +67,22 @@ export default {
 
   data () {
     return {
-      //page-header
-      pageHeaderTitle: 'Capas raster',
-      pageHeaderBtnAddName: 'Nueva capa raster',
-      // toast
-      messageBaseName: 'LAYER',
-      // store module
-      storeBase: 'rasterLayers',
-      modalAddStateName: 'modalAddRasterLayer',
-      modalEditStateName: 'modalEditRasterLayer',
+      pageHeader: {
+        title: 'Capas raster',
+        btnAddName: 'Nueva capa raster'
+      },
+      // main modal settings
+      modalMain: {
+        storeBase: 'rasterLayers',
+        addComponent: 'ModalAddRasterLayer',
+        editComponent: 'ModalEditRasterLayer',
+        folderName: 'layers',
+      },
+      messageToast: {
+        baseName: 'LAYER'
+      },
       // criterias to search based on columns of table
       filterCriteriaProps: ['title', 'name'],
-      // current page modals folder name
-      pageModalsFolderName: 'layers'
     }
   }
 }

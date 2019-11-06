@@ -5,7 +5,6 @@
     :rules="rules"
     :context="context"
     :message-toast="messageToast"
-    @reset-form="resetForm()"
   >
     <template v-slot:content>
       <el-row :gutter="14">
@@ -59,8 +58,7 @@
             placeholder="Select"
           >
             <el-option
-              v-for="item in groupLayers"
-              :key="item.id"
+              v-for="item in groupLayers" :key="item.id"
               :label="item.title"
               :value="item.id"
             />
@@ -134,7 +132,7 @@ export default {
       rules: {
         title,
         name,
-        order,
+        order
       }
     };
   },

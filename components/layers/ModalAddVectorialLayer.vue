@@ -164,9 +164,7 @@ export default {
   },
 
   props: {
-    mountedOn: {
-      type: String, required: true
-    }
+    mountedOn: { type: String, required: true }
   },
 
   data () {
@@ -181,7 +179,7 @@ export default {
       modalSecond: {
         component: 'ModalAddGroupLayer',
         folderName: 'layers',
-        tooltip: 'Agregar'
+        tooltip: 'Agregar grupo de capas'
       },
       messageToast: {
         baseName: 'LAYER',
@@ -189,7 +187,7 @@ export default {
       },
       // file settings
       fileType: 'shapeFile',
-      availableFileExtensions: ['.shp', '.zip'],
+      availableFileExtensions: ['.zip'],
       fileSelected: null,
       fileStyleSelected: null,
       showFormStyle: false,
@@ -218,13 +216,17 @@ export default {
     })
   },
 
+  mounted () {
+    this.getGroupLayers()
+  },
+
   methods: {
     ...mapActions({
       getGroupLayers: 'groupLayers/getDataContext'
     }),
 
     resetForm () {
-      if (this.form.shapeFile) {
+      if (this.form[this.fileType]) {
         this.form.shapeFile = null
         this.fileSelected = null
       }

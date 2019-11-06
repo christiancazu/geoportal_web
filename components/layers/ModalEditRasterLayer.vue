@@ -3,12 +3,8 @@
     :form-title="formTitle"
     :form="form"
     :rules="rules"
-    :store-base="storeBase"
-    :modal-state-name="modalStateName"
-    :store-action="storeAction"
-    :message-toast-base-name="messageToastBaseName"
-    :message-toast-action="messageToastAction"
-    @reset-form="resetForm()"
+    :context="context"
+    :message-toast="messageToast"
   >
     <template v-slot:content>
       <el-row :gutter="14">
@@ -62,8 +58,7 @@
             placeholder="Select"
           >
             <el-option
-              v-for="item in groupLayers"
-              :key="item.id"
+              v-for="item in groupLayers" :key="item.id"
               :label="item.title"
               :value="item.id"
             ></el-option>
@@ -91,21 +86,37 @@
 <script>
 import BaseForm from "@/components/base/BaseForm"
 
-import { mapState, mapActions } from "vuex"
+import { 
+  mapState, 
+  mapActions } from "vuex"
+
+import { 
+  title,
+  name,
+  order } from '@/config/form.rules'
 
 export default {
   components: {
     BaseForm
   },
 
+  props: {
+    mountedOn: { type: String, required: true }
+  },
+
   data () {
     return {
-      modalStateName: 'modalEditRasterLayer',
-      storeBase: 'rasterLayers',
-      storeAction: 'update',
       formTitle: 'Actualizar capa raster',
-      messageToastBaseName: 'LAYER',
-      messageToastAction: 'UPDATED',
+
+      context: {
+        storeBase: 'rasterLayers',
+        mountedOn: this.mountedOn,
+        storeAction: 'update',
+      },
+      messageToast: {
+        baseName: 'LAYER',
+        action: 'UPDATED'
+      },
 
       fileLayerSelected: null,
       fileStyleSelected: null,
@@ -121,26 +132,9 @@ export default {
       },
 
       rules: {
-        title: [{
-          required: true,
-          message: "El nombre de usuario es requerido"
-        }],
-        name: [{
-          required: true,
-          // pattern: /^[z0-9\s.,\/#!$%\^&\*;:{}=\-+'´`~()”“"…]+$/g,
-          validator: (rule, value, callback) => {
-            let text = value.split('')
-            let itContainsBlanks = text.every(val => /[a-zA-Z0-9_]/g.test(val))
-            if (!itContainsBlanks) {
-              return callback(new Error("Solo se admite letras y subguion '_'"))
-            }
-            callback();
-          }
-        }],
-        order: [{
-          required: true,
-          message: " "
-        }],
+        title,
+        name,
+        order
       }
     };
   },
@@ -153,7 +147,7 @@ export default {
   computed: {
     ...mapState({
       itemContext (state) {
-        return state[this.storeBase].itemContext
+        return state[this.context.storeBase].itemContext
       }, 
       groupLayers: state => state.groupLayers.dataContext
     })
@@ -173,21 +167,6 @@ export default {
     assignFormFields () {
       Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
     },
-
-    resetForm () {
-      if (this.form.shapeFile) {
-        this.form.shapeFile = null
-        this.fileLayerSelected = null
-      }
-    },
-
-    // launchUploadAvatar (option) {
-    //   this.form.file = option.file;
-    //   this.fileLayerSelected = option.file
-    //   const nameFile = option.file.name.split('.')
-    //   this.form.name = nameFile[0]
-    //   this.form.title = nameFile[0]
-    // }
   }
 }
 </script>
