@@ -7,7 +7,8 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "dev:3333": "NUXT_HOST=0.0.0.0 NUXT_PORT=3333 nuxt"
   },
   "repository": {
     "type": "git",

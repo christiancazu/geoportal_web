@@ -101,13 +101,18 @@ export default {
   components: {
     BaseForm
   },
+
+  props: {
+    mountedOn: { type: String, required: true }
+  },
+
   data () {
     return {
       formTitle: 'Registrar nuevo grupo de capa',
 
       context: {
         storeBase: 'groupLayers',
-        modalStateName: 'modalAddGroupLayer',
+        mountedOn: this.mountedOn,
         storeAction: 'create',
       },
       messageToast: {
@@ -134,7 +139,7 @@ export default {
     })
   },
 
-  mounted () {
+  created () {
     this.getGroupLayers()
   },
 

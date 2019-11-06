@@ -2,8 +2,8 @@
   <el-dialog
     :title="formTitle"
     :close-on-click-modal="false"
-    :visible="$store.state.modalsVisibilities[context.modalStateName]"
-    @close="$_modalVisibilityMixin_close(context.modalStateName)"
+    :visible="$store.state.modalsVisibilities[context.mountedOn].visibility"
+    @close="closeModal()"
     top="2vh"
   >
     <el-form
@@ -25,7 +25,7 @@
     <div class="text-xs-center">
       <el-button
         size="small"
-        @click="$_modalVisibilityMixin_close(context.modalStateName)"
+        @click="closeModal()"
       >
         CANCELAR
       </el-button>
@@ -74,7 +74,7 @@ export default {
       type: Object, 
       default: () => ({
         storeBase: { type: String, required: true },
-        modalStateName: { type: String, required: true },
+        mountedOn: { type: String, required: true },
         storeAction: { type: String, required: true }
       })
     },
@@ -162,7 +162,11 @@ export default {
     resetForm () {
       this.$emit('reset-form')
       this.$refs.form.resetFields()
-    }  
+    },
+
+    closeModal () {
+      this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
+    }
   }
 }
 </script>

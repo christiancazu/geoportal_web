@@ -21,11 +21,9 @@
 
         <!-- dynamic current modals -->
         <template v-if="loggedIn">
-          <component :is="mainModalDynamicComponent" />
-          
-          <component :is="secondModalDynamicComponent" />
-        </template>
-        
+          <component :is="mainModalDynamicComponent" mounted-on="mainModal" />          
+          <component :is="secondModalDynamicComponent" mounted-on="secondModal" />
+        </template>        
 
       </el-main>
     </el-container>
@@ -48,7 +46,7 @@ export default {
 
   computed: {
     ...mapState({
-      loggedIn: state => state.auth.loggedIn,    
+      loggedIn: state => state.auth.loggedIn
     }),
 
     /**
@@ -56,8 +54,8 @@ export default {
      * example: @/components/layers/ModalAddVectorialLayer
      */
     mainModalDynamicComponent () {
-      const componentNameCapitalized = this.capitalize(this.$store.state.modalsVisibilities.mainModal)
-      return () => import(`@/components/${this.$store.state.modalsVisibilities.modalMainFolderName}/${componentNameCapitalized}`)
+      const { folderName, component } = this.$store.state.modalsVisibilities.mainModal
+      return () => import(`@/components/${folderName}/${component}`)
     },
 
     /**
@@ -65,18 +63,14 @@ export default {
      * example: @/components/layers/ModalAddVectorialLayer 
      */
     secondModalDynamicComponent () {
-      const componentNameCapitalized = this.capitalize(this.$store.state.modalsVisibilities.secondModal)
-      return () => import(`@/components/${this.$store.state.modalsVisibilities.modalSecondFolderName}/${componentNameCapitalized}`)
+      const { folderName, component } = this.$store.state.modalsVisibilities.secondModal
+      return () => import(`@/components/${folderName}/${component}`)
     }
   },
 
   methods: {
     onChangeCollapse (value) {
       this.isCollapse = value
-    },
-
-    capitalize (text) {
-      return text.charAt(0).toUpperCase() + text.slice(1)
     }
   }
 }

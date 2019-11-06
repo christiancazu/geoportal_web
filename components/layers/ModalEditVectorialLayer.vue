@@ -100,13 +100,17 @@ export default {
     BaseForm
   },
 
+  props: {
+    mountedOn: { type: String, required: true }
+  },
+
   data () {
     return {
       formTitle: 'Actualizar capa vectorial',
 
       context: {
         storeBase: 'vectorialLayers',
-        modalStateName: 'modalEditVectorialLayer',
+        mountedOn: this.mountedOn,
         storeAction: 'update',
       },
       messageToast: {
@@ -162,22 +166,7 @@ export default {
 
     assignFormFields () {
       Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
-    },
-
-    // resetForm () {
-    //   if (this.form.shapeFile) {
-    //     this.form.shapeFile = null
-    //     this.fileLayerSelected = null
-    //   }
-    // },
-
-    // launchUploadAvatar (option) {
-    //   this.form.file = option.file;
-    //   this.fileLayerSelected = option.file
-    //   const nameFile = option.file.name.split('.')
-    //   this.form.name = nameFile[0]
-    //   this.form.title = nameFile[0]
-    // }
+    }
   }
 }
 </script>

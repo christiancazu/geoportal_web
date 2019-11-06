@@ -1,7 +1,7 @@
 <template>
   <base-page
     :page-header="pageHeader"
-    @open-add-modal="openModalAddItemContext()"
+    @open-add-modal="openMainModalAddItemContext()"
     >
       <el-container direction="vertical">
         <el-row
@@ -66,7 +66,10 @@ import {
 
 import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
 
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { 
+  mapState, 
+  mapActions, 
+  mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -85,8 +88,8 @@ export default {
       type: Object, 
       default: () => ({
         storeBase: { type: String, required: true },
-        modalAddStateName: { type: String, required: true },
-        modalEditStateName: { type: String, required: true },
+        addComponent: { type: String, required: true },
+        editComponent: { type: String, required: true },
         folderName: { type: String, required: true }
       })
     },
@@ -182,43 +185,37 @@ export default {
       },
       async deleteItemContext ({}, id) {
         await this.$store.dispatch(`${this.modalMain.storeBase}/deleteItemContext`, { id })
-      }
-    }),
-
-    ...mapMutations({
-      setDynamicMainModal ({}, modalStateName) {
-        this.$store.commit(`modalsVisibilities/${SET_DYNAMIC_MAIN_MODAL}`, modalStateName)
       },
-      setCurrentPageModalsFolderName () {
-        this.$store.commit(`modalsVisibilities/${SET_MODAL_MAIN_FOLDER_NAME}`, this.modalMain.folderName)
+      setDynamicMainModalComponent ({}, componentAddName) {
+        this.$store.dispatch(`modalsVisibilities/openModal`, {
+          modalType: 'mainModal',
+          component: componentAddName,
+          folderName: this.modalMain.folderName
+        })
       }
     }),
 
     /**
-     * set the name of modalAddItemContext as dynamic component
+     * set the name of modalMain.addComponent as dynamic main modal component
      * on layouts/default.vue & set his visibility state
      * 
-     * @param {String} modalAddStateName
      */
-    openModalAddItemContext () {
-      this.setDynamicMainModal(this.modalMain.modalAddStateName)
-      this.setVisibleModalStateName(this.modalMain.modalAddStateName)     
+    openMainModalAddItemContext () {
+      this.setDynamicMainModalComponent(this.modalMain.addComponent)    
     },
 
     /**
      * fetching the itemContext by his id
-     * set the name of modalEditStateName as dynamic component
+     * set the name of editComponent as dynamic component
      * on layouts/default.vue & set his visibility state
      * 
      * @param {Number} id
-     * @param {String} modalEditStateName
      */
     async openModalEditItemContext ({ id }) {
       try {
         await this.getItemContext(id)
 
-        this.setDynamicMainModal(this.modalMain.modalEditStateName)
-        this.setVisibleModalStateName(this.modalMain.modalEditStateName)
+        this.setDynamicMainModalComponent(this.modalMain.editComponent)
       } 
       catch (e) {}   
     },
@@ -251,7 +248,6 @@ export default {
 
     initPageSettings () {
       this.criteriaLength = this.filterCriteriaProps.length
-      this.setCurrentPageModalsFolderName()
     },
 
     async fetchDataContext () {
@@ -259,16 +255,6 @@ export default {
         await this.getDataContext()
       } 
       catch (e) {}
-    },
-
-    /**
-     * using little delay to prevent stranger transition when open modal
-     * present when using dynamic components & and set visibility state as true
-
-     * @param {String} modalStateName 
-     */
-    setVisibleModalStateName(modalStateName) {
-      setTimeout(() => this.$_modalVisibilityMixin_open(modalStateName), 250)
     },
 
     // pagination 

@@ -163,18 +163,24 @@ export default {
     BtnOpenSecondModal
   },
 
+  props: {
+    mountedOn: {
+      type: String, required: true
+    }
+  },
+
   data () {
     return {
       formTitle: 'Registrar capa vectorial',
 
       context: {
-        storeBase: 'vectorialLayers',
-        modalStateName: 'modalAddVectorialLayer',
+        storeBase: 'vectorialLayers',      
+        mountedOn: this.mountedOn,
         storeAction: 'create',
       },
       modalSecond: {
+        component: 'ModalAddGroupLayer',
         folderName: 'layers',
-        stateName: 'modalAddGroupLayer',
         tooltip: 'Agregar'
       },
       messageToast: {
@@ -212,10 +218,6 @@ export default {
     })
   },
 
-  created () {
-    this.getGroupLayers()
-  },
-
   methods: {
     ...mapActions({
       getGroupLayers: 'groupLayers/getDataContext'
@@ -234,17 +236,6 @@ export default {
       const nameFile = file.name.split(".")[0];
       this.form.name = nameFile;
       this.form.title = nameFile;
-    },
-
-    beforeFileStyleUpload (file) {
-      // const extension = (name.substring(name.lastIndexOf("."))).toLowerCase()
-      const extension = `.${file.name.split('.').pop()}`
-      const isSHP = extension === '.sld'
-
-      if (!isSHP) {
-        this.$message.error("Solo se acepta archivos .zip ó .shp");
-      }
-      return isSHP
     }
   }
 }

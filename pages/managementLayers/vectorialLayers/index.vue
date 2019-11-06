@@ -95,8 +95,8 @@ export default {
       // main modal settings
       modalMain: {
         storeBase: 'vectorialLayers',
-        modalAddStateName: 'modalAddVectorialLayer',
-        modalEditStateName: 'modalEditVectorialLayer',
+        addComponent: 'ModalAddVectorialLayer',
+        editComponent: 'ModalEditVectorialLayer',
         folderName: 'layers',
       },
 
