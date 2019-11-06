@@ -31,7 +31,7 @@ export default $axios => ({
   },
   update(payload = {}) {
     return $axios({
-      url: `${RASTER_LAYER}/${payload.id}/`,
+      url: `${RASTER_LAYER}/${payload.data.get("id")}/`,
       method: "PUT",
       data: payload.data || {}
     });

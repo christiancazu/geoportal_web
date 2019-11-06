@@ -40,7 +40,7 @@ export default {
       type: Object, 
       default: () => ({
         title: { type: String, required: true },
-        btnAddName: { type: String, required: true }
+        btnAddName: { type: String, required: false }
       })
     },
     fitContent: {

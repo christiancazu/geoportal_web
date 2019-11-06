@@ -36,6 +36,22 @@ export const actions = {
     } catch (error) {
       throw error;
     }
+  },
+
+  async updateItemContext({}, form) {
+    try {
+      await this.$baseLayerAPI.update(form);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async deleteItemContext({}, id) {
+    try {
+      await this.$baseLayerAPI.delete(id);
+    } catch (error) {
+      throw error;
+    }
   }
 };
 

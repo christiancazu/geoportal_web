@@ -84,7 +84,9 @@
       <el-checkbox
         class="mb-3"
         v-model="checked"
-      >¿Necesita Autenticación?</el-checkbox>
+      >
+        ¿Necesita Autenticación?
+      </el-checkbox>
       <el-form-item
         label="Token"
         prop="authenticationToken"
@@ -134,6 +136,10 @@ export default {
     BaseForm
   },
 
+  props: {
+    mountedOn: { type: String, required: true }
+  },
+
   data () {
     return {
       // #todo settings
@@ -141,7 +147,7 @@ export default {
 
       context: {
         storeBase: 'baseLayers',
-        modalStateName: 'modalAddBaseLayer',
+        mountedOn: this.mountedOn,
         storeAction: 'create',
       },
 
@@ -167,7 +173,7 @@ export default {
       },
       marks: {
         1: "min: 1",
-        100: "100 max"
+        20: "20 max"
       },
       rules: {
         name,
@@ -176,29 +182,14 @@ export default {
     };
   },
 
+  watch: {
+    rangeZoom () {
+      this.form.minZoom = this.rangeZoom[0] 
+      this.form.maxZoom = this.rangeZoom[1] 
+    }
+  },
 
   methods: {
-    createBaseMap () {
-      this.form.minZoom = this.rangeZoom[0]
-      this.form.maxZoom = this.rangeZoom[1]
-
-      const data = this.form
-
-      return new Promise((resolve, reject) => {
-        this.$baseLayerAPI
-          .create({ data })
-          .then(response => {
-            this.$_modalVisibilityMixin_close('modalAddBaseLayer')
-            this.$toast.success(`Mapa Base registrado con éxito`)
-            this.getBaseLayers()
-            resolve(response)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
-
     previewBaseMap () {
       if (!this.form.url) {
         return false

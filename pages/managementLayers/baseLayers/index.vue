@@ -10,6 +10,7 @@
       confirmedActionDeleteItemContext,
       shrinkText
     }">
+
       <el-table-column
         label="Nombre"
         prop="name"
@@ -21,7 +22,11 @@
       <el-table-column
         label="URL"
         prop="url"
-      />
+      >
+        <template slot-scope="scope">
+          <span v-html="shrinkText(scope.row.url)"></span>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="url"
         align="center"
@@ -78,8 +83,8 @@ export default {
       // main modal settings
       modalMain: {
         storeBase: 'baseLayers',
-        modalAddStateName: 'modalAddBaseLayer',
-        modalEditStateName: 'modalEditBaseLayer',
+        addComponent: 'ModalAddBaseLayer',
+        editComponent: 'ModalEditBaseLayer',
         folderName: 'layers',
       },
 

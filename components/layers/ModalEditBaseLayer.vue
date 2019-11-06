@@ -136,13 +136,17 @@ export default {
     BaseForm
   },
 
+  props: {
+    mountedOn: { type: String, required: true }
+  },
+
   data () {
     return {
       formTitle: 'Editar mapa base',
 
       context: {
         storeBase: 'baseLayers',
-        modalStateName: 'modalEditBaseLayer',
+        mountedOn: this.mountedOn,
         storeAction: 'update',
       },
       messageToast: {
@@ -161,12 +165,13 @@ export default {
       },
 
       form: {
+        id: null,
         name: "",
         url: "",
         description: "",
         author: "",
-        minZoom: "",
-        maxZoom: "",
+        minZoom: null,
+        maxZoom: null,
         authenticationToken: "",
         isActive: true
       },
@@ -193,15 +198,18 @@ export default {
   watch: {
     itemContext () {
       this.assignFormFields()
+    },
+
+    rangeZoom () {
+      this.form.minZoom = this.rangeZoom[0] 
+      this.form.maxZoom = this.rangeZoom[1] 
     }
   },
 
   methods: {
     assignFormFields () {
       Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
-      this.rangeZoom = []
-      this.rangeZoom.push(this.form.minZoom)
-      this.rangeZoom.push(this.form.maxZoom)
+      this.rangeZoom = [this.form.minZoom, this.form.maxZoom]
     },
 
     updateBaseLayer () {
