@@ -5,7 +5,6 @@
     :rules="rules"
     :context="context"
     :message-toast="messageToast"
-    @reset-form="resetForm()"
   >
     <template v-slot:content>
         <el-row :gutter="14">

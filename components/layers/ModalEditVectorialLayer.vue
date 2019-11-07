@@ -52,8 +52,8 @@
         <el-container>
           <el-select
             v-model="form.groupLayerId"
-            value-key="id"
             :loading="$store.state.spinners.loadingTable"
+            value-key="id"
             filterable
             placeholder="Select"
           >
@@ -116,9 +116,6 @@ export default {
         action: 'UPDATED'
       },
 
-      fileLayerSelected: null,
-      fileStyleSelected: null,
-      showFormStyle: false,
       form: {
         id: null,
         order: null,
@@ -133,8 +130,12 @@ export default {
         title,
         name,
         order
-      }
-    };
+      },
+
+      fileLayerSelected: null,
+      fileStyleSelected: null,
+      showFormStyle: false,
+    }
   },
 
   created () {

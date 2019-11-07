@@ -115,6 +115,7 @@ export default {
      * @param {String} text 
      */
     shrinkText (text) {
+      if (!text) return ''
       return text.length > 16 ? `${text.substring(0, 16)}<i class="fas fa-ellipsis-h"></i>` : text
     }
   },

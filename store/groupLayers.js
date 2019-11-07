@@ -1,4 +1,9 @@
-import { SET_DATA_CONTEXT, SET_ITEM_CONTEXT } from "../types/mutation-types";
+import {
+  SET_DATA_CONTEXT,
+  SET_ITEM_CONTEXT,
+  SET_PUBLISHED_ITEM_CONTEXT,
+  SET_CURRENT_PAGE_ON_TABLE
+} from "../types/mutation-types";
 
 export const state = () => ({
   dataContext: [],
@@ -7,6 +12,14 @@ export const state = () => ({
 });
 
 export const actions = {
+  async createItemContext({}, form) {
+    try {
+      await this.$groupLayerAPI.create(form);
+    } catch (error) {
+      throw error;
+    }
+  },
+
   async getDataContext({ commit }) {
     try {
       const { data } = await this.$groupLayerAPI.get();
@@ -16,13 +29,46 @@ export const actions = {
     }
   },
 
-  updateItemContext({ commit }, payload) {
-    commit(SET_ITEM_CONTEXT, payload);
+  async getItemContext({ commit }, id) {
+    try {
+      const { data } = await this.$groupLayerAPI.getById(id);
+      commit(SET_ITEM_CONTEXT, { itemContext: data });
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async publishItemContext({}, form) {
+    try {
+      await this.$groupLayerAPI.publish(form);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async updateItemContext({}, form) {
+    try {
+      await this.$groupLayerAPI.update(form);
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async deleteItemContext({}, id) {
+    try {
+      await this.$groupLayerAPI.delete(id);
+    } catch (error) {
+      throw error;
+    }
   }
 };
 
 export const mutations = {
   [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
 
-  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext)
+  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext),
+
+  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
+
+  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
 };

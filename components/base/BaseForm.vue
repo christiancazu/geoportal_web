@@ -122,7 +122,7 @@ export default {
         try {
           await this.submitItemContext(formData)
 
-          this.resetForm()
+          if (this.context.storeAction === 'create') this.resetForm()
           this.$toast.success(this.$SUCCESS[this.messageToast.baseName][this.messageToast.action])
           
           await this.getDataContext()

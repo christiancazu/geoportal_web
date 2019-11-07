@@ -1,32 +1,39 @@
-import { GROUP_LAYER } from '@/config/endpoints'
+import { GROUP_LAYER } from "@/config/endpoints";
 
 export default $axios => ({
-  get (payload = {}) {
+  get(payload = {}) {
     return $axios({
       url: `${GROUP_LAYER}/`,
-      method: 'GET',
+      method: "GET",
       data: payload.data || {}
-    })
+    });
   },
-  create (payload = {}) {
+  getById(payload = {}) {
+    return $axios({
+      url: `${GROUP_LAYER}/${payload.id}/`,
+      method: "GET",
+      data: payload.data || {}
+    });
+  },
+  create(payload = {}) {
     return $axios({
       url: `${GROUP_LAYER}/`,
-      method: 'POST',
+      method: "POST",
       data: payload.data || {}
-    })
+    });
   },
-  update (payload = {}) {
+  update(payload = {}) {
+    return $axios({
+      url: `${GROUP_LAYER}/${payload.data.get("id")}/`,
+      method: "PUT",
+      data: payload.data || {}
+    });
+  },
+  delete(payload = {}) {
     return $axios({
       url: `${GROUP_LAYER}/${payload.id}/`,
-      method: 'PUT',
+      method: "DELETE",
       data: payload.data || {}
-    })
-  },
-  delete (payload = {}) {
-    return $axios({
-      url: `${GROUP_LAYER}/${payload.id}/`,
-      method: 'DELETE',
-      data: payload.data || {}
-    })
+    });
   }
-})
+});
