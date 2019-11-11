@@ -32,6 +32,10 @@ export const actions = {
     const { data } = await this.$userAPI.getById(id)
     commit(SET_ITEM_CONTEXT, { itemContext: data })
   },
+
+  async updateItemContext ({}, form) {
+    await this.$userAPI.update(form)
+  },
 }
 
 export const mutations = {

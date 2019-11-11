@@ -397,7 +397,7 @@ export default {
   },
 
   mounted () {
-    this.getRegions()
+    // this.getRegions()
   },
 
   methods: {

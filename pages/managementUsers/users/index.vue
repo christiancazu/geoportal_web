@@ -100,13 +100,6 @@ export default {
     }
   },
 
-  computed: {
-  },
-
-  created () {
-    // this.getUsers()
-  },
-
   methods: {
 
     onLoadModalEditUser (item) {
@@ -123,15 +116,7 @@ export default {
             this.getUsers()
           }).catch(error => reject(error))
       })
-    },
-
-    // pagination
-    onChangeCurrentPage: function (currentPage) {
-      this.currentPage = currentPage
-    },
-    onChangePageSize: function (pagesize) {
-      this.pagesize = pagesize
-    },
+    }
   },
 
   head: {

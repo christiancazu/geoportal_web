@@ -25,7 +25,7 @@ export default $axios => ({
   },
   update (payload = {}) {
     return $axios({
-      url: `${USER}/${payload.id}/`,
+      url: `${USER}/${payload.data.get('id')}/`,
       method: 'PUT',
       data: payload.data || {}
     })

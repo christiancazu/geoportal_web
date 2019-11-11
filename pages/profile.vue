@@ -291,7 +291,7 @@ export default {
   },
 
   created () {
-    this.getRegions()
+    // this.getRegions()
     this.getProfile()
   },
 
