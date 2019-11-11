@@ -20,16 +20,16 @@
       <nuxt />
 
       <!-- dynamic current modals -->
-      <!-- <template v-if="loggedIn"> -->
-      <component
-        :is="mainModalDynamicComponent"
-        mounted-on="mainModal"
-      />
-      <component
-        :is="secondModalDynamicComponent"
-        mounted-on="secondModal"
-      />
-      <!-- </template> -->
+      <template v-if="loggedIn">
+        <component
+          :is="mainModalDynamicComponent"
+          modal-base-actions-mixin_mounted-on="mainModal"
+        />
+        <component
+          :is="secondModalDynamicComponent"
+          modal-base-actions-mixin_mounted-on="secondModal"
+        />
+      </template>
 
     </el-main>
   </el-container>

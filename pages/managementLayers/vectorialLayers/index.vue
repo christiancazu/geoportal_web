@@ -34,8 +34,7 @@
       prop="description"
     >
       <template slot-scope="scope">
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <span v-html="shrinkText(scope.row.description)" />
+        <span>{{ shrinkText(scope.row.description) }}</span>
       </template>
     </el-table-column>
 

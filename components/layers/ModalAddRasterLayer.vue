@@ -5,7 +5,7 @@
   :rules="rules"
   :context="context"
   :message-toast="messageToast"
-  @clear-file="clearFile()"
+  @clear-file="uploadFileMixin_clear()"
 >
   <template v-slot:content>
     <el-row :gutter="14">
@@ -48,10 +48,9 @@
         >
 
           <upload-file
-            :available-file-extensions="availableFileExtensions"
-            :file-selected="fileSelected"
-            @on-file-valid="onFileValid"
-            @delete-file="clearFile()"
+            :file="file"
+            @on-file-valid="uploadFileMixin_valid"
+            @delete-file="uploadFileMixin_clear()"
           />
 
         </el-form-item>
@@ -124,9 +123,10 @@
 </base-form>
 </template>
 <script>
-import BaseForm from '@/components/base/BaseForm'
-import UploadFile from '@/components/UploadFile'
 import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
+
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
   mapState,
@@ -142,14 +142,13 @@ import {
 
 export default {
   components: {
-    BaseForm,
-    UploadFile,
     BtnOpenSecondModal
   },
 
-  props: {
-    mountedOn: { type: String, required: true }
-  },
+  mixins: [
+    modalBaseActionsMixin,
+    uploadFileMixin
+  ],
 
   data () {
     return {
@@ -157,7 +156,7 @@ export default {
 
       context: {
         storeBase: 'rasterLayers',
-        mountedOn: this.mountedOn,
+        mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'create',
       },
       modalSecond: {
@@ -169,22 +168,19 @@ export default {
         baseName: 'LAYER',
         action: 'REGISTERED'
       },
-
-      fileType: 'rasterFile',
-      availableFileExtensions: ['.zip'],
-      fileSelected: null,
-      fileStyleSelected: null,
-      showFormStyle: false,
-
+      file: {
+        type: 'rasterFile',
+        availableExtensions: ['.zip'],
+        selected: null
+      },
       form: {
         title: '',
         order: 0,
         name: '',
-        [this.fileType]: null,
+        rasterFile: null,
         groupLayerId: '',
         description: ''
       },
-
       rules: {
         title,
         groupLayerId,
@@ -207,24 +203,7 @@ export default {
   methods: {
     ...mapActions({
       getGroupLayers: 'groupLayers/getDataContext'
-    }),
-
-    clearFile () {
-      if (this.form[this.fileType]) {
-        this.form.shapeFile = null
-        this.fileSelected = null
-        this.form.name = ''
-        this.form.title = ''
-      }
-    },
-
-    onFileValid (file) {
-      this.form[this.fileType] = file
-      this.fileSelected = file
-      const nameFile = file.name.split('.')[0]
-      this.form.name = nameFile
-      this.form.title = nameFile
-    }
+    })
   }
 }
 </script>
