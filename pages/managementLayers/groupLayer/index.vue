@@ -1,54 +1,57 @@
 <template>
-  <base-page-actions 
-    :page-header="pageHeader"
-    :modal-main="modalMain"
-    :filter-criteria-props="filterCriteriaProps"
-    :messageToast="messageToast"
-  >
-    <template v-slot:page-table="{ 
+<base-page-actions
+  :page-header="pageHeader"
+  :modal-main="modalMain"
+  :filter-criteria-props="filterCriteriaProps"
+  :message-toast="messageToast"
+>
+  <template
+    v-slot:page-table="{
       openModalEditItemContext,
       confirmedActionDeleteItemContext,
       shrinkText
-    }">
-      <el-table-column
-        label="N°"
-        align="center"
-        width="50px"
-        prop="order"
-      />
-      <el-table-column
-        label="Categoria"
-        prop="categoryGroup.name"
-      />
-      <el-table-column
-        label="Título"
-        prop="title"
-      />
-      <el-table-column
-        label="Descripción"
-        prop="description"
-      >
-        <template slot-scope="scope">
-          <span v-html="shrinkText(scope.row.description)"></span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="Acción"
-        align="center"
-        width="120"
-      >
-        <template slot-scope="scope">
-          <group-actions-buttons
-            :item-selected="scope.row"
-            dialog-delete-title="Eliminar Capa Vectorial"
-            dialog-delete-body-text="¿Está seguro de eliminar esta capa?"
-            @open-edit-modal="openModalEditItemContext(scope.row)"
-            @confirmed-action="confirmedActionDeleteItemContext"
-          />
-        </template>
-      </el-table-column>
-    </template>
-  </base-page-actions>
+    }"
+  >
+    <el-table-column
+      label="N°"
+      align="center"
+      width="50px"
+      prop="order"
+    />
+    <el-table-column
+      label="Categoria"
+      prop="categoryGroup.name"
+    />
+    <el-table-column
+      label="Título"
+      prop="title"
+    />
+    <el-table-column
+      label="Descripción"
+      prop="description"
+    >
+      <template slot-scope="scope">
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <span v-html="shrinkText(scope.row.description)" />
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="Acción"
+      align="center"
+      width="120"
+    >
+      <template slot-scope="scope">
+        <group-actions-buttons
+          :item-selected="scope.row"
+          dialog-delete-title="Eliminar Capa Vectorial"
+          dialog-delete-body-text="¿Está seguro de eliminar esta capa?"
+          @open-edit-modal="openModalEditItemContext(scope.row)"
+          @confirmed-action="confirmedActionDeleteItemContext"
+        />
+      </template>
+    </el-table-column>
+  </template>
+</base-page-actions>
 </template>
 
 <script>
@@ -61,10 +64,6 @@ export default {
   },
 
   mixins: [pageActionsMixin],
-
-   head: {
-    title: 'Grupo de Capas | GEOVISOR',
-  },
 
   data () {
     return {
@@ -83,8 +82,16 @@ export default {
         baseName: 'LAYER'
       },
       // criterias to search based on columns of table
-      filterCriteriaProps: ['title', 'name', 'description']
+      filterCriteriaProps: [
+        'title',
+        'name',
+        'description'
+      ]
     }
+  },
+
+  head: {
+    title: 'Grupo de Capas | GEOVISOR',
   }
 }
 </script>

@@ -1,115 +1,114 @@
 <template>
-  <base-page title="Servicios Externos WMS">
-    <template v-slot:itemsActions>
-      <el-button
-        size="mini"
-        type="primary"
-        icon="el-icon-plus"
-        @click="$_modalVisibilityMixin_open('modalAddWMSService')"
+<base-page title="Servicios Externos WMS">
+  <template v-slot:itemsActions>
+    <el-button
+      size="mini"
+      type="primary"
+      icon="el-icon-plus"
+      @click="$_modalVisibilityMixin_open('modalAddWMSService')"
+    >
+      Nuevo Servicio WMS
+    </el-button>
+  </template>
+
+  <template v-slot:content>
+    <el-container direction="vertical">
+      <el-row
+        type="flex"
+        justify="end"
+        :gutter="10"
       >
-        Nuevo Servicio WMS
-      </el-button>
-    </template>
-
-    <template v-slot:content>
-      <el-container direction="vertical">
-        <el-row
-          type="flex"
-          justify="end"
-          :gutter="10"
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="8"
         >
-          <el-col
-            :xs="24"
-            :sm="12"
-            :md="8"
-          >
-            <el-input
-              v-model="search"
-              prefix-icon="el-icon-search"
-              size="small"
-              placeholder="Buscar..."
-              clearable
-            />
-          </el-col>
-        </el-row>
-        <el-table
-          :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-          style="width: 100%"
-          lazy
-          v-loading="$store.state.spinners.loadingTable"
-        >
-          <el-table-column
-            label="URL"
-            prop="url"
+          <el-input
+            v-model="search"
+            prefix-icon="el-icon-search"
+            size="small"
+            placeholder="Buscar..."
+            clearable
           />
-          <el-table-column
-            label="Nombre"
-            prop="name"
-          />
-          <el-table-column
-            label="Categoría"
-            prop="category.name"
-          />
-          <el-table-column
-            label="Autor"
-            prop="author.name"
-          />
-          <el-table-column
-            label="Estado"
-            align="center"
-            width="120"
-          >
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.isEnabled"
-                disabled
-              >
-              </el-switch>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="Acción"
-            align="center"
-            width="120"
-          >
-            <template slot-scope="scope">
-              <btn-confirm
-                :item-selected="scope.row"
-                @confirmed-action="deleteWMSServices"
-                accion="deleted"
-                title="¿Eliminar el servicio seleccionado?"
-                body-text="¿Esta seguro?, esta operación no se podra revertir"
-              />
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          small
-          class="pt-4 text-xs-right"
-          :pager-size="100"
-          :page-size="pagesize"
-          layout="prev, pager, next, sizes"
-          :total="filteredData.length"
-          :current-page="currentPage"
-          @current-change="onChangeCurrentPage"
-          @size-change="onChangePageSize"
+        </el-col>
+      </el-row>
+      <el-table
+        v-loading="$store.state.spinners.loadingTable"
+        :data="filteredData.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+        style="width: 100%"
+        lazy
+      >
+        <el-table-column
+          label="URL"
+          prop="url"
         />
-      </el-container>
-    </template>
+        <el-table-column
+          label="Nombre"
+          prop="name"
+        />
+        <el-table-column
+          label="Categoría"
+          prop="category.name"
+        />
+        <el-table-column
+          label="Autor"
+          prop="author.name"
+        />
+        <el-table-column
+          label="Estado"
+          align="center"
+          width="120"
+        >
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.isEnabled"
+              disabled
+            />
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Acción"
+          align="center"
+          width="120"
+        >
+          <template slot-scope="scope">
+            <btn-confirm
+              :item-selected="scope.row"
+              accion="deleted"
+              title="¿Eliminar el servicio seleccionado?"
+              body-text="¿Esta seguro?, esta operación no se podra revertir"
+              @confirmed-action="deleteWMSServices"
+            />
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        small
+        class="pt-4 text-xs-right"
+        :pager-size="100"
+        :page-size="pagesize"
+        layout="prev, pager, next, sizes"
+        :total="filteredData.length"
+        :current-page="currentPage"
+        @current-change="onChangeCurrentPage"
+        @size-change="onChangePageSize"
+      />
+    </el-container>
+  </template>
 
-    <template v-slot:modals>
+  <template v-slot:modals>
 
-      <modal-add-w-m-s-service />
+    <modal-add-w-m-s-service />
 
-    </template>
+  </template>
 
-  </base-page>
+</base-page>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import BasePage from '@/components/base/pages/BasePage'
-import BtnConfirm from "@/components/base/BaseBtnConfirm";
+import BtnConfirm from '@/components/base/BaseBtnConfirm'
 import ModalAddWMSService from '@/components/WMSServices/ModalAddWMSService'
 
 export default {
@@ -117,10 +116,6 @@ export default {
     BasePage,
     ModalAddWMSService,
     BtnConfirm
-  },
-
-   head: {
-    title: 'Servicios WMS | GEOVISOR',
   },
 
   data () {
@@ -135,6 +130,7 @@ export default {
     filteredData () {
       let search = this.search.toString().toLowerCase()
       let WMSServices = this.$store.state.WMSServices.WMSServices
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.currentPage = 1
       return WMSServices.filter(item => {
         // checking url
@@ -167,14 +163,18 @@ export default {
       })
     },
 
-    // pagination 
+    // pagination
     onChangeCurrentPage: function (currentPage) {
-      this.currentPage = currentPage;
+      this.currentPage = currentPage
     },
 
     onChangePageSize: function (pagesize) {
-      this.pagesize = pagesize;
+      this.pagesize = pagesize
     },
+  },
+
+  head: {
+    title: 'Servicios WMS | GEOVISOR',
   }
 }
 </script>

@@ -1,46 +1,46 @@
-import { VECTORIAL_LAYER } from "@/config/endpoints";
+import { VECTORIAL_LAYER } from '@/config/endpoints'
 
 export default $axios => ({
-  get(payload = {}) {
+  get (payload = {}) {
     return $axios({
       url: `${VECTORIAL_LAYER}/`,
-      method: "GET",
+      method: 'GET',
       data: payload.data || {}
-    });
+    })
   },
-  getById(payload = {}) {
+  getById (payload = {}) {
     return $axios({
       url: `${VECTORIAL_LAYER}/${payload.id}/`,
-      method: "GET",
+      method: 'GET',
       data: payload.data || {}
-    });
+    })
   },
-  create(payload = {}) {
+  create (payload = {}) {
     return $axios({
       url: `${VECTORIAL_LAYER}/`,
-      method: "POST",
+      method: 'POST',
       data: payload.data || {}
-    });
+    })
   },
-  publish(payload = {}) {
+  publish (payload = {}) {
     return $axios({
       url: `${VECTORIAL_LAYER}/publish/`,
-      method: "POST",
+      method: 'POST',
       data: payload.data || {}
-    });
+    })
   },
-  update(payload = {}) {
+  update (payload = {}) {
     return $axios({
-      url: `${VECTORIAL_LAYER}/${payload.data.get("id")}/`,
-      method: "PUT",
+      url: `${VECTORIAL_LAYER}/${payload.data.get('id')}/`,
+      method: 'PUT',
       data: payload.data || {}
-    });
+    })
   },
-  delete(payload = {}) {
+  delete (payload = {}) {
     return $axios({
       url: `${VECTORIAL_LAYER}/${payload.id}/`,
-      method: "DELETE",
+      method: 'DELETE',
       data: payload.data || {}
-    });
+    })
   }
-});
+})

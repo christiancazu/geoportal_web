@@ -1,7 +1,7 @@
 export default $axios => ({
   index (payload = {}) {
     return $axios({
-      url: `user/`,
+      url: 'user/',
       method: 'GET',
       data: payload.data || {}
     })
@@ -15,14 +15,14 @@ export default $axios => ({
   },
   register (payload = {}) {
     return $axios({
-      url: `register/`,
+      url: 'register/',
       method: 'POST',
       data: payload.data || {}
     })
   },
   create (payload = {}) {
     return $axios({
-      url: `user/`,
+      url: 'user/',
       method: 'POST',
       data: payload.data || {}
     })
@@ -43,16 +43,16 @@ export default $axios => ({
   },
   getProfile (payload = {}) {
     return $axios({
-      url: `profile/info/`,
+      url: 'profile/info/',
       method: 'GET',
       data: payload.data || {}
     })
   },
   putProfile (payload = {}) {
     return $axios({
-      url: `profile/modify/`,
+      url: 'profile/modify/',
       method: 'PUT',
       data: payload.data || {}
     })
-  },
+  }
 })

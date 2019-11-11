@@ -4,7 +4,7 @@ import {
   REPLACE_LOADING_PROVINCES,
   REPLACE_PROVINCES,
   REPLACE_LOADING_DISTRICTS,
-  REPLACE_DISTRICTS,
+  REPLACE_DISTRICTS
 } from '../types/mutation-types'
 
 export const state = () => ({
@@ -13,7 +13,7 @@ export const state = () => ({
   provinces: [],
   loadingProvinces: false,
   districts: [],
-  loadingDistricts: false,
+  loadingDistricts: false
 })
 
 export const actions = {

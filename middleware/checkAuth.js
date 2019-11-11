@@ -6,17 +6,20 @@ export default async ({ app, redirect, $auth }) => {
   if ($auth.$state.loggedIn && !!isToken) {
     const token = isToken.replace('Bearer ', '')
     try {
-      app.$refreshAPI.refreshToken({ data: { token } })
+      app.$refreshAPI
+        .refreshToken({ data: { token } })
         .then(response => {
           if ($auth.$state.loggedIn && !!isToken) {
             $auth.setToken('local', `Bearer ${response.data.token}`)
-            $auth.fetchUser()
-              .then(response => {
-              }).catch(error => {
+            $auth
+              .fetchUser()
+              .then(() => {})
+              .catch(() => {
                 return redirect('/login')
               })
           }
-        }).catch(error => {
+        })
+        .catch(() => {
           $auth.logout()
           return redirect('/login')
         })

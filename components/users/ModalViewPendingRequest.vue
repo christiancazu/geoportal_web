@@ -1,69 +1,69 @@
 <template>
-  <BaseModal
-    title="Detalle de solicitud"
-    name-state="modalViewPendingRequest"
-    :show-modal="modalViewPendingRequest"
-    v-if="currentPendingRequest"
-  >
-    <template v-slot:content>
-      <div class="text-request">
-        <label class="text-uppercase">{{ `${currentPendingRequest.name} ${currentPendingRequest.lastName} ${currentPendingRequest.lastNameAditional}` }}</label>
-        <p class="ma-0">{{ `${currentPendingRequest.email}` }}</p>
-        <p class="text-uppercase ma-0">{{ `${currentPendingRequest.institute}` }}</p>
-      </div>
-      <div class="my-3 text-request">
-        <label class="text-uppercase">Motivo de uso: </label>
-        <p class="text-capitalize ma-0"> {{ `${currentPendingRequest.subject}` }}</p>
-      </div>
-      <div v-if="isRejectRequest">
-        <el-form
-          ref="form"
-          label-position="top"
-          status-icon
-          :model="form"
-          :rules="rules"
-          label-width="120px"
-          class="demo-ruleForm"
-          :disabled="processingRejection"
-        >
-          <el-form-item
-            label="¿Porque rechazó esta solicitud?"
-            prop="observation"
-          >
-            <el-input
-              v-model="form.observation"
-              type="textarea"
-              autocomplete="off"
-            />
-          </el-form-item>
-        </el-form>
-      </div>
-    </template>
-    <template v-slot:actions>
-      <el-button
-        class="ma-2"
-        type="danger"
-        size="small"
-        native-type="submit"
-        :disabled="processingAcceptance"
-        :loading="processingRejection"
-        @click.prevent="submitFormReject"
-      >RECHAZAR SOLICITUD</el-button>
-      <el-button
-        class="ma-2"
-        type="success"
-        size="small"
-        native-type="submit"
+<base-modal
+  v-if="currentPendingRequest"
+  title="Detalle de solicitud"
+  name-state="modalViewPendingRequest"
+  :show-modal="modalViewPendingRequest"
+>
+  <template v-slot:content>
+    <div class="text-request">
+      <label class="text-uppercase">{{ `${currentPendingRequest.name} ${currentPendingRequest.lastName} ${currentPendingRequest.lastNameAditional}` }}</label>
+      <p class="ma-0">{{ `${currentPendingRequest.email}` }}</p>
+      <p class="text-uppercase ma-0">{{ `${currentPendingRequest.institute}` }}</p>
+    </div>
+    <div class="my-3 text-request">
+      <label class="text-uppercase">Motivo de uso: </label>
+      <p class="text-capitalize ma-0"> {{ `${currentPendingRequest.subject}` }}</p>
+    </div>
+    <div v-if="isRejectRequest">
+      <el-form
+        ref="form"
+        label-position="top"
+        status-icon
+        :model="form"
+        :rules="rules"
+        label-width="120px"
+        class="demo-ruleForm"
         :disabled="processingRejection"
-        :loading="processingAcceptance"
-        @click.prevent="acceptRequest"
-      >APROBAR SOLICITUD</el-button>
-    </template>
-  </BaseModal>
+      >
+        <el-form-item
+          label="¿Porque rechazó esta solicitud?"
+          prop="observation"
+        >
+          <el-input
+            v-model="form.observation"
+            type="textarea"
+            autocomplete="off"
+          />
+        </el-form-item>
+      </el-form>
+    </div>
+  </template>
+  <template v-slot:actions>
+    <el-button
+      class="ma-2"
+      type="danger"
+      size="small"
+      native-type="submit"
+      :disabled="processingAcceptance"
+      :loading="processingRejection"
+      @click.prevent="submitFormReject"
+    >RECHAZAR SOLICITUD</el-button>
+    <el-button
+      class="ma-2"
+      type="success"
+      size="small"
+      native-type="submit"
+      :disabled="processingRejection"
+      :loading="processingAcceptance"
+      @click.prevent="acceptRequest"
+    >APROBAR SOLICITUD</el-button>
+  </template>
+</base-modal>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-import BaseModal from "@/components/base/BaseModal.vue";
+import { mapState, mapActions } from 'vuex'
+import BaseModal from '@/components/base/BaseModal.vue'
 
 export default {
   components: {
@@ -78,18 +78,12 @@ export default {
         observation: ''
       },
       rules: {
-        observation: [{
-          required: true,
-          message: "Este campo es requerido"
-        }]
-      }
-    };
-  },
-
-  watch: {
-    modalViewPendingRequest: function (newState, oldState) {
-      if (!newState) {
-        return false;
+        observation: [
+          {
+            required: true,
+            message: 'Este campo es requerido'
+          }
+        ]
       }
     }
   },
@@ -101,9 +95,17 @@ export default {
     })
   },
 
+  watch: {
+    modalViewPendingRequest: function (newState, /*oldState*/) {
+      if (!newState) {
+        return false
+      }
+    }
+  },
+
   methods: {
     ...mapActions({
-      getPendingRequests: "userRequests/getPendingRequests",
+      getPendingRequests: 'userRequests/getPendingRequests',
     }),
 
     submitFormReject () {
@@ -115,7 +117,7 @@ export default {
         if (valid) {
           this.rejectRequest()
         }
-      });
+      })
     },
 
     rejectRequest () {
@@ -128,7 +130,7 @@ export default {
         this.$userRequestAPI.rejected({ data })
           .then(response => {
             this.processingRejection = false
-            this.$toast.success(`La solicitud se rechazó con éxito`)
+            this.$toast.success('La solicitud se rechazó con éxito')
             this.$_modalVisibilityMixin_close('modalViewPendingRequest')
             resolve(response)
             this.getPendingRequests()
@@ -154,7 +156,7 @@ export default {
         this.$userRequestAPI.approve({ data })
           .then(response => {
             this.processingAcceptance = false
-            this.$toast.success(`La solicitud se aprobó con éxito`)
+            this.$toast.success('La solicitud se aprobó con éxito')
             this.$_modalVisibilityMixin_close('modalViewPendingRequest')
             this.getPendingRequests()
             resolve(response)
@@ -165,7 +167,7 @@ export default {
       })
     },
   }
-};
+}
 </script>
 <style lang="scss">
 .text-request {

@@ -1,7 +1,7 @@
 export default $axios => ({
-    index(payload = {}) {
+  index (payload = {}) {
     return $axios({
-      url: `bug_report/`,
+      url: 'bug_report/',
       method: 'GET',
       data: payload.data || {}
     })

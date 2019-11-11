@@ -1,37 +1,43 @@
 <template>
-  <div
-    id="app"
-    style="height:100vh;"
+<div
+  id="app"
+  style="height:100vh;"
+>
+  <el-container
+    :class="isCollapse ? 'isCollapse' : 'openSidebar'"
+    style="min-height:100%"
   >
-    <el-container
-      :class="isCollapse ? 'isCollapse' : 'openSidebar'"
-      style="min-height:100%"
+    <side-bar
+      v-if="loggedIn"
+      @is-collapse="onChangeCollapse"
+    />
+    <el-main
+      class="pa-0"
+      :class="{'main-container': loggedIn}"
     >
-      <SideBar
-        @is-collapse="onChangeCollapse"
-        v-if="loggedIn"
-      />
-      <el-main
-        class="pa-0"
-        :class="{'main-container': loggedIn}"
-      >
 
-        <!-- pages routing -->
-        <nuxt />
+      <!-- pages routing -->
+      <nuxt />
 
-        <!-- dynamic current modals -->
-        <template v-if="loggedIn">
-          <component :is="mainModalDynamicComponent" mounted-on="mainModal" />          
-          <component :is="secondModalDynamicComponent" mounted-on="secondModal" />
-        </template>        
+      <!-- dynamic current modals -->
+      <template v-if="loggedIn">
+        <component
+          :is="mainModalDynamicComponent"
+          mounted-on="mainModal"
+        />
+        <component
+          :is="secondModalDynamicComponent"
+          mounted-on="secondModal"
+        />
+      </template>
 
-      </el-main>
-    </el-container>
-  </div>
+    </el-main>
+  </el-container>
+</div>
 </template>
 <script>
-import { mapState } from "vuex"
-import SideBar from "@/components/SideBar"
+import { mapState } from 'vuex'
+import SideBar from '@/components/SideBar'
 
 export default {
   components: {
@@ -60,7 +66,7 @@ export default {
 
     /**
      * load dynamic second modal component from the state setted
-     * example: @/components/layers/ModalAddVectorialLayer 
+     * example: @/components/layers/ModalAddVectorialLayer
      */
     secondModalDynamicComponent () {
       const { folderName, component } = this.$store.state.modalsVisibilities.secondModal

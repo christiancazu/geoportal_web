@@ -1,38 +1,38 @@
 <template>
-  <BaseModal
-    title="Detalle del reporte"
-    name-state="modalViewReport"
-    :show-modal="modalViewReport"
-    v-if="currentReport"
-  >
-    <template v-slot:content>
+<base-modal
+  v-if="currentReport"
+  title="Detalle del reporte"
+  name-state="modalViewReport"
+  :show-modal="modalViewReport"
+>
+  <template v-slot:content>
 
-      <div class="text-request">
-        <label class="text-uppercase">{{ `${currentReport.user}`}}</label>
-        <p class="text-uppercase ma-0">{{ `${currentReport.subject}` }}</p>
-      </div>
-      <div class="my-3 text-request">
-        <label class="text-uppercase">Descripción del reporte: </label>
-        <p class="text-capitalize ma-0"> {{ `${currentReport.description}` }}</p>
-      </div>
-      <el-image
-        :src="currentReport.image"
-        fit="contain"
+    <div class="text-request">
+      <label class="text-uppercase">{{ `${currentReport.user}` }}</label>
+      <p class="text-uppercase ma-0">{{ `${currentReport.subject}` }}</p>
+    </div>
+    <div class="my-3 text-request">
+      <label class="text-uppercase">Descripción del reporte: </label>
+      <p class="text-capitalize ma-0"> {{ `${currentReport.description}` }}</p>
+    </div>
+    <el-image
+      :src="currentReport.image"
+      fit="contain"
+    >
+      <div
+        slot="placeholder"
+        class="image-slot"
       >
-        <div
-          slot="placeholder"
-          class="image-slot"
-        >
-          Loading<span class="dot">...</span>
-        </div>
-      </el-image>
+        Loading<span class="dot">...</span>
+      </div>
+    </el-image>
 
-    </template>
-  </BaseModal>
+  </template>
+</base-modal>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
-import BaseModal from "@/components/base/BaseModal.vue";
+import { mapState, mapActions } from 'vuex'
+import BaseModal from '@/components/base/BaseModal.vue'
 
 export default {
   components: {
@@ -40,16 +40,10 @@ export default {
   },
   data () {
     return {
-    };
-  },
-
-  watch: {
-    modalViewReport: function (newState, oldState) {
-      if (!newState) {
-        return false;
-      }
     }
   },
+
+
 
   computed: {
     ...mapState({
@@ -58,12 +52,20 @@ export default {
     })
   },
 
+  watch: {
+    modalViewReport: function (newState, /*oldState*/) {
+      if (!newState) {
+        return false
+      }
+    }
+  },
+
   methods: {
     ...mapActions({
-      getPendingRequests: "reports/getPendingRequests",
+      getPendingRequests: 'reports/getPendingRequests',
     })
   }
-};
+}
 </script>
 <style lang="scss">
 .text-request {

@@ -1,61 +1,63 @@
 <template>
-  <base-page-actions 
-    :page-header="pageHeader"
-    :modal-main="modalMain"
-    :filter-criteria-props="filterCriteriaProps"
-    :messageToast="messageToast"
-  >
-    <template v-slot:page-table="{ 
+<base-page-actions
+  :page-header="pageHeader"
+  :modal-main="modalMain"
+  :filter-criteria-props="filterCriteriaProps"
+  :message-toast="messageToast"
+>
+  <template
+    v-slot:page-table="{
       openModalEditItemContext,
       confirmedActionDeleteItemContext,
       shrinkText
-    }">
+    }"
+  >
+    <el-table-column
+      label="Nombre"
+      prop="name"
+    />
+    <el-table-column
+      label="Autor"
+      prop="author"
+    />
+    <el-table-column
+      label="URL"
+      prop="url"
+    >
+      <template slot-scope="scope">
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <span v-html="shrinkText(scope.row.url)" />
+      </template>
+    </el-table-column>
+    <el-table-column
+      prop="url"
+      align="center"
+    >
+      <template slot="header">
+        <p class="ma-0">Zoom</p>
+        <small>[min, max]</small>
+      </template>
+      <template slot-scope="scope">{{ `[${scope.row.minZoom} - ${scope.row.maxZoom}]` }}</template>
+    </el-table-column>
+    <el-table-column
+      label="Acción"
+      align="center"
+      width="120"
+    >
+      <template slot-scope="scope">
 
-      <el-table-column
-        label="Nombre"
-        prop="name"
-      />
-      <el-table-column
-        label="Autor"
-        prop="author"
-      />
-      <el-table-column
-        label="URL"
-        prop="url"
-      >
-        <template slot-scope="scope">
-          <span v-html="shrinkText(scope.row.url)"></span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="url"
-        align="center"
-      >
-        <template slot="header">
-          <p class="ma-0">Zoom</p>
-          <small>[min, max]</small>
-        </template>
-        <template slot-scope="scope">{{ `[${scope.row.minZoom} - ${scope.row.maxZoom}]` }}</template>
-      </el-table-column>
-      <el-table-column
-        label="Acción"
-        align="center"
-        width="120"
-      >
-        <template slot-scope="scope">
+        <group-actions-buttons
+          :item-selected="scope.row"
+          dialog-delete-title="Eliminar Mapa Base"
+          dialog-delete-body-text="¿Está seguro de eliminar este mapa base?"
+          @open-edit-modal="openModalEditItemContext(scope.row)"
+          @confirmed-action="confirmedActionDeleteItemContext"
+        />
 
-          <group-actions-buttons
-            :item-selected="scope.row"
-            dialog-delete-title="Eliminar Mapa Base"
-            dialog-delete-body-text="¿Está seguro de eliminar este mapa base?"
-            @open-edit-modal="openModalEditItemContext(scope.row)"
-            @confirmed-action="confirmedActionDeleteItemContext"
-          />
-
-        </template>
-      </el-table-column>
-    </template>
-  </base-page-actions>
+      </template>
+    </el-table-column>
+  </template>
+</base-page-actions>
 </template>
 
 <script>
@@ -68,10 +70,6 @@ export default {
   },
 
   mixins: [pageActionsMixin],
-
-  head: {
-    title: "Capas base | GEOVISOR"
-  },
 
   data () {
     return {
@@ -92,8 +90,16 @@ export default {
         baseName: 'LAYER'
       },
       // criterias to search based on columns of table
-      filterCriteriaProps: ['name', 'author', 'url']
+      filterCriteriaProps: [
+        'name',
+        'author',
+        'url'
+      ]
     }
+  },
+
+  head: {
+    title: 'Capas base | GEOVISOR'
   }
 }
 </script>

@@ -1,16 +1,16 @@
 export default $axios => ({
-    index(payload = {}) {
+  index (payload = {}) {
     return $axios({
-      url: `external_wms_author/`,
+      url: 'external_wms_author/',
       method: 'GET',
       data: payload.data || {}
     })
   },
-    create(payload = {}) {
+  create (payload = {}) {
     return $axios({
-      url: `external_wms_author/`,
+      url: 'external_wms_author/',
       method: 'POST',
       data: payload.data || {}
     })
-  },
+  }
 })

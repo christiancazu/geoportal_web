@@ -9,10 +9,11 @@ export const state = () => ({
   users: [],
   loadingUsers: false,
   user: null,
-  loadingUser: false,
+  loadingUser: false
 })
 
 export const getters = {
+  // eslint-disable-next-line no-unused-vars
   isAdmin: (state, getters, rootState, rootGetters) => {
     const user = rootState.auth.user
     return user && user.userType.id === 'AD'
@@ -28,7 +29,6 @@ export const actions = {
 
       commit('REPLACE_USERS', { users: data || [] })
       commit('REPLACE_LOADING_USERS', { loading: false })
-
     } catch (error) {
       if (!error.response) return
     } finally {
@@ -43,7 +43,6 @@ export const actions = {
       const { data } = await this.$userAPI.getUser(payload)
       commit('REPLACE_USER', { user: data || [] })
       commit('REPLACE_LOADING_USER', { loading: false })
-
     } catch (error) {
       if (!error.response) return
     } finally {
@@ -68,5 +67,5 @@ export const mutations = {
   },
   [REPLACE_LOADING_USER] (state, { loading }) {
     state.loadingUser = loading
-  },
+  }
 }

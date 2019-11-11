@@ -1,20 +1,20 @@
 <template>
-  <el-dialog
-    :title="title"
-    :close-on-click-modal="false"
-    :visible.sync="showModalNow"
-    :append-to-body="appendToBody"
-    top="2vh"
-  >
-    <slot name="content" />
+<el-dialog
+  :title="title"
+  :close-on-click-modal="false"
+  :visible.sync="showModalNow"
+  :append-to-body="appendToBody"
+  top="2vh"
+>
+  <slot name="content" />
 
-    <div class="text-xs-center">
-      <slot name="actions" />
-    </div>
+  <div class="text-xs-center">
+    <slot name="actions" />
+  </div>
 
-    <slot name="modals" />
+  <slot name="modals" />
 
-  </el-dialog>
+</el-dialog>
 </template>
 
 <script>
@@ -41,13 +41,13 @@ export default {
 
   computed: {
     showModalNow: {
-      get() {
-        return this.showModal;
+      get () {
+        return this.showModal
       },
-      set(value) {
-        this.$_modalVisibilityMixin_close(this.nameState);
+      set () {
+        this.$_modalVisibilityMixin_close(this.nameState)
       }
     }
   }
-};
+}
 </script>

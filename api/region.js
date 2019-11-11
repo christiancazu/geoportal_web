@@ -1,25 +1,25 @@
 export default $axios => ({
-  regions(payload = {}) {
+  regions (payload = {}) {
     return $axios({
-      url: `region/`,
-      method: 'GET',
-      params: payload.params || {}
-    })
-  },
-  
-  provinces(payload = {}) {
-    return $axios({
-      url: `province/`,
+      url: 'region/',
       method: 'GET',
       params: payload.params || {}
     })
   },
 
-  districts(payload = {}) {
+  provinces (payload = {}) {
     return $axios({
-      url: `district/`,
+      url: 'province/',
       method: 'GET',
       params: payload.params || {}
     })
   },
+
+  districts (payload = {}) {
+    return $axios({
+      url: 'district/',
+      method: 'GET',
+      params: payload.params || {}
+    })
+  }
 })

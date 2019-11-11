@@ -3,65 +3,41 @@ import {
   SET_ITEM_CONTEXT,
   SET_PUBLISHED_ITEM_CONTEXT,
   SET_CURRENT_PAGE_ON_TABLE
-} from "../types/mutation-types";
+} from '../types/mutation-types'
 
 export const state = () => ({
   dataContext: [],
   itemContext: {},
   currentPageOnTable: 1
-});
+})
 
 export const actions = {
-  async createItemContext({}, form) {
-    try {
-      await this.$groupLayerAPI.create(form);
-    } catch (error) {
-      throw error;
-    }
+  async createItemContext ({}, form) {
+    await this.$groupLayerAPI.create(form)
   },
 
-  async getDataContext({ commit }) {
-    try {
-      const { data } = await this.$groupLayerAPI.get();
-      commit(SET_DATA_CONTEXT, { dataContext: data || [] });
-    } catch (error) {
-      throw error;
-    }
+  async getDataContext ({ commit }) {
+    const { data } = await this.$groupLayerAPI.get()
+    commit(SET_DATA_CONTEXT, { dataContext: data || [] })
   },
 
-  async getItemContext({ commit }, id) {
-    try {
-      const { data } = await this.$groupLayerAPI.getById(id);
-      commit(SET_ITEM_CONTEXT, { itemContext: data });
-    } catch (error) {
-      throw error;
-    }
+  async getItemContext ({ commit }, id) {
+    const { data } = await this.$groupLayerAPI.getById(id)
+    commit(SET_ITEM_CONTEXT, { itemContext: data })
   },
 
-  async publishItemContext({}, form) {
-    try {
-      await this.$groupLayerAPI.publish(form);
-    } catch (error) {
-      throw error;
-    }
+  async publishItemContext ({}, form) {
+    await this.$groupLayerAPI.publish(form)
   },
 
-  async updateItemContext({}, form) {
-    try {
-      await this.$groupLayerAPI.update(form);
-    } catch (error) {
-      throw error;
-    }
+  async updateItemContext ({}, form) {
+    await this.$groupLayerAPI.update(form)
   },
 
-  async deleteItemContext({}, id) {
-    try {
-      await this.$groupLayerAPI.delete(id);
-    } catch (error) {
-      throw error;
-    }
+  async deleteItemContext ({}, id) {
+    await this.$groupLayerAPI.delete(id)
   }
-};
+}
 
 export const mutations = {
   [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
@@ -71,4 +47,4 @@ export const mutations = {
   [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
 
   [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
-};
+}

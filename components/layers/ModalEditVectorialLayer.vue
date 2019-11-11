@@ -1,97 +1,99 @@
 <template>
-  <base-form
-    :form-title="formTitle"
-    :form="form"
-    :rules="rules"
-    :context="context"
-    :message-toast="messageToast"
-  >
-    <template v-slot:content>
-      <el-row :gutter="14">
-        <el-col
-          :xs="24"
-          :md="{span:12, offset:12}"
-          :sm="24"
-          :lg="{span:12, offset:12}"
-          class="text-xs-center"
+<base-form
+  :form-title="formTitle"
+  :form="form"
+  :rules="rules"
+  :context="context"
+  :message-toast="messageToast"
+>
+  <template v-slot:content>
+    <el-row :gutter="14">
+      <el-col
+        :xs="24"
+        :md="{span:12, offset:12}"
+        :sm="24"
+        :lg="{span:12, offset:12}"
+        class="text-xs-center"
+      >
+        <el-form-item
+          prop="order"
+          size="mini"
+          :inline-message="true"
         >
-          <el-form-item
-            prop="order"
+          <label
+            class="pr-2"
+            for=""
+          >N° de orden: </label>
+          <el-input-number
+            v-model="form.order"
             size="mini"
-            :inline-message="true"
-          >
-            <label
-              class="pr-2"
-              for=""
-            >N° de orden: </label>
-            <el-input-number
-              size="mini"
-              v-model="form.order"
-              controls-position="right"
-              :min="1"
-              type="number"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-form-item
-        label="Título"
-        prop="title"
-      >
-        <el-input
-          v-model="form.title"
-          type="text"
-          autocomplete="off"
-          :rules="rules.title"
-        />
-      </el-form-item>
-      <el-form-item
-        label="Grupo"
-        prop="groupLayerId"
-      >
-        <el-container>
-          <el-select
-            v-model="form.groupLayerId"
-            :loading="$store.state.spinners.loadingTable"
-            value-key="id"
-            filterable
-            placeholder="Select"
-          >
-            <el-option
-              v-for="item in groupLayers" :key="item.id"
-              :label="item.title"
-              :value="item.id"
-            />
-          </el-select>
-        </el-container>
-      </el-form-item>
-      <!-- Descripción -->
-      <el-form-item
-        label="Descripción"
-        prop="description"
-      >
-        <el-input
-          v-model="form.description"
-          type="textarea"
-          :rows="3"
-          autocomplete="off"
-          :maxlength="300"
-        />
-      </el-form-item>
-    </template>
-  </base-form>
+            controls-position="right"
+            :min="1"
+            type="number"
+          />
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-form-item
+      label="Título"
+      prop="title"
+    >
+      <el-input
+        v-model="form.title"
+        type="text"
+        autocomplete="off"
+        :rules="rules.title"
+      />
+    </el-form-item>
+    <el-form-item
+      label="Grupo"
+      prop="groupLayerId"
+    >
+      <el-container>
+        <el-select
+          v-model="form.groupLayerId"
+          :loading="$store.state.spinners.loadingTable"
+          value-key="id"
+          filterable
+          placeholder="Select"
+        >
+          <el-option
+            v-for="item in groupLayers" :key="item.id"
+            :label="item.title"
+            :value="item.id"
+          />
+        </el-select>
+      </el-container>
+    </el-form-item>
+    <!-- Descripción -->
+    <el-form-item
+      label="Descripción"
+      prop="description"
+    >
+      <el-input
+        v-model="form.description"
+        type="textarea"
+        :rows="3"
+        autocomplete="off"
+        :maxlength="300"
+      />
+    </el-form-item>
+  </template>
+</base-form>
 </template>
 <script>
-import BaseForm from "@/components/base/BaseForm"
+import BaseForm from '@/components/base/BaseForm'
 
-import { 
-  mapState, 
-  mapActions } from "vuex"
+import {
+  mapState,
+  mapActions
+} from 'vuex'
 
-import { 
+import {
   title,
   name,
-  order } from '@/config/form.rules'
+  order
+} from '@/config/form.rules'
 
 export default {
   components: {
@@ -119,10 +121,10 @@ export default {
       form: {
         id: null,
         order: null,
-        title: "",
-        name: "",
+        title: '',
+        name: '',
         groupLayerId: '',
-        description: "",
+        description: '',
         status: true
       },
 
@@ -138,16 +140,11 @@ export default {
     }
   },
 
-  created () {
-    this.getGroupLayers()
-    this.assignFormFields()
-  },
-
   computed: {
     ...mapState({
       itemContext (state) {
         return state[this.context.storeBase].itemContext
-      }, 
+      },
       groupLayers: state => state.groupLayers.dataContext
     })
   },
@@ -156,6 +153,11 @@ export default {
     itemContext () {
       this.assignFormFields()
     }
+  },
+
+  created () {
+    this.getGroupLayers()
+    this.assignFormFields()
   },
 
   methods: {

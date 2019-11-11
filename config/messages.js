@@ -8,7 +8,7 @@ export const ERRORS = {
 
 export const SUCCESS = {
   WELLCOME: 'Bienvenido al Geoportal UNAT',
-  
+
   SERVICE: {
     REGISTERED: 'El servicio se registro con éxito'
   },

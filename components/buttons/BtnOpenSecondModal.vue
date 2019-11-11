@@ -1,5 +1,8 @@
 <template>
-<el-tooltip :content="modalSecond.tooltip" placement="top">
+<el-tooltip
+  :content="modalSecond.tooltip"
+  placement="top"
+>
   <el-button
     icon="el-icon-circle-plus"
     circle
@@ -15,8 +18,8 @@
 <script>
 export default {
   props: {
-    modalSecond: { 
-      type: Object, 
+    modalSecond: {
+      type: Object,
       default: () => ({
         component: { type: String, required: true },
         folderName: { type: String, required: true },

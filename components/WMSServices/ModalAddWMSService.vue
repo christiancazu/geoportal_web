@@ -1,175 +1,178 @@
 <template>
-  <BaseModal
-    title="Registrar Servicios WMS"
-    name-state="modalAddWMSService"
-    :show-modal="modalAddWMSService"
-  >
-    <template v-slot:content>
-      <el-form
-        ref="form"
-        label-position="top"
-        status-icon
-        :model="form"
-        :rules="rules"
-        label-width="120px"
-        class="demo-ruleForm"
-        :disabled="processingForm"
-        @submit.prevent="submitForm"
+<base-modal
+  title="Registrar Servicios WMS"
+  name-state="modalAddWMSService"
+  :show-modal="modalAddWMSService"
+>
+  <template v-slot:content>
+    <el-form
+      ref="form"
+      label-position="top"
+      status-icon
+      :model="form"
+      :rules="rules"
+      label-width="120px"
+      class="demo-ruleForm"
+      :disabled="processingForm"
+      @submit.prevent="submitForm"
+    >
+      <!-- name -->
+      <el-form-item
+        label="Nombres"
+        prop="name"
       >
-        <!-- name -->
-        <el-form-item
-          label="Nombres"
-          prop="name"
-        >
-          <el-input
-            v-model="form.name"
-            type="text"
-            autocomplete="off"
-          />
-        </el-form-item>
-        <!-- weburl -->
-        <el-form-item
-          label="URL"
-          prop="url"
-        >
-          <el-input
-            v-model="form.url"
-            type="text"
-            autocomplete="off"
-          />
-        </el-form-item>
+        <el-input
+          v-model="form.name"
+          type="text"
+          autocomplete="off"
+        />
+      </el-form-item>
+      <!-- weburl -->
+      <el-form-item
+        label="URL"
+        prop="url"
+      >
+        <el-input
+          v-model="form.url"
+          type="text"
+          autocomplete="off"
+        />
+      </el-form-item>
 
-        <el-row :gutter="10">
-          <el-col
-            :xs="24"
-            :sm="12"
+      <el-row :gutter="10">
+        <el-col
+          :xs="24"
+          :sm="12"
+        >
+          <!-- region -->
+          <el-form-item
+            label="Autores"
+            prop="author"
           >
-            <!-- region -->
-            <el-form-item
-              label="Autores"
-              prop="author"
-            >
-              <el-container>
-                <el-select
-                  v-model="form.idAuthor"
-                  value-key="id"
-                  filterable
-                  placeholder="Select"
-                >
-                  <el-option
-                    v-for="item in WMSAuthors"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-                <el-button
-                  icon="el-icon-circle-plus"
-                  circle
-                  type="text"
-                  class="pa-0 pl-1 ma-0"
-                  style="font-size: 1.7rem;"
-                  :disabled="processingForm"
-                  @click="$_modalVisibilityMixin_open('modalAddWMSAuthor')"
-                ></el-button>
-              </el-container>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="24"
-            :sm="12"
-          >
-            <!-- category -->
-            <el-form-item
-              label="Categorías"
-              prop="Categories"
-            >
-              <el-container>
-                <el-select
-                  v-model="form.idCategory"
-                  filterable
-                  value-key="id"
-                  placeholder="Select"
-                >
-                  <el-option
-                    v-for="item in WMSCategories"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-                <el-button
-                  icon="el-icon-circle-plus"
-                  circle
-                  type="text"
-                  class="pa-0 pl-1 ma-0"
-                  style="font-size: 1.7rem;"
-                  :disabled="processingForm"
-                  @click="$_modalVisibilityMixin_open('modalAddWMSCategory')"
-                ></el-button>
-              </el-container>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-form-item
-          label="Descripción"
-          prop="description"
+            <el-container>
+              <el-select
+                v-model="form.idAuthor"
+                value-key="id"
+                filterable
+                placeholder="Select"
+              >
+                <el-option
+                  v-for="item in WMSAuthors"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+              <el-button
+                icon="el-icon-circle-plus"
+                circle
+                type="text"
+                class="pa-0 pl-1 ma-0"
+                style="font-size: 1.7rem;"
+                :disabled="processingForm"
+                @click="$_modalVisibilityMixin_open('modalAddWMSAuthor')"
+              />
+            </el-container>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="24"
+          :sm="12"
         >
-          <el-input
-            v-model="form.description"
-            type="textarea"
-            :rows="3"
-            autocomplete="off"
-            :maxlength="300"
-            :show-word-limit="true"
-          />
-        </el-form-item>
-        <el-form-item class="text-xs-right">
-          <el-switch
-            v-model="form.isEnabled"
-            active-value="True"
-            inactive-value="False"
-            :active-text="form.isEnabled ? 'Servicio Activo': 'Servicio Inactivo' "
-          ></el-switch>
-        </el-form-item>
-      </el-form>
-    </template>
-    <template v-slot:actions>
-      <el-button
-        size="small"
-        :disabled="processingForm"
-        @click="$_modalVisibilityMixin_close('modalAddWMSService')"
+          <!-- category -->
+          <el-form-item
+            label="Categorías"
+            prop="Categories"
+          >
+            <el-container>
+              <el-select
+                v-model="form.idCategory"
+                filterable
+                value-key="id"
+                placeholder="Select"
+              >
+                <el-option
+                  v-for="item in WMSCategories"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+              <el-button
+                icon="el-icon-circle-plus"
+                circle
+                type="text"
+                class="pa-0 pl-1 ma-0"
+                style="font-size: 1.7rem;"
+                :disabled="processingForm"
+                @click="$_modalVisibilityMixin_open('modalAddWMSCategory')"
+              />
+            </el-container>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-form-item
+        label="Descripción"
+        prop="description"
       >
-        CANCELAR
-      </el-button>
-      <el-button
-        type="primary"
-        size="small"
-        native-type="submit"
-        :loading="processingForm"
-        @click.prevent="submitForm"
-      >
-        GUARDAR
-      </el-button>
-    </template>
+        <el-input
+          v-model="form.description"
+          type="textarea"
+          :rows="3"
+          autocomplete="off"
+          :maxlength="300"
+          :show-word-limit="true"
+        />
+      </el-form-item>
+      <el-form-item class="text-xs-right">
+        <el-switch
+          v-model="form.isEnabled"
+          active-value="True"
+          inactive-value="False"
+          :active-text="form.isEnabled ? 'Servicio Activo': 'Servicio Inactivo' "
+        />
+      </el-form-item>
+    </el-form>
+  </template>
+  <template v-slot:actions>
+    <el-button
+      size="small"
+      :disabled="processingForm"
+      @click="$_modalVisibilityMixin_close('modalAddWMSService')"
+    >
+      CANCELAR
+    </el-button>
+    <el-button
+      type="primary"
+      size="small"
+      native-type="submit"
+      :loading="processingForm"
+      @click.prevent="submitForm"
+    >
+      GUARDAR
+    </el-button>
+  </template>
 
-    <template v-slot:modals>
+  <template v-slot:modals>
 
-      <modal-add-w-m-s-author />
+    <modal-add-w-m-s-author />
 
-      <modal-add-w-m-s-category />
+    <modal-add-w-m-s-category />
 
-    </template>
+  </template>
 
-  </BaseModal>
+</base-modal>
 </template>
 <script>
-import BaseModal from "@/components/base/BaseModal.vue";
-import ModalAddWMSAuthor from "@/components/WMSServices/ModalAddWMSAuthor.vue";
-import ModalAddWMSCategory from "@/components/WMSServices/ModalAddWMSCategory.vue";
-import { mapState, mapActions, mapMutations } from "vuex";
-import { SUCCESS } from "@/config/messages";
+import BaseModal from '@/components/base/BaseModal.vue'
+import ModalAddWMSAuthor from '@/components/WMSServices/ModalAddWMSAuthor.vue'
+import ModalAddWMSCategory from '@/components/WMSServices/ModalAddWMSCategory.vue'
+import {
+  mapState,
+  mapActions
+} from 'vuex'
+import { SUCCESS } from '@/config/messages'
 
 export default {
   components: {
@@ -182,37 +185,28 @@ export default {
     return {
       processingForm: false,
       form: {
-        name: "",
-        description: "",
-        url: "",
-        idAuthor: "",
-        isEnabled: "True",
-        idCategory: "",
-        isPublic: "True"
+        name: '',
+        description: '',
+        url: '',
+        idAuthor: '',
+        isEnabled: 'True',
+        idCategory: '',
+        isPublic: 'True'
       },
 
       rules: {
         name: [
           {
             required: true,
-            message: "El nombre es requerido"
+            message: 'El nombre es requerido'
           }
         ],
         url: [
           {
             required: true,
-            message: "El nombre es requerido"
+            message: 'El nombre es requerido'
           }
         ]
-      }
-    };
-  },
-
-  watch: {
-    modalAddWMSService (newState, oldState) {
-      if (newState) {
-        this.getWMSCategories();
-        this.getWMSAuthors();
       }
     }
   },
@@ -227,50 +221,59 @@ export default {
     })
   },
 
+  watch: {
+    modalAddWMSService (newState, /*oldState*/) {
+      if (newState) {
+        this.getWMSCategories()
+        this.getWMSAuthors()
+      }
+    }
+  },
+
   methods: {
     ...mapActions({
-      getWMSCategories: "WMSCategories/getWMSCategories",
-      getWMSAuthors: "WMSAuthors/getWMSAuthors",
-      getWMSServices: "WMSServices/getWMSServices"
+      getWMSCategories: 'WMSCategories/getWMSCategories',
+      getWMSAuthors: 'WMSAuthors/getWMSAuthors',
+      getWMSServices: 'WMSServices/getWMSServices'
     }),
 
     submitForm () {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.processingForm = true;
+          this.processingForm = true
           this.createWMSService().then(response => {
-            console.warn(response);
-            this.$refs.form.resetFields();
-            this.getWMSServices();
-            this.$toast.success(SUCCESS.SERVICE.REGISTERED);
-          });
+            console.warn(response)
+            this.$refs.form.resetFields()
+            this.getWMSServices()
+            this.$toast.success(SUCCESS.SERVICE.REGISTERED)
+          })
         }
-      });
+      })
     },
 
     createWMSService () {
-      const formData = new FormData();
+      const formData = new FormData()
 
-      let keys = Object.keys(this.form);
+      let keys = Object.keys(this.form)
       keys.forEach(val => {
-        formData.append(val, this.form[val]);
-      });
+        formData.append(val, this.form[val])
+      })
 
-      const data = formData;
+      const data = formData
 
       return new Promise((resolve, reject) => {
         this.$WMSServiceAPI
           .create({ data })
           .then(response => {
-            this.processingForm = false;
-            resolve(response);
+            this.processingForm = false
+            resolve(response)
           })
           .catch(error => {
-            this.processingForm = false;
-            reject(error);
-          });
-      });
+            this.processingForm = false
+            reject(error)
+          })
+      })
     }
   }
-};
+}
 </script>

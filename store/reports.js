@@ -27,7 +27,6 @@ export const actions = {
   replaceCurrentReport ({ commit }, payload) {
     commit('REPLACE_CURRENT_REPORT', payload)
   }
-
 }
 
 export const mutations = {
@@ -39,5 +38,5 @@ export const mutations = {
   },
   [REPLACE_CURRENT_REPORT] (state, { report }) {
     state.currentReport = report
-  },
+  }
 }
