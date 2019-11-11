@@ -56,3 +56,49 @@ export const name = [
     }
   }
 ]
+
+// form create user
+
+export const username = [{
+  required: true,
+  message: 'El nombre de usuario es requerido'
+}]
+export const lastName = [{
+  required: true,
+  message: 'El nombre es requerido'
+}]
+export const lastNameAditional = [{
+  required: true,
+  message: 'El segundo apellidos es requerido'
+}]
+export const region = [{
+  required: true,
+  message: 'Seleccione su región'
+}]
+export const districtId = [{
+  required: true,
+  validator: (rule, value, callback) => {
+    if (!this.form.province) {
+      return callback(new Error('Seleccione su Distrito'))
+    }
+    callback()
+  }
+}]
+export const province = [{
+  required: true,
+  validator: (rule, value, callback) => {
+    if (!this.form.region) {
+      return callback(new Error('Seleccione su Provincia'))
+    }
+    callback()
+  }
+}]
+export const institute = [{
+  required: true,
+  message: 'La institución es requerida'
+}]
+export const subject = [{
+  required: true,
+  min: 10,
+  message: 'Detalle el motivo para acceder al Geoportal UNAT'
+}]

@@ -1,71 +1,44 @@
 import {
-  REPLACE_USERS,
-  REPLACE_LOADING_USERS,
-  REPLACE_USER,
-  REPLACE_LOADING_USER
+  SET_DATA_CONTEXT,
+  SET_ITEM_CONTEXT,
+  SET_CURRENT_PAGE_ON_TABLE
 } from '../types/mutation-types'
 
 export const state = () => ({
-  users: [],
-  loadingUsers: false,
-  user: null,
-  loadingUser: false
+  dataContext: [],
+  itemContext: {},
+  currentPageOnTable: 1
 })
 
 export const getters = {
   // eslint-disable-next-line no-unused-vars
-  isAdmin: (state, getters, rootState, rootGetters) => {
-    const user = rootState.auth.user
-    return user && user.userType.id === 'AD'
-  }
+  // isAdmin: (state, getters, rootState, rootGetters) => {
+  //   const user = rootState.auth.user
+  //   return user && user.userType.id === 'AD'
+  // }
 }
 
 export const actions = {
-  async getUsers ({ commit }, payload) {
-    commit('REPLACE_LOADING_USERS', { loading: true })
-
-    try {
-      const { data } = await this.$userAPI.index(payload)
-
-      commit('REPLACE_USERS', { users: data || [] })
-      commit('REPLACE_LOADING_USERS', { loading: false })
-    } catch (error) {
-      if (!error.response) return
-    } finally {
-      commit('REPLACE_LOADING_USERS', { loading: false })
-    }
+  async createItemContext ({}, form) {
+    await this.$userAPI.create(form)
   },
 
-  async getUser ({ commit }, payload) {
-    commit('REPLACE_LOADING_USER', { loading: true })
-
-    try {
-      const { data } = await this.$userAPI.getUser(payload)
-      commit('REPLACE_USER', { user: data || [] })
-      commit('REPLACE_LOADING_USER', { loading: false })
-    } catch (error) {
-      if (!error.response) return
-    } finally {
-      commit('REPLACE_LOADING_USER', { loading: false })
-    }
+  async getDataContext ({ commit }) {
+    const { data } = await this.$userAPI.get()
+    commit(SET_DATA_CONTEXT, { dataContext: data || [] })
   },
 
-  replaceUser ({ commit }, payload) {
-    commit('REPLACE_USER', { payload })
-  }
+  async getItemContext ({ commit }, id) {
+    const { data } = await this.$userAPI.getById(id)
+    commit(SET_ITEM_CONTEXT, { itemContext: data })
+  },
 }
 
 export const mutations = {
-  [REPLACE_USERS] (state, { users }) {
-    state.users = users
-  },
-  [REPLACE_LOADING_USERS] (state, { loading }) {
-    state.loadingUsers = loading
-  },
-  [REPLACE_USER] (state, { user }) {
-    state.user = user
-  },
-  [REPLACE_LOADING_USER] (state, { loading }) {
-    state.loadingUser = loading
-  }
+  [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
+
+  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext),
+
+  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
+
 }

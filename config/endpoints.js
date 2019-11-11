@@ -1,3 +1,5 @@
+export const USER = '/user'
+export const PUBLIC = '/public'
 export const BASE_LAYER = '/base_layer'
 export const VECTORIAL_LAYER = '/vectorial_layer'
 export const RASTER_LAYER = '/raster_layer'

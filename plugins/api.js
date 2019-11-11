@@ -1,5 +1,5 @@
 import refreshAPI from '~/api/refresh'
-import regionAPI from '~/api/region'
+import publicAPI from '~/api/public'
 import userAPI from '~/api/user'
 import userRequestAPI from '~/api/userRequest'
 import vectorialLayerAPI from '~/api/vectorialLayer'
@@ -14,7 +14,7 @@ import georeferencedImageAPI from '~/api/georeferencedImage'
 
 export default (ctx, inject) => {
   inject('refreshAPI', refreshAPI(ctx.$axios))
-  inject('regionAPI', regionAPI(ctx.$axios))
+  inject('publicAPI', publicAPI(ctx.$axios))
   inject('userAPI', userAPI(ctx.$axios))
   inject('userRequestAPI', userRequestAPI(ctx.$axios))
   inject('vectorialLayerAPI', vectorialLayerAPI(ctx.$axios))

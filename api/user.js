@@ -1,56 +1,31 @@
+import { USER } from '@/config/endpoints'
+
+
 export default $axios => ({
-  index (payload = {}) {
+  get (payload = {}) {
     return $axios({
-      url: 'user/',
+      url: `${USER}/`,
       method: 'GET',
       data: payload.data || {}
     })
   },
-  getUser (payload = {}) {
+  getById (payload = {}) {
     return $axios({
-      url: `user/${payload.id}/`,
+      url: `${USER}/${payload.id}/`,
       method: 'GET',
-      data: payload.data || {}
-    })
-  },
-  register (payload = {}) {
-    return $axios({
-      url: 'register/',
-      method: 'POST',
       data: payload.data || {}
     })
   },
   create (payload = {}) {
     return $axios({
-      url: 'user/',
+      url: `${USER}/`,
       method: 'POST',
       data: payload.data || {}
     })
   },
   update (payload = {}) {
     return $axios({
-      url: `user/${payload.id}/`,
-      method: 'PUT',
-      data: payload.data || {}
-    })
-  },
-  delete (payload = {}) {
-    return $axios({
-      url: `user/${payload.id}/`,
-      method: 'DELETE',
-      data: payload.data || {}
-    })
-  },
-  getProfile (payload = {}) {
-    return $axios({
-      url: 'profile/info/',
-      method: 'GET',
-      data: payload.data || {}
-    })
-  },
-  putProfile (payload = {}) {
-    return $axios({
-      url: 'profile/modify/',
+      url: `${USER}/${payload.id}/`,
       method: 'PUT',
       data: payload.data || {}
     })
