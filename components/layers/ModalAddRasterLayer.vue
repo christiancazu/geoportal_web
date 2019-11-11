@@ -5,7 +5,7 @@
   :rules="rules"
   :context="context"
   :message-toast="messageToast"
-  @reset-form="resetForm()"
+  @clear-file="clearFile()"
 >
   <template v-slot:content>
     <el-row :gutter="14">
@@ -49,29 +49,11 @@
 
           <upload-file
             :available-file-extensions="availableFileExtensions"
+            :file-selected="fileSelected"
             @on-file-valid="onFileValid"
+            @delete-file="clearFile()"
           />
 
-          <ul
-            v-if="fileSelected"
-            class="el-upload-list el-upload-list--text px-3"
-          >
-            <li
-              tabindex="0"
-              class="el-upload-list__item is-success"
-            >
-              <a class="el-upload-list__item-name">
-                <i class="el-icon-document" />
-                {{ fileSelected.name }}
-              </a>
-              <label class="el-upload-list__item-status-label">
-                <i class="el-icon-upload-success el-icon-circle-check" />
-              </label>
-              <i class="el-icon-close" />
-              <i class="el-icon-close-tip">delete</i>
-            </li>
-
-          </ul>
         </el-form-item>
       </el-col>
       <el-col :md="12">
@@ -198,7 +180,7 @@ export default {
         title: '',
         order: 0,
         name: '',
-        rasterFile: null,
+        [this.fileType]: null,
         groupLayerId: '',
         description: ''
       },
@@ -218,7 +200,7 @@ export default {
     })
   },
 
-  mounted () {
+  created () {
     this.getGroupLayers()
   },
 
@@ -227,10 +209,12 @@ export default {
       getGroupLayers: 'groupLayers/getDataContext'
     }),
 
-    resetForm () {
+    clearFile () {
       if (this.form[this.fileType]) {
         this.form.shapeFile = null
         this.fileSelected = null
+        this.form.name = ''
+        this.form.title = ''
       }
     },
 

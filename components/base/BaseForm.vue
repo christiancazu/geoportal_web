@@ -161,7 +161,7 @@ export default {
     },
 
     resetForm () {
-      this.$emit('reset-form')
+      this.$emit('clear-file')
       this.$refs.form.resetFields()
     },
 
