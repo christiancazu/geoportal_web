@@ -15,7 +15,7 @@
     </div>
   </el-upload>
   <ul
-    v-if="fileSelected"
+    v-if="file.selected"
     class="el-upload-list el-upload-list--text px-3"
   >
     <li
@@ -24,7 +24,7 @@
     >
       <a class="el-upload-list__item-name">
         <i class="el-icon-document" />
-        {{ fileSelected.name }}
+        {{ file.selected.name }}
       </a>
       <label class="el-upload-list__item-status-label">
         <i class="el-icon-upload-success el-icon-circle-check" />
@@ -46,8 +46,13 @@
 <script>
 export default {
   props: {
-    availableFileExtensions: { type: Array, required: true },
-    fileSelected: { type: File, default: () => {} }
+    file: {
+      type: Object,
+      default: () => ({
+        availableExtensions: { type: Array, required: true },
+        selected: { type: File, default: () => {} }
+      })
+    }
   },
 
   data () {
@@ -65,10 +70,10 @@ export default {
       this.$emit('on-file-valid', file)
     },
 
-    beforeFileUpload (file) {
-      const currentExtension = `.${file.name.split('.').pop()}`
+    beforeFileUpload (currentFile) {
+      const currentExtension = `.${currentFile.name.split('.').pop()}`
 
-      const isExtensionValid = this.availableFileExtensions.includes(currentExtension) || file.type === 'application/zip'
+      const isExtensionValid = this.file.availableExtensions.includes(currentExtension) || currentFile.type === 'application/zip'
 
       if (!isExtensionValid) {
         this.$message.error(`Solo se acepta archivos ${this.extensionsString}`)
@@ -77,7 +82,7 @@ export default {
     },
 
     assignExtensionsString () {
-      this.availableFileExtensions.forEach(e => {
+      this.file.availableExtensions.forEach(e => {
         this.extensionsString += e + ' ó '
       })
       this.extensionsString = this.extensionsString.substring(0, this.extensionsString.length - 2)

@@ -23,7 +23,9 @@
           <label
             class="pr-2"
             for=""
-          >N° de orden: </label>
+          >
+            N° de orden:
+          </label>
           <el-input-number
             v-model="form.order"
             size="mini"
@@ -84,7 +86,7 @@
 </template>
 
 <script>
-import BaseForm from '@/components/base/BaseForm'
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 
 import {
   mapState,
@@ -98,13 +100,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  components: {
-    BaseForm
-  },
-
-  props: {
-    mountedOn: { type: String, required: true }
-  },
+  mixins: [modalBaseActionsMixin],
 
   data () {
     return {
@@ -112,17 +108,13 @@ export default {
 
       context: {
         storeBase: 'rasterLayers',
-        mountedOn: this.mountedOn,
+        mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'update',
       },
       messageToast: {
         baseName: 'LAYER',
         action: 'UPDATED'
       },
-
-      fileLayerSelected: null,
-      fileStyleSelected: null,
-      showFormStyle: false,
       form: {
         id: null,
         order: null,
@@ -132,12 +124,14 @@ export default {
         description: '',
         status: true
       },
-
       rules: {
         title,
         name,
         order
-      }
+      },
+      fileLayerSelected: null,
+      fileStyleSelected: null,
+      showFormStyle: false,
     }
   },
 

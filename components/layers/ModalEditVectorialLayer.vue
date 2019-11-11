@@ -82,7 +82,7 @@
 </base-form>
 </template>
 <script>
-import BaseForm from '@/components/base/BaseForm'
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 
 import {
   mapState,
@@ -96,13 +96,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  components: {
-    BaseForm
-  },
-
-  props: {
-    mountedOn: { type: String, required: true }
-  },
+  mixins: [modalBaseActionsMixin],
 
   data () {
     return {
@@ -110,14 +104,13 @@ export default {
 
       context: {
         storeBase: 'vectorialLayers',
-        mountedOn: this.mountedOn,
+        mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'update',
       },
       messageToast: {
         baseName: 'LAYER',
         action: 'UPDATED'
       },
-
       form: {
         id: null,
         order: null,
@@ -127,13 +120,11 @@ export default {
         description: '',
         status: true
       },
-
       rules: {
         title,
         name,
         order
       },
-
       fileLayerSelected: null,
       fileStyleSelected: null,
       showFormStyle: false,
