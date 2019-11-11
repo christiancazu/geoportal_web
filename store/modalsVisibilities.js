@@ -2,9 +2,9 @@ import { OPEN_MODAL, CLOSE_MODAL, SET_MODAL_VISIBILITY } from '../types/mutation
 
 export const state = () => ({
   mainModal: {
-    component: 'Fallback',
-    folderName: 'fallback',
-    visibility: false
+    component: 'ModalAddVectorialLayer',
+    folderName: 'layers',
+    visibility: true
   },
   secondModal: {
     component: 'Fallback',
