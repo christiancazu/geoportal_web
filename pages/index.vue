@@ -1,36 +1,36 @@
 <template>
-  <base-page
-    :page-header-title="pageHeaderTitle"
-  >
-    <!-- <template v-slot:itemsActions>
+<base-page
+  :page-header-title="pageHeaderTitle"
+>
+  <!-- <template v-slot:itemsActions>
     </template> -->
-      <el-container
-        direction="vertical"
-        class="card-dashboard"
+  <el-container
+    direction="vertical"
+    class="card-dashboard"
+  >
+    <el-row
+      :gutter="14"
+      class="btn-admin"
+    >
+      <!-- panel items -->
+      <el-col
+        v-for="(item, i) in items" :key="i"
+        :xs="24" :sm="12" :md="6" :lg="6"
+        class="my-2"
       >
-        <el-row
-          :gutter="14"
-          class="btn-admin"
+        <nuxt-link
+          type="primary"
+          class="w-100"
+          :to="item.link"
         >
-          <!-- panel items -->
-          <el-col
-            v-for="(item, i) in items" :key="i"
-            :xs="24" :sm="12" :md="6" :lg="6"
-            class="my-2"
-          >
-            <nuxt-link
-              type="primary"
-              class="w-100"
-              :to="item.link"
-            >
-              <el-card shadow="hover">
-                <p class="ma-0">{{ item.title }}</p>
-              </el-card>
-            </nuxt-link>
-          </el-col>
-        </el-row>
-      </el-container>
-  </base-page>
+          <el-card shadow="hover">
+            <p class="ma-0">{{ item.title }}</p>
+          </el-card>
+        </nuxt-link>
+      </el-col>
+    </el-row>
+  </el-container>
+</base-page>
 </template>
 
 <script>
@@ -41,13 +41,9 @@ export default {
     BasePage
   },
 
-  head: {
-    title: 'Inicio',
-  },
-
   data () {
     return {
-      pageHeaderTitle: 'PORTAL ADMINISTRADOR', 
+      pageHeaderTitle: 'PORTAL ADMINISTRADOR',
       items: [
         { title: 'Ver usuarios', link: '/managementUsers/users' },
         { title: 'Ver capas', link: '/managementUsers/layers' },
@@ -59,8 +55,12 @@ export default {
         { title: 'Ver Capas rastes', link: '/managementLayers/rasterLayer' }
       ]
     }
+  },
+
+  head: {
+    title: 'Inicio',
   }
-};
+}
 </script>
 
 <style lang="scss">

@@ -1,12 +1,12 @@
 <template>
-  <el-button
-    :type="type"
-    :icon="icon"
-    :disabled="disabled"
-    size="small"
-    circle
-    @click="open"
-  />
+<el-button
+  :type="type"
+  :icon="icon"
+  :disabled="disabled"
+  size="small"
+  circle
+  @click="open"
+/>
 </template>
 
 <script>
@@ -14,15 +14,15 @@ export default {
   props: {
     accion: {
       type: String,
-      default: "deleted"
+      default: 'deleted'
     },
     title: {
       type: String,
-      default: ""
+      default: ''
     },
     bodyText: {
       type: String,
-      default: ""
+      default: ''
     },
     itemSelected: {
       type: Object,
@@ -54,39 +54,35 @@ export default {
 
   computed: {
     type () {
-      if (this.accion === "deleted" || this.accion === "rejected") {
-        return "danger";
-      } else if (this.accion === "accepted" || 'shared') {
-        return "success";
+      if (this.accion === 'deleted' || this.accion === 'rejected') {
+        return 'danger'
+      } else if (this.accion === 'accepted' || this.accion === 'shared') {
+        return 'success'
       } else {
-        return "info";
+        return 'info'
       }
     },
     icon () {
       switch (this.accion) {
-        case 'deleted':
-          return "el-icon-delete";
-          break;
-        case 'accepted':
-          return "el-icon-check"
-          break;
-        case 'rejected':
-          return "el-icon-close"
-          break;
-        case 'shared':
-          return "el-icon-share"
-          break;
-        default:
-          return "el-icon-info"
+      case 'deleted':
+        return 'el-icon-delete'
+      case 'accepted':
+        return 'el-icon-check'
+      case 'rejected':
+        return 'el-icon-close'
+      case 'shared':
+        return 'el-icon-share'
+      default:
+        return 'el-icon-info'
       }
     },
     typeConfirm () {
-      if (this.accion === "deleted" || this.accion === "rejected") {
-        return "error";
-      } else if (this.accion === "accepted") {
-        return "success";
+      if (this.accion === 'deleted' || this.accion === 'rejected') {
+        return 'error'
+      } else if (this.accion === 'accepted') {
+        return 'success'
       } else {
-        return "info";
+        return 'info'
       }
     }
   },
@@ -99,8 +95,8 @@ export default {
     open () {
       this.$confirm(this.bodyText, this.title, {
         distinguishCancelAndClose: true,
-        confirmButtonText: "Si, estoy seguro",
-        cancelButtonText: "Cancelar",
+        confirmButtonText: 'Si, estoy seguro',
+        cancelButtonText: 'Cancelar',
         type: this.typeConfirm,
         center: true,
         showInput: this.input,
@@ -114,14 +110,14 @@ export default {
             itemSelected: this.itemSelected,
             inputValue: value
           }
-          this.$emit("confirmed-action", data);
+          this.$emit('confirmed-action', data)
         })
         .catch(() => {
           //
-        });
+        })
     }
   }
-};
+}
 </script>
-<style lang="scss">
+<style lang='scss'>
 </style>

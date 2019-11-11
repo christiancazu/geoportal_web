@@ -5,7 +5,7 @@ import '@/assets/sass/app.scss'
 // fade/zoom
 import 'element-ui/lib/theme-chalk/base.css'
 // colapsar
-import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
 
 // import { Loading } from 'element-ui'
 // let loadingInstance = Loading.service({

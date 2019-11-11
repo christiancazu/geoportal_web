@@ -61,5 +61,5 @@ export const mutations = {
   },
   [REPLACE_CURRENT_PENDING_REQUEST] (state, { request }) {
     state.currentPendingRequest = request
-  },
+  }
 }

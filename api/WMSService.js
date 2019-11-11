@@ -1,19 +1,19 @@
 export default $axios => ({
-    index(payload = {}) {
+  index (payload = {}) {
     return $axios({
-      url: `external_wms_service/`,
+      url: 'external_wms_service/',
       method: 'GET',
       data: payload.data || {}
     })
   },
-    create(payload = {}) {
+  create (payload = {}) {
     return $axios({
-      url: `external_wms_service/`,
+      url: 'external_wms_service/',
       method: 'POST',
       data: payload.data || {}
     })
   },
-    delete(payload = {}) {
+  delete (payload = {}) {
     return $axios({
       url: `external_wms_service/${payload.id}`,
       method: 'DELETE',

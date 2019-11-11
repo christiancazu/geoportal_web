@@ -31,7 +31,7 @@ export default $axios => ({
   },
   update (payload = {}) {
     return $axios({
-      url: `${VECTORIAL_LAYER}/${payload.id}/`,
+      url: `${VECTORIAL_LAYER}/${payload.data.get('id')}/`,
       method: 'PUT',
       data: payload.data || {}
     })
@@ -42,5 +42,5 @@ export default $axios => ({
       method: 'DELETE',
       data: payload.data || {}
     })
-  },
+  }
 })

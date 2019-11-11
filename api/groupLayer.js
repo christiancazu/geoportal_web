@@ -8,6 +8,13 @@ export default $axios => ({
       data: payload.data || {}
     })
   },
+  getById (payload = {}) {
+    return $axios({
+      url: `${GROUP_LAYER}/${payload.id}/`,
+      method: 'GET',
+      data: payload.data || {}
+    })
+  },
   create (payload = {}) {
     return $axios({
       url: `${GROUP_LAYER}/`,
@@ -17,7 +24,7 @@ export default $axios => ({
   },
   update (payload = {}) {
     return $axios({
-      url: `${GROUP_LAYER}/${payload.id}/`,
+      url: `${GROUP_LAYER}/${payload.data.get('id')}/`,
       method: 'PUT',
       data: payload.data || {}
     })

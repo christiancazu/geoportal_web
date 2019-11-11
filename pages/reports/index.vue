@@ -1,110 +1,106 @@
 <template>
-  <BasePage title="Reportes">
-    <template v-slot:content>
-      <el-container direction="vertical">
-        <el-row
-          type="flex"
-          justify="end"
-          :gutter="10"
+<base-page title="Reportes">
+  <template v-slot:content>
+    <el-container direction="vertical">
+      <el-row
+        type="flex"
+        justify="end"
+        :gutter="10"
+      >
+        <el-col
+          :xs="24"
+          :sm="12"
+          :md="8"
         >
-          <el-col
-            :xs="24"
-            :sm="12"
-            :md="8"
-          >
-            <div>
-              <el-input
-                v-model="search"
-                prefix-icon="el-icon-search"
-                size="small"
-                placeholder="Buscar..."
-                clearable
-              />
-            </div>
-          </el-col>
-        </el-row>
-        <el-table
-          :data="filteredData"
-          v-loading="loadingReports"
+          <div>
+            <el-input
+              v-model="search"
+              prefix-icon="el-icon-search"
+              size="small"
+              placeholder="Buscar..."
+              clearable
+            />
+          </div>
+        </el-col>
+      </el-row>
+      <el-table
+        v-loading="loadingReports"
+        :data="filteredData"
+      >
+        <el-table-column
+          label="Usuario"
+          prop="user"
+        />
+        <el-table-column
+          label="Asunto"
+          prop="subject"
+        />
+        <el-table-column
+          label="Descripción"
+          prop="description"
+          align="center"
         >
-          <el-table-column
-            label="Usuario"
-            prop="user"
-          />
-          <el-table-column
-            label="Asunto"
-            prop="subject"
-          />
-          <el-table-column
-            label="Descripción"
-            prop="description"
-            align="center"
-          >
-            <template slot-scope="scope">
-              <div
-                slot="reference"
-                class="name-wrapper"
-              >
-                <div class="text-nowrap">
-                  {{`${scope.row.description}`}}
-                </div>
+          <template slot-scope="scope">
+            <div
+              slot="reference"
+              class="name-wrapper"
+            >
+              <div class="text-nowrap">
+                {{ `${scope.row.description}` }}
               </div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="Acción"
-            align="center"
-            width="120"
-          >
-            <template slot-scope="scope">
-              <el-button
-                circle
-                icon="el-icon-view"
-                size="small"
-                type="primary"
-                @click="onLoadModalViewReport(scope.row)"
-              />
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          small
-          class="pt-4 text-xs-right"
-          :pager-size="100"
-          :page-size="pagesize"
-          layout="prev, pager, next, sizes"
-          :total="filteredData.length"
-          :current-page="currentPage"
-          @current-change="onChangeCurrentPage"
-          @size-change="onChangePageSize"
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Acción"
+          align="center"
+          width="120"
         >
-        </el-pagination>
-      </el-container>
-    </template>
-    <template v-slot:modals>
-      <ModalViewReport />
-    </template>
-  </BasePage>
+          <template slot-scope="scope">
+            <el-button
+              circle
+              icon="el-icon-view"
+              size="small"
+              type="primary"
+              @click="onLoadModalViewReport(scope.row)"
+            />
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        small
+        class="pt-4 text-xs-right"
+        :pager-size="100"
+        :page-size="pagesize"
+        layout="prev, pager, next, sizes"
+        :total="filteredData.length"
+        :current-page="currentPage"
+        @current-change="onChangeCurrentPage"
+        @size-change="onChangePageSize"
+      />
+    </el-container>
+  </template>
+  <template v-slot:modals>
+    <modal-view-report />
+  </template>
+</base-page>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
-import BasePage from "@/components/base/pages/BasePage.vue";
-import ModalViewReport from "@/components/reports/ModalViewReport.vue";
+import { mapActions, mapState } from 'vuex'
+import BasePage from '@/components/base/pages/BasePage.vue'
+import ModalViewReport from '@/components/reports/ModalViewReport.vue'
 export default {
   components: {
     BasePage,
     ModalViewReport
   },
- head: {
-    title: 'Reportes | GEOVISOR',
-  },
   data () {
     return {
-      search: "",
+      search: '',
       pagesize: 10,
       currentPage: 1,
-    };
+    }
   },
 
   computed: {
@@ -141,8 +137,8 @@ export default {
 
   methods: {
     ...mapActions({
-      getReports: "reports/getReports",
-      replaceCurrentReport: "reports/replaceCurrentReport",
+      getReports: 'reports/getReports',
+      replaceCurrentReport: 'reports/replaceCurrentReport',
     }),
 
     onLoadModalViewReport: function (report) {
@@ -150,14 +146,18 @@ export default {
       this.$_modalVisibilityMixin_open('modalViewReport')
     },
 
-    // pagination 
+    // pagination
     onChangeCurrentPage: function (currentPage) {
-      this.currentPage = currentPage;
+      this.currentPage = currentPage
     },
 
     onChangePageSize: function (pagesize) {
-      this.pagesize = pagesize;
+      this.pagesize = pagesize
     },
-  }
-};
+  },
+
+  head: {
+    title: 'Reportes | GEOVISOR',
+  },
+}
 </script>

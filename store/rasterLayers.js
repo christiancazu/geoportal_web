@@ -13,68 +13,38 @@ export const state = () => ({
 
 export const actions = {
   async createItemContext ({}, form) {
-    try {
-      await this.$rasterLayerAPI.create(form)
-    } 
-    catch (error) {
-      throw error
-    }
+    await this.$rasterLayerAPI.create(form)
   },
 
   async getDataContext ({ commit }) {
-    try {
-      const { data } = await this.$rasterLayerAPI.get()
-      commit(SET_DATA_CONTEXT, { dataContext: data || [] })
-    } 
-    catch (error) {
-      throw error
-    } 
+    const { data } = await this.$rasterLayerAPI.get()
+    commit(SET_DATA_CONTEXT, { dataContext: data || [] })
   },
 
   async getItemContext ({ commit }, id) {
-    try {
-      const { data } = await this.$rasterLayerAPI.getById(id)
-      commit(SET_ITEM_CONTEXT, { itemContext: data })
-    } 
-    catch (error) {
-      throw error
-    }
+    const { data } = await this.$rasterLayerAPI.getById(id)
+    commit(SET_ITEM_CONTEXT, { itemContext: data })
   },
 
   async publishItemContext ({}, form) {
-    try {
-      await this.$rasterLayerAPI.publish(form)
-    } 
-    catch (error) {
-      throw error
-    }
+    await this.$rasterLayerAPI.publish(form)
   },
 
   async updateItemContext ({}, form) {
-    try {
-      await this.$rasterLayerAPI.update(form)
-    } 
-    catch (error) {
-      throw error
-    }
+    await this.$rasterLayerAPI.update(form)
   },
 
   async deleteItemContext ({}, id) {
-    try {
-      await this.$rasterLayerAPI.delete(id)
-    } 
-    catch (error) {
-      throw error
-    }
+    await this.$rasterLayerAPI.delete(id)
   }
 }
 
 export const mutations = {
-  [SET_DATA_CONTEXT]: (state, { dataContext }) => state.dataContext = dataContext,
+  [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
 
-  [SET_ITEM_CONTEXT]: (state, { itemContext }) => state.itemContext = itemContext,
+  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext),
 
-  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => state.itemContext.isPublished = !payload,
+  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
 
-  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => state.currentPageOnTable = payload
+  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
 }

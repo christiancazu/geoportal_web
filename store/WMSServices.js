@@ -1,6 +1,4 @@
-import {
-  REPLACE_WMS_SERVICES
-} from '../types/mutation-types'
+import { REPLACE_WMS_SERVICES } from '../types/mutation-types'
 
 export const state = () => ({
   WMSServices: []
@@ -8,13 +6,8 @@ export const state = () => ({
 
 export const actions = {
   async getWMSServices ({ commit }, payload) {
-    try {
-      const { data } = await this.$WMSServiceAPI.index(payload)
-      commit(REPLACE_WMS_SERVICES, { WMSServices: data || [] })
-    } 
-    catch (error) {
-      throw error
-    }
+    const { data } = await this.$WMSServiceAPI.index(payload)
+    commit(REPLACE_WMS_SERVICES, { WMSServices: data || [] })
   }
 }
 

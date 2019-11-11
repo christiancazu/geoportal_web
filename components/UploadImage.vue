@@ -1,16 +1,22 @@
 <template>
-  <div class="text-center">
-    <el-upload
-      class="avatar-uploader"
-      action="https://jsonplaceholder.typicode.com/posts/"
-      :show-file-list="false"
-      :on-success="handleAvatarSuccess"
-      :before-upload="beforeAvatarUpload"
+<div class="text-center">
+  <el-upload
+    class="avatar-uploader"
+    action="https://jsonplaceholder.typicode.com/posts/"
+    :show-file-list="false"
+    :on-success="handleAvatarSuccess"
+    :before-upload="beforeAvatarUpload"
+  >
+    <img
+      v-if="imageUrl"
+      :src="imageUrl" class="avatar"
     >
-      <img v-if="imageUrl" :src="imageUrl" class="avatar">
-      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-    </el-upload>
-  </div>
+    <i
+      v-else
+      class="el-icon-plus avatar-uploader-icon"
+    />
+  </el-upload>
+</div>
 </template>
 <style lang="scss" >
 .avatar-uploader .el-upload {
@@ -42,27 +48,28 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      imageUrl: ""
-    };
+      imageUrl: ''
+    }
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+    // eslint-disable-next-line no-unused-vars
+    handleAvatarSuccess (res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
     },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+    beforeAvatarUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
-        this.$message.error("La imagen debe estar en formato JPG!");
+        this.$message.error('La imagen debe estar en formato JPG!')
       }
       if (!isLt2M) {
-        this.$message.error("La imagen excede los 2MB!");
+        this.$message.error('La imagen excede los 2MB!')
       }
-      return isJPG && isLt2M;
+      return isJPG && isLt2M
     }
   }
-};
+}
 </script>

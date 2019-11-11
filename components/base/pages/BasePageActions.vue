@@ -1,97 +1,110 @@
 <template>
-  <base-page
-    :page-header="pageHeader"
-    @open-add-modal="openModalAddItemContext()"
+<base-page
+  :page-header="pageHeader"
+  @open-add-modal="openMainModalAddItemContext()"
+>
+  <el-container direction="vertical">
+    <el-row
+      type="flex"
+      justify="end"
+      :gutter="10"
     >
-      <el-container direction="vertical">
-        <el-row
-          type="flex"
-          justify="end"
-          :gutter="10"
-        >
-          <el-col
-            :xs="24" :sm="12" :md="8"
-          >
-            <div>
-              <el-input
-                v-model="textToSearch"
-                prefix-icon="el-icon-search"
-                size="small"
-                placeholder="Buscar..."
-                clearable
-                @input="textToSearch = $event"
-              />
-            </div>
-          </el-col>
-        </el-row>
-        <el-table
-          :data="filteredDataContext.slice((currentPage-1) * pagesize, currentPage * pagesize)"
-          style="width: 100%"
-          v-loading="$store.state.spinners.loadingTable"
-        >
-          
-          <slot name="page-table" 
-            :openModalEditItemContext="openModalEditItemContext"
-            :confirmedActionDeleteItemContext="confirmedActionDeleteItemContext"
-            :shrinkText="$options.filters.shrinkText"
+      <el-col
+        :xs="24" :sm="12" :md="8"
+      >
+        <div>
+          <el-input
+            v-model="textToSearch"
+            prefix-icon="el-icon-search"
+            size="small"
+            placeholder="Buscar..."
+            clearable
+            @input="textToSearch = $event"
           />
+        </div>
+      </el-col>
+    </el-row>
+    <el-table
+      v-loading="$store.state.spinners.loadingTable"
+      :data="filteredDataContext.slice((currentPage-1) * pagesize, currentPage * pagesize)"
+      style="width: 100%"
+    >
 
-        </el-table>
+      <slot
+        name="page-table"
+        :openModalEditItemContext="openModalEditItemContext"
+        :confirmedActionDeleteItemContext="confirmedActionDeleteItemContext"
+        :shrinkText="$options.filters.shrinkText"
+      />
 
-        <!-- # TODO: need to fix pagination length -->
-        <el-pagination
-          small
-          class="pt-4 text-xs-right"
-          :pager-size="100"
-          :page-size="pagesize"
-          layout="prev, pager, next, sizes"
-          :total="dataContext.length"
-          :current-page="currentPage"
-          @current-change="onChangeCurrentPage"
-          @size-change="onChangePageSize"
-        />
+    </el-table>
 
-      </el-container>
-  </base-page>
+    <!-- # TODO: need to fix pagination length -->
+    <el-pagination
+      small
+      class="pt-4 text-xs-right"
+      :pager-size="100"
+      :page-size="pagesize"
+      layout="prev, pager, next, sizes"
+      :total="dataContext.length"
+      :current-page="currentPage"
+      @current-change="onChangeCurrentPage"
+      @size-change="onChangePageSize"
+    />
+
+  </el-container>
+</base-page>
 </template>
 
 <script>
 import BasePage from '@/components/base/pages/BasePage'
 
-import { 
-  SET_DYNAMIC_MAIN_MODAL,
-  SET_MODAL_MAIN_FOLDER_NAME,
-  SET_CURRENT_PAGE_ON_TABLE,
-} from '@/types/mutation-types'
+import { SET_CURRENT_PAGE_ON_TABLE } from '@/types/mutation-types'
 
 import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
 
-import { mapState, mapActions, mapMutations } from 'vuex'
+import {
+  mapState,
+  mapActions
+} from 'vuex'
 
 export default {
   components: {
     BasePage
   },
 
+  filters: {
+    /**
+     * shrink text if is major that 16 characters
+     * to prevent long heights of rows on table
+     *
+     * @param {String} text
+     */
+    shrinkText (text) {
+      if (!text) return ''
+      return text.length > 16 ? `${text.substring(0, 16)}<i class="fas fa-ellipsis-h"></i>` : text
+    }
+  },
+
   props: {
     pageHeader: {
-      type: Object, 
+      type: Object,
       default: () => ({
         title: { type: String, required: true },
-        btnAddName: { type: String, required: true }
+        btnAddName: { type: String, required: false }
       })
     },
     modalMain: {
-      type: Object, 
+      type: Object,
       default: () => ({
         storeBase: { type: String, required: true },
-        modalAddStateName: { type: String, required: true },
-        modalEditStateName: { type: String, required: true },
+        addComponent: { type: String, required: true },
+        editComponent: { type: String, required: true },
         folderName: { type: String, required: true }
       })
     },
     messageToast: {
-      type: Object, 
+      type: Object,
       default: () => ({
         baseName: { type: String, required: true }
       })
@@ -101,18 +114,6 @@ export default {
     },
     fitContent: {
       type: Boolean, default: false
-    }
-  },
-
-  filters: {
-    /**
-     * shrink text if is major that 16 characters
-     * to prevent long heights of rows on table
-     * 
-     * @param {String} text 
-     */
-    shrinkText (text) {
-      return text.length > 16 ? `${text.substring(0, 16)}<i class="fas fa-ellipsis-h"></i>` : text
     }
   },
 
@@ -131,21 +132,21 @@ export default {
       },
       itemContext (state) {
         return state[this.modalMain.storeBase].itemContext
-      } 
+      }
     }),
 
     currentPage: {
       get () {
         return this.$store.state[this.modalMain.storeBase].currentPageOnTable
       },
-      set(value) {
+      set (value) {
         this.$store.commit(`${this.modalMain.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, value)
       }
     },
 
     /**
      * filtering data based on @param {Array} filterCriteriaProps
-     * 
+     *
      */
     filteredDataContext () {
       let textToSearchLowerCase = this.textToSearch.toLowerCase()
@@ -158,11 +159,11 @@ export default {
             }
           }
         })
-      
-      // if have dataContextFiltered set as current page the first 
+
+      // if have dataContextFiltered set as current page the first
       if (dataContextFiltered < this.dataContext)
         this.$store.commit(`${this.modalMain.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, 1)
-      
+
       return dataContextFiltered
     }
   },
@@ -182,60 +183,54 @@ export default {
       },
       async deleteItemContext ({}, id) {
         await this.$store.dispatch(`${this.modalMain.storeBase}/deleteItemContext`, { id })
-      }
-    }),
-
-    ...mapMutations({
-      setDynamicMainModal ({}, modalStateName) {
-        this.$store.commit(`modalsVisibilities/${SET_DYNAMIC_MAIN_MODAL}`, modalStateName)
       },
-      setCurrentPageModalsFolderName () {
-        this.$store.commit(`modalsVisibilities/${SET_MODAL_MAIN_FOLDER_NAME}`, this.modalMain.folderName)
+      setDynamicMainModalComponent ({}, componentAddName) {
+        this.$store.dispatch('modalsVisibilities/openModal', {
+          modalType: 'mainModal',
+          component: componentAddName,
+          folderName: this.modalMain.folderName
+        })
       }
     }),
 
     /**
-     * set the name of modalAddItemContext as dynamic component
+     * set the name of modalMain.addComponent as dynamic main modal component
      * on layouts/default.vue & set his visibility state
-     * 
-     * @param {String} modalAddStateName
+     *
      */
-    openModalAddItemContext () {
-      this.setDynamicMainModal(this.modalMain.modalAddStateName)
-      this.setVisibleModalStateName(this.modalMain.modalAddStateName)     
+    openMainModalAddItemContext () {
+      this.setDynamicMainModalComponent(this.modalMain.addComponent)
     },
 
     /**
      * fetching the itemContext by his id
-     * set the name of modalEditStateName as dynamic component
+     * set the name of editComponent as dynamic component
      * on layouts/default.vue & set his visibility state
-     * 
+     *
      * @param {Number} id
-     * @param {String} modalEditStateName
      */
     async openModalEditItemContext ({ id }) {
       try {
         await this.getItemContext(id)
 
-        this.setDynamicMainModal(this.modalMain.modalEditStateName)
-        this.setVisibleModalStateName(this.modalMain.modalEditStateName)
-      } 
-      catch (e) {}   
+        this.setDynamicMainModalComponent(this.modalMain.editComponent)
+      }
+      catch (e) {}
     },
 
     /**
      * receives the selected itemContext from btn-confirm component
      * to be deleted & fetch DataContext again to update everything
-     * 
+     *
      * @param {Object} itemSelected
      */
-    async confirmedActionDeleteItemContext({ itemSelected }) {
+    async confirmedActionDeleteItemContext ({ itemSelected }) {
       try {
         await this.deleteItemContext(itemSelected.id)
         this.$toast.success(this.$SUCCESS[this.messageToast.baseName].DELETED)
 
         await this.getDataContext()
-        
+
         let currentPage = this.$store.state[this.modalMain.storeBase].currentPageOnTable
 
         // if number of pages is minor that the current page, (when delete)
@@ -245,33 +240,22 @@ export default {
         // setting currentPage before to submit deleteItemContext and getDataContext
         // to set it again as currentPage to prevent go to page 1 when fetch the dataContext
         this.$store.commit(`${this.modalMain.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, currentPage)
-      } 
+      }
       catch (e) {}
     },
 
     initPageSettings () {
       this.criteriaLength = this.filterCriteriaProps.length
-      this.setCurrentPageModalsFolderName()
     },
 
     async fetchDataContext () {
       try {
         await this.getDataContext()
-      } 
+      }
       catch (e) {}
     },
 
-    /**
-     * using little delay to prevent stranger transition when open modal
-     * present when using dynamic components & and set visibility state as true
-
-     * @param {String} modalStateName 
-     */
-    setVisibleModalStateName(modalStateName) {
-      setTimeout(() => this.$_modalVisibilityMixin_open(modalStateName), 250)
-    },
-
-    // pagination 
+    // pagination
     onChangeCurrentPage (currentPage) {
       this.currentPage = currentPage
     },

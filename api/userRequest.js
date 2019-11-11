@@ -1,28 +1,28 @@
 export default $axios => ({
-  getPending(payload = {}) {
+  getPending (payload = {}) {
     return $axios({
-      url: `request/pending/`,
+      url: 'request/pending/',
       method: 'GET',
       data: payload.data || {}
     })
   },
-  getRejected(payload = {}) {
+  getRejected (payload = {}) {
     return $axios({
-      url: `request/rejected/`,
+      url: 'request/rejected/',
       method: 'GET',
       data: payload.data || {}
     })
   },
-  approve(payload = {}) {
+  approve (payload = {}) {
     return $axios({
-      url: `request/approve/`,
+      url: 'request/approve/',
       method: 'POST',
       data: payload.data || {}
     })
   },
-  rejected(payload = {}) {
+  rejected (payload = {}) {
     return $axios({
-      url: `request/reject/`,
+      url: 'request/reject/',
       method: 'POST',
       data: payload.data || {}
     })

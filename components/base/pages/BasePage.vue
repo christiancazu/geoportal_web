@@ -1,46 +1,48 @@
 <template>
-  <div :class="[
+<div
+  :class="[
     { 'page-body-center': fitContent },
     ['ma-4']
-  ]">
-    <el-card 
-      shadow="always" 
-      :class="{ 'fit-page-body': fitContent }"
+  ]"
+>
+  <el-card
+    shadow="always"
+    :class="{ 'fit-page-body': fitContent }"
+  >
+    <div
+      slot="header"
+      class="space-between"
     >
-      <div
-        class="space-between"
-        slot="header"
-      >
-        <p class="mt-1 mb-0 font-weight-bold text-uppercase">
-          {{ pageHeader.title }}
-        </p>
+      <p class="mt-1 mb-0 font-weight-bold text-uppercase">
+        {{ pageHeader.title }}
+      </p>
 
-        <template v-if="pageHeader.btnAddName">
-          <el-button
-            size="mini"
-            type="primary"
-            icon="el-icon-plus"
-            @click="$emit('open-add-modal')"
-          >
-            {{ pageHeader.btnAddName }}
-          </el-button>
-        </template>
-      </div>
+      <template v-if="pageHeader.btnAddName">
+        <el-button
+          size="mini"
+          type="primary"
+          icon="el-icon-plus"
+          @click="$emit('open-add-modal')"
+        >
+          {{ pageHeader.btnAddName }}
+        </el-button>
+      </template>
+    </div>
 
-      <slot />
+    <slot />
 
-    </el-card>
-  </div>
+  </el-card>
+</div>
 </template>
 
 <script>
 export default {
   props: {
     pageHeader: {
-      type: Object, 
+      type: Object,
       default: () => ({
         title: { type: String, required: true },
-        btnAddName: { type: String, required: true }
+        btnAddName: { type: String, required: false }
       })
     },
     fitContent: {

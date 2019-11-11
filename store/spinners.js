@@ -11,13 +11,11 @@ export const state = () => ({
 })
 
 export const mutations = {
+  [ENABLE_PROCESSING_FORM]: state => (state.processingForm = true),
 
-  [ENABLE_PROCESSING_FORM]: state => state.processingForm = true,
-  
-  [DISABLE_PROCESSING_FORM]: state =>  state.processingForm = false,
+  [DISABLE_PROCESSING_FORM]: state => (state.processingForm = false),
 
-  [ENABLE_LOADING_TABLE]: state => state.loadingTable = true,
-  
-  [DISABLE_LOADING_TABLE]: state => state.loadingTable = false
+  [ENABLE_LOADING_TABLE]: state => (state.loadingTable = true),
 
+  [DISABLE_LOADING_TABLE]: state => (state.loadingTable = false)
 }
