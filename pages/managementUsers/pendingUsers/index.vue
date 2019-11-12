@@ -6,9 +6,7 @@
   :message-toast="messageToast"
 >
   <template
-    v-slot:page-table="{
-      confirmedActionDeleteItemContext,
-    }"
+    v-slot:page-table
   >
     <el-table-column
       label="Institución"
@@ -29,12 +27,18 @@
       width="120"
     >
       <template slot-scope="scope">
-        <group-actions-buttons
-          :item-selected="scope.row"
-          dialog-delete-title="Eliminar usuario"
-          dialog-delete-body-text="¿Está seguro de eliminar este usuario?"
-          @confirmed-action="confirmedActionDeleteItemContext"
-        />
+        <el-tooltip
+          content="Editar"
+          placement="bottom"
+        >
+          <el-button
+            circle
+            icon="el-icon-edit"
+            size="small"
+            type="primary"
+            @click="onLoadModalApproveItem(scope.row)"
+          />
+        </el-tooltip>
       </template>
     </el-table-column>
   </template>
@@ -44,12 +48,13 @@
 <script>
 
 import pageActionsMixin from '@/mixins/pageActionsMixin'
-import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
+import { SET_CURRENT_PAGE_ON_TABLE } from '@/types/mutation-types'
+import { SET_ITEM_CONTEXT } from '@/types/mutation-types'
+import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
+
+
 import { mapActions, mapState } from 'vuex'
 export default {
-  components: {
-    GroupActionsButtons
-  },
   mixins: [pageActionsMixin],
   data () {
     return {
@@ -58,7 +63,8 @@ export default {
       },
       modalMain: {
         storeBase: 'requests',
-        folderName: ''
+        approveComponent: 'ModalApproveRequest',
+        folderName: 'users',
       },
 
       messageToast: {
@@ -70,8 +76,7 @@ export default {
         'lastName',
         'lastNameAditional',
         'institute',
-        'email',
-        'subject',
+        'subject'
       ]
     }
   },
@@ -88,18 +93,56 @@ export default {
       replaceCurrentPendingRequest: 'userRequests/replaceCurrentPendingRequest',
     }),
 
-    // eslint-disable-next-line no-unused-vars
-    onLoadModalViewRequestPending (index, item) {
-      this.replaceCurrentPendingRequest({ request: item })
-      this.$_modalVisibilityMixin_open('modalViewPendingRequest')
-    },
-
-    // pagination
-    onChangeCurrentPage: function (currentPage) {
-      this.currentPage = currentPage
-    },
     onChangePageSize: function (pagesize) {
       this.pagesize = pagesize
+    },
+
+    deleteUser (item) {
+      new Promise((resolve, reject) => {
+        this.$userAPI.delete({ id: item.itemSelected.id })
+          .then(response => {
+            resolve(response)
+            this.getUsers()
+          }).catch(error => reject(error))
+      })
+    },
+
+    onLoadModalApproveItem (item) {
+      console.log('item', item)
+      this.$store.commit(`${this.modalMain.storeBase}/${SET_ITEM_CONTEXT}`, {itemContext: item })
+
+      this.$store.dispatch('modalsVisibilities/openModal', {
+        modalType: 'mainModal',
+        component: this.modalMain.approveComponent,
+        folderName: this.modalMain.folderName
+      })
+
+    },
+
+    /**
+     * receives the selected itemContext from btn-confirm component
+     * to be deleted & fetch DataContext again to update everything
+     *
+     * @param {Object} itemSelected
+     */
+    async confirmedActionAproveItemContext ({ itemSelected }) {
+      try {
+        await this.aproveItemContext(itemSelected.id)
+        this.$toast.success(this.$SUCCESS[this.messageToast.baseName].DELETED)
+
+        await this.getDataContext()
+
+        let currentPage = this.$store.state[this.modalMain.storeBase].currentPageOnTable
+
+        // if number of pages is minor that the current page, (when delete)
+        if (this.dataContext.length / ROWS_PER_PAGE_ON_TABLE <= (currentPage - 1)) {
+          currentPage--
+        }
+        // setting currentPage before to submit deleteItemContext and getDataContext
+        // to set it again as currentPage to prevent go to page 1 when fetch the dataContext
+        this.$store.commit(`${this.modalMain.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, currentPage)
+      }
+      catch (e) {}
     }
   },
 

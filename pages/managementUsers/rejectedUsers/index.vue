@@ -92,11 +92,10 @@ export default {
   data () {
     return {
       pageHeader: {
-        title: 'Usuarios pendientes',
+        title: 'Solicitudes rechazadas',
       },
       modalMain: {
-        storeBase: 'requests',
-        folderName: ''
+        storeBase: 'requestRejected',
       },
 
       messageToast: {
