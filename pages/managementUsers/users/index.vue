@@ -95,25 +95,6 @@ export default {
     }
   },
 
-  methods: {
-
-    onLoadModalEditUser (item) {
-      this.getUser({ id: item.id }).then(() => {
-        this.$_modalVisibilityMixin_open('modalEditUser')
-      })
-    },
-
-    deleteUser (item) {
-      new Promise((resolve, reject) => {
-        this.$userAPI.delete({ id: item.itemSelected.id })
-          .then(response => {
-            resolve(response)
-            this.getUsers()
-          }).catch(error => reject(error))
-      })
-    }
-  },
-
   head: {
     title: 'Usuarios | GEOVISOR',
   },
