@@ -23,11 +23,11 @@
       <template v-if="loggedIn">
         <component
           :is="mainModalDynamicComponent"
-          mounted-on="mainModal"
+          modal-base-actions-mixin_mounted-on="mainModal"
         />
         <component
           :is="secondModalDynamicComponent"
-          mounted-on="secondModal"
+          modal-base-actions-mixin_mounted-on="secondModal"
         />
       </template>
 

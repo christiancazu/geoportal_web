@@ -5,7 +5,7 @@
   :rules="rules"
   :context="context"
   :message-toast="messageToast"
-  @reset-form="resetForm()"
+  @clear-file="uploadFileMixin_clear()"
 >
   <template v-slot:content>
     <el-row :gutter="14">
@@ -48,30 +48,11 @@
         >
 
           <upload-file
-            :available-file-extensions="availableFileExtensions"
-            @on-file-valid="onFileValid"
+            :file="file"
+            @on-file-valid="uploadFileMixin_valid"
+            @delete-file="uploadFileMixin_clear()"
           />
 
-          <ul
-            v-if="fileSelected"
-            class="el-upload-list el-upload-list--text px-3"
-          >
-            <li
-              tabindex="0"
-              class="el-upload-list__item is-success"
-            >
-              <a class="el-upload-list__item-name">
-                <i class="el-icon-document" />
-                {{ fileSelected.name }}
-              </a>
-              <label class="el-upload-list__item-status-label">
-                <i class="el-icon-upload-success el-icon-circle-check" />
-              </label>
-              <i class="el-icon-close" />
-              <i class="el-icon-close-tip">delete</i>
-            </li>
-
-          </ul>
         </el-form-item>
       </el-col>
       <el-col :md="12">
@@ -142,9 +123,10 @@
 </base-form>
 </template>
 <script>
-import BaseForm from '@/components/base/BaseForm'
-import UploadFile from '@/components/UploadFile'
 import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
+
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
   mapState,
@@ -160,14 +142,13 @@ import {
 
 export default {
   components: {
-    BaseForm,
-    UploadFile,
     BtnOpenSecondModal
   },
 
-  props: {
-    mountedOn: { type: String, required: true }
-  },
+  mixins: [
+    modalBaseActionsMixin,
+    uploadFileMixin
+  ],
 
   data () {
     return {
@@ -175,7 +156,7 @@ export default {
 
       context: {
         storeBase: 'rasterLayers',
-        mountedOn: this.mountedOn,
+        mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'create',
       },
       modalSecond: {
@@ -187,13 +168,11 @@ export default {
         baseName: 'LAYER',
         action: 'REGISTERED'
       },
-
-      fileType: 'rasterFile',
-      availableFileExtensions: ['.zip'],
-      fileSelected: null,
-      fileStyleSelected: null,
-      showFormStyle: false,
-
+      file: {
+        type: 'rasterFile',
+        availableExtensions: ['.zip'],
+        selected: null
+      },
       form: {
         title: '',
         order: 0,
@@ -202,7 +181,6 @@ export default {
         groupLayerId: '',
         description: ''
       },
-
       rules: {
         title,
         groupLayerId,
@@ -218,29 +196,14 @@ export default {
     })
   },
 
-  mounted () {
+  created () {
     this.getGroupLayers()
   },
 
   methods: {
     ...mapActions({
       getGroupLayers: 'groupLayers/getDataContext'
-    }),
-
-    resetForm () {
-      if (this.form[this.fileType]) {
-        this.form.shapeFile = null
-        this.fileSelected = null
-      }
-    },
-
-    onFileValid (file) {
-      this.form[this.fileType] = file
-      this.fileSelected = file
-      const nameFile = file.name.split('.')[0]
-      this.form.name = nameFile
-      this.form.title = nameFile
-    }
+    })
   }
 }
 </script>

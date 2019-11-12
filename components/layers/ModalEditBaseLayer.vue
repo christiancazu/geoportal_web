@@ -5,7 +5,6 @@
   :rules="rules"
   :context="context"
   :message-toast="messageToast"
-  @reset-form="resetForm()"
 >
   <template v-slot:content>
     <el-row :gutter="10">
@@ -121,7 +120,7 @@
 </template>
 
 <script>
-import BaseForm from '@/components/base/BaseForm'
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 
 import { mapState } from 'vuex'
 
@@ -131,13 +130,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  components: {
-    BaseForm
-  },
-
-  props: {
-    mountedOn: { type: String, required: true }
-  },
+  mixins: [modalBaseActionsMixin],
 
   data () {
     return {
@@ -145,14 +138,13 @@ export default {
 
       context: {
         storeBase: 'baseLayers',
-        mountedOn: this.mountedOn,
+        mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'update',
       },
       messageToast: {
         baseName: 'LAYER',
         action: 'UPDATED'
       },
-
       map: null,
       tileLayer: null,
       checked: false,
@@ -162,7 +154,6 @@ export default {
         1: 'min: 1',
         20: '20 max'
       },
-
       form: {
         id: null,
         name: '',
@@ -174,7 +165,6 @@ export default {
         authenticationToken: '',
         isActive: true
       },
-
       rules: {
         name,
         url

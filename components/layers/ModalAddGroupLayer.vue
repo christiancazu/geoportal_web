@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import BaseForm from '@/components/base/BaseForm'
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 
 import {
   mapState,
@@ -101,13 +101,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  components: {
-    BaseForm
-  },
-
-  props: {
-    mountedOn: { type: String, required: true }
-  },
+  mixins: [modalBaseActionsMixin],
 
   data () {
     return {
@@ -115,7 +109,7 @@ export default {
 
       context: {
         storeBase: 'groupLayers',
-        mountedOn: this.mountedOn,
+        mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'create',
       },
       messageToast: {

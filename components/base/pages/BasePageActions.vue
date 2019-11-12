@@ -82,7 +82,9 @@ export default {
      */
     shrinkText (text) {
       if (!text) return ''
-      return text.length > 16 ? `${text.substring(0, 16)}<i class="fas fa-ellipsis-h"></i>` : text
+      return text.length > 16
+        ? `${text.substring(0, 16)}...`
+        : text
     }
   },
 
