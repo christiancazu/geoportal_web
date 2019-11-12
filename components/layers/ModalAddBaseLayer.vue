@@ -128,7 +128,6 @@ export default {
 
   data () {
     return {
-      // #todo settings
       formTitle: 'Registrar mapa base',
 
       context: {

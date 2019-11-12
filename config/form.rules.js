@@ -15,14 +15,14 @@ export const password = [
 export const title = [
   {
     required: true,
-    message: 'El nombre de usuario es requerido'
+    message: 'El título es requerido'
   }
 ]
 
 export const groupLayerId = [
   {
     required: true,
-    message: 'Seleccione un Grupo de capa'
+    message: 'Seleccione un grupo de capa'
   }
 ]
 
@@ -37,18 +37,39 @@ export const order = [
 export const url = [
   {
     required: true,
-    message: 'La url del mapa base es requrido'
+    message: 'La url del mapa base es requerido'
+  }
+]
+
+export const authorId = [
+  {
+    required: true,
+    message: 'Seleccione un autor'
+  }
+]
+
+export const categoryId = [
+  {
+    required: true,
+    message: 'Seleccione una categoría'
+  }
+]
+
+export const name = name => [
+  {
+    required: true,
+    message: `El nombre de ${name} es requerido`
   }
 ]
 
 /*eslint-disable */
-export const name = [
+export const nameAlpha = [
   {
     required: true,
     // pattern: /^[z0-9\s.,\/#!$%\^&\*;:{}=\-+'´`~()”“"…]+$/g,
     validator: (rule, value, callback) => {
       let text = value.split('')
-      let itContainsBlanks = text.every(val => /[a-zA-Z0-9_]/g.test(val))
+      let itContainsBlanks = text.every(val => /^\w*$/.test(val))
       if (!itContainsBlanks) {
         return callback(new Error("Solo se admite letras y subguion '_'"))
       }

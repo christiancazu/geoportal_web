@@ -71,7 +71,7 @@ export default {
     baseURL:
       process.env.NODE_ENV === 'production'
         ? 'http://192.168.1.130:8300/geoportal/api/'
-        : 'http://192.168.1.130:9006/api/'
+        : 'http://104.197.114.116:9100/api/'
   },
 
   auth: {

@@ -34,16 +34,18 @@
         <!-- region -->
         <el-form-item
           label="Autores"
-          prop="authorId"
+          prop="author"
         >
           <el-container>
             <el-select
               v-model="form.authorId"
-              value-key="id" filterable placeholder="Select"
+              :loading="$store.state.spinners.loadingTable"
+              value-key="id"
+              filterable
+              placeholder="Elija un autor"
             >
               <el-option
-                v-for="item in WMSAuthors"
-                :key="item.id"
+                v-for="item in WMSAuthors" :key="item.id"
                 :label="item.name"
                 :value="item.id"
               />
@@ -60,16 +62,17 @@
         <!-- category -->
         <el-form-item
           label="Categorías"
-          prop="categoryId"
+          prop="Categories"
         >
           <el-container>
             <el-select
               v-model="form.categoryId"
-              filterable value-key="id" placeholder="Select"
+              filterable
+              value-key="id"
+              placeholder="Elija una categoría"
             >
               <el-option
-                v-for="item in WMSCategories"
-                :key="item.id"
+                v-for="item in WMSCategories" :key="item.id"
                 :label="item.name"
                 :value="item.id"
               />
@@ -92,7 +95,7 @@
         :rows="3"
         autocomplete="off"
         :maxlength="300"
-        :show-word-limit="true"
+        show-word-limit
       />
     </el-form-item>
     <el-form-item class="text-xs-right">
@@ -120,8 +123,7 @@ import {
 import {
   url,
   authorId,
-  categoryId,
-  name
+  categoryId
 } from '@/config/form.rules'
 
 export default {
@@ -133,12 +135,12 @@ export default {
 
   data () {
     return {
-      formTitle: 'Registrar servicio WMS',
+      formTitle: 'Actualizar servicio WMS',
 
       context: {
         storeBase: 'WMSServices',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'create'
+        storeAction: 'update'
       },
       modalSecondAuthor: {
         component: 'ModalAddWMSAuthor',
@@ -152,10 +154,10 @@ export default {
       },
       messageToast: {
         baseName: 'SERVICE',
-        action: 'REGISTERED'
+        action: 'UPDATED'
       },
-
       form: {
+        id: null,
         name: '',
         description: '',
         url: '',
@@ -163,9 +165,11 @@ export default {
         isEnabled: false,
         categoryId: null
       },
-
       rules: {
-        name: name('servicio'),
+        name: {
+          required: true,
+          message: 'El nombre de servicio es requerido'
+        },
         url,
         authorId,
         categoryId
@@ -175,21 +179,35 @@ export default {
 
   computed: {
     ...mapState({
+      itemContext (state) {
+        return state[this.context.storeBase].itemContext
+      },
       WMSAuthors: state => state.WMSAuthors.dataContext,
       WMSCategories: state => state.WMSCategories.dataContext
     })
   },
 
+  watch: {
+    itemContext () {
+      this.assignFormFields()
+    }
+  },
+
   created () {
     this.getWMSAuthors()
     this.getWMSCategories()
+    this.assignFormFields()
   },
 
   methods: {
     ...mapActions({
       getWMSAuthors: 'WMSAuthors/getDataContext',
       getWMSCategories: 'WMSCategories/getDataContext'
-    })
+    }),
+
+    assignFormFields () {
+      Object.keys(this.form).forEach(key => (this.form[key] = this.itemContext[key]))
+    }
   }
 }
 </script>

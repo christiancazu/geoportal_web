@@ -6,14 +6,14 @@ export default {
   },
 
   methods: {
-    uploadFileMixin_clear () {
+    $_uploadFileMixin_clear () {
       this.form[this.file.type] = null
       this.file.selected = null
       this.form.name = ''
       this.form.title = ''
     },
 
-    uploadFileMixin_valid (file) {
+    $_uploadFileMixin_valid (file) {
       this.form[this.file.type] = file
       this.file.selected = file
       const nameFile = file.name.split('.')[0]
