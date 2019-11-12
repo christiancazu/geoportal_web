@@ -77,3 +77,35 @@ export const nameAlpha = [
     }
   }
 ]
+
+// form create user
+
+export const username = [{
+  required: true,
+  message: 'El nombre de usuario es requerido'
+}]
+export const lastName = [{
+  required: true,
+  message: 'El nombre es requerido'
+}]
+export const lastNameAditional = [{
+  required: true,
+  message: 'El segundo apellidos es requerido'
+}]
+export const region = [{
+  required: true,
+  message: 'La región es requerida'
+}]
+export const institute = [{
+  required: true,
+  message: 'La institución es requerida'
+}]
+export const subject = [{
+  required: true,
+  min: 10,
+  message: 'Detalle el motivo para acceder al Geoportal UNAT'
+}]
+export const observation = [{
+  required: true,
+  message: 'Este campo es requerido'
+}]

@@ -2,35 +2,26 @@ import {
   SET_DATA_CONTEXT,
   SET_ITEM_CONTEXT,
   SET_CURRENT_PAGE_ON_TABLE
+
 } from '../types/mutation-types'
 
 export const state = () => ({
   dataContext: [],
   itemContext: {},
   currentPageOnTable: 1
+
 })
 
 export const actions = {
-  async createItemContext ({}, form) {
-    await this.$userAPI.create(form)
-  },
-
   async getDataContext ({ commit }) {
-    const { data } = await this.$userAPI.get()
+    const { data } = await this.$requestAPI.getPending()
     commit(SET_DATA_CONTEXT, { dataContext: data || [] })
   },
-
-  async getItemContext ({ commit }, id) {
-    const { data } = await this.$userAPI.getById(id)
-    commit(SET_ITEM_CONTEXT, { itemContext: data })
+  async approveItemContext ({ }, payload) {
+    await this.$requestAPI.approve(payload)
   },
-
-  async updateItemContext ({}, form) {
-    await this.$userAPI.update(form)
-  },
-
-  async deleteItemContext ({}, id) {
-    await this.$userAPI.delete(id)
+  async rejectItemContext ({ }, payload) {
+    await this.$requestAPI.reject(payload)
   }
 }
 

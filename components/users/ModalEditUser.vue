@@ -1,276 +1,283 @@
 <template>
-<base-modal
-  title="Modificar datos de usuario"
-  name-state="modalEditUser"
-  :show-modal="modalEditUser"
+<base-form
+  :form-title="formTitle"
+  :rules="rules"
+  :form="form"
+  :context="context"
+  :message-toast="messageToast"
 >
   <template v-slot:content>
-    <el-form
-      v-if="user"
-      ref="form"
-      label-position="top"
-      status-icon
-      :model="form"
-      :rules="rules"
-      label-width="120px"
-      class="demo-ruleForm"
-      :disabled="processingForm"
-      @submit.prevent="submitForm"
-    >
-      <el-row
-        :gutter="10"
-        align="bottom" justify="center"
-      >
-        <el-col :md="12">
-          <!-- image -->
-          <el-form-item
-            label="Imagen de Perfil"
-            class="text-xs-center"
-          >
-            <el-upload
-              class="avatar-uploader"
-              action
-              :http-request="launchUploadAvatar"
-              :show-file-list="false"
-              name="image"
-              :before-upload="beforeAvatarUpload"
-            >
-              <img
-                v-if="imageSelected"
-                :src="imageSelected" class="avatar"
-              >
-              <i
-                v-else
-                class="el-icon-plus avatar-uploader-icon"
-              />
-            </el-upload>
-          </el-form-item>
-        </el-col>
-        <el-col :md="12">
-          <!-- username -->
-          <el-form-item label="Nombre de Usuario">
-            <el-input
-              v-model="user.username"
-              type="text" disabled autocomplete="off"
-            />
-          </el-form-item>
 
-          <!-- email -->
-          <el-form-item label="Correo Electrónico">
-            <el-input
-              v-model="user.email"
-              disabled type="text"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col
-          :xs="24"
-          :sm="8"
+    <el-row
+      :gutter="10"
+      align="bottom"
+      justify="center"
+    >
+      <el-col :md="12">
+        <!-- image -->
+        <el-form-item
+          label="Imagen de Perfil"
+          class="text-xs-center"
         >
-          <!-- name -->
-          <el-form-item
-            label="Nombres"
-            prop="name"
+          <el-upload
+            class="avatar-uploader"
+            action
+            :http-request="launchUploadAvatar"
+            :show-file-list="false"
+            name="image"
+            :before-upload="beforeAvatarUpload"
           >
-            <el-input
-              v-model="form.name"
-              type="text" autocomplete="off"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="24"
-          :sm="8"
-        >
-          <!-- lasname -->
-          <el-form-item
-            label="Apellido"
-            prop="lastName"
-          >
-            <el-input
-              v-model="form.lastName"
-              type="text" autocomplete="off"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="24"
-          :sm="8"
-        >
-          <!-- lasname -->
-          <el-form-item
-            label="Segundo apellido"
-            prop="lastNameAditional"
-          >
-            <el-input
-              v-model="form.lastNameAditional"
-              type="text" autocomplete="off"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col
-          :xs="24"
-          :sm="8"
-        >
-          <!-- regionId -->
-          <el-form-item
-            label="Región"
-            prop="regionId"
-          >
-            <el-select
-              v-model="regionId"
-              value-key="id"
-              filterable
-              :loading="loadingRegions"
-              placeholder="Select"
-              @change="onChangeRegion"
+            <img
+              v-if="imageSelected"
+              :src="imageSelected"
+              class="avatar"
             >
-              <el-option
-                v-for="item in regions"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="24"
-          :sm="8"
+            <i
+              v-else
+              class="el-icon-plus avatar-uploader-icon"
+            />
+          </el-upload>
+        </el-form-item>
+      </el-col>
+      <el-col :md="12">
+        <!-- username -->
+        <el-form-item label="Nombre de Usuario">
+          <el-input
+            v-model="form.username"
+            type="text"
+            disabled
+            autocomplete="off"
+          />
+        </el-form-item>
+
+        <!-- email -->
+        <el-form-item label="Correo Electrónico">
+          <el-input
+            v-model="form.email"
+            disabled
+            type="text"
+          />
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-row :gutter="10">
+      <el-col
+        :xs="24"
+        :sm="8"
+      >
+        <!-- name -->
+        <el-form-item
+          label="Nombres"
+          prop="name"
         >
-          <!-- porvincia -->
-          <el-form-item
-            label="Provincia"
-            prop="provinceId"
+          <el-input
+            v-model="form.name"
+            type="text"
+            autocomplete="off"
+          />
+        </el-form-item>
+      </el-col>
+      <el-col
+        :xs="24"
+        :sm="8"
+      >
+        <!-- lasname -->
+        <el-form-item
+          label="Apellido"
+          prop="lastName"
+        >
+          <el-input
+            v-model="form.lastName"
+            type="text"
+            autocomplete="off"
+          />
+        </el-form-item>
+      </el-col>
+      <el-col
+        :xs="24"
+        :sm="8"
+      >
+        <!-- lasname -->
+        <el-form-item
+          label="Segundo apellido"
+          prop="lastNameAditional"
+        >
+          <el-input
+            v-model="form.lastNameAditional"
+            type="text"
+            autocomplete="off"
+          />
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-row :gutter="10">
+      <el-col
+        :xs="24"
+        :sm="8"
+      >
+        <!-- regionId -->
+        <el-form-item
+          label="Región"
+          prop="regionId"
+        >
+          <el-select
+            v-model="form.regionId"
+            value-key="id"
+            filterable
+            :loading="loadRegions"
+            placeholder="Select"
+            @change="onChangeRegion"
           >
-            <el-select
-              v-model="provinceId"
-              value-key="id"
-              :loading="loadingProvinces"
-              filterable
-              placeholder="Select"
-              @change="onChangeProvince"
-            >
-              <el-option
-                v-for="item in provinces"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="24"
-          :sm="8"
+            <el-option
+              v-for="item in regions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+      </el-col>
+      <el-col
+        :xs="24"
+        :sm="8"
+      >
+        <!-- porvincia -->
+        <el-form-item
+          ref="provinceId"
+          label="Provincia"
+          prop="provinceId"
         >
-          <!-- distrito -->
-          <el-form-item
-            ref="districtId"
-            label="Distrito" prop="districtId"
+          <el-select
+            v-model="form.provinceId"
+            value-key="id"
+            :loading="loadProvinces"
+            filterable
+            placeholder="Select"
+            @change="onChangeProvince"
           >
-            <el-select
-              v-model="form.districtId"
-              value-key="id"
-              filterable
-              :disabled="processingForm"
-              :loading="loadingDistricts"
-              placeholder="Select"
-            >
-              <el-option
-                v-for="item in districts"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col
-          :xs="12"
-          :sm="12" :md="12"
+            <el-option
+              v-for="item in provinces"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+      </el-col>
+      <el-col
+        :xs="24"
+        :sm="8"
+      >
+        <!-- distrito -->
+        <el-form-item
+          ref="districtId"
+          label="Distrito"
+          prop="districtId"
         >
-          <el-form-item
+          <el-select
+            v-model="form.districtId"
+            value-key="id"
+            filterable
+            :loading="loadDistricts"
+            placeholder="Select"
+          >
+            <el-option
+              v-for="item in districts"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-row :gutter="10">
+      <el-col
+        :xs="12"
+        :sm="12"
+        :md="12"
+      >
+        <el-form-item
+          class="text-xs-center"
+          label="Privilegio"
+        >
+          <el-switch
+            v-model="form.userTypeId"
             class="text-xs-center"
-            label="Privilegio"
-          >
-            <el-switch
-              v-model="form.userTypeId"
-              class="text-xs-center"
-              style="display: block"
-              inactive-color="#6376f7"
-              active-color="#6376f7"
-              inactive-text="Administrador"
-              active-text="Usuario"
-              inactive-value="AD"
-              active-value="US"
-            />
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="12"
-          :sm="12" :md="12"
+            style="display: block"
+            inactive-color="#6376f7"
+            active-color="#6376f7"
+            inactive-text="Administrador"
+            active-text="Usuario"
+            inactive-value="AD"
+            active-value="US"
+          />
+        </el-form-item>
+      </el-col>
+      <el-col
+        :xs="12"
+        :sm="12"
+        :md="12"
+      >
+        <el-form-item
+          class="text-xs-center label-success"
+          label="Cuenta"
         >
-          <el-form-item
-            class="text-xs-center label-success"
-            label="Cuenta"
-          >
-            <el-switch
-              v-model="form.status"
-              class="text-xs-center"
-              style="display: block"
-              inactive-color="#67C23A"
-              active-color="#67C23A"
-              inactive-text="Activa"
-              active-text="Inactiva"
-              inactive-value="AC"
-              active-value="IN"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
+          <el-switch
+            v-model="form.status"
+            class="text-xs-center"
+            style="display: block"
+            inactive-color="#67C23A"
+            active-color="#67C23A"
+            inactive-text="Activa"
+            active-text="Inactiva"
+            inactive-value="AC"
+            active-value="IN"
+          />
+        </el-form-item>
+      </el-col>
+    </el-row>
+
   </template>
-  <template v-slot:actions>
-    <el-button
-      class="ma-2"
-      :disabled="processingForm"
-      size="small"
-      @click="$_modalVisibilityMixin_close('modalEditUser')"
-    >CANCELAR</el-button>
-    <el-button
-      type="primary"
-      class="ma-2"
-      native-type="submit"
-      size="small"
-      :loading="processingForm"
-      @click.prevent="submitForm"
-    >GUARDAR</el-button>
-  </template>
-</base-modal>
+</base-form>
 </template>
 <script>
+
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import {
+  name,
+  lastName
+} from '@/config/form.rules'
 import { mapState, mapActions } from 'vuex'
-import BaseModal from '@/components/base/BaseModal.vue'
 
 export default {
-  components: {
-    BaseModal
-  },
+
+  mixins: [modalBaseActionsMixin],
+
   data () {
     return {
+      formTitle: 'Actualizar datos de usuario',
+
+      context: {
+        storeBase: 'users',
+        mountedOn: this.modalBaseActionsMixin_mountedOn,
+        storeAction: 'update',
+      },
+
+      messageToast: {
+        baseName: 'USER',
+        action: 'UPDATED'
+      },
+
       imageSelected: '',
-      provinceId: 0,
-      regionId: 0,
-      processingForm: false,
+
       form: {
+        id: '',
+        username: '',
+        email: '',
         userTypeId: '',
+        provinceId: '',
+        regionId:'',
         districtId: '',
         name: '',
         lastName: '',
@@ -280,24 +287,8 @@ export default {
       },
 
       rules: {
-        name: [
-          {
-            required: true,
-            message: 'El nombre es requerido'
-          }
-        ],
-        lastName: [
-          {
-            required: true,
-            message: 'El nombre es requerido'
-          }
-        ],
-        districtId: [
-          {
-            required: true,
-            message: 'El campo es requerido'
-          }
-        ]
+        name,
+        lastName
       }
     }
   },
@@ -306,98 +297,54 @@ export default {
 
   computed: {
     ...mapState({
-      user: state => state.users.user,
-      regions: state => state.regions.regions,
-      loadingRegions: state => state.regions.loadingRegions,
-      provinces: state => state.regions.provinces,
-      loadingProvinces: state => state.regions.loadingProvinces,
-      districts: state => state.regions.districts,
-      loadingDistricts: state => state.regions.loadingDistricts,
-      modalEditUser: state => state.modalsVisibilities.modalEditUser
-    })
+      itemContext (state) {
+        return state[this.context.storeBase].itemContext
+      },
+      regions: state => state.public.regions,
+      provinces: state => state.public.provinces,
+      districts: state => state.public.districts,
+    }),
+
+    loadRegions: function () {
+      return this.regions.lenght ? true : false
+    },
+    loadProvinces: function () {
+      return this.regions.lenght ? true : false
+    },
+    loadDistricts: function () {
+      return this.regions.lenght ? true : false
+    }
   },
 
   watch: {
-    modalEditUser: function (newState, /*oldState*/) {
-      if (!newState) {
-        this.$refs.form.resetFields()
-        this.imageSelected = ''
-        this.replaceUser({ user: null })
-        return false
-      }
-      this.getRegions()
-      this.setFormField()
+    itemContext () {
+      this.assignFormFields()
     }
+  },
+
+  mounted () {
+    this.assignFormFields()
+    this.getRegions()
+
   },
 
   methods: {
     ...mapActions({
-      getRegions: 'regions/getRegions',
-      getProvinces: 'regions/getProvinces',
-      getDistricts: 'regions/getDistricts',
-      replaceProvinces: 'regions/replaceProvinces',
-      replaceDistricts: 'regions/replaceDistricts',
-      getUsers: 'users/getUsers',
-      getUser: 'users/getUser',
-      replaceUser: 'users/replaceUser'
+      getRegions: 'public/getRegions',
+      getProvinces: 'public/getProvinces',
+      getDistricts: 'public/getDistricts',
+      replaceProvinces: 'public/replaceProvinces',
+      replaceDistricts: 'public/replaceDistricts',
     }),
 
-    setFormField () {
-      this.form.userTypeId = this.user.userTypeId
-      this.form.districtId = this.user.districtId || ''
-      this.form.name = this.user.name
-      this.form.lastName = this.user.lastName
-      this.form.lastNameAditional = this.user.lastNameAditional
-      this.imageSelected = this.user.image
-      this.form.status = this.user.status
-
-      this.provinceId = this.user.provinceId || ''
-      this.regionId = this.user.regionId || ''
-
-      this.getProvinces({ params: { id: this.user.regionId } })
-      this.getDistricts({ params: { id: this.user.provinceId } })
-    },
-
-    submitForm () {
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.processingForm = true
-          this.updateUser()
-        }
+    assignFormFields () {
+      Object.keys(this.form).forEach(key =>{
+        this.form[key] = this.itemContext[key]
       })
-    },
 
-    updateUser () {
-      const data = new FormData()
-      let keys = Object.keys(this.form)
-      keys.forEach(val => {
-        data.append(val, this.form[val])
-      })
-      const id = this.user.id
+      this.getProvinces({ params: {region: this.form["regionId"]} })
+      this.getDistricts({ params: {province: this.form["provinceId"]} })
 
-      return new Promise((resolve, reject) => {
-        this.$userAPI
-          .update({ data, id })
-          .then(response => {
-            this.processingForm = false
-            if (response.data.status) {
-              this.$refs.form.resetFields()
-              this.$_modalVisibilityMixin_close('modalEditUser')
-
-              this.getUsers()
-              this.$toast.success('El usuario ha sido actualizado con éxito')
-            } else {
-              this.getUser({ id: this.user.id }).then(() => {
-                this.setFormField()
-              })
-            }
-            resolve(response)
-          })
-          .catch(error => {
-            this.processingForm = false
-            reject(error)
-          })
-      })
     },
 
     launchUploadAvatar (option) {
@@ -419,17 +366,25 @@ export default {
     },
 
     onChangeRegion (regionId) {
-      this.provinceId = ''
-      this.$refs.districtId.resetField()
-      this.form.districtId = ''
+      const params = {
+        region: regionId
+      }
+      this.replaceProvinces({ provinces: null })
       this.replaceDistricts({ districts: null })
-      this.getProvinces({ params: { id: regionId } })
+      this.form.provinceId = ''
+      this.form.districtId = ''
+
+      this.getProvinces({ params })
     },
 
     onChangeProvince (provinceId) {
-      this.$refs.districtId.resetField()
+      const params = {
+        province: provinceId
+      }
+
+      this.replaceDistricts({ districts: null })
       this.form.districtId = ''
-      this.getDistricts({ params: { id: provinceId } })
+      this.getDistricts({ params })
     }
   }
 }

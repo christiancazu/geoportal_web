@@ -1,23 +1,25 @@
+import { PUBLIC } from '@/config/endpoints'
+
 export default $axios => ({
-  regions (payload = {}) {
+  getRegions (payload = {}) {
     return $axios({
-      url: 'region/',
+      url: `${PUBLIC}/region/`,
       method: 'GET',
       params: payload.params || {}
     })
   },
 
-  provinces (payload = {}) {
+  getProvinces (payload = {}) {
     return $axios({
-      url: 'province/',
+      url: `${PUBLIC}/province/`,
       method: 'GET',
       params: payload.params || {}
     })
   },
 
-  districts (payload = {}) {
+  getDistricts (payload = {}) {
     return $axios({
-      url: 'district/',
+      url: `${PUBLIC}/district/`,
       method: 'GET',
       params: payload.params || {}
     })

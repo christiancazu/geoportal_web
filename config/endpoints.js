@@ -1,3 +1,5 @@
+export const USER = '/user'
+export const PUBLIC = '/public'
 export const BASE_LAYER = '/base_layer'
 export const EXTERNAL_WMS_AUTHOR = '/external_wms_author'
 export const EXTERNAL_WMS_CATEGORY = '/external_wms_category'
