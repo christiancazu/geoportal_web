@@ -3,11 +3,8 @@
   :page-header="pageHeader"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
-  :message-toast="messageToast"
 >
-  <template
-    v-slot:page-table
-  >
+  <template v-slot:page-table>
     <el-table-column
       label="Institución"
       prop="institute"
@@ -84,8 +81,6 @@
 <script>
 import pageActionsMixin from '@/mixins/pageActionsMixin'
 
-import { mapActions } from 'vuex'
-
 export default {
   mixins: [pageActionsMixin],
 
@@ -98,10 +93,6 @@ export default {
         storeBase: 'requestRejected',
       },
 
-      messageToast: {
-        baseName: 'REQUEST'
-      },
-
       filterCriteriaProps: [
         'name',
         'lastName',
@@ -111,29 +102,6 @@ export default {
       ]
     }
   },
-
-  created () {
-  },
-
-  methods: {
-    ...mapActions({
-      getRejectedRequests: 'userRequests/getRejectedRequests',
-    }),
-
-    current_change: function (currentPage) {
-      this.currentPage = currentPage
-    },
-
-    // pagination
-    onChangeCurrentPage: function (currentPage) {
-      this.currentPage = currentPage
-    },
-
-    onChangePageSize: function (pagesize) {
-      this.pagesize = pagesize
-    },
-  },
-
   head: {
     title: 'Solicitudes rechazadas | GEOVISOR',
   },
