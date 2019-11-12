@@ -2,8 +2,9 @@
 <el-dialog
   title="Aprobar solicitud de registro"
   :close-on-click-modal="false"
-  :visible.sync="$store.state.modalsVisibilities[context.mountedOn].visibility"
+  :visible="$store.state.modalsVisibilities[context.mountedOn].visibility"
   top="2vh"
+  @close="closeModal()"
 >
   <div class="text-request">
     <label class="text-uppercase">
@@ -25,7 +26,7 @@
       :rules="rules"
       label-width="120px"
       class="demo-ruleForm"
-      :disabled="processingRejection"
+      :disabled="$store.state.spinners.processingForm"
     >
       <el-form-item
         label="¿Cual es la razón para denegar esta solicitud?"
@@ -45,8 +46,8 @@
       type="danger"
       size="small"
       native-type="submit"
-      :disabled="processingAcceptance"
-      :loading="processingRejection"
+      :disabled="$store.state.spinners.processingForm"
+      :loading="isRejectRequest && $store.state.spinners.processingForm"
       @click.prevent="submitFormReject"
     >RECHAZAR SOLICITUD</el-button>
     <el-button
@@ -54,14 +55,15 @@
       type="success"
       size="small"
       native-type="submit"
-      :disabled="processingRejection"
-      :loading="processingAcceptance"
+      :disabled="$store.state.spinners.processingForm"
+      :loading="!isRejectRequest && $store.state.spinners.processingForm"
       @click.prevent="acceptRequest"
     >APROBAR SOLICITUD</el-button>
   </div>
 </el-dialog>
 </template>
 <script>
+import { observation } from '@/config/form.rules'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -73,19 +75,12 @@ export default {
         storeAction: 'approve',
       },
 
-      processingRejection: false,
-      processingAcceptance: false,
       isRejectRequest: false,
       form: {
         observation: ''
       },
       rules: {
-        observation: [
-          {
-            required: true,
-            message: 'Este campo es requerido'
-          }
-        ]
+        observation
       }
     }
   },
@@ -98,67 +93,69 @@ export default {
 
   methods: {
     ...mapActions({
-      getPendingRequests: 'requests/getPendingRequests',
+      getDataContext: 'requests/getDataContext',
+      approveItemContext: 'requests/approveItemContext',
+      rejectItemContext: 'requests/rejectItemContext',
     }),
 
-    submitFormReject () {
+    async submitFormReject () {
       if (!this.isRejectRequest) {
         this.isRejectRequest = true
         return false
       }
-      this.$refs.form.validate(valid => {
-        if (valid) {
-          this.rejectRequest()
+
+      let isFormValid = false
+
+      const data = {
+        observation: this.form.observation,
+        id: this.itemContext.id
+      }
+
+      await this.$refs.form.validate(valid => isFormValid = valid)
+
+      if (isFormValid) {
+        try {
+          await this.rejectItemContext({ data })
+          this.$toast.success(this.$SUCCESS.REQUEST.REJECT)
+          await this.getDataContext()
+          this.closeModal()
         }
-      })
+        catch (e) { }
+      }
+
     },
 
-    rejectRequest () {
-      this.processingRejection = true
-      // const data = {
-      //   observation: this.form.observation,
-      //   id: this.itemContext.id
-      // }
-      // new Promise((resolve, reject) => {
-      //   this.$userRequestAPI.rejected({ data })
-      //     .then(response => {
-      //       this.processingRejection = false
-      //       this.$toast.success('La solicitud se rechazó con éxito')
-      //       this.$_modalVisibilityMixin_close('modalViewPendingRequest')
-      //       resolve(response)
-      //       this.getPendingRequests()
-      //     }).catch(error => {
-      //       this.processingRejection = false
-      //       reject(error)
-      //     })
-      // })
-    },
-
-    acceptRequest () {
+    async acceptRequest () {
       if (this.isRejectRequest) {
         this.isRejectRequest = false
         return false
       }
 
-      this.processingAcceptance = true
-      // const data = {
-      //   id: this.itemContext.id
-      // }
+      const data = {
+        id: this.itemContext.id
+      }
+      try {
 
-      // new Promise((resolve, reject) => {
-      //   this.$userRequestAPI.approve({ data })
-      //     .then(response => {
-      //       this.processingAcceptance = false
-      //       this.$toast.success('La solicitud se aprobó con éxito')
-      //       this.$_modalVisibilityMixin_close('modalViewPendingRequest')
-      //       this.getPendingRequests()
-      //       resolve(response)
-      //     }).catch(error => {
-      //       this.processingAcceptance = false
-      //       reject(error)
-      //     })
-      // })
+        await this.approveItemContext({ data })
+        this.$toast.success(this.$SUCCESS.REQUEST.APPROVE)
+        await this.getDataContext()
+        this.closeModal()
+
+
+      }
+      catch (e) { }
     },
+    resetForm () {
+      if (this.isRejectRequest) {
+        this.$refs.form.resetFields()
+        this.isRejectRequest = false
+      }
+    },
+
+    closeModal () {
+      this.resetForm()
+      this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
+    }
   }
 }
 </script>

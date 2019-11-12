@@ -9,6 +9,10 @@ export const ERRORS = {
 export const SUCCESS = {
   WELLCOME: 'Bienvenido al Geoportal UNAT',
 
+  REQUEST: {
+    APPROVED: 'La solicitud ha sido aprobado con éxito',
+    REJECT: 'La solicitud ha sido rechazado con éxito'
+  },
   SERVICE: {
     REGISTERED: 'El servicio se registro con éxito',
     UPDATED: 'El servicio se actualizó con éxito',

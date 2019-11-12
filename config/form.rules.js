@@ -123,3 +123,7 @@ export const subject = [{
   min: 10,
   message: 'Detalle el motivo para acceder al Geoportal UNAT'
 }]
+export const observation = [{
+  required: true,
+  message: 'Este campo es requerido'
+}]

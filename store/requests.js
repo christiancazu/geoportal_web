@@ -16,6 +16,12 @@ export const actions = {
   async getDataContext ({ commit }) {
     const { data } = await this.$requestAPI.getPending()
     commit(SET_DATA_CONTEXT, { dataContext: data || [] })
+  },
+  async approveItemContext ({ }, payload) {
+    await this.$requestAPI.approve(payload)
+  },
+  async rejectItemContext ({ }, payload) {
+    await this.$requestAPI.reject(payload)
   }
 }
 
