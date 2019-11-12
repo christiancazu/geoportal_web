@@ -9,7 +9,7 @@
   <template v-slot:content>
     <!-- name -->
     <el-form-item
-      label="Nombre"
+      label="Nombres"
       prop="name"
     >
       <el-input
@@ -17,17 +17,7 @@
         type="text" autocomplete="off"
       />
     </el-form-item>
-
-    <!-- weburl -->
-    <el-form-item
-      label="URL"
-      prop="webUrl"
-    >
-      <el-input
-        v-model="form.webUrl"
-        type="text" autocomplete="off"
-      />
-    </el-form-item>
+    <!-- description -->
     <el-form-item
       label="Descripción"
       prop="description"
@@ -38,7 +28,7 @@
         :rows="3"
         autocomplete="off"
         :maxlength="300"
-        :show-word-limit="true"
+        show-word-limit
       />
     </el-form-item>
   </template>
@@ -48,33 +38,60 @@
 <script>
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 
-import { name } from '@/config/form.rules'
+import { mapState } from 'vuex'
 
 export default {
+
   mixins: [modalBaseActionsMixin],
 
   data () {
     return {
-      formTitle: 'Registrar autor',
+      formTitle: 'Actualizar categoría WMS',
 
       context: {
-        storeBase: 'WMSAuthors',
+        storeBase: 'WMSCategories',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'create',
+        storeAction: 'update'
       },
       messageToast: {
-        baseName: 'AUTHOR',
-        action: 'REGISTERED'
+        baseName: 'CATEGORY',
+        action: 'UPDATED'
       },
       form: {
+        id: null,
         name: '',
         description: '',
-        webUrl: '',
-        isPublic: 'True'
       },
       rules: {
-        name: name('autor'),
+        name: {
+          required: true,
+          message: 'El nombre de servicio es requerido'
+        }
       }
+    }
+  },
+
+  computed: {
+    ...mapState({
+      itemContext (state) {
+        return state[this.context.storeBase].itemContext
+      }
+    })
+  },
+
+  watch: {
+    itemContext () {
+      this.assignFormFields()
+    }
+  },
+
+  created () {
+    this.assignFormFields()
+  },
+
+  methods: {
+    assignFormFields () {
+      Object.keys(this.form).forEach(key => (this.form[key] = this.itemContext[key]))
     }
   }
 }

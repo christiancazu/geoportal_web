@@ -22,8 +22,9 @@
         >
           <label
             class="pr-2"
-            for=""
-          >N° de orden: </label>
+          >
+            N° de orden:
+          </label>
           <el-input-number
             v-model="form.order"
             size="mini"
@@ -55,7 +56,7 @@
           :loading="$store.state.spinners.loadingTable"
           value-key="id"
           filterable
-          placeholder="Select"
+          placeholder="Elija un grupo de capa"
         >
           <el-option
             v-for="item in groupLayers" :key="item.id"
@@ -91,7 +92,7 @@ import {
 
 import {
   title,
-  name,
+  nameAlpha,
   order
 } from '@/config/form.rules'
 
@@ -122,7 +123,7 @@ export default {
       },
       rules: {
         title,
-        name,
+        name: nameAlpha,
         order
       },
       fileLayerSelected: null,

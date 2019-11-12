@@ -10,13 +10,19 @@ export const SUCCESS = {
   WELLCOME: 'Bienvenido al Geoportal UNAT',
 
   SERVICE: {
-    REGISTERED: 'El servicio se registro con éxito'
+    REGISTERED: 'El servicio se registro con éxito',
+    UPDATED: 'El servicio se actualizó con éxito',
+    DELETED: 'El servicio se eliminó con éxito'
   },
   AUTHOR: {
-    REGISTERED: 'El autor se registro con éxito'
+    REGISTERED: 'El autor se registro con éxito',
+    UPDATED: 'El autor se actualizó con éxito',
+    DELETED: 'El autor se eliminó con éxito'
   },
   CATEGORY: {
-    REGISTERED: 'La categoría se registro con éxito'
+    REGISTERED: 'La categoría se registro con éxito',
+    UPDATED: 'La categoría se actualizó con éxito',
+    DELETED: 'La categoría se eliminó con éxito'
   },
   LAYER: {
     REGISTERED: 'La capa se registró con éxito',

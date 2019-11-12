@@ -152,12 +152,20 @@ export default {
      */
     filteredDataContext () {
       let textToSearchLowerCase = this.textToSearch.toLowerCase()
-
       const dataContextFiltered = this.dataContext
         .filter(itemContext => {
           for (let index = 0; index < this.criteriaLength; index++) {
-            if (itemContext[this.filterCriteriaProps[index]].includes(textToSearchLowerCase)) {
-              return true
+            const criteriaParts = this.filterCriteriaProps[index].split('.')
+
+            // used for criterias with format: (ex: author.name)
+            if (criteriaParts[1])  {
+              if (itemContext[criteriaParts[0]][criteriaParts[1]].includes(textToSearchLowerCase)) {
+                return true
+              }
+            } else {
+              if (itemContext[this.filterCriteriaProps[index]].includes(textToSearchLowerCase)) {
+                return true
+              }
             }
           }
         })
