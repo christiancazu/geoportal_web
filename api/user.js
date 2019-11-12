@@ -29,5 +29,11 @@ export default $axios => ({
       method: 'PUT',
       data: payload.data || {}
     })
+  },
+  delete (payload = {}) {
+    return $axios({
+      url: `${USER}/${payload.id}/`,
+      method: 'DELETE'
+    })
   }
 })

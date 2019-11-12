@@ -45,8 +45,8 @@
       <template slot-scope="scope">
         <group-actions-buttons
           :item-selected="scope.row"
-          dialog-delete-title="Eliminar usuario"
-          dialog-delete-body-text="¿Está seguro de eliminar este usuario?"
+          dialog-delete-title="¿Desabilitar usuario?"
+          dialog-delete-body-text="Esta acción no se podra revertir ¿Esta seguro de continuar?"
           @open-edit-modal="openModalEditItemContext(scope.row)"
           @confirmed-action="confirmedActionDeleteItemContext"
         />

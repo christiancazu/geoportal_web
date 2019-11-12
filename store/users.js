@@ -10,14 +10,6 @@ export const state = () => ({
   currentPageOnTable: 1
 })
 
-export const getters = {
-  // eslint-disable-next-line no-unused-vars
-  // isAdmin: (state, getters, rootState, rootGetters) => {
-  //   const user = rootState.auth.user
-  //   return user && user.userType.id === 'AD'
-  // }
-}
-
 export const actions = {
   async createItemContext ({}, form) {
     await this.$userAPI.create(form)
@@ -36,6 +28,10 @@ export const actions = {
   async updateItemContext ({}, form) {
     await this.$userAPI.update(form)
   },
+
+  async deleteItemContext ({}, id) {
+    await this.$userAPI.delete(id)
+  }
 }
 
 export const mutations = {
