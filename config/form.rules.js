@@ -92,6 +92,10 @@ export const lastNameAditional = [{
   required: true,
   message: 'El segundo apellidos es requerido'
 }]
+export const region = [{
+  required: true,
+  message: 'La región es requerida'
+}]
 export const institute = [{
   required: true,
   message: 'La institución es requerida'

@@ -12,7 +12,7 @@ export const SUCCESS = {
   USERS: {
     REGISTERED: 'El usuario se registró con éxito',
     UPDATED: 'El usuario se actualizó con éxito',
-    DELETED: 'El usuario se eliminó con éxito'
+    DELETED: 'El usuario se desabilitado con éxito'
   },
   REQUEST: {
     APPROVED: 'La solicitud ha sido aprobado con éxito',
