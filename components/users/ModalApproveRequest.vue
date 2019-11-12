@@ -96,17 +96,9 @@ export default {
     })
   },
 
-  watch: {
-    modalViewPendingRequest: function (newState, /*oldState*/) {
-      if (!newState) {
-        return false
-      }
-    }
-  },
-
   methods: {
     ...mapActions({
-      getPendingRequests: 'userRequests/getPendingRequests',
+      getPendingRequests: 'requests/getPendingRequests',
     }),
 
     submitFormReject () {

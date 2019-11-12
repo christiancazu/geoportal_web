@@ -95,7 +95,7 @@ import {
 
 import {
   title,
-  name,
+  nameAlpha,
   order
 } from '@/config/form.rules'
 
@@ -126,7 +126,7 @@ export default {
       },
       rules: {
         title,
-        name,
+        name: nameAlpha,
         order
       },
       fileLayerSelected: null,

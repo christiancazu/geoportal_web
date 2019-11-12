@@ -97,13 +97,31 @@
         Imágenes Georeferenciales
       </el-menu-item>
     </el-submenu>
-    <el-menu-item
-      index="/WMSServices"
-      :active="false"
-      :route="{ path: '/WMSServices' }"
-    >
-      <i class="fas fa-users-cog" /><span>Servicios WMS</span>
-    </el-menu-item>
+
+    <el-submenu index="5">
+      <div slot="title">
+        <i class="fas fa-users-cog" /><span slot="title">Servicios WMS</span>
+      </div>
+      <el-menu-item
+        :route="{ path: '/managementWMSServices/services' }"
+        index="/WMSServices/services"
+      >
+        Servicios
+      </el-menu-item>
+      <el-menu-item
+        :route="{ path: '/managementWMSServices/authors' }"
+        index="/WMSServices/authors"
+      >
+        Autores
+      </el-menu-item>
+      <el-menu-item
+        :route="{ path: '/managementWMSServices/categories' }"
+        index="/WMSServices/categories"
+      >
+        Categorías
+      </el-menu-item>
+    </el-submenu>
+
     <el-menu-item
       index="/reports"
       :active="false"

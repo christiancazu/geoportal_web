@@ -5,7 +5,7 @@
   :rules="rules"
   :context="context"
   :message-toast="messageToast"
-  @clear-file="uploadFileMixin_clear()"
+  @clear-file="$_uploadFileMixin_clear()"
 >
   <template v-slot:content>
     <el-row :gutter="14">
@@ -51,8 +51,8 @@
 
           <upload-file
             :file="file"
-            @on-file-valid="uploadFileMixin_valid"
-            @delete-file="uploadFileMixin_clear()"
+            @on-file-valid="$_uploadFileMixin_valid"
+            @delete-file="$_uploadFileMixin_clear()"
           />
 
         </el-form-item>
@@ -124,6 +124,7 @@
   </template>
 </base-form>
 </template>
+
 <script>
 import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
 
@@ -139,7 +140,7 @@ import {
   title,
   groupLayerId,
   order,
-  name
+  nameAlpha
 } from '@/config/form.rules'
 
 export default {
@@ -187,7 +188,7 @@ export default {
         title,
         groupLayerId,
         order,
-        name
+        name: nameAlpha
       }
     }
   },

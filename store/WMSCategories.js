@@ -1,18 +1,50 @@
-import { REPLACE_WMS_CATEGORIES } from '../types/mutation-types'
+import {
+  SET_DATA_CONTEXT,
+  SET_ITEM_CONTEXT,
+  SET_PUBLISHED_ITEM_CONTEXT,
+  SET_CURRENT_PAGE_ON_TABLE
+} from '../types/mutation-types'
 
 export const state = () => ({
-  WMSCategories: []
+  dataContext: [],
+  itemContext: {},
+  currentPageOnTable: 1
 })
 
 export const actions = {
-  async getWMSCategories ({ commit }, payload) {
-    const { data } = await this.$WMSCategoryAPI.index(payload)
-    commit(REPLACE_WMS_CATEGORIES, { WMSCategories: data || [] })
+  async createItemContext ({}, form) {
+    await this.$WMSCategoryAPI.create(form)
+  },
+
+  async getDataContext ({ commit }) {
+    const { data } = await this.$WMSCategoryAPI.get()
+    commit(SET_DATA_CONTEXT, { dataContext: data || [] })
+  },
+
+  async getItemContext ({ commit }, id) {
+    const { data } = await this.$WMSCategoryAPI.getById(id)
+    commit(SET_ITEM_CONTEXT, { itemContext: data })
+  },
+
+  async publishItemContext ({}, form) {
+    await this.$WMSCategoryAPI.publish(form)
+  },
+
+  async updateItemContext ({}, form) {
+    await this.$WMSCategoryAPI.update(form)
+  },
+
+  async deleteItemContext ({}, id) {
+    await this.$WMSCategoryAPI.delete(id)
   }
 }
 
 export const mutations = {
-  [REPLACE_WMS_CATEGORIES] (state, { WMSCategories }) {
-    state.WMSCategories = WMSCategories
-  }
+  [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
+
+  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext),
+
+  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
+
+  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
 }

@@ -166,6 +166,7 @@ export default {
     },
 
     closeModal () {
+      this.resetForm()
       this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
     }
   }
