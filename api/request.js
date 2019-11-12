@@ -20,7 +20,7 @@ export default $axios => ({
       data: payload.data || {}
     })
   },
-  rejected (payload = {}) {
+  reject (payload = {}) {
     return $axios({
       url: 'request/reject/',
       method: 'POST',

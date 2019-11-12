@@ -45,8 +45,8 @@
       <template slot-scope="scope">
         <group-actions-buttons
           :item-selected="scope.row"
-          dialog-delete-title="Eliminar Capa Vectorial"
-          dialog-delete-body-text="¿Está seguro de eliminar esta capa?"
+          dialog-delete-title="Eliminar usuario"
+          dialog-delete-body-text="¿Está seguro de eliminar este usuario?"
           @open-edit-modal="openModalEditItemContext(scope.row)"
           @confirmed-action="confirmedActionDeleteItemContext"
         />
@@ -91,12 +91,7 @@ export default {
         'fullName',
         'email',
         'username'
-      ],
-
-
-      search: '',
-      pagesize: 10,
-      currentPage: 1
+      ]
     }
   },
 

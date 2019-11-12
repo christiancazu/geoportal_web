@@ -242,21 +242,17 @@
 </base-form>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
-import BaseForm from '@/components/base/BaseForm.vue'
+
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 import {
   name,
   lastName
 } from '@/config/form.rules'
+import { mapState, mapActions } from 'vuex'
 
 export default {
-  components: {
-    BaseForm
-  },
 
-  props: {
-    mountedOn: { type: String, required: true }
-  },
+  mixins: [modalBaseActionsMixin],
 
   data () {
     return {
@@ -264,7 +260,7 @@ export default {
 
       context: {
         storeBase: 'users',
-        mountedOn: this.mountedOn,
+        mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'update',
       },
 

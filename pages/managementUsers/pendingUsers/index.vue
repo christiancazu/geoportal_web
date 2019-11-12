@@ -1,93 +1,78 @@
 <template>
-<base-page title="Solicitudes pendientes">
-  <template v-slot:content>
-    <el-container direction="vertical">
-      <el-row
-        type="flex"
-        justify="end" :gutter="10"
-      >
-        <el-col
-          :xs="24"
-          :sm="12" :md="8"
-        >
-          <div>
-            <el-input
-              v-model="search"
-              prefix-icon="el-icon-search"
-              size="small"
-              placeholder="Buscar..."
-              clearable
-            />
-          </div>
-        </el-col>
-      </el-row>
-      <el-table
-        v-loading="loadingPendingRequests"
-        :data="filteredData"
-      >
-        <el-table-column
-          label="Institución"
-          prop="institute"
+<base-page-actions
+  :page-header="pageHeader"
+  :modal-main="modalMain"
+  :filter-criteria-props="filterCriteriaProps"
+  :message-toast="messageToast"
+>
+  <template
+    v-slot:page-table="{
+      confirmedActionDeleteItemContext,
+    }"
+  >
+    <el-table-column
+      label="Institución"
+      prop="institute"
+    />
+    <el-table-column label="Nombres y Apellidos">
+      <template
+        slot-scope="scope"
+      >{{ `${scope.row.name} ${scope.row.lastName} ${scope.row.lastNameAditional}` }}</template>
+    </el-table-column>
+    <el-table-column
+      label="Correo Electrónico"
+      prop="email"
+    />
+    <el-table-column
+      label="Acción"
+      align="center"
+      width="120"
+    >
+      <template slot-scope="scope">
+        <group-actions-buttons
+          :item-selected="scope.row"
+          dialog-delete-title="Eliminar usuario"
+          dialog-delete-body-text="¿Está seguro de eliminar este usuario?"
+          @confirmed-action="confirmedActionDeleteItemContext"
         />
-        <el-table-column label="Nombres y Apellidos">
-          <template
-            slot-scope="scope"
-          >{{ `${scope.row.name} ${scope.row.lastName} ${scope.row.lastNameAditional}` }}</template>
-        </el-table-column>
-        <el-table-column
-          label="Correo Electrónico"
-          prop="email"
-        />
-        <el-table-column
-          label="Acción"
-          align="center" width="120"
-        >
-          <template slot-scope="scope">
-            <el-button
-              circle
-              icon="el-icon-view"
-              size="small"
-              type="primary"
-              @click="onLoadModalViewRequestPending(scope.$index, scope.row)"
-            />
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <el-pagination
-        small
-        class="pt-4 text-xs-right"
-        :pager-size="100"
-        :page-size="pagesize"
-        layout="prev, pager, next, sizes"
-        :total="filteredData.length"
-        :current-page="currentPage"
-        @current-change="onChangeCurrentPage"
-        @size-change="onChangePageSize"
-      />
-    </el-container>
+      </template>
+    </el-table-column>
   </template>
-  <template v-slot:modals>
-    <modal-view-pending-request />
-  </template>
-</base-page>
+</base-page-actions>
 </template>
 
 <script>
+
+import pageActionsMixin from '@/mixins/pageActionsMixin'
+import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 import { mapActions, mapState } from 'vuex'
-import BasePage from '@/components/base/pages/BasePage.vue'
-import ModalViewPendingRequest from '@/components/users/ModalViewPendingRequest.vue'
 export default {
   components: {
-    BasePage,
-    ModalViewPendingRequest
+    GroupActionsButtons
   },
-
+  mixins: [pageActionsMixin],
   data () {
     return {
-      search: '',
-      pagesize: 10,
-      currentPage: 1
+      pageHeader: {
+        title: 'Usuarios pendientes',
+      },
+      modalMain: {
+        storeBase: 'requests',
+        folderName: ''
+      },
+
+      messageToast: {
+        baseName: 'REQUEST'
+      },
+
+      filterCriteriaProps: [
+        'name',
+        'lastName',
+        'lastNameAditional',
+        'institute',
+        'email',
+        'subject',
+      ]
     }
   },
 
@@ -95,67 +80,6 @@ export default {
     ...mapState({
       loadingPendingRequests: state => state.userRequests.loadingPendingRequests
     }),
-
-    filteredData: function () {
-      let search = this.search.toString().toLowerCase()
-      let pendingRequests = this.$store.state.userRequests.pendingRequests
-      return pendingRequests.filter(item => {
-        // checking name
-        if (
-          item.name &&
-          item.name
-            .toString()
-            .toLowerCase()
-            .includes(search)
-        ) {
-          return item
-        }
-        // checking lastName
-        if (
-          item.lastName &&
-          item.lastName
-            .toString()
-            .toLowerCase()
-            .includes(search)
-        ) {
-          return item
-        }
-        // checking lastNameAditional
-        if (
-          item.lastNameAditional &&
-          item.lastNameAditional
-            .toString()
-            .toLowerCase()
-            .includes(search)
-        ) {
-          return item
-        }
-        // checking institute
-        if (
-          item.institute &&
-          item.institute
-            .toString()
-            .toLowerCase()
-            .includes(search)
-        ) {
-          return item
-        }
-        // checking subject
-        if (
-          item.subject &&
-          item.subject
-            .toString()
-            .toLowerCase()
-            .includes(search)
-        ) {
-          return item
-        }
-      })
-    }
-  },
-
-  created () {
-    this.getPendingRequests()
   },
 
   methods: {

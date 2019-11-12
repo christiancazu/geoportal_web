@@ -1,65 +1,25 @@
 import {
-  REPLACE_PENDING_REQUESTS,
-  REPLACE_LOADING_PENDING_REQUESTS,
-  REPLACE_REJECTED_REQUESTS,
-  REPLACE_LOADING_REJECTED_REQUESTS,
-  REPLACE_CURRENT_PENDING_REQUEST
+  SET_DATA_CONTEXT,
+  SET_CURRENT_PAGE_ON_TABLE
+
 } from '../types/mutation-types'
 
 export const state = () => ({
-  pendingRequests: [],
-  loadingPendingRequests: false,
-  rejectedRequests: [],
-  loadingRejectedRequests: false,
-  currentPendingRequest: null
+  dataContext: [],
+  currentPageOnTable: 1
+
 })
 
 export const actions = {
-  async getPendingRequests ({ commit }, payload) {
-    commit('REPLACE_LOADING_PENDING_REQUESTS', { loading: true })
-
-    try {
-      const { data } = await this.$userRequestAPI.getPending(payload)
-      commit('REPLACE_PENDING_REQUESTS', { requests: data || [] })
-    } catch (error) {
-      if (!error.response) return
-    } finally {
-      commit('REPLACE_LOADING_PENDING_REQUESTS', { loading: false })
-    }
-  },
-
-  async getRejectedRequests ({ commit }, payload) {
-    commit('REPLACE_LOADING_REJECTED_REQUESTS', { loading: true })
-
-    try {
-      const { data } = await this.$userRequestAPI.getRejected(payload)
-      commit('REPLACE_REJECTED_REQUESTS', { requests: data || [] })
-    } catch (error) {
-      if (!error.response) return
-    } finally {
-      commit('REPLACE_LOADING_REJECTED_REQUESTS', { loading: false })
-    }
-  },
-
-  replaceCurrentPendingRequest ({ commit }, payload) {
-    commit('REPLACE_CURRENT_PENDING_REQUEST', payload)
+  async getDataContext ({ commit }) {
+    const { data } = await this.$requestAPI.getPending()
+    commit(SET_DATA_CONTEXT, { dataContext: data || [] })
   }
 }
 
 export const mutations = {
-  [REPLACE_PENDING_REQUESTS] (state, { requests }) {
-    state.pendingRequests = requests
-  },
-  [REPLACE_LOADING_PENDING_REQUESTS] (state, { loading }) {
-    state.loadingPendingRequests = loading
-  },
-  [REPLACE_REJECTED_REQUESTS] (state, { requests }) {
-    state.rejectedRequests = requests
-  },
-  [REPLACE_LOADING_REJECTED_REQUESTS] (state, { loading }) {
-    state.loadingRejectedRequests = loading
-  },
-  [REPLACE_CURRENT_PENDING_REQUEST] (state, { request }) {
-    state.currentPendingRequest = request
-  }
+  [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
+
+  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
+
 }

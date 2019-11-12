@@ -1,7 +1,7 @@
 import refreshAPI from '~/api/refresh'
 import publicAPI from '~/api/public'
 import userAPI from '~/api/user'
-import userRequestAPI from '~/api/userRequest'
+import requestAPI from '~/api/request'
 import vectorialLayerAPI from '~/api/vectorialLayer'
 import baseLayerAPI from '~/api/baseLayer'
 import WMSServiceAPI from '~/api/WMSService'
@@ -16,7 +16,7 @@ export default (ctx, inject) => {
   inject('refreshAPI', refreshAPI(ctx.$axios))
   inject('publicAPI', publicAPI(ctx.$axios))
   inject('userAPI', userAPI(ctx.$axios))
-  inject('userRequestAPI', userRequestAPI(ctx.$axios))
+  inject('requestAPI', requestAPI(ctx.$axios))
   inject('vectorialLayerAPI', vectorialLayerAPI(ctx.$axios))
   inject('baseLayerAPI', baseLayerAPI(ctx.$axios))
   inject('WMSServiceAPI', WMSServiceAPI(ctx.$axios))

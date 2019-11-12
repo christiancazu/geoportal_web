@@ -288,9 +288,8 @@
 </base-form>
 </template>
 <script>
-/* eslint-disable no-unused-vars */
-import BaseForm from '@/components/base/BaseForm'
-// import AddressUser from '@/components/AddressUser'
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+
 import {
   username, lastName, lastNameAditional, name, email, password, region, institute, subject
 } from '@/config/form.rules'
@@ -299,20 +298,14 @@ import { mapState, mapActions } from 'vuex'
 
 
 export default {
-  components: {
-    BaseForm
-  },
-
-  props: {
-    mountedOn: { type: String, required: true }
-  },
+  mixins: [modalBaseActionsMixin],
 
   data () {
     return {
       formTitle: 'Registrar usuario',
       context: {
         storeBase: 'users',
-        mountedOn: this.mountedOn,
+        mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'create',
       },
 
@@ -344,6 +337,7 @@ export default {
         passwordConfirmation: [
           {
             required: true,
+            // eslint-disable-next-line no-unused-vars
             validator: (rule, value, callback) => {
               if (value !== this.form.password) {
                 return callback(new Error('La contraseña no coincide'))
@@ -355,6 +349,7 @@ export default {
         districtId: [
           {
             required: true,
+            // eslint-disable-next-line no-unused-vars
             validator: (rule, value, callback) => {
               if (!this.form.province) {
                 return callback(new Error('Seleccione su Distrito'))
@@ -366,6 +361,7 @@ export default {
         province: [
           {
             required: true,
+            // eslint-disable-next-line no-unused-vars
             validator: (rule, value, callback) => {
               if (!this.form.region) {
                 return callback(new Error('Seleccione su Provincia'))
@@ -397,7 +393,7 @@ export default {
   },
 
   mounted () {
-    // this.getRegions()
+    this.getRegions()
   },
 
   methods: {
