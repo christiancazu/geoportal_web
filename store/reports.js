@@ -1,42 +1,30 @@
 import {
-  REPLACE_REPORTS,
-  REPLACE_LOADING_REPORTS,
-  REPLACE_CURRENT_REPORT
+  SET_DATA_CONTEXT,
+  SET_ITEM_CONTEXT,
+  SET_CURRENT_PAGE_ON_TABLE
 } from '../types/mutation-types'
-
 export const state = () => ({
-  reports: [],
-  loadingReports: false,
-  currentReport: null
+  dataContext: [],
+  itemContext: {},
+  currentPageOnTable: 1
 })
 
 export const actions = {
-  async getReports ({ commit }, payload) {
-    commit('REPLACE_LOADING_REPORTS', { loading: true })
-
-    try {
-      const { data } = await this.$reportAPI.index(payload)
-      commit('REPLACE_REPORTS', { reports: data || [] })
-    } catch (error) {
-      if (!error.response) return
-    } finally {
-      commit('REPLACE_LOADING_REPORTS', { loading: false })
-    }
+  async getDataContext ({ commit }) {
+    const { data } = await this.$reportAPI.get()
+    commit(SET_DATA_CONTEXT, { dataContext: data || [] })
   },
 
-  replaceCurrentReport ({ commit }, payload) {
-    commit('REPLACE_CURRENT_REPORT', payload)
-  }
+  async getItemContext ({ commit }, id) {
+    const { data } = await this.$reportAPI.getById(id)
+    commit(SET_ITEM_CONTEXT, { itemContext: data })
+  },
 }
 
 export const mutations = {
-  [REPLACE_REPORTS] (state, { reports }) {
-    state.reports = reports
-  },
-  [REPLACE_LOADING_REPORTS] (state, { loading }) {
-    state.loadingReports = loading
-  },
-  [REPLACE_CURRENT_REPORT] (state, { report }) {
-    state.currentReport = report
-  }
+  [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
+
+  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext),
+
+  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
 }

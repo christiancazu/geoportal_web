@@ -1,23 +1,22 @@
 <template>
 <base-modal
-  v-if="currentReport"
-  title="Detalle del reporte"
-  name-state="modalViewReport"
-  :show-modal="modalViewReport"
+  :form-title="formTitle"
+  :context="context"
 >
   <template v-slot:content>
 
     <div class="text-request">
-      <label class="text-uppercase">{{ `${currentReport.user}` }}</label>
-      <p class="text-uppercase ma-0">{{ `${currentReport.subject}` }}</p>
+      <label class="text-uppercase">{{ `${itemContext.user}` }}</label>
+      <p class="text-uppercase ma-0">{{ `${itemContext.subject}` }}</p>
     </div>
     <div class="my-3 text-request">
       <label class="text-uppercase">Descripción del reporte: </label>
-      <p class="text-capitalize ma-0"> {{ `${currentReport.description}` }}</p>
+      <p class="text-capitalize ma-0"> {{ `${itemContext.description}` }}</p>
     </div>
     <el-image
-      :src="currentReport.image"
+      :src="itemContext.image"
       fit="contain"
+      class="image-report"
     >
       <div
         slot="placeholder"
@@ -30,39 +29,39 @@
   </template>
 </base-modal>
 </template>
+
 <script>
-import { mapState, mapActions } from 'vuex'
 import BaseModal from '@/components/base/BaseModal.vue'
+
+import { mapState } from 'vuex'
 
 export default {
   components: {
     BaseModal
   },
-  data () {
-    return {
-    }
+
+  props: {
+    // eslint-disable-next-line vue/prop-name-casing
+    modalBaseActionsMixin_mountedOn: { type: String, required: true }
   },
 
+  data () {
+    return {
+      formTitle: 'Detalle del reporte',
 
+      context: {
+        mountedOn: this.modalBaseActionsMixin_mountedOn
+      },
+
+      storeBase: 'reports'
+    }
+  },
 
   computed: {
     ...mapState({
-      currentReport: state => state.reports.currentReport,
-      modalViewReport: state => state.modalsVisibilities.modalViewReport
-    })
-  },
-
-  watch: {
-    modalViewReport: function (newState, /*oldState*/) {
-      if (!newState) {
-        return false
+      itemContext (state) {
+        return state[this.storeBase].itemContext
       }
-    }
-  },
-
-  methods: {
-    ...mapActions({
-      getPendingRequests: 'reports/getPendingRequests',
     })
   }
 }

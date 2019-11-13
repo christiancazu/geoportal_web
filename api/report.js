@@ -1,9 +1,18 @@
+import { BUG_REPORT } from '@/config/endpoints'
+
 export default $axios => ({
-  index (payload = {}) {
+  get (payload = {}) {
     return $axios({
-      url: 'bug_report/',
+      url: `${BUG_REPORT}/`,
       method: 'GET',
-      data: payload.data || {}
+      params: payload.params || {}
     })
-  }
+  },
+  getById (payload = {}) {
+    return $axios({
+      url: `${BUG_REPORT}/${payload.id}/`,
+      method: 'GET',
+      params: payload.params || {}
+    })
+  },
 })

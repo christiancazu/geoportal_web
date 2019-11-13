@@ -27,7 +27,7 @@
       size="small"
       @click="closeModal()"
     >
-      CANCELAR
+      CERRAR
     </el-button>
     <el-button
       type="primary"
@@ -57,6 +57,7 @@
 <script>
 /* eslint-disable no-unused-vars */
 import { mapActions } from 'vuex'
+
 import { SET_PUBLISHED_ITEM_CONTEXT } from '@/types/mutation-types'
 
 export default {
@@ -70,7 +71,6 @@ export default {
     formTitle: {
       type: String, default: ''
     },
-
     context: {
       type: Object,
       default: () => ({
