@@ -50,6 +50,8 @@ import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 
 import { mapState } from 'vuex'
 
+import { name } from '@/config/form.rules'
+
 export default {
 
   mixins: [modalBaseActionsMixin],
@@ -74,10 +76,7 @@ export default {
         description: '',
       },
       rules: {
-        name: {
-          required: true,
-          message: 'El nombre de servicio es requerido'
-        }
+        name: name('autor')
       }
     }
   },

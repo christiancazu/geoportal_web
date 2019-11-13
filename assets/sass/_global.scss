@@ -1,11 +1,10 @@
-
 html {
   min-height: 100%;
   box-sizing: border-box;
 }
 
 body {
-  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
   margin-bottom: 0px;
   margin-right: 0px;
   margin-left: 0px;
@@ -19,12 +18,15 @@ body {
 .font-weight-bold {
   font-weight: 700 !important;
 }
+
 .text-lowercase {
   text-transform: lowercase !important;
 }
+
 .text-none {
   text-transform: none !important;
 }
+
 .text-uppercase {
   text-transform: uppercase !important;
 }
@@ -42,7 +44,8 @@ label {
   line-height: 20px;
   box-sizing: border-box;
 }
-.space-between{
+
+.space-between {
   display: flex;
   justify-content: space-between;
 }
@@ -50,6 +53,7 @@ label {
 .border-none {
   border: none !important;
 }
+
 .el-divider--horizontal {
   margin: 0px !important;
 }
@@ -62,9 +66,11 @@ label {
   position: relative;
   overflow: hidden;
 }
+
 .avatar-uploader .el-upload:hover {
   border-color: #409EFF;
 }
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -73,6 +79,7 @@ label {
   line-height: 128px !important;
   text-align: center;
 }
+
 .avatar {
   width: 128px;
   height: 128px;
@@ -83,6 +90,7 @@ label {
   width: 100%;
   height: 100%;
 }
+
 .el-upload-dragger .el-upload__text {
   line-height: 20px;
 }
@@ -97,6 +105,7 @@ label {
   display: flex;
   justify-content: center;
 }
+
 .el-select {
   width: 100% !important;
 }
@@ -121,11 +130,14 @@ label {
 .el-submenu .el-menu-item {
   padding-left: 3.3rem !important;
 }
-.el-dialog__body{
+
+.el-dialog__body {
   padding-bottom: 20px !important;
   padding-top: 20px !important;
 }
-.el-dialog__header, .el-message-box__header {
+
+.el-dialog__header,
+.el-message-box__header {
   padding-bottom: 15px !important;
   padding-left: 15px !important;
   padding-right: 15px !important;
@@ -133,30 +145,39 @@ label {
   border-bottom: 1px solid #EBEEF5;
   font-weight: bold;
 }
+
 .el-dialog__footer {
   border-top: 1px solid #EBEEF5;
   padding: 10px 10px !important;
 }
+
 .el-message-box--center {
   padding-bottom: 10px !important;
 }
+
 .el-message-box__content {
   padding-bottom: 0px !important;
   padding-top: 0px !important;
 }
+
 .el-message-box__message {
   padding-bottom: 0.7rem;
   padding-top: 0.7rem;
 }
 
-.el-select .el-input.is-disabled .el-input__inner, .el-input.is-disabled .el-input__inner, .el-textarea.is-disabled .el-textarea__inner {
-  border:1px dotted #b3b3b3  !important;
+.el-select .el-input.is-disabled .el-input__inner,
+.el-input.is-disabled .el-input__inner,
+.el-textarea.is-disabled .el-textarea__inner {
+  border: 1px dotted #b3b3b3 !important;
   background-color: transparent !important;
   cursor: default !important;
   color: #b3b3b3 !important;
   user-select: none;
 }
-.el-input.is-disabled .el-input__icon, .el-pagination button:disabled, .el-switch.is-disabled .el-switch__core {
+
+.el-input.is-disabled .el-input__icon,
+.el-pagination button:disabled,
+.el-switch.is-disabled .el-switch__core {
   cursor: default !important;
 }
 
@@ -168,6 +189,7 @@ label {
 .el-popover {
   width: 400px !important;
 }
+
 .text-nowrap {
   width: 160px;
   white-space: nowrap;
@@ -191,14 +213,17 @@ label {
   display: flex;
   margin-bottom: 1rem;
 }
+
 .demo-image__error {
   height: 100%;
-  
+
   .image-slot {
     font-size: 30px;
   }
 }
-.demo-image__error .image-slot, .demo-image__placeholder .image-slot {
+
+.demo-image__error .image-slot,
+.demo-image__placeholder .image-slot {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -207,24 +232,30 @@ label {
   background: #f5f7fa;
   color: #909399;
 }
+
 .h-100 {
   height: 100%;
 }
+
 .w-100 {
   width: 100%;
 }
 
-p, .p {
+p,
+.p {
   font-size: 14px;
   color: #606266; // #5e6d82;
   line-height: 1.5em;
 }
+
 .br {
   border-right: 1px solid #EBEEF5;
 }
+
 .bt {
   border-top: 1px solid #EBEEF5;
 }
+
 .btn-block {
   width: 100%;
   font-weight: bold !important;
@@ -236,6 +267,7 @@ p, .p {
 .page-leave-active {
   transition: opacity 0.5s;
 }
+
 .page-enter,
 .page-leave-active {
   opacity: 0;
@@ -243,4 +275,34 @@ p, .p {
 
 .fit-page-body {
   width: fit-page-body;
+}
+
+.text-request {
+  line-height: 1.2rem;
+  letter-spacing: 0.4px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+// dialog
+.dialog-responsive .el-dialog {
+  @media (max-width: 992px) {
+    width: calc(75% - 1rem);
+  }
+
+  @media (max-width: 768px) {
+    width: calc(100% - 1rem);
+  }
+}
+
+// satelitals images
+.satelital-metadata {
+  height: 180px;
+  overflow-y: scroll
+}
+
+.satelital-image-preview {
+  height: 210px;
 }

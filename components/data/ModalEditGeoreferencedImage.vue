@@ -1,66 +1,106 @@
 <template>
-<base-modal
-  title="Editar imagen georeferenciada"
-  name-state="modalEditgeoreferencedImage"
-  :show-modal="modalEditGeoreferencedImage"
+<base-form
+  :form-title="formTitle"
+  :form="form"
+  :rules="rules"
+  :context="context"
+  :message-toast="messageToast"
 >
   <template v-slot:content>
-    <el-form
-      ref="form"
-      label-position="top"
-      status-icon
-      :model="form"
-      :rules="rules"
-      label-width="120px"
-      class="demo-ruleForm"
-      :disabled="processingForm"
-      @submit.prevent="submitForm"
-    />
+    <!-- name -->
+    <el-form-item
+      label="Nombres"
+      prop="name"
+    >
+      <el-input
+        v-model="form.name"
+        type="text" autocomplete="off"
+      />
+    </el-form-item>
+    <!-- name -->
+    <el-form-item
+      label="URL"
+      prop="url"
+    >
+      <el-input
+        v-model="form.webUrl"
+        type="text" autocomplete="off"
+      />
+    </el-form-item>
+    <!-- description -->
+    <el-form-item
+      label="Descripción"
+      prop="description"
+    >
+      <el-input
+        v-model="form.description"
+        type="textarea"
+        :rows="3"
+        autocomplete="off"
+        :maxlength="300"
+        show-word-limit
+      />
+    </el-form-item>
   </template>
-  <template v-slot:actions>
-    <el-button
-      size="small"
-      :disabled="processingForm"
-      @click="$_modalVisibilityMixin_close('modalEditgeoreferencedImage')"
-    >CANCELAR</el-button>
-    <el-button
-      size="small"
-      :loading="processingForm"
-      type="primary"
-      native-type="submit"
-      @click.prevent="submitForm"
-    >GUARDAR</el-button>
-  </template>
-</base-modal>
+</base-form>
 </template>
+
 <script>
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+
 import { mapState } from 'vuex'
-import BaseModal from '@/components/base/BaseModal.vue'
+
+import { title } from '@/config/form.rules'
 
 export default {
-  components: {
-    BaseModal
-  },
+
+  mixins: [modalBaseActionsMixin],
 
   data () {
     return {
-      form: {},
-      processingForm: false,
+      formTitle: 'Actualizar imágen georeferencial',
 
-      rules: {}
+      context: {
+        storeBase: 'georeferencedImages',
+        mountedOn: this.modalBaseActionsMixin_mountedOn,
+        storeAction: 'update'
+      },
+      messageToast: {
+        baseName: 'IMAGE',
+        action: 'UPDATED'
+      },
+      form: {
+        title: '',
+        description: '',
+      },
+      rules: {
+        title
+      }
     }
   },
 
   computed: {
     ...mapState({
-      modalEditGeoreferencedImage: state => state.modalsVisibilities.modalEditGeoreferencedImage
+      itemContext (state) {
+        return state[this.context.storeBase].itemContext
+      }
     })
   },
 
+  watch: {
+    itemContext () {
+      this.assignFormFields()
+    }
+  },
+
+  created () {
+    this.assignFormFields()
+  },
+
+  methods: {
+    assignFormFields () {
+      Object.keys(this.form).forEach(key => (this.form[key] = this.itemContext[key]))
+    }
+  }
 }
 </script>
-<style lang="scss">
-.map {
-  height: 200px;
-}
-</style>

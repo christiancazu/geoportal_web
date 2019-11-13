@@ -121,6 +121,7 @@ import {
 } from 'vuex'
 
 import {
+  name,
   url,
   authorId,
   categoryId
@@ -166,10 +167,7 @@ export default {
         categoryId: null
       },
       rules: {
-        name: {
-          required: true,
-          message: 'El nombre de servicio es requerido'
-        },
+        name: name('servicio'),
         url,
         authorId,
         categoryId

@@ -1,60 +1,67 @@
 <template>
-<base-modal
-  title="Nueva imagen georeferenciada"
-  name-state="modalAddGeoreferencedImage"
-  :show-modal="modalAddGeoreferencedImage"
+<base-form
+  :form-title="formTitle"
+  :form="form"
+  :rules="rules"
+  :context="context"
+  :message-toast="messageToast"
 >
   <template v-slot:content>
-    <el-form
-      ref="form"
-      label-position="top"
-      status-icon
-      :model="form"
-      :rules="rules"
-      label-width="120px"
-      class="demo-ruleForm"
-      :disabled="processingForm"
-      @submit.prevent="submitForm"
-    />
+    <el-form-item
+      label="Título"
+      prop="title"
+    >
+      <el-input
+        v-model="form.name"
+        type="text" autocomplete="off"
+      />
+    </el-form-item>
+    <el-form-item
+      label="Descripción"
+      prop="description"
+    >
+      <el-input
+        v-model="form.description"
+        type="textarea"
+        :rows="3"
+        autocomplete="off"
+        :maxlength="300"
+        :show-word-limit="true"
+      />
+    </el-form-item>
   </template>
-  <template v-slot:actions>
-    <el-button
-      size="small"
-      :disabled="processingForm"
-      @click="$_modalVisibilityMixin_close('modalAddGeoreferencedImage')"
-    >CANCELAR</el-button>
-    <el-button
-      size="small"
-      :loading="processingForm"
-      type="primary"
-      native-type="submit"
-      @click.prevent="submitForm"
-    >GUARDAR</el-button>
-  </template>
-</base-modal>
+</base-form>
 </template>
 <script>
-import { mapState } from 'vuex'
-import BaseModal from '@/components/base/BaseModal.vue'
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+
+import { title } from '@/config/form.rules'
 
 export default {
-  components: {
-    BaseModal
-  },
+  mixins: [modalBaseActionsMixin],
 
   data () {
     return {
-      processingForm: false,
-      form: {},
-      rules: {}
+      formTitle: 'Registrar imágen georeferencial',
+      context: {
+        storeBase: 'georeferencedImages',
+        mountedOn: this.modalBaseActionsMixin_mountedOn,
+        storeAction: 'create',
+      },
+      messageToast: {
+        baseName: 'IMAGE',
+        action: 'REGISTERED'
+      },
+      form: {
+        title: '',
+        description: '',
+        // #TODO: imagen
+      },
+      rules: {
+        title,
+      }
     }
-  },
-
-  computed: {
-    ...mapState({
-      modalAddGeoreferencedImage: state => state.modalsVisibilities.modalAddGeoreferencedImage
-    })
-  },
+  }
 }
 </script>
 <style lang="scss">

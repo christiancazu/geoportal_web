@@ -161,7 +161,8 @@ export default {
         url: '',
         authorId: null,
         isEnabled: false,
-        categoryId: null
+        categoryId: null,
+        isPublic: true
       },
 
       rules: {

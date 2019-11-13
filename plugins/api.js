@@ -11,6 +11,7 @@ import reportAPI from '~/api/report'
 import groupLayerAPI from '~/api/groupLayer'
 import rasterLayerAPI from '~/api/rasterLayer'
 import georeferencedImageAPI from '~/api/georeferencedImage'
+import satelitalImageAPI from '~/api/satelitalImage'
 
 export default (ctx, inject) => {
   inject('refreshAPI', refreshAPI(ctx.$axios))
@@ -26,4 +27,5 @@ export default (ctx, inject) => {
   inject('groupLayerAPI', groupLayerAPI(ctx.$axios))
   inject('rasterLayerAPI', rasterLayerAPI(ctx.$axios))
   inject('georeferencedImageAPI', georeferencedImageAPI(ctx.$axios))
+  inject('satelitalImageAPI', satelitalImageAPI(ctx.$axios))
 }

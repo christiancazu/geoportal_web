@@ -96,6 +96,12 @@
       >
         Imágenes Georeferenciales
       </el-menu-item>
+      <el-menu-item
+        :route="{ path: '/managementData/satelitalsImages' }"
+        index="/managementData/satelitalsImages"
+      >
+        Imágenes Satelitales
+      </el-menu-item>
     </el-submenu>
 
     <el-submenu index="5">

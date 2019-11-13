@@ -4,6 +4,7 @@
   :close-on-click-modal="false"
   :visible="$store.state.modalsVisibilities[context.mountedOn].visibility"
   top="2vh"
+  class="dialog-responsive"
   @close="closeModal()"
 >
   <el-form

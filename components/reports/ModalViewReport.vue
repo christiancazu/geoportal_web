@@ -1,5 +1,5 @@
 <template>
-<base-modal
+<base-preview-item
   :form-title="formTitle"
   :context="context"
 >
@@ -27,17 +27,17 @@
     </el-image>
 
   </template>
-</base-modal>
+</base-preview-item>
 </template>
 
 <script>
-import BaseModal from '@/components/base/BaseModal.vue'
+import BasePreviewItem from '@/components/base/BasePreviewItem.vue'
 
 import { mapState } from 'vuex'
 
 export default {
   components: {
-    BaseModal
+    BasePreviewItem
   },
 
   props: {
@@ -66,12 +66,3 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.text-request {
-  line-height: 1.2rem;
-  letter-spacing: 0.4px;
-}
-.d-flex {
-  display: flex;
-}
-</style>

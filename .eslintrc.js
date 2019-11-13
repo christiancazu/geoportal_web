@@ -37,7 +37,7 @@ module.exports = {
     'no-empty-pattern': 'off',
     'no-empty': ['error', { allowEmptyCatch: true }],
     'no-unused-vars': ['error', { args: 'all' }],
-    semi: ['error', 'never'],
+    'semi': ["error", "never"],
     indent: [
       'error',
       2,
