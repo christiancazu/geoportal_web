@@ -74,6 +74,7 @@
 
 <script>
 import pageActionsMixin from '@/mixins/pageActionsMixin'
+
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
 export default {

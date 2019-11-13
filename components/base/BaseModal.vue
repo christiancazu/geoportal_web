@@ -1,53 +1,47 @@
 <template>
 <el-dialog
-  :title="title"
+  :title="formTitle"
   :close-on-click-modal="false"
-  :visible.sync="showModalNow"
-  :append-to-body="appendToBody"
+  :visible="$store.state.modalsVisibilities[context.mountedOn].visibility"
   top="2vh"
+  @close="closeModal()"
 >
   <slot name="content" />
 
+  <!-- actions -->
   <div class="text-xs-center">
-    <slot name="actions" />
+    <el-button
+      size="small"
+      @click="closeModal()"
+    >
+      CERRAR
+    </el-button>
   </div>
-
-  <slot name="modals" />
 
 </el-dialog>
 </template>
 
 <script>
-
 export default {
   props: {
-    nameState: {
-      type: String,
-      default: ""
+    formTitle: {
+      type: String, default: ''
     },
-    title: {
-      type: String,
-      default: ""
+    context: {
+      type: Object,
+      default: () => ({
+        storeBase: { type: String, required: true },
+        mountedOn: { type: String, required: true },
+        storeAction: { type: String, required: true }
+      })
     },
-    showModal: {
-      type: Boolean,
-      default: false
-    },
-    appendToBody: {
-      type: Boolean,
-      default: false
-    }
   },
 
-  computed: {
-    showModalNow: {
-      get () {
-        return this.showModal
-      },
-      set () {
-        this.$_modalVisibilityMixin_close(this.nameState)
-      }
+  methods: {
+    closeModal () {
+      this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
     }
   }
+
 }
 </script>

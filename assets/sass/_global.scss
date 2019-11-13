@@ -187,11 +187,17 @@ label {
 }
 
 // image 
+.image-report {
+  display: flex;
+  margin-bottom: 1rem;
+}
 .demo-image__error {
   height: 100%;
+  
   .image-slot {
-  font-size: 30px;
-}}
+    font-size: 30px;
+  }
+}
 .demo-image__error .image-slot, .demo-image__placeholder .image-slot {
   display: flex;
   justify-content: center;
@@ -233,4 +239,8 @@ p, .p {
 .page-enter,
 .page-leave-active {
   opacity: 0;
+}
+
+.fit-page-body {
+  width: fit-page-body;
 }
