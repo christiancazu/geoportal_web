@@ -55,6 +55,13 @@ export const categoryId = [
   }
 ]
 
+export const districtId = [
+  {
+    required: true,
+    message: 'El distrito es requerido'
+  }
+]
+
 export const name = name => [
   {
     required: true,
@@ -86,7 +93,7 @@ export const username = [{
 }]
 export const lastName = [{
   required: true,
-  message: 'El nombre es requerido'
+  message: 'El primer apellido es requerido'
 }]
 export const lastNameAditional = [{
   required: true,

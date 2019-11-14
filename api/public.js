@@ -5,7 +5,7 @@ export default $axios => ({
     return $axios({
       url: `${PUBLIC}/region/`,
       method: 'GET',
-      params: payload.params || {}
+      params: payload || {}
     })
   },
 
@@ -13,7 +13,7 @@ export default $axios => ({
     return $axios({
       url: `${PUBLIC}/province/`,
       method: 'GET',
-      params: payload.params || {}
+      params: payload || {}
     })
   },
 
@@ -21,7 +21,7 @@ export default $axios => ({
     return $axios({
       url: `${PUBLIC}/district/`,
       method: 'GET',
-      params: payload.params || {}
+      params: payload || {}
     })
   }
 })

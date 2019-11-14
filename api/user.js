@@ -16,6 +16,13 @@ export default $axios => ({
       data: payload.data || {}
     })
   },
+  getProfile (payload = {}) {
+    return $axios({
+      url: `${USER}/profile/`,
+      method: 'GET',
+      data: payload.data || {}
+    })
+  },
   create (payload = {}) {
     return $axios({
       url: `${USER}/`,
