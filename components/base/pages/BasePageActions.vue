@@ -58,7 +58,11 @@
 <script>
 import BasePage from '@/components/base/pages/BasePage'
 
-import { SET_CURRENT_PAGE_ON_TABLE } from '@/types/mutation-types'
+import {
+  SET_CURRENT_PAGE_ON_TABLE,
+  DISABLE_LOADING_TABLE,
+  ENABLE_LOADING_TABLE
+} from '@/types/mutation-types'
 
 import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
 
@@ -185,7 +189,9 @@ export default {
   methods: {
     ...mapActions({
       async getDataContext () {
+        this.$store.commit(`spinners/${ENABLE_LOADING_TABLE}`)
         await this.$store.dispatch(`${this.modalMain.storeBase}/getDataContext`)
+        this.$store.commit(`spinners/${DISABLE_LOADING_TABLE}`)
       },
       async getItemContext ({}, id) {
         await this.$store.dispatch(`${this.modalMain.storeBase}/getItemContext`, { id })

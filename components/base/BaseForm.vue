@@ -59,7 +59,11 @@
 /* eslint-disable no-unused-vars */
 import { mapActions } from 'vuex'
 
-import { SET_PUBLISHED_ITEM_CONTEXT } from '@/types/mutation-types'
+import {
+  SET_PUBLISHED_ITEM_CONTEXT,
+  ENABLE_PROCESSING_FORM,
+  DISABLE_PROCESSING_FORM
+} from '@/types/mutation-types'
 
 export default {
   props: {
@@ -118,23 +122,30 @@ export default {
       let isFormValid = false
 
       await this.$refs.form.validate(result => isFormValid = result)
+
       if (isFormValid) {
+        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+
         const formData = this.objectToFormData()
 
         try {
           await this.submitItemContext(formData)
 
-          if (this.context.storeAction === 'create') this.resetForm()
+          if (this.context.storeAction === 'create') {
+            this.resetForm()
+          }
+
           this.$toast.success(this.$SUCCESS[this.messageToast.baseName][this.messageToast.action])
 
           await this.getDataContext()
-          // this.$_modalVisibilityMixin_close(this.context.modalStateName)
         }
         catch (e) {}
+        this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
       }
     },
 
     async submitPublish () {
+      this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
       try {
         const formData = new FormData()
         formData.append('pk', this.form.id)
@@ -145,10 +156,9 @@ export default {
         this.canPublish = false
 
         await this.getDataContext()
-        // # consult if is neccesary close modal when is published
-        // this.$_modalVisibilityMixin_close(this.context.modalStateName)
       }
       catch (e) {}
+      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
     },
 
     objectToFormData () {

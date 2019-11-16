@@ -1,35 +1,14 @@
 import Vue from 'vue'
-// import { VECTORIAL_LAYER } from '@/config/endpoints'
 
-export default ({ $axios, store }) => {
-  // timout for request
-  $axios.defaults.timeout = 30000
+export default ({ $axios }) => {
+  // timout for request in miliseconds
+  $axios.defaults.timeout = 30000 // ms
 
-  $axios.onRequest(config => {
-    if (config.method === 'get') {
-      // getting the endpoint name to assign his own spinner loader state
-      // const endpoints = config.url.replace(/config.baseURL|.$/, '')
-      // switch (endpoints) {
-      //   case VECTORIAL_LAYER:
-      //     store.commit('spinners/ENABLE_LOADING_TABLE')
-      //     break;
-      //   default:
-      //     break;
-      // }
-      // store.commit('spinners/ENABLE_LOADING_TABLE')
-    } else {
-      store.commit('spinners/ENABLE_PROCESSING_FORM')
-    }
-  })
+  // $axios.onRequest(config => {})
 
-  $axios.onResponse((/* response */) => {
-    store.commit('spinners/DISABLE_PROCESSING_FORM')
-    store.commit('spinners/DISABLE_LOADING_TABLE')
-  })
+  // $axios.onResponse(response => {})
 
   $axios.onError(error => {
-    store.commit('spinners/DISABLE_PROCESSING_FORM')
-    store.commit('spinners/DISABLE_LOADING_TABLE')
     const code = parseInt(error.response && error.response.status)
 
     // handle message error from server or default error message

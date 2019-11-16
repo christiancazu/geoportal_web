@@ -23,8 +23,8 @@
         :disabled="$store.state.spinners.processingForm"
         :show-file-list="false"
         name="image"
-        :http-request="launchUploadAvatar"
-        :before-upload="beforeAvatarUpload"
+        :on-success="handleImageSuccess"
+        :before-upload="beforeImageUpload"
       >
         <img
           v-if="form.image"
@@ -225,7 +225,15 @@
 
 import BasePage from '@/components/base/pages/BasePage'
 
-import { mapState, mapActions } from 'vuex'
+import {
+  ENABLE_PROCESSING_FORM,
+  DISABLE_PROCESSING_FORM
+} from '@/types/mutation-types.js'
+
+import {
+  mapState,
+  mapActions
+} from 'vuex'
 
 import {
   username,
@@ -260,18 +268,15 @@ export default {
         name: username,
         districtId
       },
-
       file: {
         availableExtensions: [
           '.png',
           '.jpg',
           '.jpeg'
         ],
-        maxSize: 262144 // (bytes units) => 262144 bytes = 2mb
+        maxSize: 262144 // (bytes units) ~ 262144 bytes = 2mb
       },
       extensionsString: '',
-
-
       imageSelected: null
     }
   },
@@ -319,64 +324,44 @@ export default {
       Object.keys(this.form).forEach(key => (this.form[key] = this.profile[key]))
     },
 
-    setFormField (data) {
-      this.profile = data
-      this.profile.email = this.user.email
-
-      this.form.name = data.name
-      this.form.lastName = data.lastName
-      this.form.lastNameAditional = data.lastNameAditional
-      this.form.status = data.status
-      this.form.districtId = data.districtId || ''
-
-      this.form.institute = data.institute
-      this.form.subject = data.subject
-      this.imageSelected = data.image
-
-      this.getProvinces({ params: { id: data.regionId } })
-      this.getDistricts({ params: { id: data.provinceId } })
-    },
-
     async submitForm () {
       let isFormValid = false
 
       await this.$refs.form.validate(result => isFormValid = result)
 
       if (isFormValid) {
-        console.warn(this.form)
+        console.warn('#TODO: CHECK PROFILE UPDATE ENDOPOINT')
+        try {
+          this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+          const formData = this.objectToFormData()
+
+          await this.$store.dispatch('users/updateItemContext', {data: formData})
+
+          this.$toast.success(this.$SUCCESS.USERS.UPDATED)
+        }
+        catch (e) {}
+        this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
       }
     },
 
-    modifyProfile () {
-      const data = new FormData()
-      let keys = Object.keys(this.form)
-      keys.forEach(val => {
-        data.append(val, this.form[val])
-      })
+    objectToFormData () {
+      const formData = new FormData()
 
-      return new Promise((resolve, reject) => {
-        this.$userAPI
-          .putProfile({ data })
-          .then(response => {
-            this.processingForm = false
-            if (response.data.status)
-              this.$toast.success('Su perfil ha sido actualizado con éxito')
-
-            resolve(response)
-          })
-          .catch(error => {
-            this.processingForm = false
-            reject(error)
-          })
+      Object.keys(this.form).forEach(key => {
+        formData.append(key, this.form[key])
       })
+      formData.append('uploadImage', this.imageSelected)
+
+      return formData
     },
 
-    launchUploadAvatar (option) {
-      this.imageSelected = URL.createObjectURL(option.file)
-      this.form.image = option.file
+    // eslint-disable-next-line no-unused-vars
+    handleImageSuccess (res, file) {
+      this.imageSelected = file
+      this.form.image = URL.createObjectURL(file.raw)
     },
 
-    beforeAvatarUpload (currentFile) {
+    beforeImageUpload (currentFile) {
       const currentExtension = `.${currentFile.name.split('.').pop()}`
 
       const isExtensionValid = this.file.availableExtensions.includes(currentExtension)

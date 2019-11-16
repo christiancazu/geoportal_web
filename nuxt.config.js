@@ -55,12 +55,11 @@ export default {
     '~/plugins/element-ui',
     '~/plugins/axios',
     '~/plugins/api',
-    '~/plugins/modalVisibilityMixin',
     '~/plugins/messages'
   ],
 
   modules: [
-    '@nuxtjs/toast', //
+    '@nuxtjs/toast',
     '@nuxtjs/axios',
     '@nuxtjs/auth'
   ],

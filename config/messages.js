@@ -9,20 +9,6 @@ export const ERRORS = {
 export const SUCCESS = {
   WELLCOME: 'Bienvenido al Geoportal UNAT',
 
-  USERS: {
-    REGISTERED: 'El usuario se registró con éxito',
-    UPDATED: 'El usuario se actualizó con éxito',
-    DELETED: 'El usuario se desabilitado con éxito'
-  },
-  REQUEST: {
-    APPROVED: 'La solicitud ha sido aprobado con éxito',
-    REJECT: 'La solicitud ha sido rechazado con éxito'
-  },
-  SERVICE: {
-    REGISTERED: 'El servicio se registro con éxito',
-    UPDATED: 'El servicio se actualizó con éxito',
-    DELETED: 'El servicio se eliminó con éxito'
-  },
   AUTHOR: {
     REGISTERED: 'El autor se registro con éxito',
     UPDATED: 'El autor se actualizó con éxito',
@@ -33,10 +19,30 @@ export const SUCCESS = {
     UPDATED: 'La categoría se actualizó con éxito',
     DELETED: 'La categoría se eliminó con éxito'
   },
+  IMAGE: {
+    DELETED: 'La imágen se eliminó con éxito',
+    PUBLISHED: 'La imágen se publicó con éxito',
+    REGISTERED: 'La imágen se registro con éxito',
+    UPDATED: 'La imágen se actualizó con éxito'
+  },
   LAYER: {
     REGISTERED: 'La capa se registró con éxito',
     PUBLISHED: 'La capa se publicó con éxito',
     UPDATED: 'La capa se actualizó con éxito',
     DELETED: 'La capa se eliminó con éxito'
+  },
+  REQUEST: {
+    APPROVED: 'La solicitud ha sido aprobado con éxito',
+    REJECT: 'La solicitud ha sido rechazado con éxito'
+  },
+  SERVICE: {
+    REGISTERED: 'El servicio se registro con éxito',
+    UPDATED: 'El servicio se actualizó con éxito',
+    DELETED: 'El servicio se eliminó con éxito'
+  },
+  USERS: {
+    REGISTERED: 'El usuario se registró con éxito',
+    UPDATED: 'El usuario se actualizó con éxito',
+    DELETED: 'El usuario se desabilitado con éxito'
   }
 }

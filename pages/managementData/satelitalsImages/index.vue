@@ -71,6 +71,8 @@
 import BasePageBasic from '@/components/base/pages/BasePageBasic'
 import BaseBtnConfirm from '@/components/base/BaseBtnConfirm'
 
+import { mapActions } from 'vuex'
+
 export default {
   components: {
     BasePageBasic,
@@ -94,8 +96,20 @@ export default {
   },
 
   methods: {
-    publish ({ itemSelected }) {
-      console.warn(itemSelected)
+    ...mapActions({
+      publishItemContext: 'satelitalsImages/publishItemContext'
+    }),
+
+
+    async publish ({ itemSelected }) {
+      const formData = new FormData()
+      formData.append('pk', itemSelected.id)
+
+      console.warn('#TODO CHECK PUBLISH SATELITAL IMAGES ENDPOINT', itemSelected)
+      try {
+        await this.publishItemContext({ data: formData})
+        this.$toast.success(this.$SUCCESS.IMAGE.PUBLISHED)
+      } catch (e) {}
     }
   },
 
