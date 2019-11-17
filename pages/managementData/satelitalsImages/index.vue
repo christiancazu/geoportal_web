@@ -44,8 +44,8 @@
             :item-selected="scope.row"
             :disabled="scope.row.isPublished"
             accion="shared"
-            title="Publicar imágen satelital"
-            body-text="¿Desea publicar esta imágen?"
+            title="Publicar imagen satelital"
+            body-text="¿Desea publicar esta imagen?"
             @confirmed-action="publish"
           />
         </el-tooltip>

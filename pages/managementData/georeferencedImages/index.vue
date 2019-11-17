@@ -61,7 +61,7 @@ export default {
     return {
       pageHeader: {
         title: 'Imágenes georeferenciales',
-        btnAddName: 'Nueva imágen georeferencial'
+        btnAddName: 'Nueva imagen georeferencial'
       },
       // main modal settings
       modalMain: {

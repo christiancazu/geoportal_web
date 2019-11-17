@@ -106,7 +106,7 @@ export default {
 
   data () {
     return {
-      formTitle: 'Detalle de imágen satelital',
+      formTitle: 'Detalle de imagen satelital',
 
       context: {
         mountedOn: this.modalBaseActionsMixin_mountedOn

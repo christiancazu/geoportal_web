@@ -58,7 +58,7 @@ export default {
 
   data () {
     return {
-      formTitle: 'Actualizar imágen georeferencial',
+      formTitle: 'Actualizar imagen georeferencial',
 
       context: {
         storeBase: 'georeferencedImages',

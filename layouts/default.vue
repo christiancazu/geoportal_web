@@ -12,6 +12,7 @@
       @is-collapse="onChangeCollapse"
     />
     <el-main
+      id="main-page"
       class="pa-0"
       :class="{'main-container': loggedIn}"
     >
@@ -77,6 +78,9 @@ export default {
   methods: {
     onChangeCollapse (value) {
       this.isCollapse = value
+      // adjust margin left of main-page when collapse sidebar
+      const $basePage = document.getElementById('main-page')
+      $basePage.classList.toggle('on-collapse-sidebar')
     }
   }
 }
