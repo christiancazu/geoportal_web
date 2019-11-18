@@ -32,7 +32,7 @@ export default $axios => ({
   },
   update (payload = {}) {
     return $axios({
-      url: `${USER}/${payload.data.get('id')}/`,
+      url: `${USER}/profile_update/`,
       method: 'PUT',
       data: payload.data || {}
     })
