@@ -28,8 +28,8 @@
             :before-upload="beforeAvatarUpload"
           >
             <img
-              v-if="imageSelected"
-              :src="imageSelected"
+              v-if="form.image"
+              :src="form.image"
               class="avatar"
             >
             <i
@@ -277,11 +277,12 @@ export default {
         email: '',
         userTypeId: '',
         provinceId: '',
-        regionId:'',
+        regionId: '',
         districtId: '',
         name: '',
         lastName: '',
         lastNameAditional: '',
+        image: null,
         uploadImage: '',
         status: 'AC'
       },
@@ -338,12 +339,12 @@ export default {
     }),
 
     assignFormFields () {
-      Object.keys(this.form).forEach(key =>{
+      Object.keys(this.form).forEach(key => {
         this.form[key] = this.itemContext[key]
       })
 
-      this.getProvinces({ params: {region: this.form["regionId"]} })
-      this.getDistricts({ params: {province: this.form["provinceId"]} })
+      this.getProvinces(this.form["regionId"])
+      this.getDistricts(this.form["provinceId"])
 
     },
 
