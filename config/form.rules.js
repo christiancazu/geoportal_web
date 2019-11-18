@@ -18,6 +18,12 @@ export const title = [
     message: 'El título es requerido'
   }
 ]
+export const geometry = [
+  {
+    required: true,
+    message: 'La geometría es requerida'
+  }
+]
 
 export const groupLayerId = [
   {

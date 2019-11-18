@@ -20,10 +20,10 @@ export const SUCCESS = {
     DELETED: 'La categoría se eliminó con éxito'
   },
   IMAGE: {
-    DELETED: 'La imágen se eliminó con éxito',
-    PUBLISHED: 'La imágen se publicó con éxito',
-    REGISTERED: 'La imágen se registro con éxito',
-    UPDATED: 'La imágen se actualizó con éxito'
+    DELETED: 'La imagen se eliminó con éxito',
+    PUBLISHED: 'La imagen se publicó con éxito',
+    REGISTERED: 'La imagen se registro con éxito',
+    UPDATED: 'La imagen se actualizó con éxito'
   },
   LAYER: {
     REGISTERED: 'La capa se registró con éxito',

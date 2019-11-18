@@ -2,12 +2,12 @@
 <div
   :class="[
     { 'page-body-center': fitContent },
-    ['ma-4']
+    ['mb-5']
   ]"
 >
   <el-card
-    shadow="always"
-    :class="{ 'fit-page-body': fitContent }"
+    shadow="never"
+    style="border: none"
   >
     <div
       slot="header"

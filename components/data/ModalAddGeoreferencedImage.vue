@@ -7,15 +7,57 @@
   :message-toast="messageToast"
 >
   <template v-slot:content>
-    <el-form-item
-      label="Título"
-      prop="title"
+    <el-row
+      :gutter="10"
+      align="bottom"
+      justify="center"
     >
-      <el-input
-        v-model="form.name"
-        type="text" autocomplete="off"
-      />
-    </el-form-item>
+      <el-col :md="12">
+        <!-- file -->
+        <el-form-item
+          class="text-xs-center upload-file"
+          prop="file"
+        >
+
+          <upload-file
+            :file="file"
+            type-image
+            @on-file-valid="$_uploadFileMixin_valid"
+            @delete-file="$_uploadFileMixin_clear()"
+          />
+
+        </el-form-item>
+      </el-col>
+      <el-col :md="12">
+        <!-- title -->
+        <el-form-item
+          label="Título"
+          prop="title"
+        >
+          <el-input
+            v-model="form.title"
+            type="text"
+            autocomplete="off"
+            :rules="rules.title"
+          />
+        </el-form-item>
+
+        <!-- geometry -->
+        <el-form-item
+          label="Geometría"
+          prop="geometry"
+        >
+          <el-input
+            v-model="form.geometry"
+            type="textarea"
+            :rows="3"
+            autocomplete="off"
+            :maxlength="300"
+          />
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <!-- Descripción -->
     <el-form-item
       label="Descripción"
       prop="description"
@@ -32,17 +74,25 @@
   </template>
 </base-form>
 </template>
+
 <script>
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import uploadFileMixin from '@/mixins/uploadFileMixin'
 
-import { title } from '@/config/form.rules'
+import {
+  title,
+  geometry
+} from '@/config/form.rules'
 
 export default {
-  mixins: [modalBaseActionsMixin],
-
+  mixins: [
+    modalBaseActionsMixin,
+    uploadFileMixin
+  ],
   data () {
     return {
-      formTitle: 'Registrar imágen georeferencial',
+      formTitle: 'Registrar imagen georeferencial',
+
       context: {
         storeBase: 'georeferencedImages',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
@@ -55,17 +105,23 @@ export default {
       form: {
         title: '',
         description: '',
-        // #TODO: imagen
+        image: null,
+        geometry: ''
       },
       rules: {
         title,
-      }
+        geometry
+      },
+      file: {
+        type: 'image', // it's property name file inside form
+        availableExtensions: [
+          '.png',
+          '.jpg',
+          '.jpeg'
+        ],
+        selected: null
+      },
     }
   }
 }
 </script>
-<style lang="scss">
-.map {
-  height: 200px;
-}
-</style>

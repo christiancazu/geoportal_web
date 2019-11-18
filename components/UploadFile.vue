@@ -3,16 +3,27 @@
   <el-upload
     ref="uploadFile"
     class="upload-demo"
+    :disabled="$store.state.spinners.processingForm"
     :http-request="onFileValid"
     :show-file-list="false"
     :before-upload="beforeFileUpload"
     drag action
   >
-    <i class="el-icon-upload" />
-    <div class="el-upload__text pa-2">
-      <p class="ma-0">Suelta tu archivo {{ extensionsString }} aquí <br> ó <br><em>haz clic para cargar</em>
-      </p>
-    </div>
+    <el-image
+      v-if="imageUrl && typeImage"
+      :src="imageUrl"
+      fit="scale-down"
+    />
+    <template v-else>
+      <i
+        class="avatar-uploader-icon"
+        :class="typeImage ? 'el-icon-picture' : 'el-icon-upload'"
+      />
+      <div class="el-upload__text pa-2">
+        <p class="ma-0">Suelta tu archivo {{ extensionsString }} aquí <br> ó <br><em>haz clic para cargar</em>
+        </p>
+      </div>
+    </template>
   </el-upload>
   <ul
     v-if="file.selected"
@@ -52,12 +63,16 @@ export default {
         availableExtensions: { type: Array, required: true },
         selected: { type: File, default: () => {} }
       })
+    },
+    typeImage: {
+      type: Boolean, default: false
     }
   },
 
   data () {
     return {
-      extensionsString: ''
+      extensionsString: '',
+      imageUrl: ''
     }
   },
 
@@ -67,13 +82,14 @@ export default {
 
   methods: {
     onFileValid ({ file }) {
+      if (this.typeImage) this.imageUrl = URL.createObjectURL(file)
       this.$emit('on-file-valid', file)
     },
 
     beforeFileUpload (currentFile) {
       const currentExtension = `.${currentFile.name.split('.').pop()}`
 
-      const isExtensionValid = this.file.availableExtensions.includes(currentExtension) || currentFile.type === 'application/zip'
+      const isExtensionValid = this.file.availableExtensions.includes(currentExtension) // || currentFile.type === 'application/zip'
 
       if (!isExtensionValid) {
         this.$message.error(`Solo se acepta archivos ${this.extensionsString}`)
@@ -88,8 +104,15 @@ export default {
       this.extensionsString = this.extensionsString.substring(0, this.extensionsString.length - 2)
     },
 
+    /**
+     * only can clean file if proccessingForm is false
+     *
+     */
     deleteFile () {
-      this.$emit('delete-file')
+      if (!this.$store.state.spinners.processingForm) {
+        this.imageUrl = ''
+        this.$emit('delete-file')
+      }
     }
   }
 }
