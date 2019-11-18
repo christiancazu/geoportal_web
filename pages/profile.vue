@@ -350,8 +350,10 @@ export default {
       Object.keys(this.form).forEach(key => {
         formData.append(key, this.form[key])
       })
-      formData.append('uploadImage', this.imageSelected)
 
+      // just if image isn't null append to formdata
+      if (this.imageSelected !== null)
+        formData.append('uploadImage', this.imageSelected.raw)
       return formData
     },
 

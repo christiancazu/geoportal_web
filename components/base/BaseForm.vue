@@ -167,7 +167,11 @@ export default {
       Object.keys(this.form).forEach(key => {
         formData.append(key, this.form[key])
       })
-
+      // apply json format to string
+      if(this.form.geometry) formData.set('geometry', JSON.stringify(JSON.parse(this.form.geometry)))
+      // remove image field if is null from formdata
+      if (this.form.image === null)
+        formData.delete('image')
       return formData
     },
 
