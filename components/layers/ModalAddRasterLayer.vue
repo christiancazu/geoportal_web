@@ -44,7 +44,7 @@
         <!-- file -->
         <el-form-item
           class="text-xs-center upload-file"
-          prop="file"
+          prop="rasterFile"
         >
 
           <upload-file
@@ -137,6 +137,7 @@ import {
   title,
   groupLayerId,
   order,
+  rasterFile,
   nameAlpha
 } from '@/config/form.rules'
 
@@ -185,6 +186,7 @@ export default {
         title,
         groupLayerId,
         order,
+        rasterFile,
         name: nameAlpha
       }
     }

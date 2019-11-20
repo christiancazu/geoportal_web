@@ -24,7 +24,7 @@ export default $axios => ({
   },
   update (payload = {}) {
     return $axios({
-      url: `${GEOREFERENCED_IMAGE}/${payload.id}/`,
+      url: `${GEOREFERENCED_IMAGE}/${payload.data.get('id')}/`,
       method: 'PUT',
       data: payload.data || {}
     })

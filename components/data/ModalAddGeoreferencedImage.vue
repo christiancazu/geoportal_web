@@ -5,6 +5,7 @@
   :rules="rules"
   :context="context"
   :message-toast="messageToast"
+  @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
 >
   <template v-slot:content>
     <el-row
@@ -16,7 +17,7 @@
         <!-- file -->
         <el-form-item
           class="text-xs-center upload-file"
-          prop="file"
+          prop="image"
         >
 
           <upload-file
@@ -81,7 +82,8 @@ import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
   title,
-  geometry
+  geometry,
+  image
 } from '@/config/form.rules'
 
 export default {
@@ -89,6 +91,7 @@ export default {
     modalBaseActionsMixin,
     uploadFileMixin
   ],
+
   data () {
     return {
       formTitle: 'Registrar imagen georeferencial',
@@ -110,7 +113,8 @@ export default {
       },
       rules: {
         title,
-        geometry
+        geometry,
+        image
       },
       file: {
         type: 'image', // it's property name file inside form
@@ -121,6 +125,22 @@ export default {
         ],
         selected: null
       },
+    }
+  },
+
+  methods: {
+    /**
+     * getting formData by reference from BaseForm component
+     * to apply custom functionality
+     *
+     * @param {Object} formData
+     */
+    ApplyCustomFunctionalityToForm (formData) {
+      try {
+        formData.geometry = JSON.stringify(JSON.parse(formData.geometry))
+      } catch (e) {
+        console.error('invalid format on field geometry')
+      }
     }
   }
 }

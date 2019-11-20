@@ -46,7 +46,7 @@
         <!-- file -->
         <el-form-item
           class="text-xs-center upload-file"
-          prop="file"
+          prop="shapeFile"
         >
 
           <upload-file
@@ -140,6 +140,7 @@ import {
   title,
   groupLayerId,
   order,
+  shapeFile,
   nameAlpha
 } from '@/config/form.rules'
 
@@ -188,6 +189,7 @@ export default {
         title,
         groupLayerId,
         order,
+        shapeFile,
         name: nameAlpha
       }
     }

@@ -10,8 +10,8 @@
     drag action
   >
     <el-image
-      v-if="imageUrl && typeImage"
-      :src="imageUrl"
+      v-if="file.imageUrl && typeImage"
+      :src="file.imageUrl"
       fit="scale-down"
     />
     <template v-else>
@@ -20,7 +20,7 @@
         :class="typeImage ? 'el-icon-picture' : 'el-icon-upload'"
       />
       <div class="el-upload__text pa-2">
-        <p class="ma-0">Suelta tu archivo {{ extensionsString }} aquí <br> ó <br><em>haz clic para cargar</em>
+        <p class="ma-0">Suelta él archivo {{ extensionsString }} aquí <br> ó <br><em>haz clic para cargar</em>
         </p>
       </div>
     </template>
@@ -61,7 +61,8 @@ export default {
       type: Object,
       default: () => ({
         availableExtensions: { type: Array, required: true },
-        selected: { type: File, default: () => {} }
+        selected: { type: File, default: () => {} },
+        imageUrl: { type: String, required: false }
       })
     },
     typeImage: {
@@ -71,15 +72,14 @@ export default {
 
   data () {
     return {
-      extensionsString: '',
-      imageUrl: ''
+      extensionsString: ''
     }
   },
 
   watch: {
     // clearing image preview when close modal
     '$store.state.modalsVisibilities.mainModal.visibility' () {
-      this.imageUrl= ''
+      // this.imageUrl= ''
       this.file.selected = null
     }
   },
@@ -90,7 +90,7 @@ export default {
 
   methods: {
     onFileValid ({ file }) {
-      if (this.typeImage) this.imageUrl = URL.createObjectURL(file)
+      if (this.typeImage) this.file.imageUrl = URL.createObjectURL(file)
       this.$emit('on-file-valid', file)
     },
 
@@ -118,7 +118,7 @@ export default {
      */
     deleteFile () {
       if (!this.$store.state.spinners.processingForm) {
-        this.imageUrl = ''
+        this.file.imageUrl = ''
         this.$emit('delete-file')
       }
     }

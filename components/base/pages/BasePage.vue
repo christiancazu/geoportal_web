@@ -2,7 +2,7 @@
 <div
   :class="[
     { 'page-body-center': fitContent },
-    ['mb-5']
+    ['ma-4']
   ]"
 >
   <el-card
