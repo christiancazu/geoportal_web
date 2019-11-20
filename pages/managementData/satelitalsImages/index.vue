@@ -83,8 +83,8 @@ export default {
     return {
       pageHeader: {
         title: 'Imágenes satelitales',
-      },// main modal settings
-
+      },
+      // main modal settings
       modalMain: {
         storeBase: 'satelitalsImages',
         viewComponent: 'ModalViewSatelitalImage',
@@ -97,7 +97,8 @@ export default {
 
   methods: {
     ...mapActions({
-      publishItemContext: 'satelitalsImages/publishItemContext'
+      publishItemContext: 'satelitalsImages/publishItemContext',
+      getDataContext: 'satelitalsImages/getDataContext'
     }),
 
 
@@ -108,6 +109,7 @@ export default {
       console.warn('#TODO CHECK PUBLISH SATELITAL IMAGES ENDPOINT', itemSelected)
       try {
         await this.publishItemContext({ data: formData})
+        await this.getDataContext()
         this.$toast.success(this.$SUCCESS.IMAGE.PUBLISHED)
       } catch (e) {}
     }

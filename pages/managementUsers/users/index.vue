@@ -30,8 +30,9 @@
     >
       <template slot-scope="scope">
         <el-tag
-          type="primary"
+          :type="scope.row.userType.id === 'AD' ? 'success' : 'info'"
           disable-transitions
+          effect="plain"
         >
           {{ scope.row.userType.id === 'AD' ? 'Admin': 'Usuario' }}
         </el-tag>

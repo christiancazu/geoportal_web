@@ -58,10 +58,22 @@ label {
   margin: 0px !important;
 }
 
+//card-dashboard
+.card-dashboard {
+  & .el-card__body {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 // sidebar
 .sidebar-container {
   overflow-y: auto;
 }
+
 .on-collapse-sidebar {
   margin-left: 64px !important;
 }

@@ -1,6 +1,6 @@
 <template>
 <base-page
-  :page-header-title="pageHeaderTitle"
+  :page-header="pageHeader"
 >
   <!-- <template v-slot:itemsActions>
     </template> -->
@@ -23,8 +23,15 @@
           class="w-100"
           :to="item.link"
         >
-          <el-card shadow="hover">
-            <p class="ma-0">{{ item.title }}</p>
+          <el-card
+            shadow="hover"
+            class="card-dashboard"
+          >
+            <i
+              :class="`my-2 fas fa-${item.icon}`"
+              style="font-size: 1.5rem !important"
+            />
+            <p class="my-2 mb-0">{{ item.title }}</p>
           </el-card>
         </nuxt-link>
       </el-col>
@@ -43,16 +50,21 @@ export default {
 
   data () {
     return {
-      pageHeaderTitle: 'PORTAL ADMINISTRADOR',
+      pageHeader: {
+        title: 'PORTAL ADMINISTRADOR'
+      },
+
       items: [
-        { title: 'Ver usuarios', link: '/managementUsers/users' },
-        { title: 'Ver capas', link: '/managementUsers/layers' },
-        { title: 'Ver Imágenes Georeferenciadas', link: '/managementData/georeferencedImages' },
-        { title: 'Ver Reportes', link: '/managementData/georeferencedImages' },
-        { title: 'Ver Servicios', link: '/WMSServices' },
-        { title: 'Ver Solicitudes pendientes', link: '/managementUsers/pendingUsers' },
-        { title: 'Capas Base', link: '/managementLayers/baseLayers' },
-        { title: 'Ver Capas rastes', link: '/managementLayers/rasterLayer' }
+        { title: 'Perfil', link: '/profile', icon: 'user' },
+        { title: 'Solicitudes pendientes', link: '/managementUsers/pending', icon: 'users' },
+        { title: 'Capas Vectoriales', link: '/managementLayers/vectorials', icon: 'layer-group' },
+        { title: 'Capas Raster', link: '/managementLayers/rasters', icon: 'layer-group' },
+        { title: 'Datos', link: '/managementData/georeferencedImages', icon: 'database' },
+        { title: 'Reportes', link: '/reports', icon: 'clipboard-list' },
+        { title: 'Servicios', link: '/managementWMSServices/services', icon: 'users-cog' },
+        // { title: 'Ver Solicitudes pendientes', link: '/managementUsers/pendingUsers', icon: '' },
+        // { title: 'Capas Base', link: '/managementLayers/baseLayers', icon: 'layer-group' },
+        // { title: 'Ver Capas rastes', link: '/managementLayers/rasterLayer', icon: 'layer-group' }
       ]
     }
   },

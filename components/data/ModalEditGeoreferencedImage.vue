@@ -5,29 +5,46 @@
   :rules="rules"
   :context="context"
   :message-toast="messageToast"
+  @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
 >
   <template v-slot:content>
-    <!-- name -->
-    <el-form-item
-      label="Nombres"
-      prop="name"
+    <el-row
+      :gutter="10"
+      align="bottom"
+      justify="center"
     >
-      <el-input
-        v-model="form.name"
-        type="text" autocomplete="off"
-      />
-    </el-form-item>
-    <!-- name -->
-    <el-form-item
-      label="URL"
-      prop="url"
-    >
-      <el-input
-        v-model="form.webUrl"
-        type="text" autocomplete="off"
-      />
-    </el-form-item>
-    <!-- description -->
+      <el-col :md="12">
+        <!-- file -->
+        <el-form-item
+          class="text-xs-center upload-file"
+        >
+
+          <upload-file
+            :file="file"
+            type-image
+            @on-file-valid="$_uploadFileMixin_valid"
+            @delete-file="$_uploadFileMixin_clear()"
+          />
+
+        </el-form-item>
+      </el-col>
+      <el-col :md="12">
+        <!-- title -->
+        <el-form-item
+          label="Título"
+          prop="title"
+        >
+          <el-input
+            v-model="form.title"
+            type="text"
+            autocomplete="off"
+            :rules="rules.title"
+          />
+        </el-form-item>
+
+      </el-col>
+    </el-row>
+    <!-- Descripción -->
     <el-form-item
       label="Descripción"
       prop="description"
@@ -38,7 +55,7 @@
         :rows="3"
         autocomplete="off"
         :maxlength="300"
-        show-word-limit
+        :show-word-limit="true"
       />
     </el-form-item>
   </template>
@@ -47,14 +64,17 @@
 
 <script>
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import { mapState } from 'vuex'
 
 import { title } from '@/config/form.rules'
 
 export default {
-
-  mixins: [modalBaseActionsMixin],
+  mixins: [
+    modalBaseActionsMixin,
+    uploadFileMixin
+  ],
 
   data () {
     return {
@@ -70,12 +90,24 @@ export default {
         action: 'UPDATED'
       },
       form: {
+        id: null,
         title: '',
         description: '',
+        image: null
       },
       rules: {
         title
-      }
+      },
+      file: {
+        type: 'image', // it's property name file inside form
+        availableExtensions: [
+          '.png',
+          '.jpg',
+          '.jpeg'
+        ],
+        selected: null,
+        imageUrl: ''
+      },
     }
   },
 
@@ -100,7 +132,19 @@ export default {
   methods: {
     assignFormFields () {
       Object.keys(this.form).forEach(key => (this.form[key] = this.itemContext[key]))
+      this.file.imageUrl = this.form.image
+    },
+
+    /**
+     * getting formData by reference from BaseForm component
+     * to apply custom functionality
+     *
+     * @param {Object} formData
+     */
+    ApplyCustomFunctionalityToForm (formData) {
+      if (formData[this.file.type] === null || typeof formData[this.file.type] === 'string')
+        formData.delete(this.file.type)
     }
-  }
+  },
 }
 </script>

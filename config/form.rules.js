@@ -75,6 +75,28 @@ export const name = name => [
   }
 ]
 
+export const shapeFile = [
+  {
+    required: true,
+    message: 'El Archivo es requerido'
+  }
+]
+
+export const rasterFile = [
+  {
+    required: true,
+    message: 'El Archivo es requerido'
+  }
+]
+
+export const image = [
+  {
+    required: true,
+    message: 'El Archivo es requerido'
+  }
+]
+
+
 /*eslint-disable */
 export const nameAlpha = [
   {

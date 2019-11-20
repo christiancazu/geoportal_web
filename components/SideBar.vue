@@ -9,7 +9,11 @@
     unique-opened
     mode="vertical"
   >
-    <el-menu-item v-if="user">
+    <el-menu-item
+      v-if="user"
+      index="/"
+      :route="{ path: '/' }"
+    >
       <img
         :src="user.image"
         alt=""
@@ -38,20 +42,20 @@
         <i class="fas fa-users" /><span slot="title">Gestión de usuarios</span>
       </template>
       <el-menu-item
-        :route="{ path: '/managementUsers/users' }"
         index="/managementUsers/users"
+        :route="{ path: '/managementUsers/users' }"
       >
         Usuarios
       </el-menu-item>
       <el-menu-item
-        index="/managementUsers/pendingUsers"
-        :route="{ path: '/managementUsers/pendingUsers' }"
+        index="/managementUsers/pending"
+        :route="{ path: '/managementUsers/pending' }"
       >
         Solicitudes pendientes
       </el-menu-item>
       <el-menu-item
-        index="/managementUsers/rejectedUsers"
-        :route="{ path: '/managementUsers/rejectedUsers' }"
+        index="/managementUsers/rejected"
+        :route="{ path: '/managementUsers/rejected' }"
       >
         Solicitudes rechazadas
       </el-menu-item>
@@ -62,26 +66,26 @@
         <i class="fas fa-layer-group" /><span slot="title">Gestión de Capas</span>
       </div>
       <el-menu-item
-        :route="{ path: '/managementLayers/vectorialLayers' }"
-        index="/managementLayers/vectorialLayers"
+        :route="{ path: '/managementLayers/vectorials' }"
+        index="/managementLayers/vectorials"
       >
         Capas Vectoriales
       </el-menu-item>
       <el-menu-item
-        :route="{ path: '/managementLayers/rasterLayer' }"
-        index="/managementLayers/rasterLayer"
+        :route="{ path: '/managementLayers/rasters' }"
+        index="/managementLayers/rasters"
       >
         Capas Raster
       </el-menu-item>
       <el-menu-item
-        :route="{ path: '/managementLayers/baseLayers' }"
-        index="/managementLayers/baseLayers"
+        :route="{ path: '/managementLayers/bases' }"
+        index="/managementLayers/bases"
       >
         Capas Base
       </el-menu-item>
       <el-menu-item
-        :route="{ path: '/managementLayers/groupLayer' }"
-        index="/managementLayers/groupLayer"
+        :route="{ path: '/managementLayers/groups' }"
+        index="/managementLayers/groups"
       >
         Grupo de Capas
       </el-menu-item>

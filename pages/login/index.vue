@@ -80,7 +80,7 @@
             >
               <el-input
                 v-model="form.email"
-                :disabled="processingForm"
+                :disabled="$store.state.spinners.processingForm"
                 type="text"
                 name="username"
                 clearable
@@ -94,7 +94,7 @@
             >
               <el-input
                 v-model="form.password"
-                :disabled="processingForm"
+                :disabled="$store.state.spinners.processingForm"
                 type="password"
                 clearable
                 name="password"
@@ -133,16 +133,18 @@
 <script>
 import { email, password } from '@/config/form.rules'
 
+import {
+  ENABLE_PROCESSING_FORM,
+  DISABLE_PROCESSING_FORM
+} from '@/types/mutation-types'
+
 export default {
   data () {
     return {
-      processingForm: false,
-
       form: {
         email: null,
         password: null
       },
-
       rules: {
         email,
         password
@@ -152,12 +154,12 @@ export default {
 
   methods: {
     async submitForm () {
-      this.processingForm = true
       let isFormValid = false
 
       await this.$refs.form.validate(result => (isFormValid = result))
 
       if (isFormValid) {
+        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
         try {
           await this.$auth.loginWith('local', {
             data: {
@@ -169,7 +171,7 @@ export default {
         }
         catch (e) {}
       }
-      this.processingForm = false
+      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
     }
   },
 

@@ -301,8 +301,7 @@ export default {
       getProfile: 'users/getProfile',
       getRegions: 'public/getRegions',
       getProvinces: 'public/getProvinces',
-      getDistricts: 'public/getDistricts',
-      // replaceDistricts: 'regions/replaceDistricts'
+      getDistricts: 'public/getDistricts'
     }),
 
     async fetchContext () {
@@ -330,7 +329,6 @@ export default {
       await this.$refs.form.validate(result => isFormValid = result)
 
       if (isFormValid) {
-        console.warn('#TODO: CHECK PROFILE UPDATE ENDOPOINT')
         try {
           this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
           const formData = this.objectToFormData()

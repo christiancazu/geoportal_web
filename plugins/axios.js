@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 export default ({ $axios }) => {
   // timout for request in miliseconds
-  $axios.defaults.timeout = 30000 // ms
+  // $axios.defaults.timeout = 30000 // ms
 
   // $axios.onRequest(config => {})
 

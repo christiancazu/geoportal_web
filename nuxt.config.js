@@ -70,7 +70,7 @@ export default {
     baseURL:
       process.env.NODE_ENV === 'production'
         ? 'http://104.197.114.116:9100/api/'
-        : 'http://192.168.1.6:8300/api/'
+        : 'http://104.197.114.116:9100/api/'
   },
 
   auth: {
