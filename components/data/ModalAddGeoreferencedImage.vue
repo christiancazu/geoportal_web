@@ -16,6 +16,7 @@
       <el-col :md="12">
         <!-- file -->
         <el-form-item
+          label="Imagen georeferencial"
           class="text-xs-center upload-file"
           prop="image"
         >
@@ -78,6 +79,7 @@
 
 <script>
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {

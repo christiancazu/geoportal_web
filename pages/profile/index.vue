@@ -1,7 +1,7 @@
 <template>
 <base-page
   :page-header="pageHeader"
-  :fit-content="true"
+  fit-content
 >
   <el-form
     ref="form"
@@ -17,25 +17,15 @@
       label="Imagen de Perfil"
       class="text-xs-center"
     >
-      <el-upload
-        class="avatar-uploader"
-        action
-        :disabled="$store.state.spinners.processingForm"
-        :show-file-list="false"
-        name="image"
-        :on-success="handleImageSuccess"
-        :before-upload="beforeImageUpload"
-      >
-        <img
-          v-if="form.image"
-          :src="form.image"
-          class="avatar"
-        >
-        <i
-          v-else
-          class="el-icon-plus avatar-uploader-icon"
-        />
-      </el-upload>
+
+      <upload-file
+        :file="file"
+        type-image
+        avatar-image
+        @on-file-valid="$_uploadFileMixin_valid"
+        @delete-file="$_uploadFileMixin_clear()"
+      />
+
     </el-form-item>
     <el-row :gutter="10">
       <el-col
@@ -157,7 +147,7 @@
         :xs="24"
         :sm="8"
       >
-        <!-- porvincia -->
+        <!-- provincia -->
         <el-form-item
           ref="provinceId"
           label="Provincia"
@@ -221,9 +211,10 @@
   </el-form>
 </base-page>
 </template>
-<script>
 
+<script>
 import BasePage from '@/components/base/pages/BasePage'
+import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
   ENABLE_PROCESSING_FORM,
@@ -244,6 +235,8 @@ export default {
   components: {
     BasePage
   },
+
+  mixins: [uploadFileMixin],
 
   data () {
     return {
@@ -269,15 +262,17 @@ export default {
         districtId
       },
       file: {
+        type: 'image',
         availableExtensions: [
           '.png',
           '.jpg',
           '.jpeg'
         ],
-        maxSize: 262144 // (bytes units) ~ 262144 bytes = 2mb
-      },
-      extensionsString: '',
-      imageSelected: null
+        maxSizeLabel: '2MB',
+        maxSizeLength: 262144, // (bytes units) ~ 262144 bytes = 2mb
+        selected: null,
+        imageUrl: ''
+      }
     }
   },
 
@@ -293,7 +288,7 @@ export default {
 
   created () {
     this.fetchContext()
-    this.assignExtensionsString()
+    // this.assignExtensionsString()
   },
 
   methods: {
@@ -321,6 +316,7 @@ export default {
 
     assignFormFields () {
       Object.keys(this.form).forEach(key => (this.form[key] = this.profile[key]))
+      this.file.imageUrl = this.form[this.file.type]
     },
 
     async submitForm () {
@@ -331,11 +327,17 @@ export default {
       if (isFormValid) {
         try {
           this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+
           const formData = this.objectToFormData()
 
-          await this.$store.dispatch('users/updateItemContext', {data: formData})
+          // just if image isn't null append to formdata
+          if (this.file.selected !== null) {
+            formData.append('image', this.file.selected)
+          }
 
-          this.$toast.success(this.$SUCCESS.USERS.UPDATED)
+          await this.$store.dispatch('users/updateItemContext', { data: formData })
+
+          this.$toast.success(this.$SUCCESS.USER.UPDATED)
         }
         catch (e) {}
         this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
@@ -348,10 +350,6 @@ export default {
       Object.keys(this.form).forEach(key => {
         formData.append(key, this.form[key])
       })
-
-      // just if image isn't null append to formdata
-      if (this.imageSelected !== null)
-        formData.append('uploadImage', this.imageSelected.raw)
       return formData
     },
 

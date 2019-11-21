@@ -40,7 +40,7 @@ export const SUCCESS = {
     UPDATED: 'El servicio se actualizó con éxito',
     DELETED: 'El servicio se eliminó con éxito'
   },
-  USERS: {
+  USER: {
     REGISTERED: 'El usuario se registró con éxito',
     UPDATED: 'El usuario se actualizó con éxito',
     DELETED: 'El usuario se desabilitado con éxito'

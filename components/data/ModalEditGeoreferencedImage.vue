@@ -107,7 +107,7 @@ export default {
         ],
         selected: null,
         imageUrl: ''
-      },
+      }
     }
   },
 
@@ -132,7 +132,7 @@ export default {
   methods: {
     assignFormFields () {
       Object.keys(this.form).forEach(key => (this.form[key] = this.itemContext[key]))
-      this.file.imageUrl = this.form.image
+      this.file.imageUrl = this.form[this.file.type]
     },
 
     /**

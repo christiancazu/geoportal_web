@@ -11,15 +11,16 @@
   >
     <el-image
       v-if="file.imageUrl && typeImage"
+      :class="{ 'avatar' : avatarImage }"
       :src="file.imageUrl"
-      fit="scale-down"
+      :fit="!avatarImage ? 'scale-down' : ''"
     />
     <template v-else>
       <i
         class="avatar-uploader-icon"
         :class="typeImage ? 'el-icon-picture' : 'el-icon-upload'"
       />
-      <div class="el-upload__text pa-2">
+      <div class="el-upload__text avatar">
         <p class="ma-0">Suelta él archivo {{ extensionsString }} aquí <br> ó <br><em>haz clic para cargar</em>
         </p>
       </div>
@@ -62,12 +63,13 @@ export default {
       default: () => ({
         availableExtensions: { type: Array, required: true },
         selected: { type: File, default: () => {} },
-        imageUrl: { type: String, required: false }
+        imageUrl: { type: String, required: false },
+        maxSizeLength: { type: Number, required: false },
+        maxSizeLabel: { type: String, required: false },
       })
     },
-    typeImage: {
-      type: Boolean, default: false
-    }
+    typeImage: { type: Boolean, default: false },
+    avatarImage: { type: Boolean, default: false }
   },
 
   data () {
@@ -101,8 +103,20 @@ export default {
 
       if (!isExtensionValid) {
         this.$message.error(`Solo se acepta archivos ${this.extensionsString}`)
+        return isExtensionValid
       }
-      return isExtensionValid
+
+      if (this.file.maxSizeLength) {
+        const currentImageSize = currentFile.size
+
+        const isImageSizeValid = currentImageSize < this.file.maxSizeLength
+
+        if (!isImageSizeValid) {
+          this.$message.error(`El archivo no debe exceder los ${this.file.maxSizeLabel}!`)
+          return isImageSizeValid
+        }
+      }
+      return true
     },
 
     assignExtensionsString () {

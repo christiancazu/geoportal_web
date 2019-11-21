@@ -17,27 +17,17 @@
         <!-- image -->
         <el-form-item
           label="Imagen de Perfil"
-          class="text-xs-center"
-          prop="image"
+          class="text-xs-center upload-file"
         >
-          <el-upload
-            class="avatar-uploader"
-            action
-            :http-request="launchUploadAvatar"
-            :show-file-list="false"
-            name="image"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img
-              v-if="imageSelected"
-              :src="imageSelected"
-              class="avatar"
-            >
-            <i
-              v-else
-              class="el-icon-plus avatar-uploader-icon"
-            />
-          </el-upload>
+
+          <upload-file
+            :file="file"
+            type-image
+            avatar-image
+            @on-file-valid="$_uploadFileMixin_valid"
+            @delete-file="$_uploadFileMixin_clear()"
+          />
+
         </el-form-item>
       </el-col>
       <el-col :md="12">
@@ -100,8 +90,7 @@
 
     <el-row :gutter="10">
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- name -->
         <el-form-item
@@ -116,8 +105,7 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- lasname -->
         <el-form-item
@@ -132,10 +120,9 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
-        <!-- lasname -->
+        <!-- second lasname -->
         <el-form-item
           label="Segundo apellido"
           prop="lastNameAditional"
@@ -151,61 +138,58 @@
 
     <el-row :gutter="10">
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
-        <!-- region -->
+        <!-- regionId -->
         <el-form-item
           label="Región"
-          prop="region"
+          prop="regionId"
         >
           <el-select
-            v-model="form.region"
+            v-model="form.regionId"
             value-key="id"
             filterable
+            :loading="$store.state.spinners.processingForm"
             placeholder="Select"
-            :loading="loadRegions"
-            @change="onchangeRegions"
+            @change="onChangeRegion"
           >
             <el-option
-              v-for="item in regions"
-              :key="item.id"
-              :label="item.name"
-              :value="item"
+              v-for="region in regions" :key="region.id"
+              :label="region.name"
+              :value="region.id"
             />
           </el-select>
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
-        <!-- porvincia -->
+        <!-- provincia -->
         <el-form-item
-          ref="province"
+          ref="provinceId"
           label="Provincia"
-          prop="province"
+          prop="provinceId"
         >
           <el-select
-            v-model="form.province"
-            :loading="loadProvinces"
+            v-model="form.provinceId"
             value-key="id"
+            :disabled="!form.regionId"
+            :loading="$store.state.spinners.processingForm"
             filterable
             placeholder="Select"
-            @change="onchangeProvinces"
+            @change="onChangeProvince"
           >
             <el-option
               v-for="item in provinces"
               :key="item.id"
               :label="item.name"
-              :value="item"
+              :value="item.id"
             />
           </el-select>
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- distrito -->
         <el-form-item
@@ -217,14 +201,14 @@
             v-model="form.districtId"
             value-key="id"
             filterable
-            :loading="loadDistricts"
+            :disabled="!form.provinceId"
+            :loading="$store.state.spinners.processingForm"
             placeholder="Select"
           >
             <el-option
-              v-for="item in districts"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
+              v-for="district in districts" :key="district.id"
+              :label="district.name"
+              :value="district.id"
             />
           </el-select>
         </el-form-item>
@@ -233,9 +217,7 @@
 
     <el-row :gutter="10">
       <el-col
-        :xs="12"
-        :sm="12"
-        :md="12"
+        :xs="12" :sm="12" :md="12"
       >
         <!-- instituto -->
         <el-form-item
@@ -250,9 +232,7 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="12"
-        :sm="12"
-        :md="12"
+        :xs="12" :sm="12" :md="12"
       >
         <el-form-item
           class="pl-4"
@@ -281,7 +261,7 @@
         :rows="3"
         autocomplete="off"
         :maxlength="300"
-        :show-word-limit="true"
+        show-word-limit
       />
     </el-form-item>
   </template>
@@ -289,31 +269,42 @@
 </template>
 <script>
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
-  username, lastName, lastNameAditional, name, email, password, region, institute, subject
+  username,
+  lastName,
+  lastNameAditional,
+  name,
+  email,
+  password,
+  region,
+  institute,
+  subject,
+  districtId
 } from '@/config/form.rules'
+
 import { mapState, mapActions } from 'vuex'
 
-
-
 export default {
-  mixins: [modalBaseActionsMixin],
+  mixins: [
+    modalBaseActionsMixin,
+    uploadFileMixin
+  ],
 
   data () {
     return {
       formTitle: 'Registrar usuario',
+
       context: {
         storeBase: 'users',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'create',
       },
-
       messageToast: {
         baseName: 'USER',
         action: 'REGISTERED'
       },
-
       form: {
         username: '',
         email: '',
@@ -329,11 +320,17 @@ export default {
         region: null,
         province: null
       },
-
-      imageSelected: null,
-
       rules: {
-        username, lastName, lastNameAditional, name, email, password, region, institute, subject,
+        username,
+        lastName,
+        lastNameAditional,
+        name,
+        email,
+        password,
+        region,
+        institute,
+        subject,
+        districtId,
         passwordConfirmation: [
           {
             required: true,
@@ -341,18 +338,6 @@ export default {
             validator: (rule, value, callback) => {
               if (value !== this.form.password) {
                 return callback(new Error('La contraseña no coincide'))
-              }
-              callback()
-            }
-          }
-        ],
-        districtId: [
-          {
-            required: true,
-            // eslint-disable-next-line no-unused-vars
-            validator: (rule, value, callback) => {
-              if (!this.form.province) {
-                return callback(new Error('Seleccione su Distrito'))
               }
               callback()
             }
@@ -370,7 +355,18 @@ export default {
             }
           }
         ]
-      }
+      },
+      file: {
+        type: 'image', // it's property name file inside form
+        availableExtensions: [
+          '.png',
+          '.jpg',
+          '.jpeg'
+        ],
+        selected: null,
+        maxSizeLabel: '2MB',
+        maxSizeLength: 262144 // (bytes units) ~ 262144 bytes = 2mb
+      },
     }
   },
 
@@ -400,13 +396,10 @@ export default {
     ...mapActions({
       getRegions: 'public/getRegions',
       getProvinces: 'public/getProvinces',
-      getDistricts: 'public/getDistricts',
-      replaceProvinces: 'public/replaceProvinces',
-      replaceDistricts: 'public/replaceDistricts',
+      getDistricts: 'public/getDistricts'
     }),
 
-
-    launchUploadAvatar (option) {
+    /*launchUploadAvatar (option) {
       this.imageSelected = URL.createObjectURL(option.file)
       this.form.image = option.file
     },
@@ -422,28 +415,17 @@ export default {
         this.$message.error('La imagen excede los 2MB!')
       }
       return isJPG && isLt2M
+    },*/
+
+    onChangeRegion (regionId) {
+      this.form.provinceId = ''
+      this.form.districtId = ''
+      this.getProvinces(regionId)
     },
 
-    onchangeRegions (region) {
-      const params = {
-        region: region.id
-      }
-      this.replaceProvinces({ provinces: null })
-      this.replaceDistricts({ districts: null })
-      this.$refs.province.resetField()
-      this.$refs.districtId.resetField()
-
-      this.getProvinces({ params })
-    },
-
-    onchangeProvinces (province) {
-      const params = {
-        province: province.id
-      }
-
-      this.replaceDistricts({ districts: null })
-      this.$refs.districtId.resetField()
-      this.getDistricts({ params })
+    onChangeProvince (provinceId) {
+      this.form.districtId = ''
+      this.getDistricts(provinceId)
     }
   }
 }

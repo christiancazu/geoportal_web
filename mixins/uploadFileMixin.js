@@ -16,7 +16,6 @@ export default {
     $_uploadFileMixin_valid (file) {
       this.form[this.file.type] = file
       this.file.selected = file
-      console.warn(typeof this.file.selected)
       const nameFile = file.name.split('.')[0]
       this.form.name = nameFile
       this.form.title = nameFile

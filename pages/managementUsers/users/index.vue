@@ -58,9 +58,9 @@
 </template>
 
 <script>
-import pageActionsMixin from '@/mixins/pageActionsMixin'
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
+import pageActionsMixin from '@/mixins/pageActionsMixin'
 
 export default {
   components: {
@@ -68,7 +68,6 @@ export default {
   },
 
   mixins: [pageActionsMixin],
-
 
   data () {
     return {
@@ -82,11 +81,9 @@ export default {
         editComponent: 'ModalEditUser',
         folderName: 'users'
       },
-
       messageToast: {
-        baseName: 'USERS'
+        baseName: 'USER'
       },
-
       filterCriteriaProps: [
         'name',
         'fullName',
@@ -97,7 +94,7 @@ export default {
   },
 
   head: {
-    title: 'Usuarios | GEOVISOR',
-  },
+    title: 'Usuarios | GEOVISOR'
+  }
 }
 </script>

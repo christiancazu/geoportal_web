@@ -101,7 +101,6 @@ export default {
       getDataContext: 'satelitalsImages/getDataContext'
     }),
 
-
     async publish ({ itemSelected }) {
       const formData = new FormData()
       formData.append('pk', itemSelected.id)

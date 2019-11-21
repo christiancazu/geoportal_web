@@ -5,6 +5,7 @@
   :form="form"
   :context="context"
   :message-toast="messageToast"
+  @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
 >
   <template v-slot:content>
 
@@ -19,24 +20,15 @@
           label="Imagen de Perfil"
           class="text-xs-center"
         >
-          <el-upload
-            class="avatar-uploader"
-            action
-            :http-request="launchUploadAvatar"
-            :show-file-list="false"
-            name="image"
-            :before-upload="beforeAvatarUpload"
-          >
-            <img
-              v-if="form.image"
-              :src="form.image"
-              class="avatar"
-            >
-            <i
-              v-else
-              class="el-icon-plus avatar-uploader-icon"
-            />
-          </el-upload>
+
+          <upload-file
+            :file="file"
+            type-image
+            avatar-image
+            @on-file-valid="$_uploadFileMixin_valid"
+            @delete-file="$_uploadFileMixin_clear()"
+          />
+
         </el-form-item>
       </el-col>
       <el-col :md="12">
@@ -244,15 +236,20 @@
 <script>
 
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import uploadFileMixin from '@/mixins/uploadFileMixin'
+
 import {
   name,
   lastName
 } from '@/config/form.rules'
+
 import { mapState, mapActions } from 'vuex'
 
 export default {
-
-  mixins: [modalBaseActionsMixin],
+  mixins: [
+    modalBaseActionsMixin,
+    uploadFileMixin
+  ],
 
   data () {
     return {
@@ -263,14 +260,10 @@ export default {
         mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'update',
       },
-
       messageToast: {
         baseName: 'USER',
         action: 'UPDATED'
       },
-
-      imageSelected: '',
-
       form: {
         id: '',
         username: '',
@@ -283,18 +276,26 @@ export default {
         lastName: '',
         lastNameAditional: '',
         image: null,
-        uploadImage: '',
         status: 'AC'
       },
-
       rules: {
         name,
         lastName
-      }
+      },
+      file: {
+        type: 'image', // it's property name file inside form
+        availableExtensions: [
+          '.png',
+          '.jpg',
+          '.jpeg'
+        ],
+        maxSizeLabel: '2MB',
+        maxSizeLength: 262144, // (bytes units) ~ 262144 bytes = 2mb
+        selected: null,
+        imageUrl: ''
+      },
     }
   },
-
-
 
   computed: {
     ...mapState({
@@ -303,17 +304,17 @@ export default {
       },
       regions: state => state.public.regions,
       provinces: state => state.public.provinces,
-      districts: state => state.public.districts,
+      districts: state => state.public.districts
     }),
 
-    loadRegions: function () {
-      return this.regions.lenght ? true : false
+    loadRegions () {
+      return this.regions.lenght
     },
-    loadProvinces: function () {
-      return this.regions.lenght ? true : false
+    loadProvinces () {
+      return this.regions.lenght
     },
-    loadDistricts: function () {
-      return this.regions.lenght ? true : false
+    loadDistricts () {
+      return this.regions.lenght
     }
   },
 
@@ -323,10 +324,9 @@ export default {
     }
   },
 
-  mounted () {
+  created () {
     this.assignFormFields()
     this.getRegions()
-
   },
 
   methods: {
@@ -342,19 +342,30 @@ export default {
       Object.keys(this.form).forEach(key => {
         this.form[key] = this.itemContext[key]
       })
+      this.file.imageUrl = this.form[this.file.type]
 
       this.getProvinces(this.form["regionId"])
       this.getDistricts(this.form["provinceId"])
-
     },
 
+    /**
+     * getting formData by reference from BaseForm component
+     * to apply custom functionality
+     *
+     * @param {Object} formData
+     */
+    ApplyCustomFunctionalityToForm (formData) {
+      if (formData.get(this.file.type) === null || typeof formData.get(this.file.type) === 'string')
+        formData.delete(this.file.type)
+    },
+    /*
     launchUploadAvatar (option) {
       this.imageSelected = URL.createObjectURL(option.file)
       this.form.uploadImage = option.file
     },
 
     beforeAvatarUpload (file) {
-      const isJPG = file.type === 'image/png' || file.type === 'image/jpeg'
+      const isJPG = file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg'
       const isLt2M = file.size / 1024 / 1024 < 2
 
       if (!isJPG) {
@@ -364,7 +375,7 @@ export default {
         this.$message.error('La imagen excede los 2MB!')
       }
       return isJPG && isLt2M
-    },
+    },*/
 
     onChangeRegion (regionId) {
       const params = {
