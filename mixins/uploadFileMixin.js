@@ -13,6 +13,12 @@ export default {
       this.form.title = ''
     },
 
+    /**
+     * setting file to form
+     * autocomplete name field on form depending of file name
+     *
+     * @param {File} file
+     */
     $_uploadFileMixin_valid (file) {
       this.form[this.file.type] = file
       this.file.selected = file

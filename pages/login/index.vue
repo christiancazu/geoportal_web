@@ -45,10 +45,7 @@
         </el-card>
       </el-col>
       <el-col
-        :xs="24"
-        :md="12"
-        :sm="12"
-        :lg="12"
+        :xs="24" :md="12" :sm="12" :lg="12"
         class="bt"
       >
         <el-card

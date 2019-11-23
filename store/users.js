@@ -13,6 +13,10 @@ export const state = () => ({
 })
 
 export const actions = {
+  async getUserInfo () {
+    return await this.$userAPI.info()
+  },
+
   async createItemContext ({ }, form) {
     await this.$userAPI.create(form)
   },
@@ -48,6 +52,9 @@ export const mutations = {
 
   [SET_PROFILE]: (state, { profile }) => (state.profile = profile),
 
-  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
+  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload),
+  /* eslint-disable */
+  ['SET_USER']: (state, payload) => {
 
+  }
 }

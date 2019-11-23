@@ -2,6 +2,13 @@ import { USER } from '@/config/endpoints'
 
 
 export default $axios => ({
+  info (payload = {}) {
+    return $axios({
+      url: `${USER}/info/`,
+      method: 'GET',
+      data: payload.data || {}
+    })
+  },
   get (payload = {}) {
     return $axios({
       url: `${USER}/`,

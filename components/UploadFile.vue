@@ -17,12 +17,14 @@
     />
     <template v-else>
       <i
-        class="avatar-uploader-icon"
+        class="avatar-uploader-icon my-0"
         :class="typeImage ? 'el-icon-picture' : 'el-icon-upload'"
       />
-      <div class="el-upload__text avatar">
-        <p class="ma-0">Suelta él archivo {{ extensionsString }} aquí <br> ó <br><em>haz clic para cargar</em>
-        </p>
+      <div class="el-upload__text mb-4">
+        <div class="px-4">Suelta él archivo <br>
+          <strong>{{ extensionsString }}</strong> <br>
+          aquí ó <br><em>haz click para cargar</em>
+        </div>
       </div>
     </template>
   </el-upload>

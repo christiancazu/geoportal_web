@@ -105,7 +105,6 @@ export default {
       const formData = new FormData()
       formData.append('pk', itemSelected.id)
 
-      console.warn('#TODO CHECK PUBLISH SATELITAL IMAGES ENDPOINT', itemSelected)
       try {
         await this.publishItemContext({ data: formData})
         await this.getDataContext()

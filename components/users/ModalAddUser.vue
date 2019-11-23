@@ -375,20 +375,10 @@ export default {
       regions: state => state.public.regions,
       provinces: state => state.public.provinces,
       districts: state => state.public.districts,
-    }),
-
-    loadRegions: function () {
-      return this.regions.lenght ? true : false
-    },
-    loadProvinces: function () {
-      return this.regions.lenght ? true : false
-    },
-    loadDistricts: function () {
-      return this.regions.lenght ? true : false
-    }
+    })
   },
 
-  mounted () {
+  created () {
     this.getRegions()
   },
 
@@ -399,24 +389,6 @@ export default {
       getDistricts: 'public/getDistricts'
     }),
 
-    /*launchUploadAvatar (option) {
-      this.imageSelected = URL.createObjectURL(option.file)
-      this.form.image = option.file
-    },
-
-    beforeAvatarUpload (file) {
-      const isJPG = file.type === 'image/png' || file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('La imagen debe estar en formato JPG!')
-      }
-      if (!isLt2M) {
-        this.$message.error('La imagen excede los 2MB!')
-      }
-      return isJPG && isLt2M
-    },*/
-
     onChangeRegion (regionId) {
       this.form.provinceId = ''
       this.form.districtId = ''
@@ -426,6 +398,14 @@ export default {
     onChangeProvince (provinceId) {
       this.form.districtId = ''
       this.getDistricts(provinceId)
+    },
+
+    /**
+     * @override mixin to prevent autocomplete on name field
+     */
+    $_uploadFileMixin_valid (file) {
+      this.form[this.file.type] = file
+      this.file.selected = file
     }
   }
 }

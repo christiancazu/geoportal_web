@@ -54,8 +54,7 @@
     </el-row>
     <el-row :gutter="10">
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- name -->
         <el-form-item
@@ -70,8 +69,7 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- lasname -->
         <el-form-item
@@ -86,8 +84,7 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- lasname -->
         <el-form-item
@@ -104,8 +101,7 @@
     </el-row>
     <el-row :gutter="10">
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- regionId -->
         <el-form-item
@@ -130,8 +126,7 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- porvincia -->
         <el-form-item
@@ -157,8 +152,7 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- distrito -->
         <el-form-item
@@ -185,9 +179,7 @@
     </el-row>
     <el-row :gutter="10">
       <el-col
-        :xs="12"
-        :sm="12"
-        :md="12"
+        :xs="12" :sm="12" :md="12"
       >
         <el-form-item
           class="text-xs-center"
@@ -207,9 +199,7 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="12"
-        :sm="12"
-        :md="12"
+        :xs="12" :sm="12" :md="12"
       >
         <el-form-item
           class="text-xs-center label-success"
@@ -333,9 +323,7 @@ export default {
     ...mapActions({
       getRegions: 'public/getRegions',
       getProvinces: 'public/getProvinces',
-      getDistricts: 'public/getDistricts',
-      replaceProvinces: 'public/replaceProvinces',
-      replaceDistricts: 'public/replaceDistricts',
+      getDistricts: 'public/getDistricts'
     }),
 
     assignFormFields () {
@@ -344,8 +332,8 @@ export default {
       })
       this.file.imageUrl = this.form[this.file.type]
 
-      this.getProvinces(this.form["regionId"])
-      this.getDistricts(this.form["provinceId"])
+      this.getProvinces(this.form['regionId'])
+      this.getDistricts(this.form['provinceId'])
     },
 
     /**
@@ -358,45 +346,24 @@ export default {
       if (formData.get(this.file.type) === null || typeof formData.get(this.file.type) === 'string')
         formData.delete(this.file.type)
     },
-    /*
-    launchUploadAvatar (option) {
-      this.imageSelected = URL.createObjectURL(option.file)
-      this.form.uploadImage = option.file
-    },
-
-    beforeAvatarUpload (file) {
-      const isJPG = file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg'
-      const isLt2M = file.size / 1024 / 1024 < 2
-
-      if (!isJPG) {
-        this.$message.error('La imagen debe estar en formato JPG!')
-      }
-      if (!isLt2M) {
-        this.$message.error('La imagen excede los 2MB!')
-      }
-      return isJPG && isLt2M
-    },*/
 
     onChangeRegion (regionId) {
-      const params = {
-        region: regionId
-      }
-      this.replaceProvinces({ provinces: null })
-      this.replaceDistricts({ districts: null })
       this.form.provinceId = ''
       this.form.districtId = ''
-
-      this.getProvinces({ params })
+      this.getProvinces(regionId)
     },
 
     onChangeProvince (provinceId) {
-      const params = {
-        province: provinceId
-      }
-
-      this.replaceDistricts({ districts: null })
       this.form.districtId = ''
-      this.getDistricts({ params })
+      this.getDistricts(provinceId)
+    },
+
+    /**
+     * @override mixin to prevent autocomplete on name field
+     */
+    $_uploadFileMixin_valid (file) {
+      this.form[this.file.type] = file
+      this.file.selected = file
     }
   }
 }

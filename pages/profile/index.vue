@@ -1,8 +1,5 @@
 <template>
-<base-page
-  :page-header="pageHeader"
-  fit-content
->
+<base-page :page-header="pageHeader">
   <el-form
     ref="form"
     label-position="top"
@@ -335,7 +332,19 @@ export default {
             formData.append('image', this.file.selected)
           }
 
+          // delete image prop from form if have the initial path url as string
+          // before to be sended
+          if (typeof this.form.image === 'string') {
+            formData.delete('image')
+          }
+
           await this.$store.dispatch('users/updateItemContext', { data: formData })
+
+          /**
+           * updating current auth.user state to view changes (image user)
+           */
+          const { data } = await this.$store.dispatch('users/getUserInfo')
+          this.$store.commit('auth/SET', { key: 'user', value: data.user })
 
           this.$toast.success(this.$SUCCESS.USER.UPDATED)
         }
@@ -397,6 +406,14 @@ export default {
     onChangeProvince (provinceId) {
       this.form.districtId = ''
       this.getDistricts(provinceId)
+    },
+
+    /**
+     * @override mixin to prevent autocomplete on name field
+     */
+    $_uploadFileMixin_valid (file) {
+      this.form[this.file.type] = file
+      this.file.selected = file
     }
   },
 
