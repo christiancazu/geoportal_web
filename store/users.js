@@ -40,6 +40,10 @@ export const actions = {
     await this.$userAPI.update(form)
   },
 
+  async updateProfile ({ }, form) {
+    await this.$userAPI.updateProfile(form)
+  },
+
   async deleteItemContext ({ }, id) {
     await this.$userAPI.delete(id)
   }

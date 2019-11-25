@@ -39,11 +39,19 @@ export default $axios => ({
   },
   update (payload = {}) {
     return $axios({
+      url: `${USER}/${payload.data.get('id')}/`,
+      method: 'PUT',
+      data: payload.data || {}
+    })
+  },
+  updateProfile (payload = {}) {
+    return $axios({
       url: `${USER}/profile_update/`,
       method: 'PUT',
       data: payload.data || {}
     })
   },
+
   delete (payload = {}) {
     return $axios({
       url: `${USER}/${payload.id}/`,

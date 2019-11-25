@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import { email, password } from '@/config/form.rules'
+import { password } from '@/config/form.rules'
 
 import {
   ENABLE_PROCESSING_FORM,
@@ -139,11 +139,16 @@ export default {
   data () {
     return {
       form: {
-        email: null,
-        password: null
+        email: '',
+        password: ''
       },
       rules: {
-        email,
+        email: [
+          {
+            required: true,
+            message: 'El usuario es requerido'
+          }
+        ],
         password
       }
     }

@@ -338,7 +338,7 @@ export default {
             formData.delete('image')
           }
 
-          await this.$store.dispatch('users/updateItemContext', { data: formData })
+          await this.$store.dispatch('users/updateProfile', { data: formData })
 
           /**
            * updating current auth.user state to view changes (image user)

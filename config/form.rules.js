@@ -1,14 +1,25 @@
+/*eslint-disable */
 export const email = [
   {
     required: true,
-    message: 'Ingrese su nombre de usuario'
+    message: 'La dirección de correo electrónico es requerida'
+  },
+  {
+    validator: (rule, value, callback) => {
+      const emailRegEx = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      if (!emailRegEx.test(value)) {
+        return callback(new Error("Debe indicar un email válido"))
+      }
+      callback()
+    },
+    trigger: 'blur'
   }
 ]
 
 export const password = [
   {
     required: true,
-    message: 'Ingrese su contraseña'
+    message: 'La contraseña es requerida'
   }
 ]
 
@@ -36,7 +47,7 @@ export const order = [
   {
     required: true,
     type: 'number',
-    message: ' '
+    message: 'Debe indicar un valor numérico'
   }
 ]
 
@@ -78,29 +89,30 @@ export const name = name => [
 export const shapeFile = [
   {
     required: true,
-    message: 'El Archivo es requerido'
+    message: 'El archivo es requerido'
   }
 ]
 
 export const rasterFile = [
   {
     required: true,
-    message: 'El Archivo es requerido'
+    message: 'El archivo es requerido'
   }
 ]
 
 export const image = [
   {
     required: true,
-    message: 'El Archivo es requerido'
+    message: 'El archivo es requerido'
   }
 ]
 
-
-/*eslint-disable */
 export const nameAlpha = [
   {
     required: true,
+    message: 'El nombre es requerido'
+  },
+  {
     // pattern: /^[z0-9\s.,\/#!$%\^&\*;:{}=\-+'´`~()”“"…]+$/g,
     validator: (rule, value, callback) => {
       let text = value.split('')
@@ -109,7 +121,8 @@ export const nameAlpha = [
         return callback(new Error("Solo se admite letras y subguion '_'"))
       }
       callback()
-    }
+    },
+    trigger: 'blur'
   }
 ]
 
@@ -135,11 +148,16 @@ export const institute = [{
   required: true,
   message: 'La institución es requerida'
 }]
-export const subject = [{
-  required: true,
-  min: 10,
-  message: 'Detalle el motivo para acceder al Geoportal UNAT'
-}]
+export const subject = [
+  {
+    required: true,
+    message: 'Detalle el motivo para acceder al Geoportal UNAT'
+  },
+  {
+    min: 10,
+    message: 'Indique al menos 10 caracteres'
+  },
+]
 export const observation = [{
   required: true,
   message: 'Este campo es requerido'
