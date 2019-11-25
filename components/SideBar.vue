@@ -14,11 +14,10 @@
       index="/"
       :route="{ path: '/' }"
     >
-      <img
+      <el-image
+        style="width: 35px; height:35px;"
         :src="user.image"
-        alt=""
-        style="height:35px;"
-      >
+      />
       <span class="font-weight-bold">{{ user.username }}
         <el-badge
           class="mark"
