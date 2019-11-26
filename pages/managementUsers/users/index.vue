@@ -16,7 +16,7 @@
       prop="fullName"
     />
     <el-table-column
-      label="Correo Electrónico"
+      label="Correo electrónico"
       prop="email"
     />
     <el-table-column

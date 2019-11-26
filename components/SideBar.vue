@@ -105,6 +105,12 @@
       >
         Imágenes Satelitales
       </el-menu-item>
+      <el-menu-item
+        :route="{ path: '/managementData/temporalFolder' }"
+        index="/managementData/temporalFolder"
+      >
+        Carpeta Temporal
+      </el-menu-item>
     </el-submenu>
 
     <el-submenu index="5">
