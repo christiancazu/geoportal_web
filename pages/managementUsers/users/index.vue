@@ -12,11 +12,7 @@
     }"
   >
     <el-table-column
-      label="Nombres"
-      prop="name"
-    />
-    <el-table-column
-      label="Apellidos"
+      label="Nombre completo"
       prop="fullName"
     />
     <el-table-column
@@ -85,7 +81,6 @@ export default {
         baseName: 'USER'
       },
       filterCriteriaProps: [
-        'name',
         'fullName',
         'email',
         'username'

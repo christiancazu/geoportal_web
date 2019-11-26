@@ -16,7 +16,7 @@
       <el-col :md="12">
         <!-- image -->
         <el-form-item
-          label="Imagen de Perfil"
+          label="Imagen de perfil"
           class="text-xs-center upload-file"
         >
 
@@ -33,7 +33,7 @@
       <el-col :md="12">
         <!-- username -->
         <el-form-item
-          label="Nombre de Usuario"
+          label="Nombre de usuario"
           prop="username"
         >
           <el-input
@@ -45,7 +45,7 @@
 
         <!-- email-->
         <el-form-item
-          label="Correo Electrónico"
+          label="Correo electrónico"
           prop="email"
         >
           <el-input
@@ -61,7 +61,7 @@
       <el-col :md="12">
         <!-- password_1 -->
         <el-form-item
-          label="contraseña"
+          label="Contraseña"
           prop="password"
         >
           <el-input
@@ -109,7 +109,7 @@
       >
         <!-- lasname -->
         <el-form-item
-          label="Apellido"
+          label="Apellido paterno"
           prop="lastName"
         >
           <el-input
@@ -124,7 +124,7 @@
       >
         <!-- second lasname -->
         <el-form-item
-          label="Segundo apellido"
+          label="Apellido materno"
           prop="lastNameAditional"
         >
           <el-input
