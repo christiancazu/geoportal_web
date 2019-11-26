@@ -1,6 +1,7 @@
 <template>
 <div class="sidebar-container">
   <el-menu
+    background-color="whitesmoke"
     :default-active="$route.path"
     class="el-menu-vertical-demo"
     :router="true"
