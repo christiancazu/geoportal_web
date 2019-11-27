@@ -275,9 +275,9 @@ export default {
       file: {
         type: 'image', // it's property name file inside form
         availableExtensions: [
-          '.png',
-          '.jpg',
-          '.jpeg'
+          'png',
+          'jpg',
+          'jpeg'
         ],
         maxSizeLabel: '2MB',
         maxSizeLength: 262144, // (bytes units) ~ 262144 bytes = 2mb

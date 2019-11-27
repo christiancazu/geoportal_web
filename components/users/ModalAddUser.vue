@@ -359,9 +359,9 @@ export default {
       file: {
         type: 'image', // it's property name file inside form
         availableExtensions: [
-          '.png',
-          '.jpg',
-          '.jpeg'
+          'png',
+          'jpg',
+          'jpeg'
         ],
         selected: null,
         maxSizeLabel: '2MB',

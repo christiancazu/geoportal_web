@@ -171,7 +171,7 @@ export default {
       },
       file: {
         type: 'rasterFile',
-        availableExtensions: ['.zip'],
+        availableExtensions: ['zip'],
         selected: null
       },
       form: {

@@ -1,20 +1,97 @@
 <template>
 <base-page :page-header="pageHeader">
-  <div style="width: 90%">
-    <bar-chart
-      :chart-data="datacollection"
-      :styles="myStyles"
-      :height="240"
+  <div class="my-0">Unidades a mostrar</div>
+  <div
+    class="mb-4 d-flex" style="justify-content: center"
+  >
+    <el-radio
+      v-for="(radio, index) in radios" :key="index"
+      v-model="um"
+      :label="radio.label"
+      border
+      :disabled="$store.state.spinners.processingForm"
+      @change="fetchSpaces()"
+    >
+      {{ radio.text }}
+    </el-radio>
+  </div>
+
+  <el-divider />
+
+  <div
+    v-loading="$store.state.spinners.processingForm"
+    class="mt-4"
+  >
+    <div>Espacio ocupado</div>
+    <el-row>
+      <el-col
+        :xs="24" :md="8"
+      >
+        <el-table
+          :data="spaces"
+          class="mt-4"
+        >
+          <el-table-column
+            prop="label"
+            label="Espacios"
+          />
+          <el-table-column
+            prop="value"
+            label="Cantidad"
+          >
+            <template slot-scope="scope">
+              {{ scope.row.value }} {{ um }}
+            </template>
+          </el-table-column>
+        </el-table>
+
+      </el-col>
+      <el-col
+        class="mt-5"
+        :xs="24" :md="8"
+      >
+        <pie-chart
+          v-if="dataLoaded"
+          :chart-data="temporalData"
+          :height="200"
+        />
+      </el-col>
+      <el-col
+        class="mt-5"
+        :xs="24" :md="8"
+      >
+        <pie-chart
+          v-if="dataLoaded"
+          :chart-data="mediaData"
+          :height="200"
+        />
+      </el-col>
+    </el-row>
+  </div>
+
+  <el-divider />
+
+  <div class="mt-4">Liberar espacio</div>
+  <div
+    class="my-2 d-flex"
+    style="justify-content: center"
+  >
+    <base-btn-confirm
+      v-loading="$store.state.spinners.processingForm"
+      title="Liberar espacio en disco"
+      body-text="¿Está seguro de realizar esta acción?"
+      btn-name="Liberar"
+      @confirmed-action="cleanSpaces"
     />
   </div>
 </base-page>
-
 </template>
 
 <script>
 import BasePage from '@/components/base/pages/BasePage'
+import BaseBtnConfirm from '@/components/base/BaseBtnConfirm'
 
-import BarChart from '@/charts/barChart'
+import PieChart from '@/charts/pieChart'
 
 import {
   ENABLE_PROCESSING_FORM,
@@ -28,7 +105,8 @@ import {
 export default {
   components: {
     BasePage,
-    BarChart
+    PieChart,
+    BaseBtnConfirm
   },
 
   data () {
@@ -36,85 +114,106 @@ export default {
       pageHeader: {
         title: 'CARPETA TEMPORAL'
       },
-      datacollection: {},
-      myStyles: {
-        position: 'relative'
-      }
+      radios: [
+        { label: 'GB', text: 'Gigabytes' },
+        { label: 'MB', text: 'Megabytes' },
+        { label: 'Bytes', text: 'Bytes'}
+      ],
+      temporalData: {},
+      mediaData: {},
+      um: 'GB',
+      dataLoaded: false
     }
   },
 
   computed: {
     ...mapState({
-      spaces: state => state.temporal.spaces
+      spaces: state => state.temporal.spaces,
+      temporalSpaces: state => state.temporal.temporalSpaces,
+      mediaSpaces: state => state.temporal.mediaSpaces
     })
   },
 
   async created () {
-    await this.$store.dispatch('temporal/getSpaces')
-    this.fillData()
+    await this.fetchSpaces()
   },
 
   methods: {
-    fillData () {
-      let labels = this.$store.state.temporal.headers
-      let datasets = [
-        {
-          label: "Espacios ocupados en disco en GB",
-          backgroundColor: this.getRandomColors(5),
-          data: this.$store.state.temporal.values
-        }
-      ]
+    fillTemporalData () {
+      let labels = this.temporalSpaces.map(space => space.label)
 
-      this.datacollection = {
+      let colors = this.temporalSpaces.map(space => space.rgbColor)
+
+      let datasets = this.getDataSets(this.temporalSpaces, colors)
+
+      this.temporalData = {
+        labels,
+        datasets
+      }
+    },
+    fillMediaData () {
+      let labels = this.mediaSpaces.map(space => space.label)
+
+      let colors = this.mediaSpaces.map(space => space.rgbColor)
+
+      let datasets = this.getDataSets(this.mediaSpaces, colors)
+
+      this.mediaData = {
         labels,
         datasets
       }
     },
 
-    getRandomColors (quantify) {
-      let colors =  []
-      for (let index = 0; index < quantify; index++) {
-        colors.push('#'+ Math.floor(Math.random()*16777215).toString(16))
-      }
-      return colors
-    },
-
-    async submitForm () {
-      let isFormValid = false
-
-      await this.$refs.form.validate(result => isFormValid = result)
-
-      if (isFormValid) {
-        try {
-          this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
-
-          const formData = this.objectToFormData()
-
-          // just if image isn't null append to formdata
-          if (this.file.selected !== null) {
-            formData.append('image', this.file.selected)
-          }
-
-          // delete image prop from form if have the initial path url as string
-          // before to be sended
-          if (typeof this.form.image === 'string') {
-            formData.delete('image')
-          }
-
-          await this.$store.dispatch('users/updateProfile', { data: formData })
-
-          /**
-           * updating current auth.user state to view changes (image user)
-           */
-          const { data } = await this.$store.dispatch('users/getUserInfo')
-          this.$store.commit('auth/SET', { key: 'user', value: data.user })
-
-          this.$toast.success(this.$SUCCESS.USER.UPDATED)
+    getDataSets (spaces, colors) {
+      return [
+        {
+          hoverBackgroundColor: this.setOpacityToRGBcolors(colors, 0.85),
+          borderColor: this.setOpacityToRGBcolors(colors, 1),
+          borderWidth: 1,
+          backgroundColor: this.setOpacityToRGBcolors(colors, 0.45),
+          data: spaces.map(space => space.value)
         }
-        catch (e) {}
-        this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
-      }
+      ]
     },
+
+    setOpacityToRGBcolors (RGBColors, opacity) {
+      return RGBColors.map(rgb => `rgba(${rgb}, ${opacity})`)
+    },
+
+    async cleanSpaces () {
+      try {
+        this.dataLoaded = false
+        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+
+        await this.$store.dispatch('temporal/getSpaces', this.um)
+        await this.$store.dispatch('temporal/cleanSpaces')
+
+        this.$toast.success(this.$SUCCESS.TEMPORAL.DELETED)
+        this.fillTemporalData()
+        this.fillMediaData()
+        this.dataLoaded = true
+
+      } catch (e) {}
+
+      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+    },
+
+    async fetchSpaces () {
+      try {
+        this.dataLoaded = false
+        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+
+        await this.$store.dispatch('temporal/getSpaces', this.um)
+
+        this.$toast.success(this.$SUCCESS.TEMPORAL.FETCHED)
+        this.fillTemporalData()
+        this.fillMediaData()
+        this.dataLoaded = true
+
+      } catch (e) {}
+
+      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+    }
   },
 
   head: {

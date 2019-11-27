@@ -2,6 +2,7 @@
 <base-page :page-header="pageHeader">
   <el-form
     ref="form"
+    v-loading="!profileLoaded"
     label-position="top"
     status-icon
     :model="form"
@@ -16,6 +17,7 @@
     >
 
       <upload-file
+        v-if="profileLoaded"
         :file="file"
         type-image
         avatar-image
@@ -261,15 +263,16 @@ export default {
       file: {
         type: 'image',
         availableExtensions: [
-          '.png',
-          '.jpg',
-          '.jpeg'
+          'png',
+          'jpg',
+          'jpeg'
         ],
         maxSizeLabel: '2MB',
         maxSizeLength: 262144, // (bytes units) ~ 262144 bytes = 2mb
         selected: null,
         imageUrl: ''
-      }
+      },
+      profileLoaded: false
     }
   },
 
@@ -283,9 +286,9 @@ export default {
     })
   },
 
-  created () {
-    this.fetchContext()
-    // this.assignExtensionsString()
+  async created () {
+    await this.fetchContext()
+    this.assignExtensionsString()
   },
 
   methods: {
@@ -298,8 +301,10 @@ export default {
 
     async fetchContext () {
       try {
-        this.$store.commit('spinners/ENABLE_PROCESSING_FORM')
+        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
         await this.getProfile()
+
+        this.profileLoaded = true
 
         this.assignFormFields()
 
@@ -308,7 +313,7 @@ export default {
         await this.getDistricts(this.$store.state.users.profile.provinceId)
       }
       catch (error) {}
-      this.$store.commit('spinners/DISABLE_PROCESSING_FORM')
+      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
     },
 
     assignFormFields () {
@@ -369,7 +374,7 @@ export default {
     },
 
     beforeImageUpload (currentFile) {
-      const currentExtension = `.${currentFile.name.split('.').pop()}`
+      const currentExtension = `${currentFile.name.split('.').pop()}`
 
       const isExtensionValid = this.file.availableExtensions.includes(currentExtension)
 
@@ -392,9 +397,9 @@ export default {
 
     assignExtensionsString () {
       this.file.availableExtensions.forEach(e => {
-        this.extensionsString += e + ' ó '
+        this.extensionsString += e + ', '
       })
-      this.extensionsString = this.extensionsString.substring(0, this.extensionsString.length - 2)
+      this.extensionsString = '(' + this.extensionsString.substring(0, this.extensionsString.length - 2) + ')'
     },
 
     onChangeRegion (regionId) {
@@ -418,7 +423,7 @@ export default {
   },
 
   head: {
-    title: 'Mi Perfil',
+    title: 'Mi Perfil'
   }
 }
 </script>

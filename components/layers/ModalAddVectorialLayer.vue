@@ -174,7 +174,7 @@ export default {
       },
       file: {
         type: 'shapeFile',
-        availableExtensions: ['.zip'],
+        availableExtensions: ['zip'],
         selected: null
       },
       form: {

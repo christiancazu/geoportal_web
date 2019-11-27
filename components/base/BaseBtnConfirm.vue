@@ -4,46 +4,25 @@
   :icon="icon"
   :disabled="disabled"
   size="small"
-  circle
+  :circle="!btnName"
   @click="open"
-/>
+>
+  <template v-if="btnName">{{ btnName }}</template>
+</el-button>
 </template>
 
 <script>
 export default {
   props: {
-    accion: {
-      type: String,
-      default: 'deleted'
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    bodyText: {
-      type: String,
-      default: ''
-    },
-    itemSelected: {
-      type: Object,
-      default: null
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    input: {
-      type: Boolean,
-      default: false
-    },
-    inputType: {
-      type: String,
-      default: 'text'
-    },
-    inputPlaceholder: {
-      type: String,
-      default: 'Message'
-    }
+    accion: { type: String, default: 'deleted' },
+    title: { type: String, default: '' },
+    bodyText: { type: String, default: '' },
+    itemSelected: { type: Object, default: null },
+    disabled: { type: Boolean, default: false },
+    input: { type: Boolean, default: false },
+    inputType: { type: String, default: 'text' },
+    inputPlaceholder: { type: String, default: 'Message' },
+    btnName: { type: String, default: null },
   },
 
   data () {
@@ -62,6 +41,7 @@ export default {
         return 'info'
       }
     },
+
     icon () {
       switch (this.accion) {
       case 'deleted':
@@ -76,6 +56,7 @@ export default {
         return 'el-icon-info'
       }
     },
+
     typeConfirm () {
       if (this.accion === 'deleted' || this.accion === 'rejected') {
         return 'error'
@@ -85,10 +66,6 @@ export default {
         return 'info'
       }
     }
-  },
-
-  mounted () {
-    // console.log(this.$break);
   },
 
   methods: {
@@ -119,5 +96,3 @@ export default {
   }
 }
 </script>
-<style lang='scss'>
-</style>

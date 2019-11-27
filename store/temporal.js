@@ -1,31 +1,42 @@
 import {
-  SET_DATA_CONTEXT
+  SET_SPACES
 } from '../types/mutation-types'
+
 export const state = () => ({
-  headers: [],
-  values: []
+  spaces: [
+    { label: 'Carpeta temporal', value: 0, rgbColor: '255, 255, 0' /*blue*/ },
+    { label: 'Carpeta de archivos', value: 0, rgbColor: '0, 255, 0' /*Lime*/ },
+    { label: 'Usado en disco', value: 0, rgbColor: '0, 255, 255' /*cyan*/ },
+    { label: 'Espacio libre', value: 0, rgbColor: '255, 0, 0' /*red*/ },
+    { label: 'Total de disco', value: 0, rgbColor: '0, 0, 255' /*yellow*/ }
+  ],
+  temporalSpaces: [],
+  mediaSpaces: []
 })
 
 export const actions = {
-  async getSpaces ({ commit }) {
-    const { data } = await this.$temporalAPI.get({ params: { um: 'GB' } })
-    commit(SET_DATA_CONTEXT, data)
+  async getSpaces ({ commit }, um) {
+    const { data } = await this.$temporalAPI.get({ params: { um } })
+    commit(SET_SPACES, data)
+  },
+  async cleanSpaces ({ }) {
+    await this.$temporalAPI.delete()
   },
 }
 
 export const mutations = {
-  /**
-   * receives 2 objects with array of values
-   * mergin at array of objects, ex:
-   * given: { headers: [], values: [] }
-   * set to: [{ header: 'x', value: y }, ...{}]
-   *
-   */
-  [SET_DATA_CONTEXT]: (state, payload) => {
-    state.headers = payload.headers
-    state.values = payload.values
-    // payload.headers.forEach((header, index) => {
-    //   state.spaces.push({ header, value: payload.values[index] })
-    // })
-  },
+  [SET_SPACES]: (state, payload) => {
+    // set spaces
+    Object.keys(payload).forEach((key, index) => {
+      state.spaces[index].value = payload[key]
+    })
+    // set temporalSpaces
+    state.temporalSpaces = []
+    state.temporalSpaces.push(state.spaces[4])
+    state.temporalSpaces.push(state.spaces[0])
+    // set mediaSpaces
+    state.mediaSpaces = []
+    state.mediaSpaces.push(state.spaces[4])
+    state.mediaSpaces.push(state.spaces[1])
+  }
 }

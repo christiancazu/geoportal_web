@@ -40,6 +40,10 @@ export const SUCCESS = {
     UPDATED: 'El servicio se actualizó con éxito',
     DELETED: 'El servicio se eliminó con éxito'
   },
+  TEMPORAL: {
+    FETCHED: 'Se obtuvieron los datos con éxito',
+    DELETED: 'Los datos temporales se eliminaron con éxito'
+  },
   USER: {
     REGISTERED: 'El usuario se registró con éxito',
     UPDATED: 'El usuario se actualizó con éxito',

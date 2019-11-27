@@ -22,8 +22,9 @@
       />
       <div class="el-upload__text mb-4">
         <div class="px-4">Suelta él archivo <br>
-          <strong>{{ extensionsString }}</strong> <br>
-          aquí ó <br><em>haz click para cargar</em>
+          <strong>{{ extensionsString }}</strong>
+          <br> ó <br>
+          <em>haz click para cargar</em>
         </div>
       </div>
     </template>
@@ -99,7 +100,7 @@ export default {
     },
 
     beforeFileUpload (currentFile) {
-      const currentExtension = `.${currentFile.name.split('.').pop()}`
+      const currentExtension = `${currentFile.name.split('.').pop()}`
 
       const isExtensionValid = this.file.availableExtensions.includes(currentExtension) // || currentFile.type === 'application/zip'
 
@@ -123,9 +124,9 @@ export default {
 
     assignExtensionsString () {
       this.file.availableExtensions.forEach(e => {
-        this.extensionsString += e + ' ó '
+        this.extensionsString += e + ', '
       })
-      this.extensionsString = this.extensionsString.substring(0, this.extensionsString.length - 2)
+      this.extensionsString = '(' + this.extensionsString.substring(0, this.extensionsString.length - 2) + ')'
     },
 
     /**

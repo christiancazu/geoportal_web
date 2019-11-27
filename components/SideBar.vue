@@ -16,12 +16,12 @@
       :route="{ path: '/' }"
     >
       <el-image
-        style="width: 35px; height:35px;"
+        class="img-profile-sidebar"
         :src="user.image"
       />
       <span class="font-weight-bold">{{ user.username }}
         <el-badge
-          class="mark"
+          type="warning"
           :value="user.userType.id === 'AD' ? 'ADMIN' : ''"
         /></span>
     </el-menu-item>
@@ -36,7 +36,6 @@
     <!-- <el-divider /> -->
     <el-submenu
       index="2"
-      active-text-color="#7f5ae7"
     >
       <template slot="title">
         <i class="fas fa-users" /><span slot="title">Gestión de usuarios</span>
@@ -168,7 +167,6 @@
 </div>
 </template>
 
-
 <script>
 import { mapState } from 'vuex'
 export default {
@@ -185,10 +183,9 @@ export default {
   },
 
   watch: {
-    isCollapse: function (newState, /*oldState*/) {
+    isCollapse: function (newState) {
       this.$emit('is-collapse', newState)
     }
-  },
-
+  }
 }
 </script>
