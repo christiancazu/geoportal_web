@@ -19,24 +19,24 @@
   "author": "veox",
   "license": "ISC",
   "dependencies": {
-    "@nuxtjs/auth": "^4.8.1",
-    "@nuxtjs/axios": "^5.5.4",
+    "@nuxtjs/auth": "^4.8.4",
+    "@nuxtjs/axios": "^5.8.0",
     "@nuxtjs/font-awesome": "^1.0.4",
-    "@nuxtjs/toast": "^3.2.1",
+    "@nuxtjs/toast": "^3.3.0",
     "chart.js": "^2.9.3",
-    "element-ui": "^2.9.1",
-    "nuxt": "^2.8.1",
+    "element-ui": "^2.13.0",
+    "nuxt": "^2.10.2",
     "vue-chartjs": "^3.5.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
-    "eslint": "^6.6.0",
+    "eslint": "^6.7.1",
     "eslint-loader": "^3.0.2",
-    "eslint-plugin-vue": "^6.0.0",
-    "node-sass": "^4.12.0",
-    "pug": "^2.0.3",
+    "eslint-plugin-vue": "^6.0.1",
+    "node-sass": "^4.13.0",
+    "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",
-    "sass-loader": "^7.1.0"
+    "sass-loader": "^8.0.0"
   },
   "bugs": {
     "url": "https://gitlab.com/veox_unat/veox_unat_geoportal_web/issues"
