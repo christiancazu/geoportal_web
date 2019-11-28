@@ -8,6 +8,7 @@ export const ERRORS = {
 
 export const SUCCESS = {
   WELLCOME: 'Bienvenido al Geoportal UNAT',
+  LOGOUT: 'Ha cerrado sesión correctamente',
 
   AUTHOR: {
     REGISTERED: 'El autor se registro con éxito',

@@ -1,10 +1,11 @@
+
 <template>
 <div class="sidebar-container">
   <el-menu
     background-color="whitesmoke"
     :default-active="$route.path"
     class="el-menu-vertical-demo"
-    :router="true"
+    router
     :collapse="isCollapse"
     style="height:100%"
     unique-opened
@@ -12,7 +13,7 @@
   >
     <el-menu-item
       v-if="user"
-      index="/"
+      index="1"
       :route="{ path: '/' }"
     >
       <el-image
@@ -25,142 +26,59 @@
           :value="user.userType.id === 'AD' ? 'ADMIN' : ''"
         /></span>
     </el-menu-item>
+
     <el-divider />
-    <el-menu-item
-      index="/profile"
-      :route="{ path: '/profile' }"
+    <!-- eslint-disable-next-line -->
+    <template
+      v-for="(nav) in navs"
     >
-      <i class="fas fa-user" />
-      <span>Perfil</span>
-    </el-menu-item>
-    <!-- <el-divider /> -->
-    <el-submenu
-      index="2"
-    >
-      <template slot="title">
-        <i class="fas fa-users" /><span slot="title">Gestión de usuarios</span>
-      </template>
+      <!-- eslint-disable-next-line vue/valid-v-for -->
       <el-menu-item
-        index="/managementUsers/users"
-        :route="{ path: '/managementUsers/users' }"
+        v-if="!nav.items"
+        :index="nav.route"
+        :route="{ path: nav.route }"
       >
-        Usuarios
+        <i :class="`fas fa-${nav.icon}`" />
+        <span>{{ nav.label }}</span>
       </el-menu-item>
-      <el-menu-item
-        index="/managementUsers/pending"
-        :route="{ path: '/managementUsers/pending' }"
-      >
-        Solicitudes pendientes
-      </el-menu-item>
-      <el-menu-item
-        index="/managementUsers/rejected"
-        :route="{ path: '/managementUsers/rejected' }"
-      >
-        Solicitudes rechazadas
-      </el-menu-item>
-    </el-submenu>
-    <!-- <el-divider /> -->
-    <el-submenu index="3">
-      <div slot="title">
-        <i class="fas fa-layer-group" /><span slot="title">Gestión de Capas</span>
-      </div>
-      <el-menu-item
-        :route="{ path: '/managementLayers/vectorials' }"
-        index="/managementLayers/vectorials"
-      >
-        Capas Vectoriales
-      </el-menu-item>
-      <el-menu-item
-        :route="{ path: '/managementLayers/rasters' }"
-        index="/managementLayers/rasters"
-      >
-        Capas Raster
-      </el-menu-item>
-      <el-menu-item
-        :route="{ path: '/managementLayers/bases' }"
-        index="/managementLayers/bases"
-      >
-        Capas Base
-      </el-menu-item>
-      <el-menu-item
-        :route="{ path: '/managementLayers/groups' }"
-        index="/managementLayers/groups"
-      >
-        Grupo de Capas
-      </el-menu-item>
-    </el-submenu>
-    <el-submenu index="4">
-      <div slot="title">
-        <i class="fas fa-database" /><span slot="title">Gestión de Datos</span>
-      </div>
-      <el-menu-item
-        :route="{ path: '/managementData/georeferencedImages' }"
-        index="/managementData/georeferencedImages"
-      >
-        Imágenes Georeferenciales
-      </el-menu-item>
-      <el-menu-item
-        :route="{ path: '/managementData/satelitalsImages' }"
-        index="/managementData/satelitalsImages"
-      >
-        Imágenes Satelitales
-      </el-menu-item>
-      <el-menu-item
-        :route="{ path: '/managementData/temporalFolder' }"
-        index="/managementData/temporalFolder"
-      >
-        Carpeta Temporal
-      </el-menu-item>
-    </el-submenu>
 
-    <el-submenu index="5">
-      <div slot="title">
-        <i class="fas fa-users-cog" /><span slot="title">Servicios WMS</span>
-      </div>
-      <el-menu-item
-        :route="{ path: '/managementWMSServices/services' }"
-        index="/WMSServices/services"
+      <!-- eslint-disable-next-line -->
+      <el-submenu
+        v-else
+        :index="nav.label"
       >
-        Servicios
-      </el-menu-item>
-      <el-menu-item
-        :route="{ path: '/managementWMSServices/authors' }"
-        index="/WMSServices/authors"
-      >
-        Autores
-      </el-menu-item>
-      <el-menu-item
-        :route="{ path: '/managementWMSServices/categories' }"
-        index="/WMSServices/categories"
-      >
-        Categorías
-      </el-menu-item>
-    </el-submenu>
+        <template slot="title">
+          <i :class="`fas fa-${nav.icon}`" />
+          <span slot="title">{{ nav.label }}</span>
+        </template>
+        <el-menu-item
+          v-for="(item, menuIndex) in nav.items" :key="menuIndex"
+          :index="item.route"
+          :route="{ path: item.route }"
+        >
+          {{ item.label }}
+        </el-menu-item>
 
-    <el-menu-item
-      index="/reports"
-      :active="false"
-      :route="{ path: '/reports' }"
-    >
-      <i class="fas fa-clipboard-list" /><span>Reportes</span>
-    </el-menu-item>
+      </el-submenu>
+
+    </template>
+
+
     <el-menu-item
       index="7"
-      :active="false"
       :route="{ path: '/' }"
-      @click="$auth.logout()"
-    ><i class="fas fa-power-off" /><span>Cerrar Sesión</span>
+      @click="logout()"
+    >
+      <i class="fas fa-power-off" />
+      <span>Cerrar Sesión</span>
     </el-menu-item>
+
     <el-divider />
-    <el-menu-item @click="isCollapse = !isCollapse">
-      <i
-        v-if="isCollapse"
-        class="el-icon-d-arrow-right"
-      />
-      <i
-        v-else
-        class="el-icon-d-arrow-left"
-      />
+
+    <el-menu-item
+      @click="isCollapse = !isCollapse"
+    >
+      <i :class="`el-icon-d-arrow-${isCollapse ? 'right' : 'left'}`" />
       <span>Ocultar</span>
     </el-menu-item>
   </el-menu>
@@ -173,6 +91,47 @@ export default {
   data () {
     return {
       isCollapse: false,
+      navs: [
+        { label: 'Perfil', icon: 'user', route: '/profile' },
+        {
+          label: 'Gestión de usuarios',
+          icon: 'users',
+          items: [
+            { label: 'Usuarios', route: '/managementUsers/users' },
+            { label: 'Solicitudes pendientes', route: '/managementUsers/pending' },
+            { label: 'Solicitudes rechazadas', route: '/managementUsers/rejected' }
+          ]
+        },
+        {
+          label: 'Gestión de Capas',
+          icon: 'layer-group',
+          items: [
+            { label: 'Capas Vectoriales', route: '/managementLayers/vectorials' },
+            { label: 'Capas Raster', route: '/managementLayers/rasters' },
+            { label: 'Capas Base', route: '/managementLayers/bases' },
+            { label: 'Grupo de Capas', route: '/managementLayers/groups' },
+          ]
+        },
+        {
+          label: 'Gestión de Datos',
+          icon: 'database',
+          items: [
+            { label: 'Imágenes Georeferenciales', route: '/managementData/georeferencedImages' },
+            { label: 'Imágenes Satelitales', route: '/managementData/satelitalsImages' },
+            { label: 'Carpeta Temporal', route: '/managementData/temporalFolder' }
+          ]
+        },
+        {
+          label: 'Servicios WMS',
+          icon: 'users-cog',
+          items: [
+            { label: 'Servicios', route: '/managementWMSServices/services' },
+            { label: 'Autores', route: '/managementWMSServices/authors' },
+            { label: 'Categorías', route: '/managementWMSServices/categories' }
+          ]
+        },
+        { label: 'Reportes', icon: 'clipboard-list', route: '/reports' },
+      ]
     }
   },
 
@@ -186,6 +145,14 @@ export default {
     isCollapse: function (newState) {
       this.$emit('is-collapse', newState)
     }
-  }
+  },
+
+  methods: {
+    async logout () {
+      await this.$auth.logout()
+      this.$toast.success(this.$SUCCESS.LOGOUT)
+      this.$router.push({ to: '/login' })
+    }
+  },
 }
 </script>
