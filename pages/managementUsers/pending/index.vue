@@ -53,7 +53,7 @@ export default {
   data () {
     return {
       pageHeader: {
-        title: 'Usuarios pendientes',
+        title: 'Solicitudes pendientes',
       },
       modalMain: {
         storeBase: 'requests',
