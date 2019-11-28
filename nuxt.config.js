@@ -55,7 +55,8 @@ export default {
     '~/plugins/element-ui',
     '~/plugins/axios',
     '~/plugins/api',
-    '~/plugins/messages'
+    '~/plugins/messages',
+    { src: '~plugins/leaflet.js', ssr: false }
   ],
 
   modules: [

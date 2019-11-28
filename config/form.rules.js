@@ -29,12 +29,6 @@ export const title = [
     message: 'El título es requerido'
   }
 ]
-export const geometry = [
-  {
-    required: true,
-    message: 'La geometría es requerida'
-  }
-]
 
 export const groupLayerId = [
   {
@@ -123,6 +117,18 @@ export const nameAlpha = [
       callback()
     },
     trigger: 'blur'
+  }
+]
+
+export const geometry = [
+  {
+    validator: (rule, value, callback) => {
+      let itContainsValue = value.geometry.coordinates[0] !== 0
+      if (!itContainsValue) {
+        return callback(new Error('La geometría es requerída'))
+      }
+      callback()
+    }
   }
 ]
 

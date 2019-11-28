@@ -13,6 +13,25 @@
       align="bottom"
       justify="center"
     >
+      <el-col>
+        <el-form-item
+          label="GeoJSON"
+          prop="geometry"
+        >
+
+          <marker-geo-json
+            @on-marker-lng-lat="onMarkerLngLat"
+          />
+
+        </el-form-item>
+      </el-col>
+    </el-row>
+
+    <el-row
+      :gutter="10"
+      align="bottom"
+      justify="center"
+    >
       <el-col :md="12">
         <!-- file -->
         <el-form-item
@@ -46,40 +65,29 @@
 
         <!-- geometry -->
         <el-form-item
-          label="Geometría"
-          prop="geometry"
+          label="Descripción"
+          prop="description"
         >
           <el-input
-            v-model="form.geometry"
+            v-model="form.description"
             type="textarea"
-            :rows="3"
+            :rows="4"
             autocomplete="off"
             :maxlength="300"
           />
         </el-form-item>
       </el-col>
     </el-row>
-    <!-- Descripción -->
-    <el-form-item
-      label="Descripción"
-      prop="description"
-    >
-      <el-input
-        v-model="form.description"
-        type="textarea"
-        :rows="3"
-        autocomplete="off"
-        :maxlength="300"
-        :show-word-limit="true"
-      />
-    </el-form-item>
   </template>
 </base-form>
 </template>
 
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+/* eslint-disable array-element-newline */
+/* eslint-disable array-bracket-newline */
+import MarkerGeoJson from '@/components/leafLet/MarkerGeoJson'
 
+import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
@@ -89,6 +97,10 @@ import {
 } from '@/config/form.rules'
 
 export default {
+  components: {
+    MarkerGeoJson
+  },
+
   mixins: [
     modalBaseActionsMixin,
     uploadFileMixin
@@ -111,7 +123,17 @@ export default {
         title: '',
         description: '',
         image: null,
-        geometry: ''
+        geometry: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "Point",
+            coordinates: [
+              0,
+              0
+            ]
+          }
+        }
       },
       rules: {
         title,
@@ -126,11 +148,14 @@ export default {
           'jpeg'
         ],
         selected: null
-      },
+      }
     }
   },
-
   methods: {
+    onMarkerLngLat (lngLat) {
+      this.form.geometry.geometry.coordinates = lngLat
+    },
+
     /**
      * getting formData by reference from BaseForm component
      * to apply custom functionality
@@ -139,9 +164,9 @@ export default {
      */
     ApplyCustomFunctionalityToForm (formData) {
       try {
-        formData.geometry = JSON.stringify(JSON.parse(formData.geometry))
+        formData.set('geometry', JSON.stringify(this.form.geometry))
       } catch (e) {
-        console.error('invalid format on field geometry')
+        this.$toast.success('El GeoJSON es inválido')
       }
     }
   }
