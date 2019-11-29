@@ -9,7 +9,7 @@
       ref="map"
       :zoom="map.zoom"
       :center="map.latLng"
-      @update:center="centerUpdated"
+      @update:center="onCenterUpdated"
     >
 
       <l-tile-layer :url="tileLayer.url" />
@@ -43,28 +43,19 @@
 /* eslint-disable array-element-newline */
 /* eslint-disable array-bracket-newline */
 export default {
+  props: {
+    map: { type: Object, required: true },
+    marker: { type: Object, required: true }
+  },
+
   data: () => ({
     tileLayer: {
       url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-    },
-    map: {
-      latLng: [
-        -9.190481498666669,
-        -74.61914062500001
-      ],
-      zoom: 4
-    },
-    marker: {
-      latLng: [
-        -9.190481498666669,
-        -74.61914062500001
-      ],
-      visible: false
-    },
+    }
   }),
 
   methods: {
-    centerUpdated ({ lat, lng }) {
+    onCenterUpdated ({ lat, lng }) {
       this.map.latLng = [lat, lng]
     },
 

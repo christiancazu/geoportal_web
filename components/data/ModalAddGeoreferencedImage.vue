@@ -15,11 +15,13 @@
     >
       <el-col>
         <el-form-item
-          label="GeoJSON"
+          label="Marca"
           prop="geometry"
         >
 
           <marker-geo-json
+            :map="map"
+            :marker="marker"
             @on-marker-lng-lat="onMarkerLngLat"
           />
 
@@ -83,8 +85,6 @@
 </template>
 
 <script>
-/* eslint-disable array-element-newline */
-/* eslint-disable array-bracket-newline */
 import MarkerGeoJson from '@/components/leafLet/MarkerGeoJson'
 
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
@@ -148,6 +148,20 @@ export default {
           'jpeg'
         ],
         selected: null
+      },
+      map: {
+        latLng: [
+          -9.190481498666669,
+          -74.61914062500001
+        ],
+        zoom: 4
+      },
+      marker: {
+        latLng: [
+          -9.190481498666669,
+          -74.61914062500001
+        ],
+        visible: false
       }
     }
   },

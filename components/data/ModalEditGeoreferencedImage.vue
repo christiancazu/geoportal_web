@@ -13,6 +13,26 @@
       align="bottom"
       justify="center"
     >
+      <el-col>
+        <el-form-item
+          label="Marca"
+          prop="geometry"
+        >
+
+          <marker-geo-json
+            :map="map"
+            :marker="marker"
+            @on-marker-lng-lat="onMarkerLngLat"
+          />
+
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-row
+      :gutter="10"
+      align="bottom"
+      justify="center"
+    >
       <el-col :md="12">
         <!-- file -->
         <el-form-item
@@ -63,6 +83,10 @@
 </template>
 
 <script>
+/* eslint-disable array-element-newline */
+/* eslint-disable array-bracket-newline */
+import MarkerGeoJson from '@/components/leafLet/MarkerGeoJson'
+
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
@@ -71,6 +95,10 @@ import { mapState } from 'vuex'
 import { title } from '@/config/form.rules'
 
 export default {
+  components: {
+    MarkerGeoJson
+  },
+
   mixins: [
     modalBaseActionsMixin,
     uploadFileMixin
@@ -92,6 +120,14 @@ export default {
       form: {
         id: null,
         title: '',
+        geometry: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "Point",
+            coordinates: []
+          }
+        },
         description: '',
         image: null
       },
@@ -107,6 +143,17 @@ export default {
         ],
         selected: null,
         imageUrl: ''
+      },
+      map: {
+        latLng: [
+          -9.190481498666669,
+          -74.61914062500001
+        ],
+        zoom: 4
+      },
+      marker: {
+        latLng: [],
+        visible: true
       }
     }
   },
@@ -131,8 +178,30 @@ export default {
 
   methods: {
     assignFormFields () {
-      Object.keys(this.form).forEach(key => (this.form[key] = this.itemContext[key]))
+      // receiving diferent properties from api to set current form(geometry ~ marker)
+      // Object.keys(this.form).forEach(key => (this.form[key] = this.itemContext[key]))
+
+      this.form.id = this.itemContext.id
+      this.form.title = this.itemContext.title
+      this.form.description = this.itemContext.description
+      this.form.image = this.itemContext.image
+
+      const { type , coordinates } = JSON.parse(this.itemContext.marker)
+
+      this.form.geometry.geometry.type = type
+
+      const [lng, lat] = coordinates
+
+      this.form.geometry.geometry.coordinates = [lat, lng]
+
+      this.marker.latLng = [lat, lng]
+
+      // setting image src
       this.file.imageUrl = this.form[this.file.type]
+    },
+
+    onMarkerLngLat (lngLat) {
+      this.form.geometry.geometry.coordinates = lngLat
     },
 
     /**
@@ -142,9 +211,15 @@ export default {
      * @param {Object} formData
      */
     ApplyCustomFunctionalityToForm (formData) {
-      if (formData[this.file.type] === null || typeof formData[this.file.type] === 'string')
+      if (formData.get(this.file.type) === null || typeof formData.get(this.file.type) === 'string')
         formData.delete(this.file.type)
+
+      try {
+        formData.set('geometry', JSON.stringify(this.form.geometry))
+      } catch (e) {
+        this.$toast.success('El GeoJSON es inválido')
+      }
     }
-  },
+  }
 }
 </script>
