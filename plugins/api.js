@@ -1,6 +1,6 @@
 import refreshAPI from '~/api/refresh'
 import publicAPI from '~/api/public'
-import userAPI from '~/api/user'
+// import userAPI from '~/api/user'
 import requestAPI from '~/api/request'
 import vectorialLayerAPI from '~/api/vectorialLayer'
 import baseLayerAPI from '~/api/baseLayer'
@@ -14,10 +14,15 @@ import georeferencedImageAPI from '~/api/georeferencedImage'
 import satelitalImageAPI from '~/api/satelitalImage'
 import temporalAPI from '~/api/temporal'
 
+import baseAPI from '~/api/api.base'
+
+import * as endpoints from '@/config/endpointsx'
+
+
 export default (ctx, inject) => {
   inject('refreshAPI', refreshAPI(ctx.$axios))
   inject('publicAPI', publicAPI(ctx.$axios))
-  inject('userAPI', userAPI(ctx.$axios))
+  // inject('userAPI', userAPI(ctx.$axios))
   inject('requestAPI', requestAPI(ctx.$axios))
   inject('vectorialLayerAPI', vectorialLayerAPI(ctx.$axios))
   inject('baseLayerAPI', baseLayerAPI(ctx.$axios))
@@ -30,4 +35,21 @@ export default (ctx, inject) => {
   inject('georeferencedImageAPI', georeferencedImageAPI(ctx.$axios))
   inject('satelitalImageAPI', satelitalImageAPI(ctx.$axios))
   inject('temporalAPI', temporalAPI(ctx.$axios))
+
+  const repositoryWithAxios = baseAPI(ctx.$axios)
+
+  // const repo = {
+  //   users: repositoryWithAxios('user')
+  // }
+  for (const c in endpoints) {
+    console.warn(c, endpoints[c])
+    inject(`${c.toLowerCase()}API`, repositoryWithAxios(endpoints[c]))
+  }
+
+
+
 }
+
+
+// console.warn(endpoints.keys())
+

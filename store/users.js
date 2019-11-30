@@ -22,13 +22,15 @@ export const actions = {
   },
 
   async getDataContext ({ commit }) {
-    const { data } = await this.$userAPI.get()
-    commit(SET_DATA_CONTEXT, { dataContext: data || [] })
+    const dataContext  = await this.$userAPI.get()
+    console.warn(dataContext)
+    commit(SET_DATA_CONTEXT, { dataContext })
   },
 
-  async getItemContext ({ commit }, id) {
-    const { data } = await this.$userAPI.getById(id)
-    commit(SET_ITEM_CONTEXT, { itemContext: data })
+  async getItemContext ({ commit }, { id }) {
+    console.warn(itemContext)
+    const itemContext = await this.$userAPI.getById(id)
+    commit(SET_ITEM_CONTEXT, { itemContext })
   },
 
   async getProfile ({ commit }) {
