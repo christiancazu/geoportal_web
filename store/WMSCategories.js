@@ -12,37 +12,37 @@ export const state = () => ({
 })
 
 export const actions = {
-  async createItemContext ({}, form) {
-    await this.$WMSCategoryAPI.create(form)
+  async createItemContext ({}, { data }) {
+    await this.$WMSCategoryAPI.create(data)
   },
 
   async getDataContext ({ commit }) {
-    const { data } = await this.$WMSCategoryAPI.get()
-    commit(SET_DATA_CONTEXT, { dataContext: data || [] })
+    const data = await this.$WMSCategoryAPI.get()
+    commit(SET_DATA_CONTEXT, data)
   },
 
-  async getItemContext ({ commit }, id) {
-    const { data } = await this.$WMSCategoryAPI.getById(id)
-    commit(SET_ITEM_CONTEXT, { itemContext: data })
+  async getItemContext ({ commit }, { id }) {
+    const data = await this.$WMSCategoryAPI.getById(id)
+    commit(SET_ITEM_CONTEXT, data)
   },
 
-  async publishItemContext ({}, form) {
-    await this.$WMSCategoryAPI.publish(form)
+  async publishItemContext ({}, { data }) {
+    await this.$WMSCategoryAPI.publish(data)
   },
 
-  async updateItemContext ({}, form) {
-    await this.$WMSCategoryAPI.update(form)
+  async updateItemContext ({}, { data }) {
+    await this.$WMSCategoryAPI.update(data)
   },
 
-  async deleteItemContext ({}, id) {
+  async deleteItemContext ({}, { id }) {
     await this.$WMSCategoryAPI.delete(id)
   }
 }
 
 export const mutations = {
-  [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
+  [SET_DATA_CONTEXT]: (state, payload) => (state.dataContext = payload),
 
-  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext),
+  [SET_ITEM_CONTEXT]: (state, payload) => (state.itemContext = payload),
 
   [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
 

@@ -217,7 +217,7 @@ export default {
       try {
         formData.set('geometry', JSON.stringify(this.form.geometry))
       } catch (e) {
-        this.$toast.success('El GeoJSON es inválido')
+        this.$toast.error('El GeoJSON es inválido')
       }
     }
   }

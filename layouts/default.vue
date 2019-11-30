@@ -75,6 +75,10 @@ export default {
     }
   },
 
+  async mounted () {
+    // console.warn(await this.$userAPI.get())
+  },
+
   methods: {
     onChangeCollapse (value) {
       this.isCollapse = value

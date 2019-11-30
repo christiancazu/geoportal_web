@@ -5,6 +5,7 @@
   :form="form"
   :context="context"
   :message-toast="messageToast"
+  @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
 >
   <template v-slot:content>
 
@@ -406,6 +407,17 @@ export default {
     $_uploadFileMixin_valid (file) {
       this.form[this.file.type] = file
       this.file.selected = file
+    },
+
+    /**
+     * getting formData by reference from BaseForm component
+     * to apply custom functionality
+     *
+     * @param {Object} formData
+     */
+    ApplyCustomFunctionalityToForm (formData) {
+      if (formData.get(this.file.type) === null || typeof formData.get(this.file.type) === 'string')
+        formData.delete(this.file.type)
     }
   }
 }
