@@ -30,10 +30,6 @@ export const actions = {
   },
 }
 
-export const getters = {
-  regions: (state) => state.regions
-}
-
 export const mutations = {
   [SET_REGIONS]: (state, payload) => (state.regions = payload),
 

@@ -142,7 +142,7 @@ export default {
   },
 
   watch: {
-    isCollapse: function (newState) {
+    isCollapse (newState) {
       this.$emit('is-collapse', newState)
     }
   },

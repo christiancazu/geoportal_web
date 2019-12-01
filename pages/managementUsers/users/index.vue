@@ -54,16 +54,16 @@
 </template>
 
 <script>
-import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
+import BasePageActions from '@/pages/base/BasePageActions'
 
-import pageActionsMixin from '@/mixins/pageActionsMixin'
+import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
 export default {
   components: {
     GroupActionsButtons
   },
 
-  mixins: [pageActionsMixin],
+  extends: BasePageActions,
 
   data () {
     return {

@@ -1,4 +1,8 @@
-import { OPEN_MODAL, CLOSE_MODAL, SET_MODAL_VISIBILITY } from '../types/mutation-types'
+import {
+  OPEN_MODAL,
+  CLOSE_MODAL,
+  SET_MODAL_VISIBLE
+} from '../types/mutation-types'
 
 export const state = () => ({
   mainModal: {
@@ -21,14 +25,14 @@ export const mutations = {
 
   [CLOSE_MODAL]: (state, payload) => (state[payload].visibility = false),
 
-  [SET_MODAL_VISIBILITY]: (state, modalType) => (state[modalType].visibility = true)
+  [SET_MODAL_VISIBLE]: (state, modalType) => (state[modalType].visibility = true)
 }
 
 export const actions = {
   openModal: ({ commit }, payload) => {
     commit(OPEN_MODAL, payload)
     setTimeout(() => {
-      commit(SET_MODAL_VISIBILITY, payload.modalType)
+      commit(SET_MODAL_VISIBLE, payload.modalType)
     }, 250)
   }
 }

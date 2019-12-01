@@ -82,13 +82,11 @@
   </template>
 </base-form>
 </template>
-<script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 
-import {
-  mapState,
-  mapActions
-} from 'vuex'
+<script>
+import BaseVectorialLayer from './BaseVectorialLayer'
+
+import { mapState } from 'vuex'
 
 import {
   title,
@@ -97,7 +95,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  mixins: [modalBaseActionsMixin],
+  extends: BaseVectorialLayer,
 
   data () {
     return {
@@ -136,8 +134,7 @@ export default {
     ...mapState({
       itemContext (state) {
         return state[this.context.storeBase].itemContext
-      },
-      groupLayers: state => state.groupLayers.dataContext
+      }
     })
   },
 
@@ -148,15 +145,10 @@ export default {
   },
 
   created () {
-    this.getGroupLayers()
     this.assignFormFields()
   },
 
   methods: {
-    ...mapActions({
-      getGroupLayers: 'groupLayers/getDataContext'
-    }),
-
     assignFormFields () {
       Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
     }

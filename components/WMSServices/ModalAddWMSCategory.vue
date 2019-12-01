@@ -33,12 +33,12 @@
 </template>
 
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseWMSCategory from './BaseWMSCategory'
 
 import { name } from '@/config/form.rules'
 
 export default {
-  mixins: [modalBaseActionsMixin],
+  extends: BaseWMSCategory,
 
   data () {
     return {

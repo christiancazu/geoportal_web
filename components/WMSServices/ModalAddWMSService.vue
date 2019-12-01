@@ -108,14 +108,7 @@
 </template>
 
 <script>
-import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
-
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
-
-import {
-  mapState,
-  mapActions
-} from 'vuex'
+import BaseWMSService from './BaseWMSService'
 
 import {
   url,
@@ -125,11 +118,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  components: {
-    BtnOpenSecondModal
-  },
-
-  mixins: [modalBaseActionsMixin],
+  extends: BaseWMSService,
 
   data () {
     return {
@@ -154,7 +143,6 @@ export default {
         baseName: 'SERVICE',
         action: 'REGISTERED'
       },
-
       form: {
         name: '',
         description: '',
@@ -164,7 +152,6 @@ export default {
         categoryId: null,
         isPublic: true
       },
-
       rules: {
         name: name('servicio'),
         url,
@@ -172,25 +159,6 @@ export default {
         categoryId
       }
     }
-  },
-
-  computed: {
-    ...mapState({
-      WMSAuthors: state => state.WMSAuthors.dataContext,
-      WMSCategories: state => state.WMSCategories.dataContext
-    })
-  },
-
-  created () {
-    this.getWMSAuthors()
-    this.getWMSCategories()
-  },
-
-  methods: {
-    ...mapActions({
-      getWMSAuthors: 'WMSAuthors/getDataContext',
-      getWMSCategories: 'WMSCategories/getDataContext'
-    })
   }
 }
 </script>

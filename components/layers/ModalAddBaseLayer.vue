@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseBaseLayer from './BaseBaseLayer'
 
 import {
   name,
@@ -124,7 +124,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  mixins: [modalBaseActionsMixin],
+  extends: BaseBaseLayer,
 
   data () {
     return {
@@ -161,7 +161,7 @@ export default {
       },
       marks: {
         1: 'min: 1',
-        20: '20 max'
+        20: 'max: 20'
       },
       rules: {
         name,
@@ -178,6 +178,9 @@ export default {
   },
 
   methods: {
+    previewBaseMap () {
+      alert('#todo: define functionality')
+    }
     // previewBaseMap () {
     //   if (!this.form.url) {
     //     return false

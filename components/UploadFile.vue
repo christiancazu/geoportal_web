@@ -84,7 +84,7 @@ export default {
   watch: {
     // clearing image preview when close modal
     '$store.state.modalsVisibilities.mainModal.visibility' () {
-      // this.imageUrl= ''
+      this.file.imageUrl= ''
       this.file.selected = null
     }
   },

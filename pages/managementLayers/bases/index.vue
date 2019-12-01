@@ -60,7 +60,8 @@
 </template>
 
 <script>
-import pageActionsMixin from '@/mixins/pageActionsMixin'
+import BasePageActions from '@/pages/base/BasePageActions'
+
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
 export default {
@@ -68,7 +69,7 @@ export default {
     GroupActionsButtons
   },
 
-  mixins: [pageActionsMixin],
+  extends: BasePageActions,
 
   data () {
     return {
@@ -76,7 +77,6 @@ export default {
         title: 'Capas base',
         btnAddName: 'Nuevo Mapa Base'
       },
-
       // main modal settings
       modalMain: {
         storeBase: 'baseLayers',
@@ -84,7 +84,6 @@ export default {
         editComponent: 'ModalEditBaseLayer',
         folderName: 'layers',
       },
-
       messageToast: {
         baseName: 'LAYER'
       },

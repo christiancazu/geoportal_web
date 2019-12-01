@@ -46,15 +46,14 @@
 </template>
 
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseWMSAuthor from './BaseWMSAuthor'
 
 import { mapState } from 'vuex'
 
 import { name } from '@/config/form.rules'
 
 export default {
-
-  mixins: [modalBaseActionsMixin],
+  extends: BaseWMSAuthor,
 
   data () {
     return {

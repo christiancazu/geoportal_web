@@ -16,6 +16,7 @@
     label-width="120px"
     class="demo-ruleForm"
     :disabled="$store.state.spinners.processingForm"
+    autocomplete="off"
   >
 
     <slot name="content" />
@@ -110,11 +111,11 @@ export default {
       async getDataContext () {
         await this.$store.dispatch(`${this.context.storeBase}/getDataContext`)
       },
-      async submitItemContext (store, form) {
-        await this.$store.dispatch(`${this.context.storeBase}/${this.context.storeAction}ItemContext`, { data: form })
+      async submitItemContext (store, formData) {
+        await this.$store.dispatch(`${this.context.storeBase}/${this.context.storeAction}ItemContext`, formData)
       },
-      async publishItemContext (store, form) {
-        await this.$store.dispatch(`${this.context.storeBase}/publishItemContext`, { data: form })
+      async publishItemContext (store, formData) {
+        await this.$store.dispatch(`${this.context.storeBase}/publishItemContext`, formData)
       },
     }),
 
@@ -174,14 +175,14 @@ export default {
       return formData
     },
 
-    resetForm () {
-      this.$emit('clear-file')
-      this.$refs.form.resetFields()
-    },
-
     closeModal () {
       this.resetForm()
       this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
+    },
+
+    resetForm () {
+      this.$emit('clear-file')
+      this.$refs.form.resetFields()
     }
   }
 }

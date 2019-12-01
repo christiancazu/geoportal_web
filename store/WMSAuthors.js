@@ -17,13 +17,13 @@ export const actions = {
   },
 
   async getDataContext ({ commit }) {
-    const { data } = await this.$WMSAuthorAPI.get()
-    commit(SET_DATA_CONTEXT, { dataContext: data || [] })
+    const data = await this.$WMSAuthorAPI.get()
+    commit(SET_DATA_CONTEXT, data)
   },
 
   async getItemContext ({ commit }, id) {
-    const { data } = await this.$WMSAuthorAPI.getById(id)
-    commit(SET_ITEM_CONTEXT, { itemContext: data })
+    const data = await this.$WMSAuthorAPI.getById(id)
+    commit(SET_ITEM_CONTEXT, data)
   },
 
   async publishItemContext ({}, form) {
@@ -40,9 +40,9 @@ export const actions = {
 }
 
 export const mutations = {
-  [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
+  [SET_DATA_CONTEXT]: (state, payload) => (state.dataContext = payload),
 
-  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext),
+  [SET_ITEM_CONTEXT]: (state, payload) => (state.itemContext = payload),
 
   [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
 

@@ -1,6 +1,6 @@
-import baseAPI from '~/api/api.base'
+import baseAPI from '@/api/api.base'
 
-import * as endpoints from '@/config/endpointsx'
+import * as endpoints from '@/config/endpoints'
 
 export default (ctx, inject) => {
 

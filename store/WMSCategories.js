@@ -12,8 +12,8 @@ export const state = () => ({
 })
 
 export const actions = {
-  async createItemContext ({}, { data }) {
-    await this.$WMSCategoryAPI.create(data)
+  async createItemContext ({}, form) {
+    await this.$WMSCategoryAPI.create(form)
   },
 
   async getDataContext ({ commit }) {
@@ -21,20 +21,20 @@ export const actions = {
     commit(SET_DATA_CONTEXT, data)
   },
 
-  async getItemContext ({ commit }, { id }) {
+  async getItemContext ({ commit }, id) {
     const data = await this.$WMSCategoryAPI.getById(id)
     commit(SET_ITEM_CONTEXT, data)
   },
 
-  async publishItemContext ({}, { data }) {
-    await this.$WMSCategoryAPI.publish(data)
+  async publishItemContext ({}, form) {
+    await this.$WMSCategoryAPI.publish(form)
   },
 
-  async updateItemContext ({}, { data }) {
-    await this.$WMSCategoryAPI.update(data)
+  async updateItemContext ({}, form) {
+    await this.$WMSCategoryAPI.update(form)
   },
 
-  async deleteItemContext ({}, { id }) {
+  async deleteItemContext ({}, id) {
     await this.$WMSCategoryAPI.delete(id)
   }
 }

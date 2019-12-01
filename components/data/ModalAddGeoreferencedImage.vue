@@ -85,10 +85,9 @@
 </template>
 
 <script>
-import MarkerGeoJson from '@/components/leafLet/MarkerGeoJson'
-
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
-import uploadFileMixin from '@/mixins/uploadFileMixin'
+/* eslint-disable array-element-newline */
+/* eslint-disable array-bracket-newline */
+import BaseGeoreferencedImage from './BaseGeoreferencedImage'
 
 import {
   title,
@@ -97,14 +96,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  components: {
-    MarkerGeoJson
-  },
-
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  extends: BaseGeoreferencedImage,
 
   data () {
     return {
@@ -166,10 +158,6 @@ export default {
     }
   },
   methods: {
-    onMarkerLngLat (lngLat) {
-      this.form.geometry.geometry.coordinates = lngLat
-    },
-
     /**
      * getting formData by reference from BaseForm component
      * to apply custom functionality

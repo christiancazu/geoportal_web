@@ -54,7 +54,8 @@
 </template>
 
 <script>
-import pageActionsMixin from '@/mixins/pageActionsMixin'
+import BasePageActions from '@/pages/base/BasePageActions'
+
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
 export default {
@@ -62,7 +63,7 @@ export default {
     GroupActionsButtons
   },
 
-  mixins: [pageActionsMixin],
+  extends: BasePageActions,
 
   data () {
     return {
@@ -75,7 +76,7 @@ export default {
         storeBase: 'groupLayers',
         addComponent: 'ModalAddGroupLayer',
         editComponent: 'ModalEditGroupLayer',
-        folderName: 'layers',
+        folderName: 'layers'
       },
       messageToast: {
         baseName: 'LAYER'
@@ -83,14 +84,14 @@ export default {
       // criterias to search based on columns of table
       filterCriteriaProps: [
         'title',
-        'name',
+        'categoryGroup.name',
         'description'
       ]
     }
   },
 
   head: {
-    title: 'Grupo de Capas | GEOVISOR',
+    title: 'Grupo de Capas | GEOVISOR'
   }
 }
 </script>

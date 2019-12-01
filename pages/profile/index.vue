@@ -17,7 +17,6 @@
     >
 
       <upload-file
-        v-if="profileLoaded"
         :file="file"
         type-image
         avatar-image
@@ -226,7 +225,7 @@ import {
 } from 'vuex'
 
 import {
-  username,
+  name,
   districtId
 } from '@/config/form.rules'
 
@@ -257,7 +256,7 @@ export default {
         username: '',
       },
       rules: {
-        name: username,
+        name,
         districtId
       },
       file: {
@@ -343,7 +342,7 @@ export default {
             formData.delete('image')
           }
 
-          await this.$store.dispatch('users/updateProfile', { data: formData })
+          await this.$store.dispatch('users/updateProfile', formData)
 
           /**
            * updating current auth.user state to view changes (image user)

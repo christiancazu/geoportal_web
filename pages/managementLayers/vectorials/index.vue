@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import pageActionsMixin from '@/mixins/pageActionsMixin'
+import BasePageActions from '@/pages/base/BasePageActions'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -82,7 +82,7 @@ export default {
     GroupActionsButtons
   },
 
-  mixins: [pageActionsMixin],
+  extends: BasePageActions,
 
   data () {
     return {
@@ -95,7 +95,7 @@ export default {
         storeBase: 'vectorialLayers',
         addComponent: 'ModalAddVectorialLayer',
         editComponent: 'ModalEditVectorialLayer',
-        folderName: 'layers',
+        folderName: 'layers'
       },
       messageToast: {
         baseName: 'LAYER'
@@ -110,7 +110,7 @@ export default {
   },
 
   head: {
-    title: 'Capas vectoriales | GEOVISOR',
+    title: 'Capas vectoriales | GEOVISOR'
   }
 }
 </script>

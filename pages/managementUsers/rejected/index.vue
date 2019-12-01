@@ -79,18 +79,18 @@
 </template>
 
 <script>
-import pageActionsMixin from '@/mixins/pageActionsMixin'
+import BasePageActions from '@/pages/base/BasePageActions'
 
 export default {
-  mixins: [pageActionsMixin],
+  extends: BasePageActions,
 
   data () {
     return {
       pageHeader: {
-        title: 'Solicitudes rechazadas',
+        title: 'Solicitudes rechazadas'
       },
       modalMain: {
-        storeBase: 'requestRejected',
+        storeBase: 'requestRejected'
       },
 
       filterCriteriaProps: [
@@ -98,12 +98,13 @@ export default {
         'lastName',
         'lastNameAditional',
         'institute',
-        'subject',
+        'subject'
       ]
     }
   },
+
   head: {
-    title: 'Solicitudes rechazadas | GEOVISOR',
-  },
+    title: 'Solicitudes rechazadas | GEOVISOR'
+  }
 }
 </script>

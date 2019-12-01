@@ -16,10 +16,10 @@ export const state = () => ({
 
 export const actions = {
   async getSpaces ({ commit }, um) {
-    const { data } = await this.$temporalAPI.get({ params: { um } })
+    const data = await this.$temporalAPI.get({ um })
     commit(SET_SPACES, data)
   },
-  async cleanSpaces ({ }) {
+  async cleanSpaces () {
     await this.$temporalAPI.delete()
   },
 }

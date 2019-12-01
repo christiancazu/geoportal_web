@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseBaseLayer from './BaseBaseLayer'
 
 import { mapState } from 'vuex'
 
@@ -130,7 +130,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  mixins: [modalBaseActionsMixin],
+  extends: BaseBaseLayer,
 
   data () {
     return {
@@ -152,7 +152,7 @@ export default {
 
       marks: {
         1: 'min: 1',
-        20: '20 max'
+        20: 'max: 20'
       },
       form: {
         id: null,
@@ -204,29 +204,8 @@ export default {
       ]
     },
 
-    updateBaseLayer () {
-      this.form.minZoom = this.rangeZoom[0]
-      this.form.maxZoom = this.rangeZoom[1]
-
-      const data = this.form
-      const id = this.form.id
-
-      return new Promise((resolve, reject) => {
-        this.$baseLayerAPI
-          .update({ data, id })
-          .then(response => {
-            this.$_modalVisibilityMixin_close('modalEditBaseLayer')
-            this.$toast.success('Mapa Base registrado con éxito')
-            this.getBaseLayers()
-            resolve(response)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
-
     previewBaseLayer () {
+      alert('#todo: define functionality')
       // if (!this.form.url) {
       //   return false
       // }

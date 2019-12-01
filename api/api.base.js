@@ -1,26 +1,36 @@
 export default $axios => resource => ({
+  get: params => $axios.$get(`${resource}/`, { params }),
 
-  get: () => $axios.$get(`${resource}/`),
+  create: data => $axios.$post(`${resource}/`, data),
 
-  create: (data) => $axios.$post(`${resource}/`, data),
+  update: data => $axios.$put(`${resource}/${data.get('id')}/`, data),
 
-  update: (data) => $axios.$put(`${resource}/${data.get('id')}/`, data),
+  delete: slug => $axios.$delete(`${resource}/${slug}/`),
 
-  delete: (slug) => $axios.$delete(`${resource}/${slug}/`),
+  getById: slug => $axios.$get(`${resource}/${slug}/`),
 
-  getById: (slug) => $axios.$get(`${resource}/${slug}/`),
+  publish: data => $axios.$post(`${resource}/publish/`, data),
 
   // user
   getProfile: () => $axios.$get(`${resource}/profile/`),
 
-  updateProfile: (data) => $axios.$put(`${resource}/profile_update/`, data),
+  updateProfile: data => $axios.$put(`${resource}/profile_update/`, data),
 
   info: () => $axios.$get(`${resource}/info/`),
 
   // public
   getRegions: () => $axios.$get(`${resource}/region/`),
 
-  getProvinces: (params) =>  $axios.$get(`${resource}/province/`, { params }),
+  getProvinces: params => $axios.$get(`${resource}/province/`, { params }),
 
-  getDistricts: (params) => $axios.$get(`${resource}/district/`, { params }),
+  getDistricts: params => $axios.$get(`${resource}/district/`, { params }),
+
+  // request
+  getPending: () => $axios.$get(`${resource}/pending/`),
+
+  getRejected: () => $axios.$get(`${resource}/rejected/`),
+
+  approve: data => $axios.$post(`${resource}/approve/`, data),
+
+  reject: data => $axios.$post(`${resource}/reject/`, data)
 })

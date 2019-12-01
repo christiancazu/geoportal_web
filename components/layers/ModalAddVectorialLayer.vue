@@ -126,15 +126,11 @@
 </template>
 
 <script>
+import BaseVectorialLayer from './BaseVectorialLayer'
+
 import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
 
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 import uploadFileMixin from '@/mixins/uploadFileMixin'
-
-import {
-  mapState,
-  mapActions
-} from 'vuex'
 
 import {
   title,
@@ -149,10 +145,9 @@ export default {
     BtnOpenSecondModal
   },
 
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  extends: BaseVectorialLayer,
+
+  mixins: [uploadFileMixin],
 
   data () {
     return {
@@ -193,22 +188,6 @@ export default {
         name: nameAlpha
       }
     }
-  },
-
-  computed: {
-    ...mapState({
-      groupLayers: state => state.groupLayers.dataContext
-    })
-  },
-
-  created () {
-    this.getGroupLayers()
-  },
-
-  methods: {
-    ...mapActions({
-      getGroupLayers: 'groupLayers/getDataContext'
-    })
   }
 }
 </script>

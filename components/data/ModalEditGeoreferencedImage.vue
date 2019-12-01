@@ -85,24 +85,14 @@
 <script>
 /* eslint-disable array-element-newline */
 /* eslint-disable array-bracket-newline */
-import MarkerGeoJson from '@/components/leafLet/MarkerGeoJson'
-
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
-import uploadFileMixin from '@/mixins/uploadFileMixin'
+import BaseGeoreferencedImage from './BaseGeoreferencedImage'
 
 import { mapState } from 'vuex'
 
 import { title } from '@/config/form.rules'
 
 export default {
-  components: {
-    MarkerGeoJson
-  },
-
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  extends: BaseGeoreferencedImage,
 
   data () {
     return {
@@ -198,10 +188,6 @@ export default {
 
       // setting image src
       this.file.imageUrl = this.form[this.file.type]
-    },
-
-    onMarkerLngLat (lngLat) {
-      this.form.geometry.geometry.coordinates = lngLat
     },
 
     /**

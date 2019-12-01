@@ -17,8 +17,8 @@ export const actions = {
     return await this.$userAPI.info()
   },
 
-  async createItemContext ({ }, { data }) {
-    await this.$userAPI.create(data)
+  async createItemContext ({}, form) {
+    await this.$userAPI.create(form)
   },
 
   async getDataContext ({ commit }) {
@@ -26,7 +26,7 @@ export const actions = {
     commit(SET_DATA_CONTEXT, data)
   },
 
-  async getItemContext ({ commit }, { id }) {
+  async getItemContext ({ commit }, id) {
     const data = await this.$userAPI.getById(id)
     commit(SET_ITEM_CONTEXT, data)
   },
@@ -36,16 +36,16 @@ export const actions = {
     commit(SET_PROFILE, data)
   },
 
-  async updateItemContext ({ }, { data }) {
-    await this.$userAPI.update(data)
+  async updateItemContext ({}, form) {
+    await this.$userAPI.update(form)
   },
 
-  async deleteItemContext ({ }, { id }) {
+  async deleteItemContext ({}, id) {
     await this.$userAPI.delete(id)
   },
 
-  async updateProfile ({ }, { data }) {
-    await this.$userAPI.updateProfile(data)
+  async updateProfile ({}, form) {
+    await this.$userAPI.updateProfile(form)
   }
 }
 

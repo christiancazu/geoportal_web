@@ -71,9 +71,9 @@
       <el-col
         :xs="24" :sm="8"
       >
-        <!-- lasname -->
+        <!-- lastname -->
         <el-form-item
-          label="Apellido"
+          label="Apellido paterno"
           prop="lastName"
         >
           <el-input
@@ -86,9 +86,9 @@
       <el-col
         :xs="24" :sm="8"
       >
-        <!-- lasname -->
+        <!-- second lastname -->
         <el-form-item
-          label="Segundo apellido"
+          label="Apellido materno"
           prop="lastNameAditional"
         >
           <el-input
@@ -112,7 +112,6 @@
             v-model="form.regionId"
             value-key="id"
             filterable
-            :loading="loadRegions"
             placeholder="Select"
             @change="onChangeRegion"
           >
@@ -137,7 +136,6 @@
           <el-select
             v-model="form.provinceId"
             value-key="id"
-            :loading="loadProvinces"
             filterable
             placeholder="Select"
             @change="onChangeProvince"
@@ -164,7 +162,6 @@
             v-model="form.districtId"
             value-key="id"
             filterable
-            :loading="loadDistricts"
             placeholder="Select"
           >
             <el-option
@@ -223,23 +220,22 @@
   </template>
 </base-form>
 </template>
-<script>
 
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
-import uploadFileMixin from '@/mixins/uploadFileMixin'
+<script>
+import BaseUser from './BaseUser'
 
 import {
   name,
-  lastName
+  lastName,
+  provinceId,
+  regionId,
+  districtId
 } from '@/config/form.rules'
 
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  extends: BaseUser,
 
   data () {
     return {
@@ -270,20 +266,11 @@ export default {
       },
       rules: {
         name,
-        lastName
-      },
-      file: {
-        type: 'image', // it's property name file inside form
-        availableExtensions: [
-          'png',
-          'jpg',
-          'jpeg'
-        ],
-        maxSizeLabel: '2MB',
-        maxSizeLength: 262144, // (bytes units) ~ 262144 bytes = 2mb
-        selected: null,
-        imageUrl: ''
-      },
+        lastName,
+        provinceId,
+        regionId,
+        districtId
+      }
     }
   },
 
@@ -291,21 +278,8 @@ export default {
     ...mapState({
       itemContext (state) {
         return state[this.context.storeBase].itemContext
-      },
-      regions: state => state.public.regions,
-      provinces: state => state.public.provinces,
-      districts: state => state.public.districts
-    }),
-
-    loadRegions () {
-      return this.regions.lenght
-    },
-    loadProvinces () {
-      return this.regions.lenght
-    },
-    loadDistricts () {
-      return this.regions.lenght
-    }
+      }
+    })
   },
 
   watch: {
@@ -316,16 +290,9 @@ export default {
 
   created () {
     this.assignFormFields()
-    this.getRegions()
   },
 
   methods: {
-    ...mapActions({
-      getRegions: 'public/getRegions',
-      getProvinces: 'public/getProvinces',
-      getDistricts: 'public/getDistricts'
-    }),
-
     assignFormFields () {
       Object.keys(this.form).forEach(key => {
         this.form[key] = this.itemContext[key]
@@ -334,41 +301,13 @@ export default {
 
       this.getProvinces(this.form['regionId'])
       this.getDistricts(this.form['provinceId'])
-    },
-
-    /**
-     * getting formData by reference from BaseForm component
-     * to apply custom functionality
-     *
-     * @param {Object} formData
-     */
-    ApplyCustomFunctionalityToForm (formData) {
-      if (formData.get(this.file.type) === null || typeof formData.get(this.file.type) === 'string')
-        formData.delete(this.file.type)
-    },
-
-    onChangeRegion (regionId) {
-      this.form.provinceId = ''
-      this.form.districtId = ''
-      this.getProvinces(regionId)
-    },
-
-    onChangeProvince (provinceId) {
-      this.form.districtId = ''
-      this.getDistricts(provinceId)
-    },
-
-    /**
-     * @override mixin to prevent autocomplete on name field
-     */
-    $_uploadFileMixin_valid (file) {
-      this.form[this.file.type] = file
-      this.file.selected = file
     }
   }
 }
 </script>
+
 <style lang="scss">
+// cuenta activa color switch active
 .label-success {
   .el-switch__label.is-active {
     color: #67c23a;

@@ -1,14 +1,25 @@
-/*eslint-disable */
 export const email = [
   {
     required: true,
     message: 'La dirección de correo electrónico es requerida'
   },
   {
+    min: 6,
+    message: 'Indique al menos 6 caracteres',
+    trigger: 'blur'
+  },
+  {
+    max: 30,
+    message: 'Indique menos de 30 caracteres',
+    trigger: 'blur'
+  },
+  {
+    // eslint-disable-next-line no-unused-vars
     validator: (rule, value, callback) => {
-      const emailRegEx = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      // eslint-disable-next-line no-useless-escape
+      const emailRegEx = /^[(a-z0-9\_\-\.)]+@[(a-z0-9\_\-\.)]+\.[(a-z)]{2,30}$/
       if (!emailRegEx.test(value)) {
-        return callback(new Error("Debe indicar un email válido"))
+        return callback(new Error('Debe indicar un email válido'))
       }
       callback()
     },
@@ -108,11 +119,12 @@ export const nameAlpha = [
   },
   {
     // pattern: /^[z0-9\s.,\/#!$%\^&\*;:{}=\-+'´`~()”“"…]+$/g,
+    // eslint-disable-next-line no-unused-vars
     validator: (rule, value, callback) => {
       let text = value.split('')
       let itContainsBlanks = text.every(val => /^\w*$/.test(val))
       if (!itContainsBlanks) {
-        return callback(new Error("Solo se admite letras y subguion '_'"))
+        return callback(new Error("Solo se admite letras y subguión '_'"))
       }
       callback()
     },
@@ -122,6 +134,7 @@ export const nameAlpha = [
 
 export const geometry = [
   {
+    // eslint-disable-next-line no-unused-vars
     validator: (rule, value, callback) => {
       let itContainsValue = value.geometry.coordinates[0] !== 0
       if (!itContainsValue) {
@@ -133,27 +146,70 @@ export const geometry = [
 ]
 
 // form create user
+export const username = [
+  {
+    required: true,
+    message: 'El nombre de usuario es requerido'
+  },
+  {
+    min: 3,
+    message: 'Indique al menos 3 caracteres',
+    trigger: 'blur'
+  },
+  {
+    max: 50,
+    message: 'Indique menos de 50 caracteres',
+    trigger: 'blur'
+  },
+  {
+    // eslint-disable-next-line no-unused-vars
+    validator: (rule, value, callback) => {
+      // eslint-disable-next-line no-useless-escape
+      const usernameRegEx = /^[(a-z)éáíóúñ]{3,50}$/
+      if (!usernameRegEx.test(value)) {
+        return callback(new Error('No se permiten números ni caracteres especiales'))
+      }
+      callback()
+    },
+    trigger: 'blur'
+  }
+]
 
-export const username = [{
-  required: true,
-  message: 'El nombre de usuario es requerido'
-}]
-export const lastName = [{
-  required: true,
-  message: 'El primer apellido es requerido'
-}]
-export const lastNameAditional = [{
-  required: true,
-  message: 'El segundo apellidos es requerido'
-}]
-export const region = [{
-  required: true,
-  message: 'La región es requerida'
-}]
-export const institute = [{
-  required: true,
-  message: 'La institución es requerida'
-}]
+export const lastName = [
+  {
+    required: true,
+    message: 'El primer apellido es requerido'
+  }
+]
+
+export const lastNameAditional = [
+  {
+    required: true,
+    message: 'El segundo apellidos es requerido'
+  }
+]
+
+export const provinceId = [
+  {
+    required: true,
+    message: 'La provincia es requerida'
+  }
+]
+
+export const regionId = [
+  {
+    required: true,
+    message: 'La región es requerida'
+  }
+]
+
+export const institute = [
+  {
+    required: true,
+    message: 'La institución es requerida'
+  }
+]
+
 export const subject = [
   {
     required: true,
@@ -164,7 +220,10 @@ export const subject = [
     message: 'Indique al menos 10 caracteres'
   },
 ]
-export const observation = [{
-  required: true,
-  message: 'Este campo es requerido'
-}]
+
+export const observation = [
+  {
+    required: true,
+    message: 'La observación es requerida'
+  }
+]

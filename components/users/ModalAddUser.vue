@@ -108,7 +108,7 @@
       <el-col
         :xs="24" :sm="8"
       >
-        <!-- lasname -->
+        <!-- lastname -->
         <el-form-item
           label="Apellido paterno"
           prop="lastName"
@@ -123,7 +123,7 @@
       <el-col
         :xs="24" :sm="8"
       >
-        <!-- second lasname -->
+        <!-- second lastname -->
         <el-form-item
           label="Apellido materno"
           prop="lastNameAditional"
@@ -143,6 +143,7 @@
       >
         <!-- regionId -->
         <el-form-item
+          ref="regionId"
           label="Región"
           prop="regionId"
         >
@@ -268,9 +269,9 @@
   </template>
 </base-form>
 </template>
+
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
-import uploadFileMixin from '@/mixins/uploadFileMixin'
+import BaseUser from './BaseUser'
 
 import {
   username,
@@ -279,19 +280,15 @@ import {
   name,
   email,
   password,
-  region,
+  regionId,
   institute,
   subject,
-  districtId
+  districtId,
+  provinceId
 } from '@/config/form.rules'
 
-import { mapState, mapActions } from 'vuex'
-
 export default {
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  extends: BaseUser,
 
   data () {
     return {
@@ -318,8 +315,9 @@ export default {
         password: '',
         passwordConfirmation: '',
         districtId: null,
-        region: null,
-        province: null
+        regionId: null,
+        provinceId: null,
+        type: true
       },
       rules: {
         username,
@@ -328,13 +326,13 @@ export default {
         name,
         email,
         password,
-        region,
+        regionId,
         institute,
         subject,
         districtId,
+        provinceId,
         passwordConfirmation: [
           {
-            required: true,
             // eslint-disable-next-line no-unused-vars
             validator: (rule, value, callback) => {
               if (value !== this.form.password) {
@@ -343,81 +341,8 @@ export default {
               callback()
             }
           }
-        ],
-        province: [
-          {
-            required: true,
-            // eslint-disable-next-line no-unused-vars
-            validator: (rule, value, callback) => {
-              if (!this.form.region) {
-                return callback(new Error('Seleccione su Provincia'))
-              }
-              callback()
-            }
-          }
         ]
-      },
-      file: {
-        type: 'image', // it's property name file inside form
-        availableExtensions: [
-          'png',
-          'jpg',
-          'jpeg'
-        ],
-        selected: null,
-        maxSizeLabel: '2MB',
-        maxSizeLength: 262144 // (bytes units) ~ 262144 bytes = 2mb
-      },
-    }
-  },
-
-  computed: {
-    ...mapState({
-      regions: state => state.public.regions,
-      provinces: state => state.public.provinces,
-      districts: state => state.public.districts,
-    })
-  },
-
-  created () {
-    this.getRegions()
-  },
-
-  methods: {
-    ...mapActions({
-      getRegions: 'public/getRegions',
-      getProvinces: 'public/getProvinces',
-      getDistricts: 'public/getDistricts'
-    }),
-
-    onChangeRegion (regionId) {
-      this.form.provinceId = ''
-      this.form.districtId = ''
-      this.getProvinces(regionId)
-    },
-
-    onChangeProvince (provinceId) {
-      this.form.districtId = ''
-      this.getDistricts(provinceId)
-    },
-
-    /**
-     * @override mixin to prevent autocomplete on name field
-     */
-    $_uploadFileMixin_valid (file) {
-      this.form[this.file.type] = file
-      this.file.selected = file
-    },
-
-    /**
-     * getting formData by reference from BaseForm component
-     * to apply custom functionality
-     *
-     * @param {Object} formData
-     */
-    ApplyCustomFunctionalityToForm (formData) {
-      if (formData.get(this.file.type) === null || typeof formData.get(this.file.type) === 'string')
-        formData.delete(this.file.type)
+      }
     }
   }
 }

@@ -28,6 +28,7 @@
           />
         </el-tooltip>
       </l-control>
+
       <l-marker
         :visible="marker.visible"
         :lat-lng="marker.latLng"
