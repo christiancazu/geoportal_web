@@ -125,8 +125,6 @@
 <script>
 import BaseRasterLayer from './BaseRasterLayer'
 
-import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
-
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
@@ -138,10 +136,6 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  components: {
-    BtnOpenSecondModal
-  },
-
   extends: BaseRasterLayer,
 
   mixins: [uploadFileMixin],

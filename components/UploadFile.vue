@@ -3,28 +3,35 @@
   <el-upload
     ref="uploadFile"
     class="upload-demo"
+    :class="{ 'mb-35' : !file.selected }"
     :disabled="$store.state.spinners.processingForm"
     :http-request="onFileValid"
     :show-file-list="false"
     :before-upload="beforeFileUpload"
     drag action
   >
-    <el-image
+
+    <img
       v-if="file.imageUrl && typeImage"
-      :class="{ 'avatar' : avatarImage }"
+      :class="avatarImage ? 'avatar' : 'image-input'"
       :src="file.imageUrl"
-      :fit="!avatarImage ? 'scale-down' : ''"
-    />
+    >
+
     <template v-else>
-      <i
-        class="avatar-uploader-icon my-0"
-        :class="typeImage ? 'el-icon-picture' : 'el-icon-upload'"
-      />
-      <div class="el-upload__text mb-4">
-        <div class="px-4">Suelta él archivo <br>
-          <strong>{{ extensionsString }}</strong>
-          <br> ó <br>
-          <em>haz click para cargar</em>
+      <div
+        class="px-2"
+        :class="avatarImage ? 'avatar' : 'image-input'"
+      >
+        <i
+          class="avatar-uploader-icon my-0"
+          :class="typeImage ? 'el-icon-picture' : 'el-icon-upload'"
+        />
+        <div class="el-upload__text">
+          <div class="px-2">Suelta él archivo <br>
+            <strong>{{ extensionsString }}</strong>
+            <br> ó <br>
+            <em>haz click para cargar</em>
+          </div>
         </div>
       </div>
     </template>
@@ -81,14 +88,6 @@ export default {
     }
   },
 
-  watch: {
-    // clearing image preview when close modal
-    '$store.state.modalsVisibilities.mainModal.visibility' () {
-      this.file.imageUrl= ''
-      this.file.selected = null
-    }
-  },
-
   mounted () {
     this.assignExtensionsString()
   },
@@ -142,3 +141,12 @@ export default {
   }
 }
 </script>
+
+<style>
+/* .upload-file.el-form-item--feedback {
+  margin-bottom: 0
+} */
+.mb-35 {
+  margin-bottom: 35px !important;
+}
+</style>

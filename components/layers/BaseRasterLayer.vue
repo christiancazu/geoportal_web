@@ -1,4 +1,6 @@
 <script>
+import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
+
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 
 import {
@@ -7,6 +9,10 @@ import {
 } from 'vuex'
 
 export default {
+  components: {
+    BtnOpenSecondModal
+  },
+
   mixins: [modalBaseActionsMixin],
 
   computed: {

@@ -97,16 +97,23 @@ label {
 }
 
 .avatar-uploader-icon {
-  font-size: 3rem;
+  font-size: 2rem;
   color: #8c939d;
-  line-height: 96px !important;
+  line-height: 48px !important;
   text-align: center;
 }
 
 .avatar {
-  width: 128px;
-  height: 128px;
+  width: 148px;
+  height: 148px;
   display: block;
+}
+.image-input {
+  width: 194px;
+  height: 194px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .upload-demo .el-upload-dragger {

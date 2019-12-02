@@ -65,6 +65,10 @@
             :value="item.id"
           />
         </el-select>
+
+        <!-- open second modal -->
+        <btn-open-second-modal :modal-second="modalSecond" />
+
       </el-container>
     </el-form-item>
     <!-- Descripción -->
@@ -107,6 +111,11 @@ export default {
         storeBase: 'rasterLayers',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'update',
+      },
+      modalSecond: {
+        component: 'ModalAddGroupLayer',
+        folderName: 'layers',
+        tooltip: 'Agregar grupo de capas'
       },
       messageToast: {
         baseName: 'LAYER',

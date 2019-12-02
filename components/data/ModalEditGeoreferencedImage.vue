@@ -28,6 +28,7 @@
         </el-form-item>
       </el-col>
     </el-row>
+
     <el-row
       :gutter="10"
       align="bottom"
@@ -48,6 +49,7 @@
 
         </el-form-item>
       </el-col>
+
       <el-col :md="12">
         <!-- title -->
         <el-form-item
@@ -62,22 +64,23 @@
           />
         </el-form-item>
 
+        <!-- Descripción -->
+        <el-form-item
+          label="Descripción"
+          prop="description"
+        >
+          <el-input
+            v-model="form.description"
+            type="textarea"
+            :rows="4"
+            autocomplete="off"
+            :maxlength="300"
+            :show-word-limit="true"
+          />
+        </el-form-item>
+
       </el-col>
     </el-row>
-    <!-- Descripción -->
-    <el-form-item
-      label="Descripción"
-      prop="description"
-    >
-      <el-input
-        v-model="form.description"
-        type="textarea"
-        :rows="3"
-        autocomplete="off"
-        :maxlength="300"
-        :show-word-limit="true"
-      />
-    </el-form-item>
   </template>
 </base-form>
 </template>

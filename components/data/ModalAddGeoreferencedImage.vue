@@ -51,6 +51,7 @@
 
         </el-form-item>
       </el-col>
+
       <el-col :md="12">
         <!-- title -->
         <el-form-item
@@ -65,7 +66,7 @@
           />
         </el-form-item>
 
-        <!-- geometry -->
+        <!-- description -->
         <el-form-item
           label="Descripción"
           prop="description"

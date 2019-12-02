@@ -46,6 +46,7 @@
         <!-- file -->
         <el-form-item
           class="text-xs-center upload-file"
+          label="Archivo"
           prop="shapeFile"
         >
 
@@ -128,8 +129,6 @@
 <script>
 import BaseVectorialLayer from './BaseVectorialLayer'
 
-import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
-
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
@@ -141,10 +140,6 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  components: {
-    BtnOpenSecondModal
-  },
-
   extends: BaseVectorialLayer,
 
   mixins: [uploadFileMixin],

@@ -23,7 +23,11 @@ export const mutations = {
     state[payload.modalType].folderName = payload.folderName
   },
 
-  [CLOSE_MODAL]: (state, payload) => (state[payload].visibility = false),
+  [CLOSE_MODAL]: (state, payload) => {
+    state[payload].component = 'Fallback'
+    state[payload].folderName = 'fallback'
+    state[payload].visibility = false
+  },
 
   [SET_MODAL_VISIBLE]: (state, modalType) => (state[modalType].visibility = true)
 }
