@@ -4,7 +4,8 @@ html {
 }
 
 body {
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun, sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun,
+    sans-serif;
   margin-bottom: 0px;
   margin-right: 0px;
   margin-left: 0px;
@@ -77,6 +78,37 @@ label {
 
 .sidebar-container {
   overflow-y: auto;
+  /* Tamaño del scroll */
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Estilos barra (thumb) de scroll */
+  &::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Estilos track de scroll */
+  &::-webkit-scrollbar-track {
+    background: #e1e1e1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track:hover,
+  &::-webkit-scrollbar-track:active {
+    background: #d4d4d4;
+  }
 }
 
 .on-collapse-sidebar {
@@ -93,7 +125,7 @@ label {
 }
 
 .avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
+  border-color: #409eff;
 }
 
 .avatar-uploader-icon {
@@ -172,12 +204,12 @@ label {
   padding-left: 15px !important;
   padding-right: 15px !important;
   padding-top: 15px !important;
-  border-bottom: 1px solid #EBEEF5;
+  border-bottom: 1px solid #ebeef5;
   font-weight: bold;
 }
 
 .el-dialog__footer {
-  border-top: 1px solid #EBEEF5;
+  border-top: 1px solid #ebeef5;
   padding: 10px 10px !important;
 }
 
@@ -232,13 +264,13 @@ label {
     visibility: hidden;
     display: block;
     font-size: 0;
-    content: " ";
+    content: ' ';
     clear: both;
     height: 0;
   }
 }
 
-// image 
+// image
 .image-report {
   display: flex;
   margin-bottom: 1rem;
@@ -279,11 +311,11 @@ p,
 }
 
 .br {
-  border-right: 1px solid #EBEEF5;
+  border-right: 1px solid #ebeef5;
 }
 
 .bt {
-  border-top: 1px solid #EBEEF5;
+  border-top: 1px solid #ebeef5;
 }
 
 .btn-block {
@@ -330,7 +362,7 @@ p,
 // satelitals images
 .satelital-metadata {
   height: 180px;
-  overflow-y: scroll
+  overflow-y: scroll;
 }
 
 .satelital-image-preview {
@@ -339,6 +371,6 @@ p,
 
 // temporal folder
 .space-figure {
-  height: .5rem;
+  height: 0.5rem;
   width: 1rem;
 }

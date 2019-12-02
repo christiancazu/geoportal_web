@@ -143,9 +143,6 @@ export default {
 </script>
 
 <style>
-/* .upload-file.el-form-item--feedback {
-  margin-bottom: 0
-} */
 .mb-35 {
   margin-bottom: 35px !important;
 }

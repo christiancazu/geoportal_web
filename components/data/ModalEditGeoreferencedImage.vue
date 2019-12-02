@@ -37,6 +37,7 @@
       <el-col :md="12">
         <!-- file -->
         <el-form-item
+          label="Imagen georeferencial"
           class="text-xs-center upload-file"
         >
 
