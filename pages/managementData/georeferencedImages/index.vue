@@ -60,7 +60,7 @@ export default {
   data () {
     return {
       pageHeader: {
-        title: 'Imágenes georeferenciales',
+        title: 'Puntos Georeferenciados',
         btnAddName: 'Nueva imagen georeferencial'
       },
       // main modal settings

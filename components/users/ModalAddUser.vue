@@ -86,7 +86,7 @@
           placement="top"
         >
           <i
-            class="el-icon-view"
+            class="el-icon-view password"
             :class="{ 'view-enable': passwordVisible }"
             @click="passwordVisible = !passwordVisible"
           />
@@ -370,8 +370,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scope>
-.el-icon-view {
+<style lang="scss">
+.el-icon-view.password{
   cursor: pointer;
   font-size: 1.5rem;
   line-height: 3;

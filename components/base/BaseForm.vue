@@ -126,10 +126,7 @@ export default {
     async submitForm () {
       let isFormValid = false
 
-      await this.$refs.form.validate(result => {
-        this.$toast.error(this.$ERRORS.INVALID_DATA)
-        isFormValid = result
-      })
+      await this.$refs.form.validate(result => isFormValid = result)
 
       if (isFormValid) {
         this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
@@ -152,6 +149,8 @@ export default {
         }
         catch (e) {}
         this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+      } else {
+        this.$toast.error(this.$ERRORS.INVALID_DATA)
       }
     },
 

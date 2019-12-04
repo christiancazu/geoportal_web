@@ -226,6 +226,8 @@ import {
 
 import {
   name,
+  lastName,
+  lastNameAditional,
   districtId
 } from '@/config/form.rules'
 
@@ -256,7 +258,9 @@ export default {
         username: ''
       },
       rules: {
-        name,
+        name: name('usuario'),
+        lastName,
+        lastNameAditional,
         districtId
       },
       file: {
@@ -354,6 +358,8 @@ export default {
         }
         catch (e) {}
         this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+      } else {
+        this.$toast.error(this.$ERRORS.INVALID_DATA)
       }
     },
 

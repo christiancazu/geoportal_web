@@ -101,7 +101,7 @@ export default {
 
   data () {
     return {
-      formTitle: 'Registrar imagen georeferencial',
+      formTitle: 'Registrar punto georeferenciado',
 
       context: {
         storeBase: 'georeferencedImages',
