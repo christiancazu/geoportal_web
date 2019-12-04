@@ -5,6 +5,7 @@
   :form="form"
   :context="context"
   :message-toast="messageToast"
+  @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
 >
   <template v-slot:content>
 
@@ -58,7 +59,9 @@
     </el-row>
 
     <el-row :gutter="10">
-      <el-col :md="12">
+      <el-col
+        :xs="24" :sm="11"
+      >
         <!-- password_1 -->
         <el-form-item
           label="Contraseña"
@@ -66,13 +69,33 @@
         >
           <el-input
             v-model="form.password"
-            type="password"
+            :type="passwordVisible ? 'text' : 'password'"
             autocomplete="off"
             :rules="rules.password"
           />
         </el-form-item>
       </el-col>
-      <el-col :md="12">
+
+      <el-col
+        :xs="24" :sm="2"
+        align="center"
+      >
+        <el-tooltip
+          effect="dark"
+          content="Mostrar contraseña"
+          placement="top"
+        >
+          <i
+            class="el-icon-view password"
+            :class="{ 'view-enable': passwordVisible }"
+            @click="passwordVisible = !passwordVisible"
+          />
+        </el-tooltip>
+      </el-col>
+
+      <el-col
+        :xs="24" :sm="11"
+      >
         <!-- password_2 -->
         <el-form-item
           label="Confirmar contraseña"
@@ -80,7 +103,7 @@
         >
           <el-input
             v-model="form.passwordConfirmation"
-            type="password"
+            :type="passwordVisible ? 'text' : 'password'"
             autocomplete="off"
             :rules="rules.passwordConfirmation"
           />
@@ -107,7 +130,7 @@
       <el-col
         :xs="24" :sm="8"
       >
-        <!-- lasname -->
+        <!-- lastname -->
         <el-form-item
           label="Apellido paterno"
           prop="lastName"
@@ -122,7 +145,7 @@
       <el-col
         :xs="24" :sm="8"
       >
-        <!-- second lasname -->
+        <!-- second lastname -->
         <el-form-item
           label="Apellido materno"
           prop="lastNameAditional"
@@ -142,6 +165,7 @@
       >
         <!-- regionId -->
         <el-form-item
+          ref="regionId"
           label="Región"
           prop="regionId"
         >
@@ -267,30 +291,24 @@
   </template>
 </base-form>
 </template>
+
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
-import uploadFileMixin from '@/mixins/uploadFileMixin'
+import BaseUser from './BaseUser'
 
 import {
-  username,
-  lastName,
-  lastNameAditional,
-  name,
+  nameUser,
+  nameAlpha,
   email,
   password,
-  region,
+  regionId,
   institute,
   subject,
-  districtId
+  districtId,
+  provinceId
 } from '@/config/form.rules'
 
-import { mapState, mapActions } from 'vuex'
-
 export default {
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  extends: BaseUser,
 
   data () {
     return {
@@ -317,23 +335,24 @@ export default {
         password: '',
         passwordConfirmation: '',
         districtId: null,
-        region: null,
-        province: null
+        regionId: null,
+        provinceId: null,
+        type: true
       },
       rules: {
-        username,
-        lastName,
-        lastNameAditional,
-        name,
+        username: nameAlpha,
+        lastName: nameUser,
+        lastNameAditional: nameUser,
+        name: nameUser,
         email,
         password,
-        region,
+        regionId,
         institute,
         subject,
         districtId,
+        provinceId,
         passwordConfirmation: [
           {
-            required: true,
             // eslint-disable-next-line no-unused-vars
             validator: (rule, value, callback) => {
               if (value !== this.form.password) {
@@ -342,71 +361,22 @@ export default {
               callback()
             }
           }
-        ],
-        province: [
-          {
-            required: true,
-            // eslint-disable-next-line no-unused-vars
-            validator: (rule, value, callback) => {
-              if (!this.form.region) {
-                return callback(new Error('Seleccione su Provincia'))
-              }
-              callback()
-            }
-          }
         ]
       },
-      file: {
-        type: 'image', // it's property name file inside form
-        availableExtensions: [
-          'png',
-          'jpg',
-          'jpeg'
-        ],
-        selected: null,
-        maxSizeLabel: '2MB',
-        maxSizeLength: 262144 // (bytes units) ~ 262144 bytes = 2mb
-      },
-    }
-  },
 
-  computed: {
-    ...mapState({
-      regions: state => state.public.regions,
-      provinces: state => state.public.provinces,
-      districts: state => state.public.districts,
-    })
-  },
-
-  created () {
-    this.getRegions()
-  },
-
-  methods: {
-    ...mapActions({
-      getRegions: 'public/getRegions',
-      getProvinces: 'public/getProvinces',
-      getDistricts: 'public/getDistricts'
-    }),
-
-    onChangeRegion (regionId) {
-      this.form.provinceId = ''
-      this.form.districtId = ''
-      this.getProvinces(regionId)
-    },
-
-    onChangeProvince (provinceId) {
-      this.form.districtId = ''
-      this.getDistricts(provinceId)
-    },
-
-    /**
-     * @override mixin to prevent autocomplete on name field
-     */
-    $_uploadFileMixin_valid (file) {
-      this.form[this.file.type] = file
-      this.file.selected = file
+      passwordVisible: false
     }
   }
 }
 </script>
+
+<style lang="scss">
+.el-icon-view.password{
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 3;
+  &.view-enable {
+    color: #6376f7
+  }
+}
+</style>

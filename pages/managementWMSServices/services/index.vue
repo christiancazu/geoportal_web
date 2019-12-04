@@ -70,7 +70,8 @@
 </template>
 
 <script>
-import pageActionsMixin from '@/mixins/pageActionsMixin'
+import BasePageActions from '@/pages/base/BasePageActions'
+
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
 export default {
@@ -78,7 +79,7 @@ export default {
     GroupActionsButtons
   },
 
-  mixins: [pageActionsMixin],
+  extends: BasePageActions,
 
   data () {
     return {
@@ -91,7 +92,7 @@ export default {
         storeBase: 'WMSServices',
         addComponent: 'ModalAddWMSService',
         editComponent: 'ModalEditWMSService',
-        folderName: 'WMSServices',
+        folderName: 'WMSServices'
       },
       messageToast: {
         baseName: 'SERVICE'
@@ -102,13 +103,13 @@ export default {
         'name',
         'author.name',
         'category.name',
-        'description',
+        'description'
       ]
     }
   },
 
   head: {
-    title: 'Servicios WMS | GEOVISOR',
+    title: 'Servicios WMS | GEOVISOR'
   }
 }
 </script>

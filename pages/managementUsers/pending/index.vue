@@ -45,11 +45,13 @@
 
 <script>
 
-import pageActionsMixin from '@/mixins/pageActionsMixin'
+import BasePageActions from '@/pages/base/BasePageActions'
+
 import { SET_ITEM_CONTEXT } from '@/types/mutation-types'
 
 export default {
-  mixins: [pageActionsMixin],
+  extends: BasePageActions,
+
   data () {
     return {
       pageHeader: {
@@ -58,7 +60,7 @@ export default {
       modalMain: {
         storeBase: 'requests',
         approveComponent: 'ModalApproveRequest',
-        folderName: 'users',
+        folderName: 'users'
       },
 
       messageToast: {

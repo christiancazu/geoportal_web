@@ -123,15 +123,9 @@
 </base-form>
 </template>
 <script>
-import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
+import BaseRasterLayer from './BaseRasterLayer'
 
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 import uploadFileMixin from '@/mixins/uploadFileMixin'
-
-import {
-  mapState,
-  mapActions
-} from 'vuex'
 
 import {
   title,
@@ -142,14 +136,9 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  components: {
-    BtnOpenSecondModal
-  },
+  extends: BaseRasterLayer,
 
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  mixins: [uploadFileMixin],
 
   data () {
     return {
@@ -190,22 +179,6 @@ export default {
         name: nameAlpha
       }
     }
-  },
-
-  computed: {
-    ...mapState({
-      groupLayers: state => state.groupLayers.dataContext
-    })
-  },
-
-  created () {
-    this.getGroupLayers()
-  },
-
-  methods: {
-    ...mapActions({
-      getGroupLayers: 'groupLayers/getDataContext'
-    })
   }
 }
 </script>

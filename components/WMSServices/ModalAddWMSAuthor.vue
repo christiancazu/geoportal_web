@@ -46,16 +46,16 @@
 </template>
 
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseWMSAuthor from './BaseWMSAuthor'
 
 import { name } from '@/config/form.rules'
 
 export default {
-  mixins: [modalBaseActionsMixin],
+  extends: BaseWMSAuthor,
 
   data () {
     return {
-      formTitle: 'Registrar autor',
+      formTitle: 'Registrar autor WMS',
 
       context: {
         storeBase: 'WMSAuthors',

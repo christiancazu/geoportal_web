@@ -111,14 +111,9 @@
 </template>
 
 <script>
-import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
+import BaseWMSService from './BaseWMSService'
 
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
-
-import {
-  mapState,
-  mapActions
-} from 'vuex'
+import { mapState } from 'vuex'
 
 import {
   name,
@@ -128,11 +123,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  components: {
-    BtnOpenSecondModal
-  },
-
-  mixins: [modalBaseActionsMixin],
+  extends: BaseWMSService,
 
   data () {
     return {
@@ -179,9 +170,7 @@ export default {
     ...mapState({
       itemContext (state) {
         return state[this.context.storeBase].itemContext
-      },
-      WMSAuthors: state => state.WMSAuthors.dataContext,
-      WMSCategories: state => state.WMSCategories.dataContext
+      }
     })
   },
 
@@ -192,17 +181,10 @@ export default {
   },
 
   created () {
-    this.getWMSAuthors()
-    this.getWMSCategories()
     this.assignFormFields()
   },
 
   methods: {
-    ...mapActions({
-      getWMSAuthors: 'WMSAuthors/getDataContext',
-      getWMSCategories: 'WMSCategories/getDataContext'
-    }),
-
     assignFormFields () {
       Object.keys(this.form).forEach(key => (this.form[key] = this.itemContext[key]))
     }

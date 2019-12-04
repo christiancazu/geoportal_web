@@ -8,17 +8,36 @@
   <template
     v-slot:page-table="{
       openModalEditItemContext,
-      confirmedActionDeleteItemContext
+      confirmedActionDeleteItemContext,
+      shrinkText
     }"
   >
+    <el-table-column
+      label="N°"
+      align="center"
+      width="50px"
+      prop="order"
+    />
+
     <el-table-column
       label="Nombre"
       prop="name"
     />
+
     <el-table-column
       label="Título"
       prop="title"
     />
+
+    <el-table-column
+      label="Descripción"
+      prop="description"
+    >
+      <template slot-scope="scope">
+        <span>{{ shrinkText(scope.row.description) }}</span>
+      </template>
+    </el-table-column>
+
     <el-table-column
       label="Publicado"
       prop="publicado"
@@ -53,7 +72,8 @@
 </template>
 
 <script>
-import pageActionsMixin from '@/mixins/pageActionsMixin'
+import BasePageActions from '@/pages/base/BasePageActions'
+
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
 export default {
@@ -61,7 +81,7 @@ export default {
     GroupActionsButtons
   },
 
-  mixins: [pageActionsMixin],
+  extends: BasePageActions,
 
   data () {
     return {
@@ -74,7 +94,7 @@ export default {
         storeBase: 'rasterLayers',
         addComponent: 'ModalAddRasterLayer',
         editComponent: 'ModalEditRasterLayer',
-        folderName: 'layers',
+        folderName: 'layers'
       },
       messageToast: {
         baseName: 'LAYER'
@@ -82,13 +102,14 @@ export default {
       // criterias to search based on columns of table
       filterCriteriaProps: [
         'title',
-        'name'
-      ],
+        'name',
+        'description'
+      ]
     }
   },
 
   head: {
-    title: 'Capas raster | GEOVISOR',
+    title: 'Capas raster | GEOVISOR'
   }
 }
 </script>

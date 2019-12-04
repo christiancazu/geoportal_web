@@ -17,7 +17,6 @@
     >
 
       <upload-file
-        v-if="profileLoaded"
         :file="file"
         type-image
         avatar-image
@@ -226,7 +225,9 @@ import {
 } from 'vuex'
 
 import {
-  username,
+  name,
+  lastName,
+  lastNameAditional,
   districtId
 } from '@/config/form.rules'
 
@@ -254,10 +255,12 @@ export default {
         regionId: null,
         status: '',
         userTypeId: '',
-        username: '',
+        username: ''
       },
       rules: {
-        name: username,
+        name: name('usuario'),
+        lastName,
+        lastNameAditional,
         districtId
       },
       file: {
@@ -343,18 +346,20 @@ export default {
             formData.delete('image')
           }
 
-          await this.$store.dispatch('users/updateProfile', { data: formData })
+          await this.$store.dispatch('users/updateProfile', formData)
 
           /**
            * updating current auth.user state to view changes (image user)
            */
-          const { data } = await this.$store.dispatch('users/getUserInfo')
+          const data = await this.$store.dispatch('users/getUserInfo')
           this.$store.commit('auth/SET', { key: 'user', value: data.user })
 
           this.$toast.success(this.$SUCCESS.USER.UPDATED)
         }
         catch (e) {}
         this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+      } else {
+        this.$toast.error(this.$ERRORS.INVALID_DATA)
       }
     },
 

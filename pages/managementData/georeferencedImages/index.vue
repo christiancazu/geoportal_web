@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import pageActionsMixin from '@/mixins/pageActionsMixin'
+import BasePageActions from '@/pages/base/BasePageActions'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -55,12 +55,12 @@ export default {
     GroupActionsButtons
   },
 
-  mixins: [pageActionsMixin],
+  extends: BasePageActions,
 
   data () {
     return {
       pageHeader: {
-        title: 'Imágenes georeferenciales',
+        title: 'Puntos Georeferenciados',
         btnAddName: 'Nueva imagen georeferencial'
       },
       // main modal settings

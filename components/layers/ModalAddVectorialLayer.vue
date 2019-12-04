@@ -46,6 +46,7 @@
         <!-- file -->
         <el-form-item
           class="text-xs-center upload-file"
+          label="Archivo"
           prop="shapeFile"
         >
 
@@ -126,15 +127,9 @@
 </template>
 
 <script>
-import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
+import BaseVectorialLayer from './BaseVectorialLayer'
 
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 import uploadFileMixin from '@/mixins/uploadFileMixin'
-
-import {
-  mapState,
-  mapActions
-} from 'vuex'
 
 import {
   title,
@@ -145,14 +140,9 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  components: {
-    BtnOpenSecondModal
-  },
+  extends: BaseVectorialLayer,
 
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  mixins: [uploadFileMixin],
 
   data () {
     return {
@@ -193,22 +183,6 @@ export default {
         name: nameAlpha
       }
     }
-  },
-
-  computed: {
-    ...mapState({
-      groupLayers: state => state.groupLayers.dataContext
-    })
-  },
-
-  created () {
-    this.getGroupLayers()
-  },
-
-  methods: {
-    ...mapActions({
-      getGroupLayers: 'groupLayers/getDataContext'
-    })
   }
 }
 </script>

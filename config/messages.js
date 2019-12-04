@@ -1,9 +1,14 @@
 export const ERRORS = {
   ERROR_TRY_LATER: 'Ha ocurrido un error!<br>Intente de nuevo más tarde',
-  INVALID_DATA: 'Los datos son inválidos',
+  INVALID_DATA: 'Algunos datos no son válidos',
+  INVALID_SESSION: 'La sesión no es válida',
   TIME_EXPIRED_TRY_AGAIN: 'El tiempo para esta petición ha expirado<br>Intente de nuevo',
   ROUTE_NOT_FOUND: 'La ruta no ha sido encontrada',
   UNAUTHORIZED: 'No tiene autorización para esta solicitud'
+}
+
+export const INFO = {
+  INVALID_URL: 'la URL no es válida'
 }
 
 export const SUCCESS = {

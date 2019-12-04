@@ -130,6 +130,8 @@
 <script>
 import { password } from '@/config/form.rules'
 
+import { AUTH_STRATEGY } from '@/config/constants'
+
 import {
   ENABLE_PROCESSING_FORM,
   DISABLE_PROCESSING_FORM
@@ -163,7 +165,7 @@ export default {
       if (isFormValid) {
         this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
         try {
-          await this.$auth.loginWith('local', {
+          await this.$auth.loginWith(AUTH_STRATEGY, {
             data: {
               username: this.form.email,
               password: this.form.password

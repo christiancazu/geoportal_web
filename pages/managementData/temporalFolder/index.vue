@@ -205,7 +205,6 @@ export default {
 
         await this.$store.dispatch('temporal/getSpaces', this.um)
 
-        this.$toast.success(this.$SUCCESS.TEMPORAL.FETCHED)
         this.fillTemporalData()
         this.fillMediaData()
         this.dataLoaded = true

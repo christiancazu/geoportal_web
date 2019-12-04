@@ -49,7 +49,9 @@
       :disabled="$store.state.spinners.processingForm"
       :loading="isRejectRequest && $store.state.spinners.processingForm"
       @click.prevent="submitFormReject"
-    >RECHAZAR SOLICITUD</el-button>
+    >
+      RECHAZAR SOLICITUD
+    </el-button>
     <el-button
       class="ma-2"
       type="success"
@@ -58,12 +60,16 @@
       :disabled="$store.state.spinners.processingForm"
       :loading="!isRejectRequest && $store.state.spinners.processingForm"
       @click.prevent="acceptRequest"
-    >APROBAR SOLICITUD</el-button>
+    >
+      APROBAR SOLICITUD
+    </el-button>
   </div>
 </el-dialog>
 </template>
+
 <script>
 import { observation } from '@/config/form.rules'
+
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -72,7 +78,7 @@ export default {
       context: {
         storeBase: 'requests',
         mountedOn: 'mainModal',
-        storeAction: 'approve',
+        storeAction: 'approve'
       },
 
       isRejectRequest: false,
@@ -120,9 +126,8 @@ export default {
           await this.getDataContext()
           this.closeModal()
         }
-        catch (e) { }
+        catch (e) {}
       }
-
     },
 
     async acceptRequest () {
@@ -134,17 +139,19 @@ export default {
       const data = {
         id: this.itemContext.id
       }
+
       try {
-
         await this.approveItemContext({ data })
+
         this.$toast.success(this.$SUCCESS.REQUEST.APPROVE)
+
         await this.getDataContext()
+
         this.closeModal()
-
-
       }
       catch (e) { }
     },
+
     resetForm () {
       if (this.isRejectRequest) {
         this.$refs.form.resetFields()
@@ -159,6 +166,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
 .text-request {
   line-height: 1.2rem;

@@ -16,6 +16,7 @@
     label-width="120px"
     class="demo-ruleForm"
     :disabled="$store.state.spinners.processingForm"
+    autocomplete="off"
   >
 
     <slot name="content" />
@@ -105,16 +106,20 @@ export default {
     }
   },
 
+  mounted () {
+    this.$watch(() => { console.warn(this.$refs.form) })
+  },
+
   methods: {
     ...mapActions({
       async getDataContext () {
         await this.$store.dispatch(`${this.context.storeBase}/getDataContext`)
       },
-      async submitItemContext (store, form) {
-        await this.$store.dispatch(`${this.context.storeBase}/${this.context.storeAction}ItemContext`, { data: form })
+      async submitItemContext (store, formData) {
+        await this.$store.dispatch(`${this.context.storeBase}/${this.context.storeAction}ItemContext`, formData)
       },
-      async publishItemContext (store, form) {
-        await this.$store.dispatch(`${this.context.storeBase}/publishItemContext`, { data: form })
+      async publishItemContext (store, formData) {
+        await this.$store.dispatch(`${this.context.storeBase}/publishItemContext`, formData)
       },
     }),
 
@@ -144,6 +149,8 @@ export default {
         }
         catch (e) {}
         this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+      } else {
+        this.$toast.error(this.$ERRORS.INVALID_DATA)
       }
     },
 
@@ -174,14 +181,14 @@ export default {
       return formData
     },
 
-    resetForm () {
-      this.$emit('clear-file')
-      this.$refs.form.resetFields()
-    },
-
     closeModal () {
       this.resetForm()
       this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
+    },
+
+    resetForm () {
+      this.$emit('clear-form')
+      this.$refs.form.resetFields()
     }
   }
 }

@@ -65,6 +65,10 @@
             :value="item.id"
           />
         </el-select>
+
+        <!-- open second modal -->
+        <btn-open-second-modal :modal-second="modalSecond" />
+
       </el-container>
     </el-form-item>
     <!-- Descripción -->
@@ -86,12 +90,9 @@
 </template>
 
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseRasterLayer from './BaseRasterLayer'
 
-import {
-  mapState,
-  mapActions
-} from 'vuex'
+import { mapState} from 'vuex'
 
 import {
   title,
@@ -100,7 +101,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  mixins: [modalBaseActionsMixin],
+  extends: BaseRasterLayer,
 
   data () {
     return {
@@ -110,6 +111,11 @@ export default {
         storeBase: 'rasterLayers',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'update',
+      },
+      modalSecond: {
+        component: 'ModalAddGroupLayer',
+        folderName: 'layers',
+        tooltip: 'Agregar grupo de capas'
       },
       messageToast: {
         baseName: 'LAYER',
@@ -128,10 +134,7 @@ export default {
         title,
         name: nameAlpha,
         order
-      },
-      fileLayerSelected: null,
-      fileStyleSelected: null,
-      showFormStyle: false,
+      }
     }
   },
 
@@ -139,8 +142,7 @@ export default {
     ...mapState({
       itemContext (state) {
         return state[this.context.storeBase].itemContext
-      },
-      groupLayers: state => state.groupLayers.dataContext
+      }
     })
   },
 
@@ -151,18 +153,13 @@ export default {
   },
 
   created () {
-    this.getGroupLayers()
     this.assignFormFields()
   },
 
   methods: {
-    ...mapActions({
-      getGroupLayers: 'groupLayers/getDataContext'
-    }),
-
     assignFormFields () {
       Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
-    },
+    }
   }
 }
 </script>

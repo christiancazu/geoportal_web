@@ -116,7 +116,7 @@ export default {
           label: 'Gestión de Datos',
           icon: 'database',
           items: [
-            { label: 'Imágenes Georeferenciales', route: '/managementData/georeferencedImages' },
+            { label: 'Puntos Georeferenciados', route: '/managementData/georeferencedImages' },
             { label: 'Imágenes Satelitales', route: '/managementData/satelitalsImages' },
             { label: 'Carpeta Temporal', route: '/managementData/temporalFolder' }
           ]
@@ -142,7 +142,7 @@ export default {
   },
 
   watch: {
-    isCollapse: function (newState) {
+    isCollapse (newState) {
       this.$emit('is-collapse', newState)
     }
   },

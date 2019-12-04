@@ -13,6 +13,27 @@
       align="bottom"
       justify="center"
     >
+      <el-col>
+        <el-form-item
+          label="Marca"
+          prop="geometry"
+        >
+
+          <marker-geo-json
+            :map="map"
+            :marker="marker"
+            @on-marker-lng-lat="onMarkerLngLat"
+          />
+
+        </el-form-item>
+      </el-col>
+    </el-row>
+
+    <el-row
+      :gutter="10"
+      align="bottom"
+      justify="center"
+    >
       <el-col :md="12">
         <!-- file -->
         <el-form-item
@@ -30,6 +51,7 @@
 
         </el-form-item>
       </el-col>
+
       <el-col :md="12">
         <!-- title -->
         <el-form-item
@@ -44,43 +66,29 @@
           />
         </el-form-item>
 
-        <!-- geometry -->
+        <!-- description -->
         <el-form-item
-          label="Geometría"
-          prop="geometry"
+          label="Descripción"
+          prop="description"
         >
           <el-input
-            v-model="form.geometry"
+            v-model="form.description"
             type="textarea"
-            :rows="3"
+            :rows="4"
             autocomplete="off"
             :maxlength="300"
           />
         </el-form-item>
       </el-col>
     </el-row>
-    <!-- Descripción -->
-    <el-form-item
-      label="Descripción"
-      prop="description"
-    >
-      <el-input
-        v-model="form.description"
-        type="textarea"
-        :rows="3"
-        autocomplete="off"
-        :maxlength="300"
-        :show-word-limit="true"
-      />
-    </el-form-item>
   </template>
 </base-form>
 </template>
 
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
-
-import uploadFileMixin from '@/mixins/uploadFileMixin'
+/* eslint-disable array-element-newline */
+/* eslint-disable array-bracket-newline */
+import BaseGeoreferencedImage from './BaseGeoreferencedImage'
 
 import {
   title,
@@ -89,14 +97,11 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  extends: BaseGeoreferencedImage,
 
   data () {
     return {
-      formTitle: 'Registrar imagen georeferencial',
+      formTitle: 'Registrar punto georeferenciado',
 
       context: {
         storeBase: 'georeferencedImages',
@@ -111,7 +116,17 @@ export default {
         title: '',
         description: '',
         image: null,
-        geometry: ''
+        geometry: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "Point",
+            coordinates: [
+              0,
+              0
+            ]
+          }
+        }
       },
       rules: {
         title,
@@ -127,9 +142,22 @@ export default {
         ],
         selected: null
       },
+      map: {
+        latLng: [
+          -9.190481498666669,
+          -74.61914062500001
+        ],
+        zoom: 4
+      },
+      marker: {
+        latLng: [
+          -9.190481498666669,
+          -74.61914062500001
+        ],
+        visible: false
+      }
     }
   },
-
   methods: {
     /**
      * getting formData by reference from BaseForm component
@@ -139,9 +167,9 @@ export default {
      */
     ApplyCustomFunctionalityToForm (formData) {
       try {
-        formData.geometry = JSON.stringify(JSON.parse(formData.geometry))
+        formData.set('geometry', JSON.stringify(this.form.geometry))
       } catch (e) {
-        console.error('invalid format on field geometry')
+        this.$toast.success('El GeoJSON es inválido')
       }
     }
   }

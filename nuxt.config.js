@@ -55,7 +55,8 @@ export default {
     '~/plugins/element-ui',
     '~/plugins/axios',
     '~/plugins/api',
-    '~/plugins/messages'
+    '~/plugins/messages',
+    { src: '~plugins/leaflet.js', ssr: false }
   ],
 
   modules: [
@@ -74,7 +75,7 @@ export default {
   },
 
   auth: {
-    plugins: ['~/plugins/auth.js'],
+    plugins: [],
     redirect: {
       login: '/login',
       logout: '/login',
@@ -104,7 +105,7 @@ export default {
   },
 
   router: {
-    middleware: ['auth']
+    middleware: ['checkAuth']
   },
 
   toast: {

@@ -17,48 +17,45 @@ export const actions = {
     return await this.$userAPI.info()
   },
 
-  async createItemContext ({ }, form) {
+  async createItemContext ({}, form) {
     await this.$userAPI.create(form)
   },
 
   async getDataContext ({ commit }) {
-    const { data } = await this.$userAPI.get()
-    commit(SET_DATA_CONTEXT, { dataContext: data || [] })
+    const data = await this.$userAPI.get()
+    commit(SET_DATA_CONTEXT, data)
   },
 
   async getItemContext ({ commit }, id) {
-    const { data } = await this.$userAPI.getById(id)
-    commit(SET_ITEM_CONTEXT, { itemContext: data })
+    const data = await this.$userAPI.getById(id)
+    commit(SET_ITEM_CONTEXT, data)
   },
 
   async getProfile ({ commit }) {
-    const { data } = await this.$userAPI.getProfile()
-    commit(SET_PROFILE, { profile: data })
+    const data = await this.$userAPI.getProfile()
+    commit(SET_PROFILE, data)
   },
 
-  async updateItemContext ({ }, form) {
+  async updateItemContext ({}, form) {
     await this.$userAPI.update(form)
   },
 
-  async updateProfile ({ }, form) {
-    await this.$userAPI.updateProfile(form)
+  async deleteItemContext ({}, id) {
+    await this.$userAPI.delete(id)
   },
 
-  async deleteItemContext ({ }, id) {
-    await this.$userAPI.delete(id)
+  async updateProfile ({}, form) {
+    await this.$userAPI.updateProfile(form)
   }
 }
 
 export const mutations = {
-  [SET_DATA_CONTEXT]: (state, { dataContext }) => (state.dataContext = dataContext),
+  [SET_DATA_CONTEXT]: (state, payload) => (state.dataContext = payload),
 
-  [SET_ITEM_CONTEXT]: (state, { itemContext }) => (state.itemContext = itemContext),
+  [SET_ITEM_CONTEXT]: (state, payload) => (state.itemContext = payload),
 
-  [SET_PROFILE]: (state, { profile }) => (state.profile = profile),
+  [SET_PROFILE]: (state, payload) => (state.profile = payload),
 
   [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload),
-  /* eslint-disable */
-  ['SET_USER']: (state, payload) => {
 
-  }
 }

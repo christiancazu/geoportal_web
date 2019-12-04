@@ -88,12 +88,7 @@
 </template>
 
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
-
-import {
-  mapState,
-  mapActions
-} from 'vuex'
+import BaseGroupLayer from './BaseGroupLayer'
 
 import {
   title,
@@ -101,7 +96,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  mixins: [modalBaseActionsMixin],
+  extends: BaseGroupLayer,
 
   data () {
     return {
@@ -128,22 +123,6 @@ export default {
         order
       }
     }
-  },
-
-  computed: {
-    ...mapState({
-      groupLayers: state => state.groupLayers.dataContext
-    })
-  },
-
-  created () {
-    this.getGroupLayers()
-  },
-
-  methods: {
-    ...mapActions({
-      getGroupLayers: 'groupLayers/getDataContext'
-    }),
   }
 }
 </script>
