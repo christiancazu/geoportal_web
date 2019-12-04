@@ -11,6 +11,9 @@ export default $axios => resource => ({
 
   publish: data => $axios.$post(`${resource}/publish/`, data),
 
+  // token
+  refreshToken: data => $axios.$post(`${resource}/`, data),
+
   // user
   getProfile: () => $axios.$get(`${resource}/profile/`),
 

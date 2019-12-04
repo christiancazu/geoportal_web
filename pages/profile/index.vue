@@ -253,7 +253,7 @@ export default {
         regionId: null,
         status: '',
         userTypeId: '',
-        username: '',
+        username: ''
       },
       rules: {
         name,
@@ -347,7 +347,7 @@ export default {
           /**
            * updating current auth.user state to view changes (image user)
            */
-          const { data } = await this.$store.dispatch('users/getUserInfo')
+          const data = await this.$store.dispatch('users/getUserInfo')
           this.$store.commit('auth/SET', { key: 'user', value: data.user })
 
           this.$toast.success(this.$SUCCESS.USER.UPDATED)

@@ -1,7 +1,5 @@
 <template>
 <div
-  id="map-wrap"
-  class="my-2"
   style="height: 36vh"
 >
   <client-only>
@@ -12,9 +10,16 @@
       @update:center="onCenterUpdated"
     >
 
-      <l-tile-layer :url="tileLayer.url" />
+      <l-tile-layer
+        ref="tileLayer"
+        :url="tileLayer.url"
+        @tileerror="onTileError"
+      />
 
-      <l-control position="bottomleft">
+      <l-control
+        v-if="!!marker"
+        position="bottomleft"
+      >
         <el-tooltip
           effect="dark"
           content="Coloque una ubicación"
@@ -30,6 +35,7 @@
       </l-control>
 
       <l-marker
+        v-if="!!marker"
         :visible="marker.visible"
         :lat-lng="marker.latLng"
         draggable
@@ -45,15 +51,20 @@
 /* eslint-disable array-bracket-newline */
 export default {
   props: {
-    map: { type: Object, required: true },
-    marker: { type: Object, required: true }
-  },
-
-  data: () => ({
+    map: {
+      type: Object, default: () => ({
+        zoom: 5
+      })
+    },
+    marker: {
+      type: Object, default: () => {}
+    },
     tileLayer: {
-      url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+      type: Object, default: () => ({
+        url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+      })
     }
-  }),
+  },
 
   methods: {
     onCenterUpdated ({ lat, lng }) {
@@ -70,6 +81,10 @@ export default {
       this.marker.latLng = [lat, lng]
       this.$emit('on-marker-lng-lat', [lng, lat])
     },
+
+    onTileError () {
+      this.$emit('on-tile-error')
+    }
   }
 }
 </script>

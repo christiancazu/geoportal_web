@@ -1,10 +1,17 @@
 import Vue from 'vue'
 
-export default ({ $axios }) => {
-  // timout for request in miliseconds
-  // $axios.defaults.timeout = 30000 // ms
+import { AUTH_STRATEGY } from '@/config/constants'
 
-  // $axios.onRequest(config => {})
+export default async ({ $axios, redirect, app }) => {
+
+  // $axios.defaults.timeout = 30000 // timeout for request in miliseconds
+
+  $axios.onRequest((/*config*/) => {
+    // setting current token on axios request
+    if (app.$auth.getToken(AUTH_STRATEGY)) {
+      $axios.setToken(app.$auth.getToken(AUTH_STRATEGY))
+    }
+  })
 
   // $axios.onResponse(response => {})
 
@@ -13,17 +20,17 @@ export default ({ $axios }) => {
 
     // handle message error from server or default error message
     let errorMessage = ''
+
     switch (code) {
     case 'ECONNABORTED': // time expired for request
       errorMessage = Vue.prototype.$ERRORS.ERROR_TRY_LATER
       break
     case 401:
-      // #TODO: logic for unauthorized request, need check middleware checkAuth
-      // localStorage.clear();
-      // errorMessage = Vue.prototype.$ERRORS.UNAUTHORIZED
-      // Vue.prototype.$toasted.error(errorMessage)
-      // eslint-disable-next-line no-undef
+      errorMessage = Vue.prototype.$ERRORS.UNAUTHORIZED
+      // store.commit('auth/SET', { key: 'loggedIn', value: false })
+      app.$auth.logout()
       redirect('/login')
+
       break
     case 404:
       errorMessage = Vue.prototype.$ERRORS.ROUTE_NOT_FOUND

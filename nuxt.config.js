@@ -75,7 +75,7 @@ export default {
   },
 
   auth: {
-    plugins: ['~/plugins/auth.js'],
+    plugins: [],
     redirect: {
       login: '/login',
       logout: '/login',
@@ -105,7 +105,7 @@ export default {
   },
 
   router: {
-    middleware: ['auth']
+    middleware: ['checkAuth']
   },
 
   toast: {

@@ -106,6 +106,10 @@ export default {
     }
   },
 
+  mounted () {
+    this.$watch(() => { console.warn(this.$refs.form) })
+  },
+
   methods: {
     ...mapActions({
       async getDataContext () {
@@ -122,7 +126,10 @@ export default {
     async submitForm () {
       let isFormValid = false
 
-      await this.$refs.form.validate(result => isFormValid = result)
+      await this.$refs.form.validate(result => {
+        this.$toast.error(this.$ERRORS.INVALID_DATA)
+        isFormValid = result
+      })
 
       if (isFormValid) {
         this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
@@ -181,7 +188,7 @@ export default {
     },
 
     resetForm () {
-      this.$emit('clear-file')
+      this.$emit('clear-form')
       this.$refs.form.resetFields()
     }
   }

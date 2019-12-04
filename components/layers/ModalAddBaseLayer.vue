@@ -5,11 +5,26 @@
   :rules="rules"
   :context="context"
   :message-toast="messageToast"
+  @clear-form="clearForm"
 >
   <template v-slot:content>
     <el-row :gutter="10">
+
+      <!-- tooltip -->
+      <el-col>
+        <el-alert
+          :title="alert.title"
+          :description="alert.description"
+          :closable="false"
+          type="info"
+          effect="dark"
+          show-icon
+          class="mb-3 mt-0"
+        />
+      </el-col>
+
       <el-col
-        :xs="24" :sm="12" :md="14"
+        :xs="24" :sm="12"
       >
         <!-- base map name -->
         <el-form-item
@@ -33,23 +48,44 @@
             autocomplete="off"
           >
             <template slot="append">
-              <el-button
-                icon="el-icon-full-screen"
-                @click="previewBaseMap"
-              />
+              <el-tooltip
+                :content="tooltip.preview ? tooltip.messagePreview : tooltip.messageNotUrl"
+                :placement="tooltip.preview ? 'top' : 'bottom'"
+              >
+                <el-button
+                  icon="el-icon-full-screen"
+                  @click="previewBaseMap"
+                />
+              </el-tooltip>
             </template>
           </el-input>
         </el-form-item>
+
+        <el-form-item
+          prop="isUrlValid"
+        >
+          <el-checkbox
+            v-model="form.isUrlValid"
+          >
+            Estoy seguro que la URL es válida
+          </el-checkbox>
+        </el-form-item>
+
       </el-col>
       <el-col
-        :xs="24" :sm="12" :md="10"
+        :xs="24" :sm="12"
       >
-        <div class="demo-image__error">
-          <div
-            id="map"
-            class="map"
-          />
-        </div>
+        <transition
+          name="page"
+        >
+          <div v-if="validUrlToPreviewMap">
+            <label>Mapa previo</label>
+            <marker-geo-json
+              :tile-layer="tileLayer"
+              @on-tile-error="onTileError"
+            />
+          </div>
+        </transition>
       </el-col>
     </el-row>
 
@@ -63,6 +99,7 @@
         autocomplete="off"
       />
     </el-form-item>
+
     <el-form-item
       label="Descripción"
       prop="description"
@@ -73,17 +110,18 @@
         :rows="3"
         autocomplete="off"
         :maxlength="300"
-        :show-word-limit="true"
+        show-word-limit
       />
     </el-form-item>
+
     <el-checkbox
-      v-model="checked"
+      v-model="needAuthentication"
       class="mb-3"
     >
-      ¿Necesita Autenticación?
+      Necesita Autenticación
     </el-checkbox>
     <el-form-item
-      v-if="checked"
+      v-if="needAuthentication"
       label="Token"
       prop="authenticationToken"
     >
@@ -120,7 +158,8 @@ import BaseBaseLayer from './BaseBaseLayer'
 
 import {
   name,
-  url
+  url,
+  isUrlValid
 } from '@/config/form.rules'
 
 export default {
@@ -135,20 +174,33 @@ export default {
         mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'create',
       },
-
       messageToast: {
         baseName: 'LAYER',
         action: 'REGISTERED'
       },
+      tileLayer: {
+        url: ''
+      },
+      needAuthentication: false,
+      validUrlToPreviewMap: false,
 
-      map: null,
-      tileLayer: null,
-      checked: false,
+      alert: {
+        title: 'Importante',
+        description: 'Si al presionar la vista previa del mapa se muestra en blanco la URL podría ser no válida.'
+      },
+      tooltip: {
+        preview: true,
+        messagePreview : 'Ver vista previa del mapa',
+        messageNotUrl : 'Debe indicar una URL válida para ver la vista previa del mapa'
+      },
       rangeZoom: [
         5,
         18
       ],
-
+      marks: {
+        1: 'min: 1',
+        20: 'max: 20'
+      },
       form: {
         name: '',
         url: '',
@@ -157,15 +209,26 @@ export default {
         minZoom: '',
         maxZoom: '',
         authenticationToken: '',
-        isActive: true
-      },
-      marks: {
-        1: 'min: 1',
-        20: 'max: 20'
+        isActive: true,
+        isUrlValid: false // only used on front-end form to confirm if url is valid
       },
       rules: {
-        name,
-        url
+        name: name('mapa base'),
+        url,
+        isUrlValid,
+        // dynamic rule if checkbock needAuthentication is checked
+        authenticationToken: [
+          {
+            // eslint-disable-next-line no-unused-vars
+            validator: (rule, value, callback) => {
+              if (this.needAuthentication && !value) {
+                return callback(new Error("El token es requerido"))
+              }
+              callback()
+            },
+            trigger: 'blur'
+          }
+        ]
       }
     }
   },
@@ -178,29 +241,9 @@ export default {
   },
 
   methods: {
-    previewBaseMap () {
-      alert('#todo: define functionality')
+    clearForm () {
+      this.validUrlToPreviewMap = false
     }
-    // previewBaseMap () {
-    //   if (!this.form.url) {
-    //     return false
-    //   }
-
-    //   if (!this.map) {
-    //     let latlng = L.latLng(-16.39, -71.53)
-    //     this.map = L.map("map").setView(latlng, 5)
-    //   }
-
-    //   L.tileLayer(this.form.url, {
-    //     attribution: "&copy; contributors"
-    //   }).addTo(this.map)
-    // }
-  }
+  },
 }
 </script>
-
-<style lang="scss">
-.map {
-  height: 200px;
-}
-</style>

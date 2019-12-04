@@ -59,7 +59,9 @@
     </el-row>
 
     <el-row :gutter="10">
-      <el-col :md="12">
+      <el-col
+        :xs="24" :sm="11"
+      >
         <!-- password_1 -->
         <el-form-item
           label="Contraseña"
@@ -67,13 +69,33 @@
         >
           <el-input
             v-model="form.password"
-            type="password"
+            :type="passwordVisible ? 'text' : 'password'"
             autocomplete="off"
             :rules="rules.password"
           />
         </el-form-item>
       </el-col>
-      <el-col :md="12">
+
+      <el-col
+        :xs="24" :sm="2"
+        align="center"
+      >
+        <el-tooltip
+          effect="dark"
+          content="Mostrar contraseña"
+          placement="top"
+        >
+          <i
+            class="el-icon-view"
+            :class="{ 'view-enable': passwordVisible }"
+            @click="passwordVisible = !passwordVisible"
+          />
+        </el-tooltip>
+      </el-col>
+
+      <el-col
+        :xs="24" :sm="11"
+      >
         <!-- password_2 -->
         <el-form-item
           label="Confirmar contraseña"
@@ -81,7 +103,7 @@
         >
           <el-input
             v-model="form.passwordConfirmation"
-            type="password"
+            :type="passwordVisible ? 'text' : 'password'"
             autocomplete="off"
             :rules="rules.passwordConfirmation"
           />
@@ -274,10 +296,8 @@
 import BaseUser from './BaseUser'
 
 import {
-  username,
-  lastName,
-  lastNameAditional,
-  name,
+  nameUser,
+  nameAlpha,
   email,
   password,
   regionId,
@@ -320,10 +340,10 @@ export default {
         type: true
       },
       rules: {
-        username,
-        lastName,
-        lastNameAditional,
-        name,
+        username: nameAlpha,
+        lastName: nameUser,
+        lastNameAditional: nameUser,
+        name: nameUser,
         email,
         password,
         regionId,
@@ -342,8 +362,21 @@ export default {
             }
           }
         ]
-      }
+      },
+
+      passwordVisible: false
     }
   }
 }
 </script>
+
+<style lang="scss" scope>
+.el-icon-view {
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 3;
+  &.view-enable {
+    color: #6376f7
+  }
+}
+</style>

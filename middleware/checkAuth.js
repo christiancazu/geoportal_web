@@ -1,31 +1,25 @@
+import Vue from 'vue'
+
+import tokenToFormData from '@/helpers/tokenToFormData'
+
+import { AUTH_STRATEGY } from '@/config/constants'
+
 export default async ({ app, redirect, $auth }) => {
-  if (process.server) {
-    return
-  }
-  const isToken = $auth.getToken('local')
-  if ($auth.$state.loggedIn && !!isToken) {
-    const token = isToken.replace('Bearer ', '')
+
+  if (process.server) return
+
+  const currentToken = $auth.getToken(AUTH_STRATEGY)
+
+  if ($auth.$state.loggedIn && !!currentToken) {
     try {
-      app.$refreshAPI
-        .refreshToken({ data: { token } })
-        .then(response => {
-          if ($auth.$state.loggedIn && !!isToken) {
-            $auth.setToken('local', `Bearer ${response.data.token}`)
-            $auth
-              .fetchUser()
-              .then(() => {})
-              .catch(() => {
-                return redirect('/login')
-              })
-          }
-        })
-        .catch(() => {
-          $auth.logout()
-          return redirect('/login')
-        })
+      const { token } = await app.$refreshAPI.refreshToken(tokenToFormData($auth.getToken(AUTH_STRATEGY)))
+
+      $auth.setToken(AUTH_STRATEGY, `Bearer ${token}`)
+
     } catch (error) {
-      $auth.logout()
-      return redirect('/login')
+      Vue.prototype.$ERRORS.INVALID_SESSION
+      await $auth.logout()
+      return redirect('login')
     }
   }
 }

@@ -1,3 +1,5 @@
+import { URL_MAP_REG_EX } from '@/config/constants'
+
 export const email = [
   {
     required: true,
@@ -60,6 +62,28 @@ export const url = [
   {
     required: true,
     message: 'La url del mapa base es requerido'
+  },
+  {
+    // eslint-disable-next-line no-unused-vars
+    validator: (rule, value, callback) => {
+      if (!URL_MAP_REG_EX.test(value)) {
+        return callback(new Error("la URL del mapa base no es válida"))
+      }
+      callback()
+    },
+    trigger: 'blur'
+  }
+]
+
+export const isUrlValid = [
+  {
+    // eslint-disable-next-line no-unused-vars
+    validator: (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("Debe confirmar que la URL es válida"))
+      }
+      callback()
+    }
   }
 ]
 
@@ -124,7 +148,7 @@ export const nameAlpha = [
       let text = value.split('')
       let itContainsBlanks = text.every(val => /^\w*$/.test(val))
       if (!itContainsBlanks) {
-        return callback(new Error("Solo se admite letras y subguión '_'"))
+        return callback(new Error("Solo se admite letras, números y subguión '_'"))
       }
       callback()
     },
@@ -146,7 +170,7 @@ export const geometry = [
 ]
 
 // form create user
-export const username = [
+export const nameUser = [
   {
     required: true,
     message: 'El nombre de usuario es requerido'
@@ -165,7 +189,7 @@ export const username = [
     // eslint-disable-next-line no-unused-vars
     validator: (rule, value, callback) => {
       // eslint-disable-next-line no-useless-escape
-      const usernameRegEx = /^[(a-z)éáíóúñ]{3,50}$/
+      const usernameRegEx = /^[a-zA-ZéáíóúÁÉÍÓÚñÑ\s]{3,50}$/
       if (!usernameRegEx.test(value)) {
         return callback(new Error('No se permiten números ni caracteres especiales'))
       }
