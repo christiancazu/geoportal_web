@@ -3,11 +3,9 @@ import Vue from 'vue'
 import { AUTH_STRATEGY } from '@/config/constants'
 
 export default async ({ $axios, redirect, app }) => {
-
   // $axios.defaults.timeout = 30000 // timeout for request in miliseconds
 
   $axios.onRequest((/*config*/) => {
-    // setting current token on axios request
     if (app.$auth.getToken(AUTH_STRATEGY)) {
       $axios.setToken(app.$auth.getToken(AUTH_STRATEGY))
     }
@@ -27,8 +25,9 @@ export default async ({ $axios, redirect, app }) => {
       break
     case 401:
       errorMessage = Vue.prototype.$ERRORS.UNAUTHORIZED
-      // store.commit('auth/SET', { key: 'loggedIn', value: false })
-      app.$auth.logout()
+      // deleting tokens
+      $axios.setToken(null)
+      app.$auth.setToken(AUTH_STRATEGY, null)
       redirect('/login')
 
       break

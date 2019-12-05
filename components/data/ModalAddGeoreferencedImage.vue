@@ -6,6 +6,7 @@
   :context="context"
   :message-toast="messageToast"
   @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
+  @clear-form="clearForm"
 >
   <template v-slot:content>
     <el-row
@@ -169,8 +170,15 @@ export default {
       try {
         formData.set('geometry', JSON.stringify(this.form.geometry))
       } catch (e) {
-        this.$toast.success('El GeoJSON es inválido')
+        this.$toast.error('El GeoJSON es inválido')
       }
+    },
+
+    clearForm () {
+      this.form.image = null
+      this.form.geometry.geometry.coordinates = [0, 0]
+      this.file.selected = ''
+      this.marker.visible = false
     }
   }
 }

@@ -32,11 +32,6 @@
             src="image/logo_escudo.png"
             fit="contain"
           />
-          <!-- <p>¿Aún no tienes cuenta? <el-link
-                type="primary"
-                class="font-weight-bold"
-              >Regístrese</el-link>
-            </p> -->
           <p>
             <small>
               <el-link type="primary">Ir pagina principal</el-link>
@@ -174,6 +169,8 @@ export default {
           this.$toast.success(this.$SUCCESS.WELLCOME)
         }
         catch (e) {}
+      } else {
+        this.$toast.error(this.$ERRORS.INVALID_DATA)
       }
       this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
     }

@@ -46,6 +46,10 @@ export const actions = {
 
   async updateProfile ({}, form) {
     await this.$userAPI.updateProfile(form)
+  },
+
+  async logout () {
+    await this.$userAPI.logout()
   }
 }
 

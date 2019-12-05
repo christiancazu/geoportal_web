@@ -87,6 +87,9 @@
 
 <script>
 import { mapState } from 'vuex'
+
+import { AUTH_STRATEGY } from '@/config/constants'
+
 export default {
   data () {
     return {
@@ -149,9 +152,16 @@ export default {
 
   methods: {
     async logout () {
-      await this.$auth.logout()
-      this.$toast.success(this.$SUCCESS.LOGOUT)
-      this.$router.push({ to: '/login' })
+      this.$auth.setToken(AUTH_STRATEGY, null)
+
+      try {
+        this.$store.commit('auth/SET', { key: 'loggedIn', value: false })
+        await this.$store.dispatch('users/logout')
+        await this.$router.push('/login')
+        this.$toast.success(this.$SUCCESS.LOGOUT)
+      } catch (err) {
+        this.$toast.error(this.$ERRORS.ERROR_TRY_LATER)
+      }
     }
   },
 }

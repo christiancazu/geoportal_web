@@ -106,10 +106,6 @@ export default {
     }
   },
 
-  mounted () {
-    this.$watch(() => { console.warn(this.$refs.form) })
-  },
-
   methods: {
     ...mapActions({
       async getDataContext () {

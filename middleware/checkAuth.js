@@ -8,18 +8,34 @@ export default async ({ app, redirect, $auth }) => {
 
   if (process.server) return
 
-  const currentToken = $auth.getToken(AUTH_STRATEGY)
+  const currentToken = await $auth.getToken(AUTH_STRATEGY)
 
   if ($auth.$state.loggedIn && !!currentToken) {
-    try {
-      const { token } = await app.$refreshAPI.refreshToken(tokenToFormData($auth.getToken(AUTH_STRATEGY)))
+    // if try to join login when is logged
+    if (app.context.route.name === 'login') return redirect('/')
 
+    try {
+      const tokenAsData = tokenToFormData($auth.getToken(AUTH_STRATEGY))
+      const { token } = await app.$refreshAPI.refreshToken(tokenAsData)
+
+      // setting new token
       $auth.setToken(AUTH_STRATEGY, `Bearer ${token}`)
 
     } catch (error) {
-      Vue.prototype.$ERRORS.INVALID_SESSION
+      Vue.prototype.$toasted.error(Vue.prototype.$ERRORS.INVALID_SESSION)
       await $auth.logout()
-      return redirect('login')
+      return redirect('/login')
+    }
+  } else {
+    // when url is '/' && not token
+    if (app.context.route.name === 'index' && !currentToken) return redirect('/login')
+
+    if (app.context.route.name !== 'login') {
+      try {
+        await app.$userAPI.info()
+      } catch (error) {
+        // Vue.prototype.$toasted.error(Vue.prototype.$ERRORS.INVALID_SESSION)
+      }
     }
   }
 }

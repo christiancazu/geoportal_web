@@ -21,6 +21,8 @@ export default $axios => resource => ({
 
   info: () => $axios.$get(`${resource}/info/`),
 
+  logout: () => $axios.$post(`${resource}/logout/`),
+
   // public
   getRegions: () => $axios.$get(`${resource}/region/`),
 

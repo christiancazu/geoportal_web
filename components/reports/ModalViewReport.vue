@@ -6,14 +6,23 @@
   <template v-slot:content>
 
     <div class="text-request">
-      <label class="text-uppercase">{{ `${itemContext.user}` }}</label>
-      <p class="text-uppercase ma-0">{{ `${itemContext.subject}` }}</p>
+      <p class="my-2">
+        <strong>Usuario: </strong>
+        {{ `${itemContext.user}` }}
+      </p>
+      <p class="my-2">
+        <strong>Asunto: </strong>
+        {{ `${itemContext.subject}` }}
+      </p>
     </div>
-    <div class="my-3 text-request">
-      <label class="text-uppercase">Descripción del reporte: </label>
-      <p class="text-capitalize ma-0"> {{ `${itemContext.description}` }}</p>
+    <div class="my-2">
+      <p>
+        <strong>Descripción del reporte: </strong>
+      </p>
+      <p class="my-2"> {{ `${itemContext.description}` }}</p>
     </div>
     <el-image
+      v-if="itemContext.image"
       :src="itemContext.image"
       fit="contain"
       class="image-report"
@@ -22,7 +31,7 @@
         slot="placeholder"
         class="image-slot"
       >
-        Loading<span class="dot">...</span>
+        Cargando<span class="dot">...</span>
       </div>
     </el-image>
 

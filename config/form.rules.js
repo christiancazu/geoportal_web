@@ -170,10 +170,10 @@ export const geometry = [
 ]
 
 // form create user
-export const nameUser = [
+export const nameUser = name => [
   {
     required: true,
-    message: 'El nombre de usuario es requerido'
+    message: `El ${name} es requerido`
   },
   {
     min: 3,

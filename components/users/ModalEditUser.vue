@@ -225,8 +225,7 @@
 import BaseUser from './BaseUser'
 
 import {
-  name,
-  lastName,
+  nameUser,
   provinceId,
   regionId,
   districtId
@@ -265,8 +264,9 @@ export default {
         status: 'AC'
       },
       rules: {
-        name,
-        lastName,
+        name: nameUser('nombre'),
+        lastName: nameUser('apellido'),
+        lastNameAditional: nameUser('apellido'),
         provinceId,
         regionId,
         districtId

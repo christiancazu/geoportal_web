@@ -6,6 +6,7 @@
   :context="context"
   :message-toast="messageToast"
   @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
+  @clear-form="clearForm"
 >
   <template v-slot:content>
 
@@ -341,9 +342,9 @@ export default {
       },
       rules: {
         username: nameAlpha,
-        lastName: nameUser,
-        lastNameAditional: nameUser,
-        name: nameUser,
+        name: nameUser('nombre'),
+        lastName: nameUser('apellido'),
+        lastNameAditional: nameUser('apellido'),
         email,
         password,
         regionId,
@@ -366,7 +367,14 @@ export default {
 
       passwordVisible: false
     }
-  }
+  },
+
+  methods: {
+    clearForm () {
+      this.form.image = null
+      this.file.selected = ''
+    }
+  },
 }
 </script>
 

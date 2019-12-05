@@ -88,6 +88,16 @@ export default {
     }
   },
 
+  watch: {
+    // reset file & img preview
+    'file.selected' (newValue) {
+      if (!newValue) {
+        this.file.imageUrl = ''
+        this.file.selected = null
+      }
+    }
+  },
+
   mounted () {
     this.assignExtensionsString()
   },

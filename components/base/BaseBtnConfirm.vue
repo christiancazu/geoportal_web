@@ -89,9 +89,6 @@ export default {
           }
           this.$emit('confirmed-action', data)
         })
-        .catch(() => {
-          //
-        })
     }
   }
 }

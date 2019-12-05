@@ -78,7 +78,7 @@ export default {
     plugins: [],
     redirect: {
       login: '/login',
-      logout: '/login',
+      logout: '/',
       callback: '/login',
       home: '/'
     },
