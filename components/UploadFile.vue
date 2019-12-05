@@ -12,7 +12,7 @@
   >
 
     <img
-      v-if="file.imageUrl && typeImage"
+      v-if="file.imageUrl"
       :class="avatarImage ? 'avatar' : 'image-input'"
       :src="file.imageUrl"
     >
@@ -84,7 +84,8 @@ export default {
 
   data () {
     return {
-      extensionsString: ''
+      extensionsString: '',
+      zipImageFallback : '/image/zip.jpg'
     }
   },
 
@@ -128,6 +129,9 @@ export default {
           return isImageSizeValid
         }
       }
+      // assign preview zip image fallback when have zip extension
+      if (currentExtension === 'zip') this.file.imageUrl = this.zipImageFallback
+
       return true
     },
 
