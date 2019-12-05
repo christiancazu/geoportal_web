@@ -16,10 +16,10 @@
       index="1"
       :route="{ path: '/' }"
     >
-      <el-image
+      <img
         class="img-profile-sidebar"
         :src="user.image"
-      />
+      >
       <span class="font-weight-bold">{{ user.username }}
         <el-badge
           type="warning"

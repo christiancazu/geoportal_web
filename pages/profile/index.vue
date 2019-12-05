@@ -117,8 +117,7 @@
     </el-row>
     <el-row :gutter="10">
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- regionId -->
         <el-form-item
@@ -142,8 +141,7 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- provincia -->
         <el-form-item
@@ -170,8 +168,7 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- distrito -->
         <el-form-item
@@ -271,7 +268,7 @@ export default {
           'jpeg'
         ],
         maxSizeLabel: '2MB',
-        maxSizeLength: 262144, // (bytes units) ~ 262144 bytes = 2mb
+        maxSizeLength: 2097153, // (bytes units) ~ 2097152 bytes = 2mb
         selected: null,
         imageUrl: ''
       },
@@ -370,34 +367,6 @@ export default {
         formData.append(key, this.form[key])
       })
       return formData
-    },
-
-    // eslint-disable-next-line no-unused-vars
-    handleImageSuccess (res, file) {
-      this.imageSelected = file
-      this.form.image = URL.createObjectURL(file.raw)
-    },
-
-    beforeImageUpload (currentFile) {
-      const currentExtension = `${currentFile.name.split('.').pop()}`
-
-      const isExtensionValid = this.file.availableExtensions.includes(currentExtension)
-
-      if (!isExtensionValid) {
-        this.$message.error(`Solo se acepta archivos ${this.extensionsString}`)
-        return isExtensionValid
-      }
-
-      const currentImageSize = currentFile.size
-
-      const isImageSizeValid = currentImageSize < this.file.maxSize
-
-      if (!isImageSizeValid) {
-        this.$message.error('La imagen excede los 2MB!')
-        return isImageSizeValid
-      }
-
-      return true
     },
 
     assignExtensionsString () {

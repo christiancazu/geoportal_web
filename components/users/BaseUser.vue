@@ -23,7 +23,7 @@ export default {
       ],
       selected: null,
       maxSizeLabel: '2MB',
-      maxSizeLength: 262144 // (bytes units) ~ 262144 bytes = 2mb
+      maxSizeLength: 2097153, // (bytes units) ~ 2097152 bytes = 2mb
     }
   }),
 
