@@ -5,7 +5,7 @@
   :rules="rules"
   :context="context"
   :message-toast="messageToast"
-  @clear-file="$_uploadFileMixin_clear()"
+  @clear-form="$_uploadFileMixin_clear()"
 >
   <template v-slot:content>
     <el-row :gutter="14">
