@@ -46,7 +46,7 @@
             accion="shared"
             title="Publicar imagen satelital"
             body-text="¿Desea publicar esta imagen?"
-            @confirmed-action="publish"
+            @confirmed-action="submitPublish"
           />
         </el-tooltip>
         <el-tooltip
@@ -73,6 +73,11 @@ import BaseBtnConfirm from '@/components/base/BaseBtnConfirm'
 
 import { mapActions } from 'vuex'
 
+import {
+  ENABLE_LOADING_TABLE,
+  DISABLE_LOADING_TABLE
+} from '@/types/mutation-types'
+
 export default {
   components: {
     BasePageBasic,
@@ -82,13 +87,13 @@ export default {
   data () {
     return {
       pageHeader: {
-        title: 'Imágenes satelitales',
+        title: 'Imágenes satelitales'
       },
       // main modal settings
       modalMain: {
         storeBase: 'satelitalsImages',
         viewComponent: 'ModalViewSatelitalImage',
-        folderName: 'data',
+        folderName: 'data'
       },
       // criterias to search based on columns of table
       filterCriteriaProps: ['identificator']
@@ -101,20 +106,24 @@ export default {
       getDataContext: 'satelitalsImages/getDataContext'
     }),
 
-    async publish ({ itemSelected }) {
-      const formData = new FormData()
-      formData.append('pk', itemSelected.id)
+    async submitPublish ({ itemSelected }) {
+      this.$store.commit(`spinners/${ENABLE_LOADING_TABLE}`)
 
       try {
-        await this.publishItemContext({ data: formData})
+        const formData = new FormData()
+        formData.append('pk', itemSelected.id)
+
+        await this.publishItemContext(formData)
         await this.getDataContext()
+
         this.$toast.success(this.$SUCCESS.IMAGE.PUBLISHED)
       } catch (e) {}
+      this.$store.commit(`spinners/${DISABLE_LOADING_TABLE}`)
     }
   },
 
   head: {
-    title: 'Imágenes satelitales | GEOVISOR',
-  },
+    title: 'Imágenes satelitales | GEOVISOR'
+  }
 }
 </script>

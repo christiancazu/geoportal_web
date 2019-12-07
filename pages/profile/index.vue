@@ -212,11 +212,6 @@ import BasePage from '@/components/base/pages/BasePage'
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
-  ENABLE_PROCESSING_FORM,
-  DISABLE_PROCESSING_FORM
-} from '@/types/mutation-types.js'
-
-import {
   mapState,
   mapActions
 } from 'vuex'
@@ -227,6 +222,13 @@ import {
   lastNameAditional,
   districtId
 } from '@/config/form.rules'
+
+import {
+  ENABLE_PROCESSING_FORM,
+  DISABLE_PROCESSING_FORM
+} from '@/types/mutation-types.js'
+
+import { USER_FILE_MAX_SIZE } from '@/config/constants'
 
 export default {
   components: {
@@ -267,8 +269,8 @@ export default {
           'jpg',
           'jpeg'
         ],
-        maxSizeLabel: '2MB',
-        maxSizeLength: 2097153, // (bytes units) ~ 2097152 bytes = 2mb
+        maxSizeLabel: USER_FILE_MAX_SIZE.label,
+        maxSizeLength: USER_FILE_MAX_SIZE.length,
         selected: null,
         imageUrl: ''
       },
