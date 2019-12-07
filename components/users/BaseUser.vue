@@ -7,6 +7,8 @@ import {
   mapActions
 } from 'vuex'
 
+import { USER_FILE_MAX_SIZE } from '@/config/constants'
+
 export default {
   mixins: [
     modalBaseActionsMixin,
@@ -22,8 +24,8 @@ export default {
         'jpeg'
       ],
       selected: null,
-      maxSizeLabel: '2MB',
-      maxSizeLength: 262144 // (bytes units) ~ 262144 bytes = 2mb
+      maxSizeLabel: USER_FILE_MAX_SIZE.label,
+      maxSizeLength: USER_FILE_MAX_SIZE.length,
     }
   }),
 

@@ -117,8 +117,7 @@
     </el-row>
     <el-row :gutter="10">
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- regionId -->
         <el-form-item
@@ -142,8 +141,7 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- provincia -->
         <el-form-item
@@ -170,8 +168,7 @@
         </el-form-item>
       </el-col>
       <el-col
-        :xs="24"
-        :sm="8"
+        :xs="24" :sm="8"
       >
         <!-- distrito -->
         <el-form-item
@@ -215,11 +212,6 @@ import BasePage from '@/components/base/pages/BasePage'
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
-  ENABLE_PROCESSING_FORM,
-  DISABLE_PROCESSING_FORM
-} from '@/types/mutation-types.js'
-
-import {
   mapState,
   mapActions
 } from 'vuex'
@@ -230,6 +222,13 @@ import {
   lastNameAditional,
   districtId
 } from '@/config/form.rules'
+
+import {
+  ENABLE_PROCESSING_FORM,
+  DISABLE_PROCESSING_FORM
+} from '@/types/mutation-types.js'
+
+import { USER_FILE_MAX_SIZE } from '@/config/constants'
 
 export default {
   components: {
@@ -270,8 +269,8 @@ export default {
           'jpg',
           'jpeg'
         ],
-        maxSizeLabel: '2MB',
-        maxSizeLength: 262144, // (bytes units) ~ 262144 bytes = 2mb
+        maxSizeLabel: USER_FILE_MAX_SIZE.label,
+        maxSizeLength: USER_FILE_MAX_SIZE.length,
         selected: null,
         imageUrl: ''
       },
@@ -370,34 +369,6 @@ export default {
         formData.append(key, this.form[key])
       })
       return formData
-    },
-
-    // eslint-disable-next-line no-unused-vars
-    handleImageSuccess (res, file) {
-      this.imageSelected = file
-      this.form.image = URL.createObjectURL(file.raw)
-    },
-
-    beforeImageUpload (currentFile) {
-      const currentExtension = `${currentFile.name.split('.').pop()}`
-
-      const isExtensionValid = this.file.availableExtensions.includes(currentExtension)
-
-      if (!isExtensionValid) {
-        this.$message.error(`Solo se acepta archivos ${this.extensionsString}`)
-        return isExtensionValid
-      }
-
-      const currentImageSize = currentFile.size
-
-      const isImageSizeValid = currentImageSize < this.file.maxSize
-
-      if (!isImageSizeValid) {
-        this.$message.error('La imagen excede los 2MB!')
-        return isImageSizeValid
-      }
-
-      return true
     },
 
     assignExtensionsString () {
