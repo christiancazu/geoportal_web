@@ -58,6 +58,14 @@ export const order = [
   }
 ]
 
+export const categoryGroupId = [
+  {
+    required: true,
+    type: 'number',
+    message: 'Debe indicar un grupo de capas'
+  }
+]
+
 export const url = [
   {
     required: true,

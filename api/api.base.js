@@ -37,5 +37,8 @@ export default $axios => resource => ({
 
   approve: data => $axios.$post(`${resource}/approve/`, data),
 
-  reject: data => $axios.$post(`${resource}/reject/`, data)
+  reject: data => $axios.$post(`${resource}/reject/`, data),
+
+  // group_layer
+  getStructure: () => $axios.$get(`${resource}/structure/`)
 })

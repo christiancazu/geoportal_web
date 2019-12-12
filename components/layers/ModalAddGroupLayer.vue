@@ -1,128 +1,131 @@
 <template>
-<base-form
-  :form-title="formTitle"
-  :form="form"
-  :rules="rules"
-  :context="context"
-  :message-toast="messageToast"
+<el-dialog
+  :title="formTitle"
+  :close-on-click-modal="false"
+  :visible="dialogVisible"
+  center
+  class="dialog-responsive"
 >
-  <template v-slot:content>
-    <el-row :gutter="14">
-      <el-col
-        :xs="24"
-        :md="{span:12, offset:12}"
-        :sm="24"
-        :lg="{span:12, offset:12}"
-        class="text-xs-center"
+  <el-form
+    ref="form"
+    :model="formAddGroupLayer"
+    :rules="rulesAddGroupLayer"
+    label-width="120px"
+    label-position="top"
+    class="demo-ruleForm"
+    @submit.native.prevent
+  >
+    <slot />
+    <div class="text-xs-center">
+      <el-button
+        size="small"
+        @click="closeModal()"
       >
-        <el-form-item
-          prop="order"
-          size="mini"
-          :inline-message="true"
-        >
-          <label
-            class="pr-2"
-            for=""
-          >
-            N° de orden:
-          </label>
-          <el-input-number
-            v-model="form.order"
-            size="mini"
-            controls-position="right"
-            :min="1"
-            type="number"
-          />
-        </el-form-item>
-      </el-col>
-    </el-row>
-    <!-- title -->
-    <el-form-item
-      label="Título"
-      prop="title"
-    >
-      <el-input
-        v-model="form.title"
-        type="text"
-        autocomplete="off"
-        :rules="rules.title"
-      />
-    </el-form-item>
-    <el-form-item
-      label="Grupo"
-      prop="group"
-    >
-      <el-container>
-        <el-select
-          v-model="form.categoryGroupId"
-          value-key="id"
-          filterable
-          :loading="$store.state.spinners.loadingTable"
-          placeholder="Select"
-        >
-          <el-option
-            v-for="item in groupLayers" :key="item.id"
-            :label="item.title"
-            :value="item.id"
-          />
-        </el-select>
-      </el-container>
-    </el-form-item>
-    <!-- Descripción
-        -->
-    <el-form-item
-      label="Descripción"
-      prop="description"
-    >
-      <el-input
-        v-model="form.description"
-        type="textarea"
-        :rows="3"
-        autocomplete="off"
-        :maxlength="300"
-        :show-word-limit="true"
-      />
-    </el-form-item>
-  </template>
-</base-form>
+        CERRAR
+      </el-button>
+      <el-button
+        type="primary"
+        size="small"
+        native-type="submit"
+        :loading="$store.state.spinners.processingForm"
+        @click="saveGroupLayerName"
+      >
+        GUARDAR
+      </el-button>
+    </div>
+  </el-form>
+</el-dialog>
 </template>
 
 <script>
-import BaseGroupLayer from './BaseGroupLayer'
+// import {
+//   title,
+//   categoryGroupId
+// } from '@/config/form.rules'
 
-import {
-  title,
-  order
-} from '@/config/form.rules'
+// import treeResolver from '@/helpers/treeResolver'
 
 export default {
-  extends: BaseGroupLayer,
+  props: {
+    dialogVisible: {
+      type: Boolean,
+      default: false
+    },
+    formAddGroupLayer: {
+      type: Object, required: true
+    },
+    rulesAddGroupLayer: {
+      type: Object, required: true
+    },
+  },
 
   data () {
     return {
-      formTitle: 'Registrar nuevo grupo de capa',
+      formTitle: 'Registrar nuevo grupo de capas',
 
-      context: {
-        storeBase: 'groupLayers',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'create',
-      },
-      messageToast: {
-        baseName: 'LAYER',
-        action: 'REGISTERED'
-      },
-      form: {
-        order: '1',
-        title: '',
-        description: '',
-        categoryGroupId: ''
-      },
+      // context: {
+      //   storeBase: 'groupLayers',
+      //   mountedOn: this.modalBaseActionsMixin_mountedOn,
+      //   storeAction: 'create',
+      // },
+      // messageToast: {
+      //   baseName: 'LAYER',
+      //   action: 'REGISTERED'
+      // },
+      // form: {
+      //   order: 1,
+      //   title: '',
+      //   description: '',
+      //   categoryGroupId: 1
+      // },
+      // rules: {
+      //   title,
+      //   categoryGroupId
+      // },
+      // structureTree: [],
+    }
+  },
 
-      rules: {
-        title,
-        order
+  async created () {
+    // await this.$store.dispatch('groupLayers/getStructureTree')
+
+    // const structureTree = this.$store.state.groupLayers.structureTree
+    // console.warn(structureTree)
+    // // let _structure = JSON.parse(JSON.stringify(this.$store.state.portal.structure.structure))
+
+    // // const x = treeResolver(_structure)
+    // // console.warn('resolver', x)
+    // this.structureTree.push(structureTree)
+  },
+
+  methods: {
+    handleNodeClick (node) {
+      this.form.categoryGroupId = node.id
+      console.warn(node.id)
+    },
+
+    async saveGroupLayerName () {
+      let isFormValid = false
+      console.warn(this.formAddGroupLayer)
+      await this.$refs.form.validate(result => isFormValid = result)
+
+      if (isFormValid) {
+        this.$emit('set-group-layer-name', this.formAddGroupLayer.name)
+        this.$refs.form.resetFields()
       }
+    },
+
+    closeModal () {
+      this.$emit('close-modal')
+      this.$refs.form.resetFields()
     }
   }
 }
 </script>
+
+<style>
+/* selected group layer tree border color */
+.is-current > .el-tree-node__content {
+  border: 1px solid #DCDFE6
+}
+</style>
