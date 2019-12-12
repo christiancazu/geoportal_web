@@ -112,17 +112,16 @@ export default {
 
       let isFormValid = false
 
-      const data = {
-        observation: this.form.observation,
-        id: this.itemContext.id
-      }
+      const formData = new FormData()
+      formData.append('observation', this.form.observation)
+      formData.append('id', this.itemContext.id)
 
       await this.$refs.form.validate(valid => isFormValid = valid)
 
       if (isFormValid) {
         try {
-          await this.rejectItemContext({ data })
-          this.$toast.success(this.$SUCCESS.REQUEST.REJECT)
+          await this.rejectItemContext(formData)
+          this.$toast.info(this.$SUCCESS.REQUEST.REJECT)
           await this.getDataContext()
           this.closeModal()
         }
@@ -135,15 +134,13 @@ export default {
         this.isRejectRequest = false
         return false
       }
-
-      const data = {
-        id: this.itemContext.id
-      }
+      const formData = new FormData()
+      formData.append('id', this.itemContext.id)
 
       try {
-        await this.approveItemContext({ data })
+        await this.approveItemContext(formData)
 
-        this.$toast.success(this.$SUCCESS.REQUEST.APPROVE)
+        this.$toast.success(this.$SUCCESS.REQUEST.APPROVED)
 
         await this.getDataContext()
 

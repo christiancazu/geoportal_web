@@ -79,7 +79,7 @@ export default {
 
   methods: {
     onLoadModalApproveItem (item) {
-      this.$store.commit(`${this.modalMain.storeBase}/${SET_ITEM_CONTEXT}`, { itemContext: item })
+      this.$store.commit(`${this.modalMain.storeBase}/${SET_ITEM_CONTEXT}`, item)
 
       this.$store.dispatch('modalsVisibilities/openModal', {
         modalType: 'mainModal',
