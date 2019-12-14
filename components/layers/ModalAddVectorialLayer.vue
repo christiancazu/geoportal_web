@@ -154,8 +154,10 @@ export default {
         storeAction: 'create',
       },
       modalSecond: {
-        component: 'ModalAddGroupLayer',
-        folderName: 'layers',
+        wrapperBaseModal: true, // if true will use BaseModal as Wrapper
+        folderRoot: 'pages',
+        folderName: 'managementLayers/groups',
+        component: 'index',
         tooltip: 'Agregar grupo de capas'
       },
       messageToast: {

@@ -21,8 +21,10 @@ export default {
     modalSecond: {
       type: Object,
       default: () => ({
-        component: { type: String, required: true },
-        folderName: { type: String, required: true },
+        wrapperBaseModal: { type: Boolean, default: false },
+        component: { type: String, default: 'BaseModal' },
+        folderRoot: { type: String, default: 'components' },
+        folderName: { type: String, default: 'base' },
         tooltip: { type: String, required: true }
       })
     }
@@ -30,15 +32,31 @@ export default {
 
   methods: {
     /**
-     * setting folderName for secondModal
-     * seetting secondModal state to be visible
+     * setting folderRoot, folderName, component for secondModal
+     * setting secondModal state to be visible
      */
     openSecondModal () {
+      if (this.modalSecond.wrapperBaseModal) {
+        this.setComponentOnBaseModal()
+
+      }
       this.$store.dispatch('modalsVisibilities/openModal', {
         modalType: 'secondModal',
-        component: this.modalSecond.component,
-        folderName: this.modalSecond.folderName
+        folderRoot: this.modalSecond.folderRoot,
+        folderName: this.modalSecond.folderName,
+        component: this.modalSecond.component
       })
+    },
+
+    setComponentOnBaseModal () {
+      this.$store.commit('modalsVisibilities/SET_COMPONENT_ON_BASE_MODAL', {
+        folderRoot: this.modalSecond.folderRoot,
+        folderName: this.modalSecond.folderName,
+        component: this.modalSecond.component
+      })
+      this.modalSecond.folderRoot = 'components'
+      this.modalSecond.folderName = 'base'
+      this.modalSecond.component = 'BaseModal'
     }
   }
 }

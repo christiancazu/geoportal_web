@@ -31,9 +31,7 @@ export default {
     context: {
       type: Object,
       default: () => ({
-        storeBase: { type: String, required: true },
-        mountedOn: { type: String, required: true },
-        storeAction: { type: String, required: true }
+        mountedOn: { type: String, required: true }
       })
     },
   },
@@ -43,6 +41,5 @@ export default {
       this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
     }
   }
-
 }
 </script>

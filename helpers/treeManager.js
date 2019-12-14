@@ -1,12 +1,10 @@
 /* eslint-disable */
 import { ROOT_GROUP_LAYERS_FOLDER_NAME } from "@/config/constants"
 
-export const treeTransform = data => configRootTree(transform(data))
+export const $_helper_treeTransform = data => configRootTree(transform(data))
 
 let parentFound = false
 let dataFound = {}
-
-
 
 export const getOldParentNode = (data, categoryGroupId) => {
   parentFound = false
@@ -17,11 +15,9 @@ export const getOldParentNode = (data, categoryGroupId) => {
 function xxx (data, categoryGroupId) {
 
   if (data['id'] === categoryGroupId) {
-    console.warn('found');
     parentFound = true
     dataFound = data
   } else if (data['children'] && !parentFound) {
-    console.warn('parentFound', parentFound);
     data['children'].forEach(ch => {
       if (!parentFound) return getOldParentNode(ch, categoryGroupId)
     })
@@ -36,14 +32,19 @@ function xxx (data, categoryGroupId) {
    * @param {Object} data 
    */
 function transform (data) {
-  data['name'] = data['label']
+  data['name'] = data['name'] || data['label']
+  data['label'] = data['name']
+  // delete data['label']
   data['addLeafNodeDisabled'] = true
-
-  if (data['children'].length) {
-    data['children'].forEach(ch => {
-      transform(ch)
-    })
-  } else return
+  
+  if (data['children'] === undefined) {
+    data['children'] = []
+  }
+    if (data['children'].length) {
+      data['children'].forEach(ch => {
+        transform(ch)
+      })
+    } else return
 
   return data
 }
@@ -62,7 +63,7 @@ const mainNodeSettings = {
  * @param {Object} data 
  */
 function configRootTree (data) {
-  if (data.name === ROOT_GROUP_LAYERS_FOLDER_NAME) {
+  if (data.id === 1) {
     Object.keys(mainNodeSettings).forEach(mns => {
       data[mns] = mainNodeSettings[mns]
     })

@@ -8,7 +8,11 @@ export const ERRORS = {
 }
 
 export const INFO = {
-  INVALID_URL: 'la URL no es válida'
+  INVALID_URL: 'la URL no es válida',
+  GROUP_LAYER: {
+    INVALID_DROP: 'No puede colocar un grupo de capas en ese nivel',
+    INVALID_DELETE: 'Para poder eliminar no debe tener grupos de capas dentro'
+  }
 }
 
 export const SUCCESS = {

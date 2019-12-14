@@ -4,7 +4,7 @@
 >
   <vue-tree-list
     ref="tree"
-    :model="data"
+    :model="dataTree"
     default-tree-node-name="Nuevo grupo de capas"
     default-expanded
     @click="onClick"
@@ -49,24 +49,43 @@
         type="text"
         autocomplete="off"
         :rules="rulesAddGroupLayer.name"
+        autofocus
       />
     </el-form-item>
   </modal-add-group-layer>
 
-  <pre>{{ newTree }}</pre>
+  <!-- <el-dialog
+    title="Tips"
+    :visible.sync="dialogVisible"
+    width="30%"
+    :before-close="handleClose"
+  >
+    <span>This is a message</span>
+    <span
+      slot="footer"
+      class="dialog-footer"
+    >
+      <el-button @click="dialogVisible = false">Cancel</el-button>
+      <el-button
+        type="primary"
+        @click="dialogVisible = false"
+      >Confirm</el-button>
+    </span>
+  </el-dialog> -->
+
+  <pre>{{ backUpTree }}</pre>
 </base-page>
 </template>
 
 <script>
-/* eslint-disable no-unused-vars */
 import BasePage from '@/components/base/pages/BasePage'
 import ModalAddGroupLayer from '@/components/layers/ModalAddGroupLayer'
 
-import { VueTreeList, Tree, TreeNode } from 'vue-tree-list'
+import { VueTreeList, Tree, /*TreeNode*/ } from 'vue-tree-list'
 
-import { treeTransform, getOldParentNode } from '@/helpers/treeManager'
+import { $_helper_treeTransform } from '@/helpers/treeManager'
 
-import { ROOT_GROUP_LAYERS_FOLDER_NAME } from '@/config/constants'
+// import { ROOT_GROUP_LAYERS_FOLDER_NAME } from '@/config/constants'
 
 export default {
   components: {
@@ -77,18 +96,18 @@ export default {
 
   data () {
     return {
+      dialogVisible: false, //
       pageHeader: {
         title: 'Grupo de capas'
       },
-      newTree: {},
-      data: {},
-      defaultProps: {
-        children: 'children',
-        label: 'label'
+      modalMain: {
+        storeBase: 'groupLayers',
+        addComponent: 'ModalAddGroupLayer',
+        folderName: 'layers'
       },
-      structureTree: [],
+      backUpTree: {},
+      dataTree: {},
       nodeAdded: {},
-      dialogVisible: false,
       formAddGroupLayer: {
         name: ''
       },
@@ -106,120 +125,86 @@ export default {
   async created () {
     await this.$store.dispatch('groupLayers/getStructureTree')
 
-    // const structureTree = this.$store.state.groupLayers.structureTree
-    // console.warn(structureTree)
+    // cloning state
     let data = JSON.parse(JSON.stringify(this.$store.state.groupLayers.structureTree))
 
-    // const x = treeResolver(data)
-    // console.warn('resolver', x)
-    // console.warn(data)
-    this.newTree = treeTransform(data)
-    this.data = new Tree([this.newTree])
+    // init tree
+    this.backUpTree = $_helper_treeTransform(data)
+    this.dataTree = new Tree([this.backUpTree])
+    this.updateTree()
   },
-
-  // async mounted () {
-  //   setTimeout(() => {
-  //     document.querySelectorAll('.el-icon-caret-right').forEach(e => {
-  //       const newI = document.createElement('i')
-  //       newI.setAttribute('class', 'fas fa-folder ts')
-  //       newI.setAttribute('aria-hidden', 'true')
-  //       newI.setAttribute('style', 'color: gold')
-  //       e.parentNode.insertBefore( newI, e.nextSibling )
-  //     })
-  //   }, 1000)
-  // },
 
   methods: {
     setGroupLayerName (name) {
       this.nodeAdded.name = name
       this.dialogVisible = false
       this.formAddGroupLayer.name = ''
+      this.updateTree()
     },
 
     onCancelAddGroupLayer () {
-      console.warn(this.nodeAdded)
       this.nodeAdded.remove()
       this.dialogVisible = false
+      this.updateTree()
     },
 
     onDel (node) {
-      console.log(node)
-      node.remove()
-    },
-
-    onChangeName (params) {
-      console.log(params)
-    },
-
-    onAddNode (params) {
-      console.log('onaddNode', params)
-      params.categoryGroupId = params.parent.id
-      params.order = params.parent.order + 1
-      params.addLeafNodeDisabled = true
-      this.nodeAdded = params
-      console.warn('nodeAdded', this.nodeAdded)
-
-      // this.formAddGroupLayer.name = "NUEVO GRUPO DE CAPAS"
-      this.dialogVisible = true
-      // this.nodeAdded.name = 'gaaaaaaaaaaaaaaaa'
-
-      // this.newTree = this.data
-      this.getNewTree()
-      this.data = new Tree([this.newTree])
-    },
-
-    onClick (params) {
-      console.log(params)
-    },
-
-    addNode () {
-      console.warn('x')
-      var node = new TreeNode({ name: 'new node', isLeaf: false })
-      if (!this.data.children) this.data.children = []
-      this.data.addChildren(node)
-    },
-
-    onDropBefore ({node, target}) {
-      console.warn('onDropBefore')
-      const isRootLevel = this.preventDropOnRootLevel(node, target)
-      console.warn(isRootLevel)
-      // prevent drop in same level of main group layers
-      // if (target.label === ROOT_GROUP_LAYERS_FOLDER_NAME) {
-      //   node.moveInto(target)
-      // }
-    },
-
-    onDropAfter ({node, target}) {
-      console.warn('onDropAfter')
-      const isRootLevel = this.preventDropOnRootLevel(node, target)
-      console.warn(isRootLevel)
-      // prevent drop in same level of main group layers
-      // if (target.label === ROOT_GROUP_LAYERS_FOLDER_NAME) {
-      //   node.moveInto(target)
-      // }
-    },
-
-    onDrop ({node, target}) {
-      console.warn('onDrop')
-      // this.preventDropOnRootLevel(node, target)
-    },
-
-    preventDropOnRootLevel (node, target) {
-      let isRootLevel = false
-      // console.warn(node, node.categoryGroupId, target)
-      // console.warn(target.label === ROOT_GROUP_LAYERS_FOLDER_NAME)
-      if (target.label === ROOT_GROUP_LAYERS_FOLDER_NAME) {
-        // const result = getOldParentNode(this.data, node.categoryGroupId)
-        // // console.warn('result', node.categoryGroupId, result.id, result)
-        // node.moveInto(result)
-        this.data = new Tree([this.newTree])
-        isRootLevel = true
+      // prevent to delete if have children nodes
+      if (node.children !== null && node.children.length) {
+        this.$toast.info(this.$INFO.GROUP_LAYER.INVALID_DELETE)
+      } else {
+        node.remove()
+        this.updateTree()
       }
-      return isRootLevel
-      // return target.label === ROOT_GROUP_LAYERS_FOLDER_NAME
     },
 
-    getNewTree () {
+    onChangeName () {
+      this.updateTree()
+    },
+
+    onAddNode (node) {
+      this.updateTree()
+
+      node.categoryGroupId = node.parent.id
+      node.order = node.parent.order + 1
+      node.addLeafNodeDisabled = true
+      this.nodeAdded = node
+
+      this.dialogVisible = true
+      node.changeName(this.nodeAdded.name)
+    },
+
+    onClick (node) {
+      console.log(node)
+    },
+
+    // addNode () {
+    //   var node = new TreeNode({ name: 'new node', isLeaf: false })
+    //   if (!this.dataTree.children) this.dataTree.children = []
+    //   this.dataTree.addChildren(node)
+    // },
+
+    onDropBefore ({target}) {
+      this.preventDropOnRootLevel(target)
+    },
+
+    onDropAfter ({target}) {
+      this.preventDropOnRootLevel(target)
+    },
+
+    onDrop (/*{node, target}*/) {
+      this.updateTree()
+    },
+
+    preventDropOnRootLevel (target) {
+      if (target.id === 1) {
+        this.$toast.info(this.$INFO.GROUP_LAYER.INVALID_DROP)
+        this.dataTree = new Tree([$_helper_treeTransform(this.backUpTree.children[0])])
+      }
+      this.updateTree()
+    },
+
+    updateTree () {
       var vm = this
       function _dfs (oldNode) {
         var newNode = {}
@@ -239,8 +224,8 @@ export default {
         return newNode
       }
 
-      vm.newTree = _dfs(vm.data)
-    },
+      vm.backUpTree = _dfs(vm.dataTree)
+    }
   },
 
   head: {
@@ -250,30 +235,13 @@ export default {
 </script>
 
 <style lang="scss">
-/* selected group layer tree border color */
-// .is-current > .el-tree-node__content {
-//   border: 1px solid #DCDFE6
-// }
-// .ts {
-//   text-shadow: -1px 0 gray, 0 1px gray, 1px 0 gray, 0 -1px gray;
-// }
-// .vtl-caret {
-//   cursor: pointer;
-// }
-// .vtl-icon {
-//   // font-size: 1.25rem;
-
-// }
 .icon-vtl {
-  text-shadow: -1px 0 gray, 0 1px gray, 1px 0 gray, 0 -1px gray;
   font-family: 'Roboto', sans-serif !important;
   padding-right: .25rem;
   padding-left: .25rem;
+  text-shadow: -1px 0 gray, 0 1px gray, 1px 0 gray, 0 -1px gray;
     &:hover {
     cursor: pointer;
   }
 }
-// .vtl-tree-node:hover {
-//   background-color: transparent;
-// }
 </style>

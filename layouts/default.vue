@@ -30,6 +30,17 @@
           :is="secondModalDynamicComponent"
           modal-base-actions-mixin_mounted-on="secondModal"
         />
+        <!-- <el-dialog
+          :title="'gaaaaaa'"
+          :close-on-click-modal="false"
+          :visible="true"
+          top="2vh"
+          class="dialog-responsive"
+        >
+          <component
+            :is="myComponent"
+          />
+        </el-dialog> -->
       </template>
 
     </el-main>
@@ -56,6 +67,10 @@ export default {
       loggedIn: state => state.auth.loggedIn
     }),
 
+    myComponent () {
+      return () => import('@/pages/managementLayers/groups')
+    },
+
     /**
      * load dynamic main modal component from the state setted
      * example: @/components/layers/ModalAddVectorialLayer
@@ -70,7 +85,8 @@ export default {
      * example: @/components/layers/ModalAddVectorialLayer
      */
     secondModalDynamicComponent () {
-      const { folderName, component } = this.$store.state.modalsVisibilities.secondModal
+      const { folderRoot, folderName, component } = this.$store.state.modalsVisibilities.secondModal
+      console.warn(folderRoot, folderName, component)
       return () => import(`@/components/${folderName}/${component}`)
     }
   },

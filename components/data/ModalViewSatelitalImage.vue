@@ -19,7 +19,7 @@
               :xs="12" :md="24"
             >
               <div class="my-3 text-request">
-                <label class="text-uppercase">Tamaño de imágen: </label>
+                <label class="text-uppercase">Tamaño de imagen: </label>
                 <p class="text-capitalize ma-0">{{ itemContext.fileSize }}</p>
               </div>
             </el-col>

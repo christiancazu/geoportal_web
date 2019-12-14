@@ -111,8 +111,9 @@ export default {
         storeAction: 'update',
       },
       modalSecond: {
-        component: 'ModalAddGroupLayer',
-        folderName: 'layers',
+        folderRoot: 'pages',
+        folderName: 'managementLayers/groups',
+        component: 'index',
         tooltip: 'Agregar grupo de capas'
       },
       messageToast: {
@@ -132,10 +133,7 @@ export default {
         title,
         name: nameAlpha,
         order
-      },
-      fileLayerSelected: null,
-      fileStyleSelected: null,
-      showFormStyle: false,
+      }
     }
   },
 

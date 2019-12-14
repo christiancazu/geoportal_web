@@ -6,27 +6,48 @@ import {
 
 export const state = () => ({
   mainModal: {
-    component: 'Fallback',
+    folderRoot: 'components',
     folderName: 'fallback',
+    component: 'Fallback',
     visibility: false
   },
   secondModal: {
-    component: 'Fallback',
+    folderRoot: 'components',
     folderName: 'fallback',
+    component: 'Fallback',
+    visibility: false
+  },
+  baseModal: {
+    folderRoot: 'components',
+    folderName: 'fallback',
+    component: 'Fallback',
     visibility: false
   }
+  // thirdModal: {
+  //   component: 'Fallback',
+  //   folderName: 'fallback',
+  //   visibility: false
+  // }
 })
 
 export const mutations = {
   [OPEN_MODAL]: (state, payload) => {
-    state[payload.modalType].component = payload.component
+    state[payload.modalType].folderRoot = payload.folderRoot
     state[payload.modalType].folderName = payload.folderName
+    state[payload.modalType].component = payload.component
   },
 
   [CLOSE_MODAL]: (state, payload) => {
-    state[payload].component = 'Fallback'
+    state[payload].folderRoot = 'components'
     state[payload].folderName = 'fallback'
+    state[payload].component = 'Fallback'
     state[payload].visibility = false
+  },
+
+  SET_COMPONENT_ON_BASE_MODAL: (state, payload) => {
+    state.baseModal.folderRoot = payload.folderRoot
+    state.baseModal.folderName = payload.folderName
+    state.baseModal.component = payload.component
   },
 
   [SET_MODAL_VISIBLE]: (state, modalType) => (state[modalType].visibility = true)

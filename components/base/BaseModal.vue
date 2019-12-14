@@ -2,12 +2,15 @@
 <el-dialog
   :title="formTitle"
   :close-on-click-modal="false"
-  :visible="$store.state.modalsVisibilities[context.mountedOn].visibility"
+  :visible="$store.state.modalsVisibilities['secondModal'].visibility"
   top="2vh"
   class="dialog-responsive"
+  append-to-body
   @close="closeModal()"
 >
-  <slot name="content" />
+  <component
+    :is="dynamicComponent"
+  />
 
   <!-- actions -->
   <div class="text-xs-center">
@@ -26,21 +29,29 @@
 export default {
   props: {
     formTitle: {
-      type: String, default: ''
+      type: String, default: 'GAAA'
     },
     context: {
       type: Object,
       default: () => ({
-        storeBase: { type: String, required: true },
-        mountedOn: { type: String, required: true },
-        storeAction: { type: String, required: true }
+        mountedOn: { type: String, required: true }
       })
     },
   },
 
+  computed: {
+    dynamicComponent () {
+      const { folderRoot, folderName, component } = this.$store.state.modalsVisibilities.baseModal
+      return folderRoot === 'pages'
+        ? () => import(`@/pages/${folderName}/${component}`)
+        : () => import(`@/components/${folderName}/${component}`)
+      // @/pages && @/components can't be dynamic for that use ternary operator
+    }
+  },
+
   methods: {
     closeModal () {
-      this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
+      this.$store.commit('modalsVisibilities/CLOSE_MODAL', 'secondModal')
     }
   }
 

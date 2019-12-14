@@ -5,6 +5,7 @@
   :visible="dialogVisible"
   center
   class="dialog-responsive"
+  append-to-body
 >
   <el-form
     ref="form"
