@@ -64,7 +64,7 @@ export default {
 
       modalMain: {
         storeBase: 'reports',
-        viewComponent: 'ModalViewReport',
+        viewComponent: 'ViewReport',
         folderName: 'reports',
       },
       // criterias to search based on columns of table
@@ -77,7 +77,7 @@ export default {
   },
 
   head: {
-    title: 'Reportes | GEOVISOR',
-  },
+    title: 'Reportes | GEOVISOR'
+  }
 }
 </script>

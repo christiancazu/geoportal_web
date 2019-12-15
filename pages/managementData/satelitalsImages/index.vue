@@ -92,7 +92,7 @@ export default {
       // main modal settings
       modalMain: {
         storeBase: 'satelitalsImages',
-        viewComponent: 'ModalViewSatelitalImage',
+        viewComponent: 'ViewSatelitalImage',
         folderName: 'data'
       },
       // criterias to search based on columns of table

@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import BaseVectorialLayer from './BaseVectorialLayer'
+import BaseVectorial from './BaseVectorial'
 
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
@@ -140,7 +140,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  extends: BaseVectorialLayer,
+  extends: BaseVectorial,
 
   mixins: [uploadFileMixin],
 

@@ -66,8 +66,8 @@ export default {
       // main modal settings
       modalMain: {
         storeBase: 'WMSCategories',
-        addComponent: 'ModalAddWMSCategory',
-        editComponent: 'ModalEditWMSCategory',
+        addComponent: 'AddCategory',
+        editComponent: 'EditCategory',
         folderName: 'WMSServices'
       },
       messageToast: {

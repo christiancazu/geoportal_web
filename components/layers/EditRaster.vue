@@ -22,6 +22,7 @@
         >
           <label
             class="pr-2"
+            for=""
           >
             N° de orden:
           </label>
@@ -53,10 +54,10 @@
       <el-container>
         <el-select
           v-model="form.groupLayerId"
-          :loading="$store.state.spinners.loadingTable"
           value-key="id"
+          :loading="$store.state.spinners.loadingTable"
           filterable
-          placeholder="Elija un grupo de capa"
+          placeholder="Select"
         >
           <el-option
             v-for="item in groupLayers" :key="item.id"
@@ -81,6 +82,7 @@
         :rows="3"
         autocomplete="off"
         :maxlength="300"
+        :show-word-limit="true"
       />
     </el-form-item>
   </template>
@@ -88,9 +90,9 @@
 </template>
 
 <script>
-import BaseVectorialLayer from './BaseVectorialLayer'
+import BaseRaster from './BaseRaster'
 
-import { mapState } from 'vuex'
+import { mapState} from 'vuex'
 
 import {
   title,
@@ -99,21 +101,20 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  extends: BaseVectorialLayer,
+  extends: BaseRaster,
 
   data () {
     return {
-      formTitle: 'Actualizar capa vectorial',
+      formTitle: 'Actualizar capa raster',
 
       context: {
-        storeBase: 'vectorialLayers',
+        storeBase: 'rasterLayers',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'update',
       },
       modalSecond: {
-        folderRoot: 'pages',
-        folderName: 'managementLayers/groups',
-        component: 'index',
+        component: 'AddGroup',
+        folderName: 'layers',
         tooltip: 'Agregar grupo de capas'
       },
       messageToast: {

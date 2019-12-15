@@ -34,18 +34,16 @@
         <!-- region -->
         <el-form-item
           label="Autores"
-          prop="author"
+          prop="authorId"
         >
           <el-container>
             <el-select
               v-model="form.authorId"
-              :loading="$store.state.spinners.loadingTable"
-              value-key="id"
-              filterable
-              placeholder="Elija un autor"
+              value-key="id" filterable placeholder="Select"
             >
               <el-option
-                v-for="item in WMSAuthors" :key="item.id"
+                v-for="item in WMSAuthors"
+                :key="item.id"
                 :label="item.name"
                 :value="item.id"
               />
@@ -62,17 +60,16 @@
         <!-- category -->
         <el-form-item
           label="Categorías"
-          prop="Categories"
+          prop="categoryId"
         >
           <el-container>
             <el-select
               v-model="form.categoryId"
-              filterable
-              value-key="id"
-              placeholder="Elija una categoría"
+              filterable value-key="id" placeholder="Select"
             >
               <el-option
-                v-for="item in WMSCategories" :key="item.id"
+                v-for="item in WMSCategories"
+                :key="item.id"
                 :label="item.name"
                 :value="item.id"
               />
@@ -95,7 +92,7 @@
         :rows="3"
         autocomplete="off"
         :maxlength="300"
-        show-word-limit
+        :show-word-limit="true"
       />
     </el-form-item>
     <el-form-item class="text-xs-right">
@@ -111,15 +108,13 @@
 </template>
 
 <script>
-import BaseWMSService from './BaseWMSService'
-
-import { mapState } from 'vuex'
+import BaseWMSService from './BaseService'
 
 import {
-  name,
   url,
   authorId,
-  categoryId
+  categoryId,
+  name
 } from '@/config/form.rules'
 
 export default {
@@ -127,35 +122,35 @@ export default {
 
   data () {
     return {
-      formTitle: 'Actualizar servicio WMS',
+      formTitle: 'Registrar servicio WMS',
 
       context: {
         storeBase: 'WMSServices',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'update'
+        storeAction: 'create'
       },
       modalSecondAuthor: {
-        component: 'ModalAddWMSAuthor',
+        component: 'AddAuthor',
         folderName: 'WMSServices',
         tooltip: 'Agregar autor'
       },
       modalSecondCategory: {
-        component: 'ModalAddWMSCategory',
+        component: 'AddCategory',
         folderName: 'WMSServices',
         tooltip: 'Agregar categoría'
       },
       messageToast: {
         baseName: 'SERVICE',
-        action: 'UPDATED'
+        action: 'REGISTERED'
       },
       form: {
-        id: null,
         name: '',
         description: '',
         url: '',
         authorId: null,
         isEnabled: false,
-        categoryId: null
+        categoryId: null,
+        isPublic: true
       },
       rules: {
         name: name('servicio'),
@@ -163,30 +158,6 @@ export default {
         authorId,
         categoryId
       }
-    }
-  },
-
-  computed: {
-    ...mapState({
-      itemContext (state) {
-        return state[this.context.storeBase].itemContext
-      }
-    })
-  },
-
-  watch: {
-    itemContext () {
-      this.assignFormFields()
-    }
-  },
-
-  created () {
-    this.assignFormFields()
-  },
-
-  methods: {
-    assignFormFields () {
-      Object.keys(this.form).forEach(key => (this.form[key] = this.itemContext[key]))
     }
   }
 }

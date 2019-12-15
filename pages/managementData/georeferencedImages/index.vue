@@ -66,8 +66,8 @@ export default {
       // main modal settings
       modalMain: {
         storeBase: 'georeferencedImages',
-        addComponent: 'ModalAddGeoreferencedImage',
-        editComponent: 'ModalEditGeoreferencedImage',
+        addComponent: 'AddGeoreferencedImage',
+        editComponent: 'EditGeoreferencedImage',
         folderName: 'data',
       },
       messageToast: {

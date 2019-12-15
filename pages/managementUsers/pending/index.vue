@@ -59,7 +59,7 @@ export default {
       },
       modalMain: {
         storeBase: 'requests',
-        approveComponent: 'ModalApproveRequest',
+        approveComponent: 'ApproveRequest',
         folderName: 'users'
       },
 

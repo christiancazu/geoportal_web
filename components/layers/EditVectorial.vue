@@ -7,7 +7,34 @@
   :message-toast="messageToast"
 >
   <template v-slot:content>
-    <!-- title -->
+    <el-row :gutter="14">
+      <el-col
+        :xs="24"
+        :md="{span:12, offset:12}"
+        :sm="24"
+        :lg="{span:12, offset:12}"
+        class="text-xs-center"
+      >
+        <el-form-item
+          prop="order"
+          size="mini"
+          :inline-message="true"
+        >
+          <label
+            class="pr-2"
+          >
+            N° de orden:
+          </label>
+          <el-input-number
+            v-model="form.order"
+            size="mini"
+            controls-position="right"
+            :min="1"
+            type="number"
+          />
+        </el-form-item>
+      </el-col>
+    </el-row>
     <el-form-item
       label="Título"
       prop="title"
@@ -21,15 +48,15 @@
     </el-form-item>
     <el-form-item
       label="Grupo"
-      prop="group"
+      prop="groupLayerId"
     >
       <el-container>
         <el-select
-          v-model="form.categoryGroupId"
+          v-model="form.groupLayerId"
           :loading="$store.state.spinners.loadingTable"
           value-key="id"
           filterable
-          placeholder="Select"
+          placeholder="Elija un grupo de capa"
         >
           <el-option
             v-for="item in groupLayers" :key="item.id"
@@ -37,6 +64,10 @@
             :value="item.id"
           />
         </el-select>
+
+        <!-- open second modal -->
+        <btn-open-second-modal :modal-second="modalSecond" />
+
       </el-container>
     </el-form-item>
     <!-- Descripción -->
@@ -50,7 +81,6 @@
         :rows="3"
         autocomplete="off"
         :maxlength="300"
-        show-word-limit
       />
     </el-form-item>
   </template>
@@ -58,26 +88,33 @@
 </template>
 
 <script>
-import BaseGroupLayer from './BaseGroupLayer'
+import BaseVectorial from './BaseVectorial'
 
 import { mapState } from 'vuex'
 
 import {
   title,
+  nameAlpha,
   order
 } from '@/config/form.rules'
 
 export default {
-  extends: BaseGroupLayer,
+  extends: BaseVectorial,
 
   data () {
     return {
-      formTitle: 'Actualizar grupo de capas',
+      formTitle: 'Actualizar capa vectorial',
 
       context: {
-        storeBase: 'groupLayers',
+        storeBase: 'vectorialLayers',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'update',
+      },
+      modalSecond: {
+        folderRoot: 'pages',
+        folderName: 'managementLayers/groups',
+        component: 'index',
+        tooltip: 'Agregar grupo de capas'
       },
       messageToast: {
         baseName: 'LAYER',
@@ -85,13 +122,16 @@ export default {
       },
       form: {
         id: null,
-        order: 1,
+        order: null,
         title: '',
-        categoryGroupId: '',
-        description: ''
+        name: '',
+        groupLayerId: '',
+        description: '',
+        status: true
       },
       rules: {
         title,
+        name: nameAlpha,
         order
       }
     }

@@ -33,7 +33,7 @@
     >📂</span>
   </vue-tree-list>
 
-  <modal-add-group-layer
+  <add-group-layer
     :dialog-visible="dialogVisible"
     :form-add-group-layer="formAddGroupLayer"
     :rules-add-group-layer="rulesAddGroupLayer"
@@ -52,7 +52,7 @@
         autofocus
       />
     </el-form-item>
-  </modal-add-group-layer>
+  </add-group-layer>
 
   <!-- <el-dialog
     title="Tips"
@@ -79,7 +79,7 @@
 
 <script>
 import BasePage from '@/components/base/pages/BasePage'
-import ModalAddGroupLayer from '@/components/layers/ModalAddGroupLayer'
+import AddGroupLayer from '@/components/layers/AddGroup'
 
 import { VueTreeList, Tree, /*TreeNode*/ } from 'vue-tree-list'
 
@@ -91,7 +91,7 @@ export default {
   components: {
     BasePage,
     VueTreeList,
-    ModalAddGroupLayer
+    AddGroupLayer
   },
 
   data () {
@@ -102,7 +102,7 @@ export default {
       },
       modalMain: {
         storeBase: 'groupLayers',
-        addComponent: 'ModalAddGroupLayer',
+        addComponent: 'AddGroup',
         folderName: 'layers'
       },
       backUpTree: {},

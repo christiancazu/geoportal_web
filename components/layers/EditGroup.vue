@@ -7,27 +7,39 @@
   :message-toast="messageToast"
 >
   <template v-slot:content>
-    <!-- name -->
+    <!-- title -->
     <el-form-item
-      label="Nombres"
-      prop="name"
+      label="Título"
+      prop="title"
     >
       <el-input
-        v-model="form.name"
-        type="text" autocomplete="off"
+        v-model="form.title"
+        type="text"
+        autocomplete="off"
+        :rules="rules.title"
       />
     </el-form-item>
-    <!-- name -->
     <el-form-item
-      label="URL"
-      prop="url"
+      label="Grupo"
+      prop="group"
     >
-      <el-input
-        v-model="form.webUrl"
-        type="text" autocomplete="off"
-      />
+      <el-container>
+        <el-select
+          v-model="form.categoryGroupId"
+          :loading="$store.state.spinners.loadingTable"
+          value-key="id"
+          filterable
+          placeholder="Select"
+        >
+          <el-option
+            v-for="item in groupLayers" :key="item.id"
+            :label="item.title"
+            :value="item.id"
+          />
+        </el-select>
+      </el-container>
     </el-form-item>
-    <!-- description -->
+    <!-- Descripción -->
     <el-form-item
       label="Descripción"
       prop="description"
@@ -46,36 +58,41 @@
 </template>
 
 <script>
-import BaseWMSAuthor from './BaseWMSAuthor'
+import BaseGroup from './BaseGroup'
 
 import { mapState } from 'vuex'
 
-import { name } from '@/config/form.rules'
+import {
+  title,
+  order
+} from '@/config/form.rules'
 
 export default {
-  extends: BaseWMSAuthor,
+  extends: BaseGroup,
 
   data () {
     return {
-      formTitle: 'Actualizar autor WMS',
+      formTitle: 'Actualizar grupo de capas',
 
       context: {
-        storeBase: 'WMSAuthors',
+        storeBase: 'groupLayers',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'update'
+        storeAction: 'update',
       },
       messageToast: {
-        baseName: 'AUTHOR',
+        baseName: 'LAYER',
         action: 'UPDATED'
       },
       form: {
         id: null,
-        name: '',
-        webUrl: '',
-        description: '',
+        order: 1,
+        title: '',
+        categoryGroupId: '',
+        description: ''
       },
       rules: {
-        name: name('autor')
+        title,
+        order
       }
     }
   },
@@ -100,7 +117,7 @@ export default {
 
   methods: {
     assignFormFields () {
-      Object.keys(this.form).forEach(key => (this.form[key] = this.itemContext[key]))
+      Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
     }
   }
 }

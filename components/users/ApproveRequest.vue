@@ -101,7 +101,7 @@ export default {
     ...mapActions({
       getDataContext: 'requests/getDataContext',
       approveItemContext: 'requests/approveItemContext',
-      rejectItemContext: 'requests/rejectItemContext',
+      rejectItemContext: 'requests/rejectItemContext'
     }),
 
     async submitFormReject () {

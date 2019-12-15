@@ -92,8 +92,8 @@ export default {
       // main modal settings
       modalMain: {
         storeBase: 'rasterLayers',
-        addComponent: 'ModalAddRasterLayer',
-        editComponent: 'ModalEditRasterLayer',
+        addComponent: 'AddRaster',
+        editComponent: 'EditRaster',
         folderName: 'layers'
       },
       messageToast: {

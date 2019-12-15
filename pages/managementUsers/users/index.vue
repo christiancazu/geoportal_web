@@ -68,13 +68,13 @@ export default {
   data () {
     return {
       pageHeader: {
-        title: 'Usuarios',
+        title: 'Gestión de usuarios',
         btnAddName: 'Nuevo usuario'
       },
       modalMain: {
         storeBase: 'users',
-        addComponent: 'ModalAddUser',
-        editComponent: 'ModalEditUser',
+        addComponent: 'AddUser',
+        editComponent: 'EditUser',
         folderName: 'users'
       },
       messageToast: {

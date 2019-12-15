@@ -123,7 +123,7 @@
 </base-form>
 </template>
 <script>
-import BaseRasterLayer from './BaseRasterLayer'
+import BaseRaster from './BaseRaster'
 
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
@@ -136,7 +136,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  extends: BaseRasterLayer,
+  extends: BaseRaster,
 
   mixins: [uploadFileMixin],
 

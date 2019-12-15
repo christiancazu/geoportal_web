@@ -80,9 +80,9 @@ export default {
       // main modal settings
       modalMain: {
         storeBase: 'baseLayers',
-        addComponent: 'ModalAddBaseLayer',
-        editComponent: 'ModalEditBaseLayer',
-        folderName: 'layers',
+        addComponent: 'AddBase',
+        editComponent: 'EditBase',
+        folderName: 'layers'
       },
       messageToast: {
         baseName: 'LAYER'

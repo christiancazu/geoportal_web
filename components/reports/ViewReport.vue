@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import BasePreviewItem from '@/components/base/BasePreviewItem.vue'
+import BasePreviewItem from '@/components/base/BasePreviewItem'
 
 import { mapState } from 'vuex'
 

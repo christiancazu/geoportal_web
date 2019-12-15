@@ -277,7 +277,7 @@
     </el-row>
     <!-- objetivo -->
     <el-form-item
-      label="¿Porque desea usar el Geoportal?"
+      label="¿Por qué desea usar el Geoportal?"
       prop="subject"
     >
       <el-input

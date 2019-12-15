@@ -90,8 +90,8 @@ export default {
       // main modal settings
       modalMain: {
         storeBase: 'WMSServices',
-        addComponent: 'ModalAddWMSService',
-        editComponent: 'ModalEditWMSService',
+        addComponent: 'AddService',
+        editComponent: 'EditService',
         folderName: 'WMSServices'
       },
       messageToast: {

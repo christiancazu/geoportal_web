@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import BaseWMSCategory from './BaseWMSCategory'
+import BaseWMSCategory from './BaseCategory'
 
 import { name } from '@/config/form.rules'
 

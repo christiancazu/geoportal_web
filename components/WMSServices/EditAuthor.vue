@@ -17,6 +17,16 @@
         type="text" autocomplete="off"
       />
     </el-form-item>
+    <!-- name -->
+    <el-form-item
+      label="URL"
+      prop="url"
+    >
+      <el-input
+        v-model="form.webUrl"
+        type="text" autocomplete="off"
+      />
+    </el-form-item>
     <!-- description -->
     <el-form-item
       label="Descripción"
@@ -36,35 +46,36 @@
 </template>
 
 <script>
-import BaseWMSCategory from './BaseWMSCategory'
+import BaseWMSAuthor from './BaseAuthor'
 
 import { mapState } from 'vuex'
 
 import { name } from '@/config/form.rules'
 
 export default {
-  extends: BaseWMSCategory,
+  extends: BaseWMSAuthor,
 
   data () {
     return {
-      formTitle: 'Actualizar categoría WMS',
+      formTitle: 'Actualizar autor WMS',
 
       context: {
-        storeBase: 'WMSCategories',
+        storeBase: 'WMSAuthors',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
         storeAction: 'update'
       },
       messageToast: {
-        baseName: 'CATEGORY',
+        baseName: 'AUTHOR',
         action: 'UPDATED'
       },
       form: {
         id: null,
         name: '',
+        webUrl: '',
         description: '',
       },
       rules: {
-        name: name('la categoría')
+        name: name('autor')
       }
     }
   },

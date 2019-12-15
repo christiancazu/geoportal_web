@@ -71,8 +71,8 @@ export default {
       // main modal settings
       modalMain: {
         storeBase: 'WMSAuthors',
-        addComponent: 'ModalAddWMSAuthor',
-        editComponent: 'ModalEditWMSAuthor',
+        addComponent: 'AddAuthor',
+        editComponent: 'EditAuthor',
         folderName: 'WMSServices'
       },
       messageToast: {

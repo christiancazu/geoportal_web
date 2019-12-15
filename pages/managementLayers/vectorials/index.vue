@@ -93,8 +93,8 @@ export default {
       // main modal settings
       modalMain: {
         storeBase: 'vectorialLayers',
-        addComponent: 'ModalAddVectorialLayer',
-        editComponent: 'ModalEditVectorialLayer',
+        addComponent: 'AddVectorial',
+        editComponent: 'EditVectorial',
         folderName: 'layers'
       },
       messageToast: {

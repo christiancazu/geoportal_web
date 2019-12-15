@@ -5,6 +5,7 @@
   :rules="rules"
   :context="context"
   :message-toast="messageToast"
+  @clear-form="clearForm"
 >
   <template v-slot:content>
     <el-row :gutter="10">
@@ -71,7 +72,6 @@
         </el-form-item>
 
       </el-col>
-
       <el-col
         :xs="24" :sm="12"
       >
@@ -154,9 +154,7 @@
 </template>
 
 <script>
-import BaseBaseLayer from './BaseBaseLayer'
-
-import { mapState } from 'vuex'
+import BaseBase from './BaseBase'
 
 import {
   name,
@@ -165,20 +163,20 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  extends: BaseBaseLayer,
+  extends: BaseBase,
 
   data () {
     return {
-      formTitle: 'Editar mapa base',
+      formTitle: 'Registrar mapa base',
 
       context: {
         storeBase: 'baseLayers',
         mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'update',
+        storeAction: 'create',
       },
       messageToast: {
         baseName: 'LAYER',
-        action: 'UPDATED'
+        action: 'REGISTERED'
       },
       tileLayer: {
         url: ''
@@ -195,23 +193,24 @@ export default {
         messagePreview : 'Ver vista previa del mapa',
         messageNotUrl : 'Debe indicar una URL válida para ver la vista previa del mapa'
       },
-      rangeZoom: [],
-
+      rangeZoom: [
+        5,
+        18
+      ],
       marks: {
         1: 'min: 1',
         20: 'max: 20'
       },
       form: {
-        id: null,
         name: '',
         url: '',
         description: '',
         author: '',
-        minZoom: null,
-        maxZoom: null,
+        minZoom: '',
+        maxZoom: '',
         authenticationToken: '',
         isActive: true,
-        isUrlValid: false
+        isUrlValid: false // only used on front-end form to confirm if url is valid
       },
       rules: {
         name: name('mapa base'),
@@ -234,47 +233,17 @@ export default {
     }
   },
 
-  computed: {
-    ...mapState({
-      itemContext (state) {
-        return state[this.context.storeBase].itemContext
-      }
-    })
-  },
-
   watch: {
-    itemContext () {
-      this.assignFormFields()
-    },
-
     rangeZoom () {
       this.form.minZoom = this.rangeZoom[0]
       this.form.maxZoom = this.rangeZoom[1]
     }
   },
 
-  created () {
-    this.assignFormFields()
-  },
-
   methods: {
-    assignFormFields () {
-      Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
-      this.rangeZoom = [
-        this.form.minZoom,
-        this.form.maxZoom
-      ]
-      // url tile map
-      this.tileLayer.url = this.form.url
-
-      // to show preview map
-      this.validUrlToPreviewMap = true
-
-      // if have authenticationToken checkbox is selected
-      if (this.form.authenticationToken) {
-        this.needAuthentication = true
-      }
+    clearForm () {
+      this.validUrlToPreviewMap = false
     }
-  }
+  },
 }
 </script>
