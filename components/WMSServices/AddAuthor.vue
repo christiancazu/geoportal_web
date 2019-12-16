@@ -1,12 +1,13 @@
 <template>
 <base-form
-  :form-title="formTitle"
+  :dialog-title="dialogTitle"
   :form="form"
   :rules="rules"
-  :context="context"
+  :store="store"
   :message-toast="messageToast"
+  @clear-form="clearForm"
 >
-  <template v-slot:content>
+  <template v-slot:form-content>
     <!-- name -->
     <el-form-item
       label="Nombre"
@@ -14,7 +15,8 @@
     >
       <el-input
         v-model="form.name"
-        type="text" autocomplete="off"
+        type="text"
+        autocomplete="off"
       />
     </el-form-item>
 
@@ -25,7 +27,8 @@
     >
       <el-input
         v-model="form.webUrl"
-        type="text" autocomplete="off"
+        type="text"
+        autocomplete="off"
       />
     </el-form-item>
     <el-form-item
@@ -38,7 +41,7 @@
         :rows="3"
         autocomplete="off"
         :maxlength="300"
-        :show-word-limit="true"
+        show-word-limit
       />
     </el-form-item>
   </template>
@@ -46,21 +49,20 @@
 </template>
 
 <script>
-import BaseWMSAuthor from './BaseAuthor'
+import BaseFormParent from '@/components/base/parents/BaseFormParent'
 
 import { name } from '@/config/form.rules'
 
 export default {
-  extends: BaseWMSAuthor,
+  extends: BaseFormParent,
 
   data () {
     return {
-      formTitle: 'Registrar autor WMS',
+      dialogTitle: 'Registrar autor WMS',
 
-      context: {
-        storeBase: 'WMSAuthors',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'create',
+      store: {
+        name: 'WMSAuthors',
+        action: 'create'
       },
       messageToast: {
         baseName: 'AUTHOR',
@@ -73,8 +75,15 @@ export default {
         isPublic: 'True'
       },
       rules: {
-        name: name('autor'),
+        name: name('autor')
       }
+    }
+  },
+
+  methods: {
+    clearForm () {
+      // reset textarea
+      this.form.description = ''
     }
   }
 }

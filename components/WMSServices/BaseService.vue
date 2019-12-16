@@ -1,5 +1,7 @@
 <script>
-import BtnOpenSecondModal from '@/components/buttons/BtnOpenSecondModal'
+import BaseFormParent from '@/components/base/parents/BaseFormParent'
+
+import BtnOpenInnerModal from '@/components/buttons/BtnOpenInnerModal'
 
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 
@@ -10,8 +12,10 @@ import {
 
 export default {
   components: {
-    BtnOpenSecondModal
+    BtnOpenInnerModal
   },
+
+  extends: BaseFormParent,
 
   mixins: [modalBaseActionsMixin],
 

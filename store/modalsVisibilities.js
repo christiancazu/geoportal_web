@@ -38,9 +38,9 @@ export const mutations = {
   },
 
   [CLOSE_MODAL]: (state, payload) => {
-    state[payload].folderRoot = 'components'
-    state[payload].folderName = 'fallback'
-    state[payload].component = 'Fallback'
+    // state[payload].folderRoot = 'components'
+    // state[payload].folderName = 'fallback'
+    // state[payload].component = 'Fallback'
     state[payload].visibility = false
   },
 

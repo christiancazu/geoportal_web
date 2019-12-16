@@ -22,14 +22,14 @@
 
       <!-- dynamic current modals -->
       <template v-if="loggedIn">
-        <component
+        <!-- <component
           :is="mainModalDynamicComponent"
           modal-base-actions-mixin_mounted-on="mainModal"
         />
         <component
           :is="secondModalDynamicComponent"
           modal-base-actions-mixin_mounted-on="secondModal"
-        />
+        /> -->
         <!-- <el-dialog
           :title="'gaaaaaa'"
           :close-on-click-modal="false"
@@ -75,20 +75,20 @@ export default {
      * load dynamic main modal component from the state setted
      * example: @/components/layers/ModalAddVectorialLayer
      */
-    mainModalDynamicComponent () {
-      const { folderName, component } = this.$store.state.modalsVisibilities.mainModal
-      return () => import(`@/components/${folderName}/${component}`)
-    },
+    // mainModalDynamicComponent () {
+    //   const { folderName, component } = this.$store.state.modalsVisibilities.mainModal
+    //   return () => import(`@/components/${folderName}/${component}`)
+    // },
 
-    /**
-     * load dynamic second modal component from the state setted
-     * example: @/components/layers/ModalAddVectorialLayer
-     */
-    secondModalDynamicComponent () {
-      const { folderRoot, folderName, component } = this.$store.state.modalsVisibilities.secondModal
-      console.warn(folderRoot, folderName, component)
-      return () => import(`@/components/${folderName}/${component}`)
-    }
+    // /**
+    //  * load dynamic second modal component from the state setted
+    //  * example: @/components/layers/ModalAddVectorialLayer
+    //  */
+    // secondModalDynamicComponent () {
+    //   const { folderRoot, folderName, component } = this.$store.state.modalsVisibilities.secondModal
+    //   console.warn(folderRoot, folderName, component)
+    //   return () => import(`@/components/${folderName}/${component}`)
+    // }
   },
 
   async mounted () {

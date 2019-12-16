@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import BasePageActions from '@/pages/base/BasePageActions'
+import BasePageActionsParent from '@/components/base/parents/BasePageActionsParent'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -69,7 +69,7 @@ export default {
     GroupActionsButtons
   },
 
-  extends: BasePageActions,
+  extends: BasePageActionsParent,
 
   data () {
     return {

@@ -1,12 +1,12 @@
 <template>
 <base-form
-  :form-title="formTitle"
+  :dialog-title="dialogTitle"
   :form="form"
   :rules="rules"
-  :context="context"
+  :store="store"
   :message-toast="messageToast"
 >
-  <template v-slot:content>
+  <template v-slot:form-content>
     <!-- name -->
     <el-form-item
       label="Nombres"
@@ -14,7 +14,8 @@
     >
       <el-input
         v-model="form.name"
-        type="text" autocomplete="off"
+        type="text"
+        autocomplete="off"
       />
     </el-form-item>
     <!-- weburl -->
@@ -24,7 +25,8 @@
     >
       <el-input
         v-model="form.url"
-        type="text" autocomplete="off"
+        type="text"
+        autocomplete="off"
       />
     </el-form-item>
     <el-row :gutter="10">
@@ -51,8 +53,8 @@
               />
             </el-select>
 
-            <!-- open second modal -->
-            <btn-open-second-modal :modal-second="modalSecondAuthor" />
+            <!-- open inner modal -->
+            <btn-open-inner-modal :modal-second="modalAddAuthor" />
           </el-container>
         </el-form-item>
       </el-col>
@@ -78,8 +80,8 @@
               />
             </el-select>
 
-            <!-- open second modal -->
-            <btn-open-second-modal :modal-second="modalSecondCategory" />
+            <!-- open inner modal -->
+            <btn-open-inner-modal :modal-second="modalAddCategory" />
           </el-container>
         </el-form-item>
       </el-col>
@@ -111,7 +113,7 @@
 </template>
 
 <script>
-import BaseWMSService from './BaseService'
+import BaseService from './BaseService'
 
 import { mapState } from 'vuex'
 
@@ -123,23 +125,22 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  extends: BaseWMSService,
+  extends: BaseService,
 
   data () {
     return {
-      formTitle: 'Actualizar servicio WMS',
+      dialogTitle: 'Actualizar servicio WMS',
 
-      context: {
-        storeBase: 'WMSServices',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'update'
+      store: {
+        name: 'WMSServices',
+        action: 'update'
       },
-      modalSecondAuthor: {
+      modalAddAuthor: {
         component: 'ModalAddWMSAuthor',
         folderName: 'WMSServices',
         tooltip: 'Agregar autor'
       },
-      modalSecondCategory: {
+      modalAddCategory: {
         component: 'ModalAddWMSCategory',
         folderName: 'WMSServices',
         tooltip: 'Agregar categoría'
@@ -168,20 +169,17 @@ export default {
 
   computed: {
     ...mapState({
-      itemContext (state) {
-        return state[this.context.storeBase].itemContext
+      itemContext () {
+        return this.$store.state[this.store.name].itemContext
       }
     })
   },
 
   watch: {
-    itemContext () {
-      this.assignFormFields()
+    itemContext: {
+      handler: 'assignFormFields',
+      immediate: true
     }
-  },
-
-  created () {
-    this.assignFormFields()
   },
 
   methods: {

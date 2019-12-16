@@ -1,12 +1,13 @@
 <template>
 <base-form
-  :form-title="formTitle"
+  :dialog-title="dialogTitle"
   :form="form"
   :rules="rules"
-  :context="context"
+  :store="store"
   :message-toast="messageToast"
+  @clear-form="clearForm"
 >
-  <template v-slot:content>
+  <template v-slot:form-content>
     <!-- name -->
     <el-form-item
       label="Nombres"
@@ -14,7 +15,8 @@
     >
       <el-input
         v-model="form.name"
-        type="text" autocomplete="off"
+        type="text"
+        autocomplete="off"
       />
     </el-form-item>
     <!-- weburl -->
@@ -24,7 +26,8 @@
     >
       <el-input
         v-model="form.url"
-        type="text" autocomplete="off"
+        type="text"
+        autocomplete="off"
       />
     </el-form-item>
     <el-row :gutter="10">
@@ -49,8 +52,8 @@
               />
             </el-select>
 
-            <!-- open second modal -->
-            <btn-open-second-modal :modal-second="modalSecondAuthor" />
+            <!-- open inner modal -->
+            <btn-open-inner-modal :modal="modalAddAuthor" />
           </el-container>
         </el-form-item>
       </el-col>
@@ -65,18 +68,18 @@
           <el-container>
             <el-select
               v-model="form.categoryId"
-              filterable value-key="id" placeholder="Select"
+              filterable value-key="id"
+              placeholder="Select"
             >
               <el-option
-                v-for="item in WMSCategories"
-                :key="item.id"
+                v-for="item in WMSCategories" :key="item.id"
                 :label="item.name"
                 :value="item.id"
               />
             </el-select>
 
-            <!-- open second modal -->
-            <btn-open-second-modal :modal-second="modalSecondCategory" />
+            <!-- open inner modal -->
+            <btn-open-inner-modal :modal="modalAddCategory" />
           </el-container>
         </el-form-item>
       </el-col>
@@ -103,12 +106,20 @@
         :active-text="form.isEnabled ? 'Servicio Activo' : 'Servicio Inactivo'"
       />
     </el-form-item>
+
+    <!-- innerComponent on modal -->
+    <component
+      :is="dynamicComponent"
+      :store="store"
+      :page="modalAddCategory"
+    />
+
   </template>
 </base-form>
 </template>
 
 <script>
-import BaseWMSService from './BaseService'
+import BaseService from './BaseService'
 
 import {
   url,
@@ -118,27 +129,42 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  extends: BaseWMSService,
+  extends: BaseService,
 
   data () {
     return {
-      formTitle: 'Registrar servicio WMS',
+      dialogTitle: 'Registrar servicio WMS',
 
-      context: {
-        storeBase: 'WMSServices',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'create'
+      store: {
+        name: 'WMSServices',
+        action: 'create'
       },
-      modalSecondAuthor: {
-        component: 'AddAuthor',
+      modalAddAuthor: {
+        folderRoot: 'components',
         folderName: 'WMSServices',
+        storeParent: 'WMSServices',
+        store: 'WMSAuthors',
+        component: 'AddAuthor',
         tooltip: 'Agregar autor'
       },
-      modalSecondCategory: {
-        component: 'AddCategory',
-        folderName: 'WMSServices',
+      modalAddCategory: {
+        wrapperBaseModal: true,
+        folderRoot: 'pages',
+        folderName: 'managementWMSServices/authors',
+        storeParent: 'WMSServices',
+        // store: 'WMSCategories',
+        component: 'index',
         tooltip: 'Agregar categoría'
       },
+      // modalAddCategory: {
+      //   wrapperBaseModal: true,
+      //   folderRoot: 'components',
+      //   folderName: 'WMSServices',
+      //   storeParent: 'WMSServices',
+      //   store: 'WMSCategories',
+      //   component: 'AddCategory',
+      //   tooltip: 'Agregar categoría'
+      // },
       messageToast: {
         baseName: 'SERVICE',
         action: 'REGISTERED'
@@ -158,6 +184,22 @@ export default {
         authorId,
         categoryId
       }
+    }
+  },
+
+  computed: {
+    dynamicComponent () {
+      const { folderRoot, folderName, component } = this.$store.state[this.store.name].innerComponent
+      return folderRoot === 'pages'
+        ? () => import(`@/pages/${folderName}/${component}`)
+        : () => import(`@/components/${folderName}/${component}`)
+    }
+  },
+
+  methods: {
+    clearForm () {
+      // reset textarea
+      this.form.description = ''
     }
   }
 }

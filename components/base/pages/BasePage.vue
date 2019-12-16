@@ -32,6 +32,9 @@
     <slot />
 
   </el-card>
+
+  <component :is="dynamicComponent" />
+
 </div>
 </template>
 
@@ -48,6 +51,25 @@ export default {
     fitContent: {
       type: Boolean,
       default: false
+    },
+    modal: {
+      type: Object,
+      default: () => ({
+        folderRoot: { type: String, required: true },
+        folderName: { type: String, required: true },
+        store: { type: String, required: true },
+        addComponent: { type: String, required: true },
+        editComponent: { type: String, required: true }
+      })
+    },
+  },
+
+  computed: {
+    dynamicComponent () {
+      const { folderRoot, folderName, component } = this.$store.state[this.modal.store].modal
+      return folderRoot === 'pages'
+        ? () => import(`@/pages/${folderName}/${component}`)
+        : () => import(`@/components/${folderName}/${component}`)
     }
   }
 }

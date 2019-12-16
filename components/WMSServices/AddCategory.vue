@@ -1,12 +1,13 @@
 <template>
 <base-form
-  :form-title="formTitle"
+  :dialog-title="dialogTitle"
   :form="form"
   :rules="rules"
-  :context="context"
+  :store="store"
   :message-toast="messageToast"
+  @clear-form="clearForm"
 >
-  <template v-slot:content>
+  <template v-slot:form-content>
     <!-- name -->
     <el-form-item
       label="Nombre"
@@ -14,7 +15,8 @@
     >
       <el-input
         v-model="form.name"
-        type="text" autocomplete="off"
+        type="text"
+        autocomplete="off"
       />
     </el-form-item>
 
@@ -23,9 +25,9 @@
         v-model="form.description"
         type="textarea"
         :rows="3"
-        autocomplete="off"
         :maxlength="300"
-        :show-word-limit="true"
+        show-word-limit
+        autocomplete="off"
       />
     </el-form-item>
   </template>
@@ -33,21 +35,20 @@
 </template>
 
 <script>
-import BaseWMSCategory from './BaseCategory'
+import BaseFormParent from '@/components/base/parents/BaseFormParent'
 
 import { name } from '@/config/form.rules'
 
 export default {
-  extends: BaseWMSCategory,
+  extends: BaseFormParent,
 
   data () {
     return {
-      formTitle: 'Registrar categoría',
+      dialogTitle: 'Registrar categoría WMS',
 
-      context: {
-        storeBase: 'WMSCategories',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'create',
+      store: {
+        name: 'WMSCategories',
+        action: 'create',
       },
       messageToast: {
         baseName: 'CATEGORY',
@@ -61,6 +62,13 @@ export default {
       rules: {
         name: name('la categoría')
       }
+    }
+  },
+
+  methods: {
+    clearForm () {
+      // reset textarea
+      this.form.description = ''
     }
   }
 }

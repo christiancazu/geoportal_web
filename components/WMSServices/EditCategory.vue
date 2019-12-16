@@ -1,12 +1,12 @@
 <template>
 <base-form
-  :form-title="formTitle"
+  :dialog-title="dialogTitle"
   :form="form"
   :rules="rules"
-  :context="context"
+  :store="store"
   :message-toast="messageToast"
 >
-  <template v-slot:content>
+  <template v-slot:form-content>
     <!-- name -->
     <el-form-item
       label="Nombres"
@@ -36,23 +36,22 @@
 </template>
 
 <script>
-import BaseWMSCategory from './BaseCategory'
+import BaseFormParent from '@/components/base/parents/BaseFormParent'
 
 import { mapState } from 'vuex'
 
 import { name } from '@/config/form.rules'
 
 export default {
-  extends: BaseWMSCategory,
+  extends: BaseFormParent,
 
   data () {
     return {
-      formTitle: 'Actualizar categoría WMS',
+      dialogTitle: 'Actualizar categoría WMS',
 
-      context: {
-        storeBase: 'WMSCategories',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'update'
+      store: {
+        name: 'WMSCategories',
+        action: 'update'
       },
       messageToast: {
         baseName: 'CATEGORY',
@@ -71,20 +70,17 @@ export default {
 
   computed: {
     ...mapState({
-      itemContext (state) {
-        return state[this.context.storeBase].itemContext
+      itemContext () {
+        return this.$store.state[this.store.name].itemContext
       }
     })
   },
 
   watch: {
-    itemContext () {
-      this.assignFormFields()
+    itemContext: {
+      handler: 'assignFormFields',
+      immediate: true
     }
-  },
-
-  created () {
-    this.assignFormFields()
   },
 
   methods: {

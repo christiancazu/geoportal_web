@@ -79,10 +79,10 @@
 </template>
 
 <script>
-import BasePageActions from '@/pages/base/BasePageActions'
+import BasePageActionsParent from '@/components/base/parents/BasePageActionsParent'
 
 export default {
-  extends: BasePageActions,
+  extends: BasePageActionsParent,
 
   data () {
     return {

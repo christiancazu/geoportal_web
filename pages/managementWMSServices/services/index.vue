@@ -1,7 +1,7 @@
 <template>
 <base-page-actions
   :page-header="pageHeader"
-  :modal-main="modalMain"
+  :modal="modal"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
 >
@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import BasePageActions from '@/pages/base/BasePageActions'
+import BasePageActionsParent from '@/components/base/parents/BasePageActionsParent'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -79,7 +79,7 @@ export default {
     GroupActionsButtons
   },
 
-  extends: BasePageActions,
+  extends: BasePageActionsParent,
 
   data () {
     return {
@@ -88,11 +88,12 @@ export default {
         btnAddName: 'Nuevo servicio WMS'
       },
       // main modal settings
-      modalMain: {
-        storeBase: 'WMSServices',
+      modal: {
+        folderRoot: 'components',
+        folderName: 'WMSServices',
+        store: 'WMSServices',
         addComponent: 'AddService',
-        editComponent: 'EditService',
-        folderName: 'WMSServices'
+        editComponent: 'EditService'
       },
       messageToast: {
         baseName: 'SERVICE'

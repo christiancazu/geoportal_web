@@ -1,72 +1,77 @@
 <template>
-<el-dialog
-  :title="formTitle"
-  :close-on-click-modal="false"
-  :visible="$store.state.modalsVisibilities[context.mountedOn].visibility"
-  top="2vh"
-  class="dialog-responsive"
-  @close="closeModal()"
+<base-modal
+  :dialog-title="dialogTitle"
+  :store="store"
+  @close-modal="closeModal()"
 >
-  <el-form
-    ref="form"
-    label-position="top"
-    status-icon
-    :model="form"
-    :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm"
-    :disabled="$store.state.spinners.processingForm"
-    autocomplete="off"
-  >
-
-    <slot name="content" />
-
-  </el-form>
-
-  <!-- actions -->
-  <div class="text-xs-center">
-    <el-button
-      size="small"
-      @click="closeModal()"
+  <template v-slot:modal-content>
+    <el-form
+      ref="form"
+      label-position="top"
+      status-icon
+      :model="form"
+      :rules="rules"
+      label-width="120px"
+      class="demo-ruleForm"
+      :disabled="$store.state.spinners.processingForm"
+      autocomplete="off"
     >
-      CERRAR
-    </el-button>
-    <el-button
-      type="primary"
-      size="small"
-      native-type="submit"
-      :loading="$store.state.spinners.processingForm"
-      @click="submitForm"
-    >
-      GUARDAR
-    </el-button>
 
-    <template v-if="canPublish">
+      <slot name="form-content" />
+
+    </el-form>
+
+    <!-- actions -->
+    <div class="text-xs-center">
       <el-button
-        type="success"
         size="small"
-        :loading="$store.state.spinners.processingForm"
-        @click="submitPublish"
+        @click="closeModal()"
       >
-        PUBLICAR
+        CERRAR
       </el-button>
-    </template>
+      <el-button
+        type="primary"
+        size="small"
+        native-type="submit"
+        :loading="$store.state.spinners.processingForm"
+        @click="submitForm"
+      >
+        GUARDAR
+      </el-button>
 
-  </div>
-</el-dialog>
+      <template v-if="canPublish">
+        <el-button
+          type="success"
+          size="small"
+          :loading="$store.state.spinners.processingForm"
+          @click="submitPublish"
+        >
+          PUBLICAR
+        </el-button>
+      </template>
+
+    </div>
+  </template>
+</base-modal>
 </template>
 
 <script>
-/* eslint-disable no-unused-vars */
+import BaseModal from '@/components/base/BaseModal'
+
 import { mapActions } from 'vuex'
 
 import {
   SET_PUBLISHED_ITEM_CONTEXT,
   ENABLE_PROCESSING_FORM,
-  DISABLE_PROCESSING_FORM
+  DISABLE_PROCESSING_FORM,
+  CLOSE_MODAL
 } from '@/types/mutation-types'
 
 export default {
+  components: {
+    BaseModal,
+  },
+
   props: {
     form: {
       type: Object, required: true
@@ -74,15 +79,14 @@ export default {
     rules: {
       type: Object, required: true
     },
-    formTitle: {
+    dialogTitle: {
       type: String, default: ''
     },
-    context: {
+    store: {
       type: Object,
       default: () => ({
-        storeBase: { type: String, required: true },
-        mountedOn: { type: String, required: true },
-        storeAction: { type: String, required: true }
+        name: { type: String, required: true },
+        action: { type: String, required: true }
       })
     },
     messageToast: {
@@ -97,11 +101,11 @@ export default {
   computed: {
     canPublish: {
       get () {
-        if (typeof this.$store.state[this.context.storeBase].itemContext.isPublished === 'undefined') return false
-        return !this.$store.state[this.context.storeBase].itemContext.isPublished && this.context.storeAction === 'update'
+        if (typeof this.$store.state[this.store.name].itemContext.isPublished === 'undefined') return false
+        return !this.$store.state[this.store.name].itemContext.isPublished && this.store.action === 'update'
       },
       set (value) {
-        this.$store.commit(`${this.context.storeBase}/${SET_PUBLISHED_ITEM_CONTEXT}`, value)
+        this.$store.commit(`${this.store.name}/${SET_PUBLISHED_ITEM_CONTEXT}`, value)
       }
     }
   },
@@ -109,13 +113,13 @@ export default {
   methods: {
     ...mapActions({
       async getDataContext () {
-        await this.$store.dispatch(`${this.context.storeBase}/getDataContext`)
+        await this.$store.dispatch(`${this.store.name}/getDataContext`)
       },
-      async submitItemContext (store, formData) {
-        await this.$store.dispatch(`${this.context.storeBase}/${this.context.storeAction}ItemContext`, formData)
+      async submitItemContext ({}, formData) {
+        await this.$store.dispatch(`${this.store.name}/${this.store.action}ItemContext`, formData)
       },
-      async publishItemContext (store, formData) {
-        await this.$store.dispatch(`${this.context.storeBase}/publishItemContext`, formData)
+      async publishItemContext ({}, formData) {
+        await this.$store.dispatch(`${this.store.name}/publishItemContext`, formData)
       },
     }),
 
@@ -129,13 +133,12 @@ export default {
 
         const formData = this.objectToFormData()
 
-        // used when need to apply custom functionality/fix on formData
-        // before to be sends
+        // used when need to apply custom functionality/fix on formData before to be sends
         this.$emit('apply-custom-functionality-to-form', formData)
         try {
           await this.submitItemContext(formData)
 
-          if (this.context.storeAction === 'create') {
+          if (this.store.action === 'create') {
             this.resetForm()
           }
 
@@ -179,7 +182,7 @@ export default {
 
     closeModal () {
       this.resetForm()
-      this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
+      this.$store.commit(`${this.store.name}/${CLOSE_MODAL}`)
     },
 
     resetForm () {

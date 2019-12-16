@@ -1,7 +1,7 @@
 <template>
 <base-page-actions
   :page-header="pageHeader"
-  :modal-main="modalMain"
+  :modal="modal"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
 >
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import BasePageActions from '@/pages/base/BasePageActions'
+import BasePageActionsParent from '@/components/base/parents/BasePageActionsParent'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -60,7 +60,7 @@ export default {
     GroupActionsButtons
   },
 
-  extends: BasePageActions,
+  extends: BasePageActionsParent,
 
   data () {
     return {
@@ -69,11 +69,12 @@ export default {
         btnAddName: 'Nuevo autor WMS'
       },
       // main modal settings
-      modalMain: {
-        storeBase: 'WMSAuthors',
+      modal: {
+        folderRoot: 'components',
+        folderName: 'WMSServices',
+        store: 'WMSAuthors',
         addComponent: 'AddAuthor',
-        editComponent: 'EditAuthor',
-        folderName: 'WMSServices'
+        editComponent: 'EditAuthor'
       },
       messageToast: {
         baseName: 'AUTHOR'
@@ -85,6 +86,10 @@ export default {
         'description'
       ]
     }
+  },
+
+  mounted () {
+    console.warn('author mounted')
   },
 
   head: {

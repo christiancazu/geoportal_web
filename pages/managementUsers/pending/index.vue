@@ -45,12 +45,12 @@
 
 <script>
 
-import BasePageActions from '@/pages/base/BasePageActions'
+import BasePageActionsParent from '@/components/base/parents/BasePageActionsParent'
 
 import { SET_ITEM_CONTEXT } from '@/types/mutation-types'
 
 export default {
-  extends: BasePageActions,
+  extends: BasePageActionsParent,
 
   data () {
     return {

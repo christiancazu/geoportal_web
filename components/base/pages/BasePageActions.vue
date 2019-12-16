@@ -1,7 +1,8 @@
 <template>
 <base-page
   :page-header="pageHeader"
-  @open-add-modal="openMainModalAddItemContext()"
+  :modal="modal"
+  @open-add-modal="openModalAddItemContext()"
 >
   <el-container direction="vertical">
     <el-row
@@ -56,7 +57,7 @@
 </template>
 
 <script>
-import Base from './Base'
+import BaseParent from '@/components/base/parents/BaseParent'
 
 import { mapActions } from 'vuex'
 
@@ -65,7 +66,7 @@ import { SET_CURRENT_PAGE_ON_TABLE } from '@/types/mutation-types'
 import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
 
 export default {
-  extends: Base,
+  extends: BaseParent,
 
   props: {
     pageHeader: {
@@ -75,13 +76,14 @@ export default {
         btnAddName: { type: String, required: false }
       })
     },
-    modalMain: {
+    modal: {
       type: Object,
       default: () => ({
-        storeBase: { type: String, required: true },
+        folderRoot: { type: String, required: true },
+        folderName: { type: String, required: true },
+        store: { type: String, required: true },
         addComponent: { type: String, required: true },
-        editComponent: { type: String, required: true },
-        folderName: { type: String, required: true }
+        editComponent: { type: String, required: true }
       })
     },
     messageToast: {
@@ -109,17 +111,17 @@ export default {
   methods: {
     ...mapActions({
       async deleteItemContext ({}, id) {
-        await this.$store.dispatch(`${this.modalMain.storeBase}/deleteItemContext`, id)
+        await this.$store.dispatch(`${this.modal.store}/deleteItemContext`, id)
       }
     }),
 
     /**
-     * set the name of modalMain.addComponent as dynamic main modal component
+     * set the name of modal.addComponent as dynamic main modal component
      * on layouts/default.vue & set his visibility state
      *
      */
-    openMainModalAddItemContext () {
-      this.setDynamicMainModalComponent(this.modalMain.addComponent)
+    openModalAddItemContext () {
+      this.setDynamicModalComponent(this.modal.addComponent)
     },
 
     /**
@@ -133,7 +135,7 @@ export default {
       try {
         await this.getItemContext(id)
 
-        this.setDynamicMainModalComponent(this.modalMain.editComponent)
+        this.setDynamicModalComponent(this.modal.editComponent)
       }
       catch (e) {}
     },
@@ -152,7 +154,7 @@ export default {
         // getting dataContext again to see updates
         await this.getDataContext()
 
-        let currentPage = this.$store.state[this.modalMain.storeBase].currentPageOnTable
+        let currentPage = this.$store.state[this.modal.store].currentPageOnTable
 
         // if number of pages is minor that the current page, (when delete)
         if (this.dataContext.length / ROWS_PER_PAGE_ON_TABLE <= (currentPage - 1)) {
@@ -160,7 +162,7 @@ export default {
         }
         // setting currentPage before to submit deleteItemContext and getDataContext
         // to set it again as currentPage to prevent go to page 1 when fetch the dataContext
-        this.$store.commit(`${this.modalMain.storeBase}/${SET_CURRENT_PAGE_ON_TABLE}`, currentPage)
+        this.$store.commit(`${this.modal.store}/${SET_CURRENT_PAGE_ON_TABLE}`, currentPage)
       }
       catch (e) {}
     }

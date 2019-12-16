@@ -1,58 +1,41 @@
 <template>
 <el-dialog
-  :title="formTitle"
+  :title="dialogTitle"
   :close-on-click-modal="false"
-  :visible="$store.state.modalsVisibilities['secondModal'].visibility"
+  :visible="$store.state[store.name].modal.visible"
+  append-to-body
+  destroy-on-close
   top="2vh"
   class="dialog-responsive"
-  append-to-body
   @close="closeModal()"
 >
-  <component
-    :is="dynamicComponent"
-  />
-
-  <!-- actions -->
-  <div class="text-xs-center">
-    <el-button
-      size="small"
-      @click="closeModal()"
-    >
-      CERRAR
-    </el-button>
-  </div>
+  <slot name="modal-content" />
 
 </el-dialog>
 </template>
 
 <script>
+import {
+  CLOSE_MODAL
+} from '@/types/mutation-types'
+
 export default {
   props: {
-    formTitle: {
-      type: String, default: 'GAAA'
-    },
-    context: {
+    store: {
       type: Object,
       default: () => ({
-        mountedOn: { type: String, required: true }
+        name: { type: String, required: true },
+        action: { type: String, required: true }
       })
     },
-  },
-
-  computed: {
-    dynamicComponent () {
-      const { folderRoot, folderName, component } = this.$store.state.modalsVisibilities.baseModal
-      return folderRoot === 'pages'
-        ? () => import(`@/pages/${folderName}/${component}`)
-        : () => import(`@/components/${folderName}/${component}`)
-      // @/pages && @/components can't be dynamic for that use ternary operator
-    }
+    dialogTitle: { type: String, default: 'DIALOG TITLE' },
   },
 
   methods: {
     closeModal () {
-      this.$store.commit('modalsVisibilities/CLOSE_MODAL', 'secondModal')
-    }
+      this.$emit('close-modal')
+      this.$store.commit(`${this.store.name}/${CLOSE_MODAL}`)
+    },
   }
 
 }
