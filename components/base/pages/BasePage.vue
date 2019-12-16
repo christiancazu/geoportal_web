@@ -33,13 +33,23 @@
 
   </el-card>
 
-  <component :is="dynamicComponent" />
+  <base-modal :modal="modal">
+    <template v-slot:modal-content>
+      <component :is="dynamicComponent" />
+    </template>
+  </base-modal>
 
 </div>
 </template>
 
 <script>
+import BaseModal from '@/components/base/BaseModal'
+
 export default {
+  components: {
+    BaseModal,
+  },
+
   props: {
     pageHeader: {
       type: Object,
@@ -67,6 +77,7 @@ export default {
   computed: {
     dynamicComponent () {
       const { folderRoot, folderName, component } = this.$store.state[this.modal.store].modal
+      console.warn('basepage', folderRoot, folderName, component)
       return folderRoot === 'pages'
         ? () => import(`@/pages/${folderName}/${component}`)
         : () => import(`@/components/${folderName}/${component}`)
@@ -74,9 +85,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.fit-content{
-  width: fit-content;
-}
-</style>

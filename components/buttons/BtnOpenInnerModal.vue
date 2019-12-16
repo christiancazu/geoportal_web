@@ -38,22 +38,32 @@ export default {
      * setting secondModal state to be visible
      */
     openModal () {
-      console.warn('gaaaaaa', this.modal)
-      if (this.modal.wrapperBaseModal) {
-        this.setComponentOnBaseModal()
-      }
-      else {
-        this.$store.dispatch(`${this.modal.storeParent}/openInnerModal`, {
-          folderRoot: this.modal.folderRoot,
-          folderName: this.modal.folderName,
-          component: this.modal.component
-        })
-        this.$store.dispatch(`${this.modal.store}/openModal`, {
-          folderRoot: this.modal.folderRoot,
-          folderName: this.modal.folderName,
-          component: this.modal.component
-        })
-      }
+      console.warn('BtnOpenInnerModal', this.modal)
+      this.$store.dispatch(`${this.modal.storeParent}/openInnerModal`, {
+        folderRoot: this.modal.folderRoot,
+        folderName: this.modal.folderName,
+        component: this.modal.component,
+        store: this.modal.store,
+        title: this.modal.title
+      })
+      if (this.modal.type === 'modal') this.$store.dispatch(`${this.modal.store}/openModal`, {})
+      // this.$store.dispatch(`${this.modal.store}/openModal`, {
+      //   folderRoot: this.modal.folderRoot,
+      //   folderName: this.modal.folderName,
+      //   component: this.modal.component
+      // })
+      // else {
+      //   this.$store.dispatch(`${this.modal.storeParent}/openInnerModal`, {
+      //     folderRoot: this.modal.folderRoot,
+      //     folderName: this.modal.folderName,
+      //     component: this.modal.component
+      //   })
+      //   this.$store.dispatch(`${this.modal.store}/openModal`, {
+      //     folderRoot: this.modal.folderRoot,
+      //     folderName: this.modal.folderName,
+      //     component: this.modal.component
+      //   })
+      // }
     },
 
     setComponentOnBaseModal () {
@@ -61,7 +71,7 @@ export default {
       this.$store.dispatch(`${this.modal.storeParent}/openInnerModal`, {
         folderRoot: 'components',
         folderName: 'wrappers',
-        storeParent: this.modal.storeParent,
+        // storeParent: this.modal.storeParent,
         component: 'ModalWrapper'
         // folderRoot: this.modal.folderRoot,
         // folderName: this.modal.folderName,

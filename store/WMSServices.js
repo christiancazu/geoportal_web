@@ -13,15 +13,18 @@ export const state = () => ({
   itemContext: {},
   currentPageOnTable: 1,
   modal: {
+    title: 'x',
     folderRoot: 'components',
     folderName: 'fallback',
     component: 'Fallback',
     visible: false
   },
   innerComponent: {
+    title: 'x',
     folderRoot: 'components',
     folderName: 'fallback',
     component: 'Fallback',
+    store: 'WMSServices',
     visible: false
   }
 })
@@ -61,6 +64,7 @@ export const actions = {
   },
 
   openInnerModal: ({ commit }, payload) => {
+    console.warn('dispatch innerModal', payload)
     commit('OPEN_INNER_MODAL', payload)
     setTimeout(() => {
       commit('SET_MODAL_INNER_VISIBLE')
@@ -88,16 +92,20 @@ export const mutations = {
     state.innerComponent.folderRoot = payload.folderRoot
     state.innerComponent.folderName = payload.folderName
     state.innerComponent.component = payload.component
+    state.innerComponent.store = payload.store
+    state.innerComponent.title = payload.title || ' '
   },
 
-  [CLOSE_MODAL]: state => {
-    state.modal.visible = false
-    state.modal.folderRoot = 'components'
-    state.modal.folderName = 'fallback'
-    state.modal.component = 'Fallback'
+  [CLOSE_MODAL]: (state, payload) => {
+    console.warn('CLOSE_MODAL')
+    state[payload].visible = false
+    state[payload].folderRoot = 'components'
+    state[payload].folderName = 'fallback'
+    state[payload].component = 'Fallback'
   },
 
   CLOSE_INNER_MODAL: state => {
+    console.warn('CLOSE_INNER_MODAL')
     state.innerComponent.visible = false
     state.innerComponent.folderRoot = 'components'
     state.innerComponent.folderName = 'fallback'
@@ -107,6 +115,11 @@ export const mutations = {
   [SET_MODAL_VISIBLE]: state => (state.modal.visible = true),
 
   SET_MODAL_INNER_VISIBLE: state => {
+    console.warn('SET_MODAL_INNER_VISIBLE> innerComponent ', state.innerComponent)
     state.innerComponent.visible = true
+  },
+
+  SET_DIALOG_TITLE: (state, payload) => {
+    state.modal.title = payload
   }
 }

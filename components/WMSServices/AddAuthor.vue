@@ -1,6 +1,5 @@
 <template>
 <base-form
-  :dialog-title="dialogTitle"
   :form="form"
   :rules="rules"
   :store="store"
@@ -78,6 +77,10 @@ export default {
         name: name('autor')
       }
     }
+  },
+
+  mounted () {
+    console.warn('addauthor mounted')
   },
 
   methods: {

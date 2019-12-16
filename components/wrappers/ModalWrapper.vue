@@ -9,6 +9,7 @@
   class="dialog-responsive"
   @close="closeModal()"
 >
+
   <component :is="dynamicComponent" />
 
 </el-dialog>

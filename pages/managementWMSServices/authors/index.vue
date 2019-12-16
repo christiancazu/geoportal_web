@@ -70,6 +70,7 @@ export default {
       },
       // main modal settings
       modal: {
+        type: 'modal',
         folderRoot: 'components',
         folderName: 'WMSServices',
         store: 'WMSAuthors',
@@ -86,10 +87,6 @@ export default {
         'description'
       ]
     }
-  },
-
-  mounted () {
-    console.warn('author mounted')
   },
 
   head: {

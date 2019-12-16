@@ -65,6 +65,7 @@ export default {
       },
       // main modal settings
       modal: {
+        type: 'modal',
         folderRoot: 'components',
         folderName: 'WMSServices',
         store: 'WMSCategories',

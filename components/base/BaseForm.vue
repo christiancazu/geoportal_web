@@ -1,63 +1,55 @@
 <template>
-<base-modal
-  :dialog-title="dialogTitle"
-  :store="store"
-  @close-modal="closeModal()"
->
-  <template v-slot:modal-content>
-    <el-form
-      ref="form"
-      label-position="top"
-      status-icon
-      :model="form"
-      :rules="rules"
-      label-width="120px"
-      class="demo-ruleForm"
-      :disabled="$store.state.spinners.processingForm"
-      autocomplete="off"
+<div>
+  <el-form
+    ref="form"
+    label-position="top"
+    status-icon
+    :model="form"
+    :rules="rules"
+    label-width="120px"
+    class="demo-ruleForm"
+    :disabled="$store.state.spinners.processingForm"
+    autocomplete="off"
+  >
+
+    <slot name="form-content" />
+
+  </el-form>
+
+  <!-- actions -->
+  <div class="text-xs-center">
+    <el-button
+      size="small"
+      @click="closeModal()"
     >
+      CERRAR
+    </el-button>
+    <el-button
+      type="primary"
+      size="small"
+      native-type="submit"
+      :loading="$store.state.spinners.processingForm"
+      @click="submitForm"
+    >
+      GUARDAR
+    </el-button>
 
-      <slot name="form-content" />
-
-    </el-form>
-
-    <!-- actions -->
-    <div class="text-xs-center">
+    <template v-if="canPublish">
       <el-button
+        type="success"
         size="small"
-        @click="closeModal()"
-      >
-        CERRAR
-      </el-button>
-      <el-button
-        type="primary"
-        size="small"
-        native-type="submit"
         :loading="$store.state.spinners.processingForm"
-        @click="submitForm"
+        @click="submitPublish"
       >
-        GUARDAR
+        PUBLICAR
       </el-button>
+    </template>
 
-      <template v-if="canPublish">
-        <el-button
-          type="success"
-          size="small"
-          :loading="$store.state.spinners.processingForm"
-          @click="submitPublish"
-        >
-          PUBLICAR
-        </el-button>
-      </template>
-
-    </div>
-  </template>
-</base-modal>
+  </div>
+</div>
 </template>
 
 <script>
-import BaseModal from '@/components/base/BaseModal'
-
 import { mapActions } from 'vuex'
 
 import {
@@ -68,19 +60,12 @@ import {
 } from '@/types/mutation-types'
 
 export default {
-  components: {
-    BaseModal,
-  },
-
   props: {
     form: {
       type: Object, required: true
     },
     rules: {
       type: Object, required: true
-    },
-    dialogTitle: {
-      type: String, default: ''
     },
     store: {
       type: Object,

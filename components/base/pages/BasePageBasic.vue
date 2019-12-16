@@ -54,12 +54,12 @@
 </template>
 
 <script>
-import BaseParent from '@/components/base/parents/BaseParent'
+import BasePageParent from '@/components/base/parents/BasePageParent'
 
 import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
 
 export default {
-  extends: BaseParent,
+  extends: BasePageParent,
 
   props: {
     pageHeader: {

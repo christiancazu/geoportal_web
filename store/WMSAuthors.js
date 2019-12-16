@@ -13,6 +13,7 @@ export const state = () => ({
   itemContext: {},
   currentPageOnTable: 1,
   modal: {
+    title: '',
     folderRoot: 'components',
     folderName: 'fallback',
     component: 'Fallback',
@@ -78,5 +79,9 @@ export const mutations = {
     state.modal.component = 'Fallback'
   },
 
-  [SET_MODAL_VISIBLE]: state => (state.modal.visible = true)
+  [SET_MODAL_VISIBLE]: state => (state.modal.visible = true),
+
+  SET_DIALOG_TITLE: (state, payload) => {
+    state.modal.title = payload
+  }
 }

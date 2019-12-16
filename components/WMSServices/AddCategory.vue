@@ -1,6 +1,5 @@
 <template>
 <base-form
-  :dialog-title="dialogTitle"
   :form="form"
   :rules="rules"
   :store="store"

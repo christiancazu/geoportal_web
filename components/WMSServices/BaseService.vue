@@ -3,6 +3,8 @@ import BaseFormParent from '@/components/base/parents/BaseFormParent'
 
 import BtnOpenInnerModal from '@/components/buttons/BtnOpenInnerModal'
 
+import BaseModal from '@/components/base/BaseModal'
+
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 
 import {
@@ -12,6 +14,7 @@ import {
 
 export default {
   components: {
+    BaseModal,
     BtnOpenInnerModal
   },
 

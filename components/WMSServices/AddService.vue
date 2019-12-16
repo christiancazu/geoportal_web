@@ -1,6 +1,5 @@
 <template>
 <base-form
-  :dialog-title="dialogTitle"
   :form="form"
   :rules="rules"
   :store="store"
@@ -108,11 +107,11 @@
     </el-form-item>
 
     <!-- innerComponent on modal -->
-    <component
-      :is="dynamicComponent"
-      :store="store"
-      :page="modalAddCategory"
-    />
+    <base-modal :modal="{ store: 'WMSServices'/*$store.state[store.name].innerComponent.store*/, type: 'innerComponent' }">
+      <template v-slot:modal-content>
+        <component :is="dynamicComponent" />
+      </template>
+    </base-modal>
 
   </template>
 </base-form>
@@ -133,6 +132,8 @@ export default {
 
   data () {
     return {
+      currentStore: 'WMSServices',
+
       dialogTitle: 'Registrar servicio WMS',
 
       store: {
@@ -140,6 +141,7 @@ export default {
         action: 'create'
       },
       modalAddAuthor: {
+        type: 'modal',
         folderRoot: 'components',
         folderName: 'WMSServices',
         storeParent: 'WMSServices',
@@ -148,11 +150,12 @@ export default {
         tooltip: 'Agregar autor'
       },
       modalAddCategory: {
-        wrapperBaseModal: true,
+        title: 'Add foo',
+        type: 'innerComponent',
         folderRoot: 'pages',
-        folderName: 'managementWMSServices/authors',
+        folderName: 'managementWMSServices/categories',
         storeParent: 'WMSServices',
-        // store: 'WMSCategories',
+        store: 'WMSCategories',
         component: 'index',
         tooltip: 'Agregar categoría'
       },
@@ -189,10 +192,24 @@ export default {
 
   computed: {
     dynamicComponent () {
-      const { folderRoot, folderName, component } = this.$store.state[this.store.name].innerComponent
+      const { store, folderRoot, folderName, component } = this.$store.state[this.store.name].innerComponent
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      // this.currentStore = store
+      console.warn('add service dynamicComponent', store, folderRoot, folderName, component, this.$store.state[this.store.name].innerComponent)
       return folderRoot === 'pages'
         ? () => import(`@/pages/${folderName}/${component}`)
         : () => import(`@/components/${folderName}/${component}`)
+    },
+
+    currentModal () {
+      return this.$store.state[this.store.name].innerComponent
+    }
+  },
+
+  watch: {
+    currentModal: {
+      handler: 'handd',
+      immediate: true
     }
   },
 
@@ -200,6 +217,10 @@ export default {
     clearForm () {
       // reset textarea
       this.form.description = ''
+    },
+
+    handd () {
+      console.log('HANDLER>>', this.$store.state[this.store.name].innerComponent)
     }
   }
 }
