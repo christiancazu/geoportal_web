@@ -167,7 +167,8 @@ export default {
 
     closeModal () {
       this.resetForm()
-      this.$store.commit(`${this.store.name}/${CLOSE_MODAL}`)
+      console.warn(this.store.name)
+      this.$store.commit(`${this.store.name}/${CLOSE_MODAL}`, 'innerComponent')
     },
 
     resetForm () {

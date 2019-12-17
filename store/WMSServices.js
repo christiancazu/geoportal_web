@@ -13,14 +13,14 @@ export const state = () => ({
   itemContext: {},
   currentPageOnTable: 1,
   modal: {
-    title: 'x',
+    title: ' ',
     folderRoot: 'components',
     folderName: 'fallback',
     component: 'Fallback',
     visible: false
   },
   innerComponent: {
-    title: 'x',
+    title: ' ',
     folderRoot: 'components',
     folderName: 'fallback',
     component: 'Fallback',

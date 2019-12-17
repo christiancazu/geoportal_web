@@ -107,12 +107,11 @@
     </el-form-item>
 
     <!-- innerComponent on modal -->
-    <base-modal :modal="{ store: 'WMSServices'/*$store.state[store.name].innerComponent.store*/, type: 'innerComponent' }">
+    <base-modal :modal="modalAddCategory">
       <template v-slot:modal-content>
         <component :is="dynamicComponent" />
       </template>
     </base-modal>
-
   </template>
 </base-form>
 </template>
@@ -132,8 +131,6 @@ export default {
 
   data () {
     return {
-      currentStore: 'WMSServices',
-
       dialogTitle: 'Registrar servicio WMS',
 
       store: {
@@ -151,7 +148,7 @@ export default {
       },
       modalAddCategory: {
         title: 'Add foo',
-        type: 'innerComponent',
+        type: 'modal',
         folderRoot: 'pages',
         folderName: 'managementWMSServices/categories',
         storeParent: 'WMSServices',
@@ -201,9 +198,10 @@ export default {
         : () => import(`@/components/${folderName}/${component}`)
     },
 
-    currentModal () {
-      return this.$store.state[this.store.name].innerComponent
-    }
+    // currentModal () {
+    //   console.warn('modalAddAuthor> ', this.$store.state[this.store.name].innerComponent)
+    //   return this.modalAddAuthor
+    // }
   },
 
   watch: {
