@@ -38,6 +38,14 @@ export const state = () => ({
     name: 'Fallback',
     store: 'WMSServices',
     visible: false
+  },
+  modalInner: {
+    title: 'modalInner',
+    type: 'component',
+    folderPath: 'fallback',
+    name: 'Fallback',
+    store: 'WMSServices',
+    visible: false
   }
 })
 

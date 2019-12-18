@@ -6,9 +6,19 @@ export default {
     BaseForm
   },
 
+  props: {
+    storeMounted: { type: String, default: '' }
+  },
+
   created () {
-    console.warn('xasda')
-    this.$store.commit(`${this.store.name}/SET_DIALOG_TITLE`, this.dialogTitle)
+    if (this.storeMounted !== '')
+      this.$store.commit(`${this.storeMounted}/SET_DIALOG_TITLE`, this.dialogTitle)
+  },
+
+  methods: {
+    closeModal () {
+      this.$store.commit(`${this.storeMounted}/CLOSE_MODAL`)
+    }
   }
 }
 </script>

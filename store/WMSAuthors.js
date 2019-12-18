@@ -31,6 +31,10 @@ export const state = () => ({
   itemContext: {},
   currentPageOnTable: 1,
 
+  page: {
+    visible: false
+  },
+
   modalMain: {
     title: 'modalMain',
     type: 'component',
@@ -58,6 +62,8 @@ export const actions = {
 }
 
 export const mutations = {
+  SET_TYPE_MOUNT: state => state.visible,
+
   [SET_DATA_CONTEXT]: setDataContext,
 
   [SET_ITEM_CONTEXT]: setItemContext,
@@ -75,7 +81,10 @@ export const mutations = {
     state.modalMain.name = 'Fallback'
   },
 
-  [SET_MODAL_VISIBLE]: state => (state.modalMain.visible = true),
+  [SET_MODAL_VISIBLE]: state => {
+    console.warn('___setting author modal main visible____');
+    (state.modalMain.visible = true)
+  },
 
   SET_DIALOG_TITLE: (state, payload) => (state.modalMain.title = payload)
 }

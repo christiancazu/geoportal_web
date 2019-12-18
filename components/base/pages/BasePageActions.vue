@@ -1,7 +1,7 @@
 <template>
 <base-page
   :page-header="pageHeader"
-  :page-body="pageBody"
+  :store-base="storeBase"
   :modal-main="modalMain"
   @open-add-modal="openModalAdd()"
 >
@@ -77,10 +77,10 @@ export default {
         btnAddName: { type: String, required: false }
       })
     },
-    pageBody: {
+    storeBase: {
       type: Object,
       default: () => ({
-        store: { type: String, required: true }
+        name: { type: String, required: true }
       })
     },
     modalMain: {
@@ -100,9 +100,9 @@ export default {
     filterCriteriaProps: {
       type: Array, default: () => []
     },
-    // fitContent: {
-    //   type: Boolean, default: false
-    // }
+    fitContent: {
+      type: Boolean, default: false
+    }
   },
 
   data () {
@@ -120,7 +120,7 @@ export default {
   methods: {
     ...mapActions({
       async deleteItemContext ({}, id) {
-        await this.$store.dispatch(`${this.pageBody.store}/deleteItemContext`, id)
+        await this.$store.dispatch(`${this.storeBase.name}/deleteItemContext`, id)
       }
     }),
 
@@ -163,7 +163,7 @@ export default {
         // getting dataContext again to see updates
         await this.getDataContext()
 
-        let currentPage = this.$store.state[this.pageBody.store].currentPageOnTable
+        let currentPage = this.$store.state[this.storeBase.name].currentPageOnTable
 
         // if number of pages is minor that the current page, (when delete)
         if (this.dataContext.length / ROWS_PER_PAGE_ON_TABLE <= (currentPage - 1)) {
@@ -171,7 +171,7 @@ export default {
         }
         // setting currentPage before to submit deleteItemContext and getDataContext
         // to set it again as currentPage to prevent go to page 1 when fetch the dataContext
-        this.$store.commit(`${this.pageBody.store}/${SET_CURRENT_PAGE_ON_TABLE}`, currentPage)
+        this.$store.commit(`${this.storeBase.name}/${SET_CURRENT_PAGE_ON_TABLE}`, currentPage)
       }
       catch (e) {}
     }

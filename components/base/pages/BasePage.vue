@@ -33,9 +33,12 @@
 
   </el-card>
 
-  <base-modal :modal-main="$store.state[pageBody.store].modalMain">
+  <base-modal :modal-main="$store.state[storeBase.name].modalMain">
     <template v-slot:modal-content>
-      <component :is="dynamicComponent" />
+      <component
+        :is="dynamicComponent"
+        :store-mounted="$store.state[storeBase.name].modalMain.store"
+      />
     </template>
   </base-modal>
 
@@ -58,10 +61,10 @@ export default {
         btnAddName: { type: String, required: false }
       })
     },
-    pageBody: {
+    storeBase: {
       type: Object,
       default: () => ({
-        store: { type: String, required: true }
+        name: { type: String, required: true }
       })
     },
     fitContent: {
@@ -81,12 +84,8 @@ export default {
   },
 
   computed: {
-    // mainModal () {
-    //   return
-    // },
-
     dynamicComponent () {
-      const { type, folderPath, name } = this.$store.state[this.pageBody.store].modalMain
+      const { type, folderPath, name } = this.$store.state[this.storeBase.name].modalMain
       console.warn('dynamicComponent>>>', type, folderPath, name)
       return type === 'page'
         ? () => import(`@/pages/${folderPath}/${name}`)

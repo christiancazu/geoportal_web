@@ -35,19 +35,19 @@ export default {
   computed: {
     ...mapState({
       dataContext () {
-        return this.$store.state[this.pageBody.store].dataContext
+        return this.$store.state[this.storeBase.name].dataContext
       },
       itemContext () {
-        return this.$store[this.pageBody.store].itemContext
+        return this.$store.state[this.storeBase.name].itemContext
       }
     }),
 
     currentPage: {
       get () {
-        return this.$store.state[this.pageBody.store].currentPageOnTable
+        return this.$store.state[this.storeBase.name].currentPageOnTable
       },
       set (value) {
-        this.$store.commit(`${this.pageBody.store}/${SET_CURRENT_PAGE_ON_TABLE}`, value)
+        this.$store.commit(`${this.storeBase.name}/${SET_CURRENT_PAGE_ON_TABLE}`, value)
       }
     },
 
@@ -77,7 +77,7 @@ export default {
 
       // if have dataContextFiltered set as current page the first
       if (dataContextFiltered < this.dataContext)
-        this.$store.commit(`${this.pageBody.store}/${SET_CURRENT_PAGE_ON_TABLE}`, 1)
+        this.$store.commit(`${this.storeBase.name}/${SET_CURRENT_PAGE_ON_TABLE}`, 1)
 
       return dataContextFiltered
     }
@@ -92,34 +92,19 @@ export default {
     ...mapActions({
       async getDataContext () {
         this.$store.commit(`spinners/${ENABLE_LOADING_TABLE}`)
-        await this.$store.dispatch(`${this.pageBody.store}/getDataContext`)
+        await this.$store.dispatch(`${this.storeBase.name}/getDataContext`)
         this.$store.commit(`spinners/${DISABLE_LOADING_TABLE}`)
 
       },
       async getItemContext ({}, id) {
-        await this.$store.dispatch(`${this.pageBody.store}/getItemContext`, id)
+        await this.$store.dispatch(`${this.storeBase.name}/getItemContext`, id)
       },
 
       setDynamicComponentAsModalMain ({}, component) {
-        this.$store.dispatch(`${this.pageBody.store}/openMainModal`, component)
+        console.warn('dynamic component:::::', component.store, this.storeBase.name)
+        this.$store.dispatch(`${this.storeBase.name}/openMainModal`, component)
       }
     }),
-
-    /**
-     * fetching the itemContext by his id
-     * set the name of editComponent as dynamic component
-     * on layouts/default.vue & set his visibility state
-     *
-     * @param {Number} id
-     */
-    async openModalEditItemContext ({ id }) {
-      try {
-        await this.getItemContext(id)
-
-        this.setDynamicComponentAsModalMain(this.pageBody.editComponent)
-      }
-      catch (e) {}
-    },
 
     initPageSettings () {
       this.criteriaLength = this.filterCriteriaProps.length

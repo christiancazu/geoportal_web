@@ -4,6 +4,7 @@
   :rules="rules"
   :store="store"
   :message-toast="messageToast"
+  @close-modal="closeModal"
 >
   <template v-slot:form-content>
     <!-- name -->

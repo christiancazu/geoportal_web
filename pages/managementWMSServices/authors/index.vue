@@ -1,7 +1,7 @@
 <template>
 <base-page-actions
   :page-header="pageHeader"
-  :page-body="pageBody"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
@@ -61,21 +61,28 @@ export default {
 
   extends: BasePageActionsParent,
 
+  props: {
+    mountedAs: {
+      type: String,
+      default: 'view'
+    },
+  },
+
   data () {
     return {
       pageHeader: {
         title: 'Autores de servicios WMS',
         btnAddName: 'Nuevo autor WMS'
       },
-      pageBody: {
-        store: 'WMSAuthors'
+      storeBase: {
+        name: 'WMSAuthors'
       },
       // main modal settings
       modalMain: {
         addComponent: {
-          type: 'component',
-          folderPath: 'WMSServices',
-          name: 'AddAuthor',
+          type: 'page',
+          folderPath: 'managementWMSServices/categories',
+          name: 'index',
           store: 'WMSAuthors'
         },
         editComponent: {

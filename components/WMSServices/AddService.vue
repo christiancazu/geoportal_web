@@ -2,9 +2,10 @@
 <base-form
   :form="form"
   :rules="rules"
-  :store="store"
+  :store-base="storeBase"
   :message-toast="messageToast"
-  @clear-form="clearForm"
+  @reset-form="resetForm"
+  @close-modal="closeModal"
 >
   <template v-slot:form-content>
     <!-- name -->
@@ -109,11 +110,14 @@
     <!-- innerComponent on modal -->
     <!-- <base-modal :modal="modalAddCategory">
       <template v-slot:modal-content>
-        <component :is="dynamicComponent" />
+        <component
+          :is="dynamicComponent"
+          :store-mounted="$store.state[pageBody.store].modalInner.store"
+        />
       </template>
     </base-modal> -->
 
-    <el-dialog
+    <!-- <el-dialog
       :title="$store.state['WMSServices'].modalMain.title"
       :close-on-click-modal="false"
       :visible="visible"
@@ -124,7 +128,7 @@
       @close="visible = false"
     >
       <component :is="dynamicComponent" />
-    </el-dialog>
+    </el-dialog> -->
 
   </template>
 </base-form>
@@ -145,10 +149,9 @@ export default {
 
   data () {
     return {
-      visible: false, //
       dialogTitle: 'Registrar servicio WMS',
 
-      store: {
+      storeBase: {
         name: 'WMSServices',
         action: 'create'
       },
@@ -224,27 +227,10 @@ export default {
     // }
   },
 
-  watch: {
-    currentModal: {
-      handler: 'handd',
-      immediate: true
-    }
-  },
-
-  mounted () {
-    setTimeout(() => {
-      this.visible = true
-    }, 1000)
-  },
-
   methods: {
-    clearForm () {
+    resetForm () {
       // reset textarea
       this.form.description = ''
-    },
-
-    handd () {
-      console.log('HANDLER>>', this.$store.state[this.store.name].innerComponent)
     }
   }
 }

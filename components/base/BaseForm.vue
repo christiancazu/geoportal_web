@@ -1,20 +1,17 @@
 <template>
-<div>
-  <el-form
-    ref="form"
-    label-position="top"
-    status-icon
-    :model="form"
-    :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm"
-    :disabled="$store.state.spinners.processingForm"
-    autocomplete="off"
-  >
+<el-form
+  ref="form"
+  label-position="top"
+  status-icon
+  :model="form"
+  :rules="rules"
+  label-width="120px"
+  class="demo-ruleForm"
+  :disabled="$store.state.spinners.processingForm"
+  autocomplete="off"
+>
 
-    <slot name="form-content" />
-
-  </el-form>
+  <slot name="form-content" />
 
   <!-- actions -->
   <div class="text-xs-center">
@@ -29,7 +26,7 @@
       size="small"
       native-type="submit"
       :loading="$store.state.spinners.processingForm"
-      @click="submitForm"
+      @click.prevent="submitForm"
     >
       GUARDAR
     </el-button>
@@ -39,14 +36,15 @@
         type="success"
         size="small"
         :loading="$store.state.spinners.processingForm"
-        @click="submitPublish"
+        @click.prevent="submitPublish"
       >
         PUBLICAR
       </el-button>
     </template>
 
   </div>
-</div>
+
+</el-form>
 </template>
 
 <script>
@@ -55,8 +53,7 @@ import { mapActions } from 'vuex'
 import {
   SET_PUBLISHED_ITEM_CONTEXT,
   ENABLE_PROCESSING_FORM,
-  DISABLE_PROCESSING_FORM,
-  CLOSE_MODAL
+  DISABLE_PROCESSING_FORM
 } from '@/types/mutation-types'
 
 export default {
@@ -67,7 +64,7 @@ export default {
     rules: {
       type: Object, required: true
     },
-    store: {
+    storeBase: {
       type: Object,
       default: () => ({
         name: { type: String, required: true },
@@ -86,11 +83,11 @@ export default {
   computed: {
     canPublish: {
       get () {
-        if (typeof this.$store.state[this.store.name].itemContext.isPublished === 'undefined') return false
-        return !this.$store.state[this.store.name].itemContext.isPublished && this.store.action === 'update'
+        if (typeof this.$store.state[this.storeBase.name].itemContext.isPublished === 'undefined') return false
+        return !this.$store.state[this.storeBase.name].itemContext.isPublished && this.storeBase.action === 'update'
       },
       set (value) {
-        this.$store.commit(`${this.store.name}/${SET_PUBLISHED_ITEM_CONTEXT}`, value)
+        this.$store.commit(`${this.storeBase.name}/${SET_PUBLISHED_ITEM_CONTEXT}`, value)
       }
     }
   },
@@ -98,13 +95,13 @@ export default {
   methods: {
     ...mapActions({
       async getDataContext () {
-        await this.$store.dispatch(`${this.store.name}/getDataContext`)
+        await this.$store.dispatch(`${this.storeBase.name}/getDataContext`)
       },
       async submitItemContext ({}, formData) {
-        await this.$store.dispatch(`${this.store.name}/${this.store.action}ItemContext`, formData)
+        await this.$store.dispatch(`${this.storeBase.name}/${this.storeBase.action}ItemContext`, formData)
       },
       async publishItemContext ({}, formData) {
-        await this.$store.dispatch(`${this.store.name}/publishItemContext`, formData)
+        await this.$store.dispatch(`${this.storeBase.name}/publishItemContext`, formData)
       },
     }),
 
@@ -123,7 +120,7 @@ export default {
         try {
           await this.submitItemContext(formData)
 
-          if (this.store.action === 'create') {
+          if (this.storeBase.action === 'create') {
             this.resetForm()
           }
 
@@ -166,14 +163,12 @@ export default {
     },
 
     closeModal () {
-      this.resetForm()
-      console.warn('closeModal storename> ', this.store.name)
-      this.$store.commit(`${this.store.name}/${CLOSE_MODAL}`)
+      this.$emit('close-modal')
     },
 
     resetForm () {
-      this.$emit('clear-form')
       this.$refs.form.resetFields()
+      this.$emit('reset-form')
     }
   }
 }

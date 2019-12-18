@@ -32,7 +32,7 @@ export const state = () => ({
   currentPageOnTable: 1,
 
   modalMain: {
-    title: 'modalMain',
+    title: ' ',
     type: 'component',
     folderPath: 'fallback',
     name: 'Fallback',
@@ -74,6 +74,7 @@ export const mutations = {
     state.modalMain.type = 'component'
     state.modalMain.folderPath = 'fallback'
     state.modalMain.name = 'Fallback'
+    state.modalMain.title = ' '
   },
 
   [SET_MODAL_VISIBLE]: state => (state.modalMain.visible = true),

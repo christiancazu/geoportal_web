@@ -2,9 +2,10 @@
 <base-form
   :form="form"
   :rules="rules"
-  :store="store"
+  :store-base="storeBase"
   :message-toast="messageToast"
-  @clear-form="clearForm"
+  @reset-form="resetForm"
+  @close-modal="closeModal"
 >
   <template v-slot:form-content>
     <!-- name -->
@@ -59,7 +60,7 @@ export default {
     return {
       dialogTitle: 'Registrar autor WMS',
 
-      store: {
+      storeBase: {
         name: 'WMSAuthors',
         action: 'create'
       },
@@ -79,12 +80,8 @@ export default {
     }
   },
 
-  mounted () {
-    console.warn('addauthor mounted')
-  },
-
   methods: {
-    clearForm () {
+    resetForm () {
       // reset textarea
       this.form.description = ''
     }

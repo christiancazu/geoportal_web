@@ -1,7 +1,7 @@
 <template>
 <base-page-actions
   :page-header="pageHeader"
-  :page-body="pageBody"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
@@ -63,8 +63,8 @@ export default {
         title: 'Categorias de servicios WMS',
         btnAddName: 'Nueva categoría WMS'
       },
-      pageBody: {
-        store: 'WMSCategories'
+      storeBase: {
+        name: 'WMSCategories'
       },
       // main modal settings
       modalMain: {

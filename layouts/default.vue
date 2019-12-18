@@ -20,6 +20,8 @@
       <!-- pages routing -->
       <nuxt />
 
+      <store-viewer />
+
       <!-- dynamic current modals -->
       <template v-if="loggedIn">
         <!-- <component
@@ -47,13 +49,17 @@
   </el-container>
 </div>
 </template>
+
 <script>
+import StoreViewer from '@/components/tester/StoreViewer'
+
 import { mapState } from 'vuex'
 import SideBar from '@/components/SideBar'
 
 export default {
   components: {
-    SideBar
+    SideBar,
+    StoreViewer
   },
 
   data () {

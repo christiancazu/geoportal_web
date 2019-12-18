@@ -1,7 +1,7 @@
 <template>
 <base-page-actions
   :page-header="pageHeader"
-  :page-body="pageBody"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
@@ -88,8 +88,8 @@ export default {
         title: 'Servicios externos WMS',
         btnAddName: 'Nuevo servicio WMS'
       },
-      pageBody: {
-        store: 'WMSServices'
+      storeBase: {
+        name: 'WMSServices'
       },
       // main modal settings
       modalMain: {
