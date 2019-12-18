@@ -34,20 +34,20 @@ export default {
 
   computed: {
     ...mapState({
-      dataContext (state) {
-        return state[this.modal.store].dataContext
+      dataContext () {
+        return this.$store.state[this.pageBody.store].dataContext
       },
-      itemContext (state) {
-        return state[this.modal.store].itemContext
+      itemContext () {
+        return this.$store[this.pageBody.store].itemContext
       }
     }),
 
     currentPage: {
       get () {
-        return this.$store.state[this.modal.store].currentPageOnTable
+        return this.$store.state[this.pageBody.store].currentPageOnTable
       },
       set (value) {
-        this.$store.commit(`${this.modal.store}/${SET_CURRENT_PAGE_ON_TABLE}`, value)
+        this.$store.commit(`${this.pageBody.store}/${SET_CURRENT_PAGE_ON_TABLE}`, value)
       }
     },
 
@@ -77,7 +77,7 @@ export default {
 
       // if have dataContextFiltered set as current page the first
       if (dataContextFiltered < this.dataContext)
-        this.$store.commit(`${this.modal.store}/${SET_CURRENT_PAGE_ON_TABLE}`, 1)
+        this.$store.commit(`${this.pageBody.store}/${SET_CURRENT_PAGE_ON_TABLE}`, 1)
 
       return dataContextFiltered
     }
@@ -92,19 +92,16 @@ export default {
     ...mapActions({
       async getDataContext () {
         this.$store.commit(`spinners/${ENABLE_LOADING_TABLE}`)
-        await this.$store.dispatch(`${this.modal.store}/getDataContext`)
+        await this.$store.dispatch(`${this.pageBody.store}/getDataContext`)
         this.$store.commit(`spinners/${DISABLE_LOADING_TABLE}`)
 
       },
       async getItemContext ({}, id) {
-        await this.$store.dispatch(`${this.modal.store}/getItemContext`, id)
+        await this.$store.dispatch(`${this.pageBody.store}/getItemContext`, id)
       },
-      setDynamicModalComponent ({}, componentAddName) {
-        this.$store.dispatch(`${this.modal.store}/openModal`, {
-          folderRoot: this.modal.folderRoot,
-          folderName: this.modal.folderName,
-          component: componentAddName
-        })
+
+      setDynamicComponentAsModalMain ({}, component) {
+        this.$store.dispatch(`${this.pageBody.store}/openMainModal`, component)
       }
     }),
 
@@ -119,7 +116,7 @@ export default {
       try {
         await this.getItemContext(id)
 
-        this.setDynamicModalComponent(this.modal.editComponent)
+        this.setDynamicComponentAsModalMain(this.pageBody.editComponent)
       }
       catch (e) {}
     },

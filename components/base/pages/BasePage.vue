@@ -33,7 +33,7 @@
 
   </el-card>
 
-  <base-modal :modal="modal">
+  <base-modal :modal-main="$store.state[pageBody.store].modalMain">
     <template v-slot:modal-content>
       <component :is="dynamicComponent" />
     </template>
@@ -47,7 +47,7 @@ import BaseModal from '@/components/base/BaseModal'
 
 export default {
   components: {
-    BaseModal,
+    BaseModal
   },
 
   props: {
@@ -58,29 +58,39 @@ export default {
         btnAddName: { type: String, required: false }
       })
     },
+    pageBody: {
+      type: Object,
+      default: () => ({
+        store: { type: String, required: true }
+      })
+    },
     fitContent: {
       type: Boolean,
       default: false
     },
-    modal: {
-      type: Object,
-      default: () => ({
-        folderRoot: { type: String, required: true },
-        folderName: { type: String, required: true },
-        store: { type: String, required: true },
-        addComponent: { type: String, required: true },
-        editComponent: { type: String, required: true }
-      })
-    },
+    // modal: {
+    //   type: Object,
+    //   default: () => ({
+    //     folderRoot: { type: String, required: true },
+    //     folderName: { type: String, required: true },
+    //     store: { type: String, required: true },
+    //     addComponent: { type: String, required: true },
+    //     editComponent: { type: String, required: true }
+    //   })
+    // },
   },
 
   computed: {
+    // mainModal () {
+    //   return
+    // },
+
     dynamicComponent () {
-      const { folderRoot, folderName, component } = this.$store.state[this.modal.store].modal
-      console.warn('basepage', folderRoot, folderName, component)
-      return folderRoot === 'pages'
-        ? () => import(`@/pages/${folderName}/${component}`)
-        : () => import(`@/components/${folderName}/${component}`)
+      const { type, folderPath, name } = this.$store.state[this.pageBody.store].modalMain
+      console.warn('dynamicComponent>>>', type, folderPath, name)
+      return type === 'page'
+        ? () => import(`@/pages/${folderPath}/${name}`)
+        : () => import(`@/components/${folderPath}/${name}`)
     }
   }
 }

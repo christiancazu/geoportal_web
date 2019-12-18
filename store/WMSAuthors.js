@@ -8,80 +8,74 @@ import {
   CLOSE_MODAL
 } from '../types/mutation-types'
 
+import {
+  getDataContext,
+  getItemContext,
+  createItemContext,
+  publishItemContext,
+  updateItemContext,
+  deleteItemContext,
+  openMainModal
+} from '@/use/store.actions'
+
+import {
+  setDataContext,
+  setItemContext,
+  setCurrentPageOnTable
+} from '@/use/store.mutations'
+
+const API = '$WMSAuthorAPI'
+
 export const state = () => ({
   dataContext: [],
   itemContext: {},
   currentPageOnTable: 1,
-  modal: {
-    title: '',
-    folderRoot: 'components',
-    folderName: 'fallback',
-    component: 'Fallback',
+
+  modalMain: {
+    title: 'modalMain',
+    type: 'component',
+    folderPath: 'fallback',
+    name: 'Fallback',
+    store: 'WMSCategories',
     visible: false
   }
 })
 
 export const actions = {
-  async createItemContext ({}, form) {
-    await this.$WMSAuthorAPI.create(form)
-  },
+  createItemContext: createItemContext(API),
 
-  async getDataContext ({ commit }) {
-    const data = await this.$WMSAuthorAPI.get()
-    commit(SET_DATA_CONTEXT, data)
-  },
+  getDataContext: getDataContext(API),
 
-  async getItemContext ({ commit }, id) {
-    const data = await this.$WMSAuthorAPI.getById(id)
-    commit(SET_ITEM_CONTEXT, data)
-  },
+  getItemContext: getItemContext(API),
 
-  async publishItemContext ({}, form) {
-    await this.$WMSAuthorAPI.publish(form)
-  },
+  publishItemContext: publishItemContext(API),
 
-  async updateItemContext ({}, form) {
-    await this.$WMSAuthorAPI.update(form)
-  },
+  updateItemContext: updateItemContext(API),
 
-  async deleteItemContext ({}, id) {
-    await this.$WMSAuthorAPI.delete(id)
-  },
+  deleteItemContext: deleteItemContext(API),
 
-  openModal: ({ commit }, payload) => {
-    commit(OPEN_MODAL, payload)
-    setTimeout(() => {
-      commit(SET_MODAL_VISIBLE)
-    }, 250)
-  }
+  openMainModal
 }
 
 export const mutations = {
-  [SET_DATA_CONTEXT]: (state, payload) => (state.dataContext = payload),
+  [SET_DATA_CONTEXT]: setDataContext,
 
-  [SET_ITEM_CONTEXT]: (state, payload) => (state.itemContext = payload),
+  [SET_ITEM_CONTEXT]: setItemContext,
 
-  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) =>
-    (state.itemContext.isPublished = !payload),
+  [SET_CURRENT_PAGE_ON_TABLE]: setCurrentPageOnTable,
 
-  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload),
+  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
 
-  [OPEN_MODAL]: (state, payload) => {
-    state.modal.folderRoot = payload.folderRoot
-    state.modal.folderName = payload.folderName
-    state.modal.component = payload.component
-  },
+  [OPEN_MODAL]: (state, payload) => Object.assign(state.modalMain, payload),
 
   [CLOSE_MODAL]: state => {
-    state.modal.visible = false
-    state.modal.folderRoot = 'components'
-    state.modal.folderName = 'fallback'
-    state.modal.component = 'Fallback'
+    state.modalMain.visible = false
+    state.modalMain.type = 'component'
+    state.modalMain.folderPath = 'fallback'
+    state.modalMain.name = 'Fallback'
   },
 
-  [SET_MODAL_VISIBLE]: state => (state.modal.visible = true),
+  [SET_MODAL_VISIBLE]: state => (state.modalMain.visible = true),
 
-  SET_DIALOG_TITLE: (state, payload) => {
-    state.modal.title = payload
-  }
+  SET_DIALOG_TITLE: (state, payload) => (state.modalMain.title = payload)
 }

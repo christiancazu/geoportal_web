@@ -107,11 +107,25 @@
     </el-form-item>
 
     <!-- innerComponent on modal -->
-    <base-modal :modal="modalAddCategory">
+    <!-- <base-modal :modal="modalAddCategory">
       <template v-slot:modal-content>
         <component :is="dynamicComponent" />
       </template>
-    </base-modal>
+    </base-modal> -->
+
+    <el-dialog
+      :title="$store.state['WMSServices'].modalMain.title"
+      :close-on-click-modal="false"
+      :visible="visible"
+      append-to-body
+      destroy-on-close
+      top="2vh"
+      class="dialog-responsive"
+      @close="visible = false"
+    >
+      <component :is="dynamicComponent" />
+    </el-dialog>
+
   </template>
 </base-form>
 </template>
@@ -131,12 +145,14 @@ export default {
 
   data () {
     return {
+      visible: false, //
       dialogTitle: 'Registrar servicio WMS',
 
       store: {
         name: 'WMSServices',
         action: 'create'
       },
+
       modalAddAuthor: {
         type: 'modal',
         folderRoot: 'components',
@@ -189,14 +205,18 @@ export default {
 
   computed: {
     dynamicComponent () {
-      const { store, folderRoot, folderName, component } = this.$store.state[this.store.name].innerComponent
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      // this.currentStore = store
-      console.warn('add service dynamicComponent', store, folderRoot, folderName, component, this.$store.state[this.store.name].innerComponent)
-      return folderRoot === 'pages'
-        ? () => import(`@/pages/${folderName}/${component}`)
-        : () => import(`@/components/${folderName}/${component}`)
+      // return () => import(`@/pages/managementWMSServices/categories/index`)
+      return () => import(`@/components/WMSServices/AddAuthor`)
     },
+    // dynamicComponent () {
+    //   const { store, folderRoot, folderName, component } = this.$store.state[this.store.name].innerComponent
+    //   // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+    //   // this.currentStore = store
+    //   console.warn('add service dynamicComponent', store, folderRoot, folderName, component, this.$store.state[this.store.name].innerComponent)
+    //   return folderRoot === 'pages'
+    //     ? () => import(`@/pages/${folderName}/${component}`)
+    //     : () => import(`@/components/${folderName}/${component}`)
+    // },
 
     // currentModal () {
     //   console.warn('modalAddAuthor> ', this.$store.state[this.store.name].innerComponent)
@@ -209,6 +229,12 @@ export default {
       handler: 'handd',
       immediate: true
     }
+  },
+
+  mounted () {
+    setTimeout(() => {
+      this.visible = true
+    }, 1000)
   },
 
   methods: {

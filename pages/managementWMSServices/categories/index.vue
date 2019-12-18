@@ -1,13 +1,14 @@
 <template>
 <base-page-actions
   :page-header="pageHeader"
-  :modal="modal"
+  :page-body="pageBody"
+  :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
 >
   <template
     v-slot:page-table="{
-      openModalEditItemContext,
+      openModalEdit,
       confirmedActionDeleteItemContext,
       shrinkText
     }"
@@ -16,7 +17,6 @@
       label="Nombre"
       prop="name"
     />
-
     <el-table-column
       label="Descripción"
       prop="description"
@@ -36,7 +36,7 @@
           :item-selected="scope.row"
           dialog-delete-title="Eliminar categoría"
           dialog-delete-body-text="¿Está seguro de eliminar esta categoría?"
-          @open-edit-modal="openModalEditItemContext(scope.row)"
+          @open-edit-modal="openModalEdit(scope.row)"
           @confirmed-action="confirmedActionDeleteItemContext"
         />
       </template>
@@ -63,14 +63,23 @@ export default {
         title: 'Categorias de servicios WMS',
         btnAddName: 'Nueva categoría WMS'
       },
+      pageBody: {
+        store: 'WMSCategories'
+      },
       // main modal settings
-      modal: {
-        type: 'modal',
-        folderRoot: 'components',
-        folderName: 'WMSServices',
-        store: 'WMSCategories',
-        addComponent: 'AddCategory',
-        editComponent: 'EditCategory'
+      modalMain: {
+        addComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'AddCategory',
+          store: 'WMSCategories'
+        },
+        editComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'EditCategory',
+          store: 'WMSCategories'
+        }
       },
       messageToast: {
         baseName: 'CATEGORY'

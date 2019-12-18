@@ -1,13 +1,14 @@
 <template>
 <base-page-actions
   :page-header="pageHeader"
-  :modal="modal"
+  :page-body="pageBody"
+  :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
 >
   <template
     v-slot:page-table="{
-      openModalEditItemContext,
+      openModalEdit,
       confirmedActionDeleteItemContext,
       shrinkText
     }"
@@ -16,12 +17,10 @@
       label="Nombre"
       prop="name"
     />
-
     <el-table-column
       label="URL"
       prop="webUrl"
     />
-
     <el-table-column
       label="Descripción"
       prop="description"
@@ -41,7 +40,7 @@
           :item-selected="scope.row"
           dialog-delete-title="Eliminar autor"
           dialog-delete-body-text="¿Está seguro de eliminar este autor?"
-          @open-edit-modal="openModalEditItemContext(scope.row)"
+          @open-edit-modal="openModalEdit(scope.row)"
           @confirmed-action="confirmedActionDeleteItemContext"
         />
       </template>
@@ -68,14 +67,23 @@ export default {
         title: 'Autores de servicios WMS',
         btnAddName: 'Nuevo autor WMS'
       },
+      pageBody: {
+        store: 'WMSAuthors'
+      },
       // main modal settings
-      modal: {
-        type: 'modal',
-        folderRoot: 'components',
-        folderName: 'WMSServices',
-        store: 'WMSAuthors',
-        addComponent: 'AddAuthor',
-        editComponent: 'EditAuthor'
+      modalMain: {
+        addComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'AddAuthor',
+          store: 'WMSAuthors'
+        },
+        editComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'EditAuthor',
+          store: 'WMSAuthors'
+        }
       },
       messageToast: {
         baseName: 'AUTHOR'

@@ -1,8 +1,9 @@
 <template>
 <base-page
   :page-header="pageHeader"
-  :modal="modal"
-  @open-add-modal="openModalAddItemContext()"
+  :page-body="pageBody"
+  :modal-main="modalMain"
+  @open-add-modal="openModalAdd()"
 >
   <el-container direction="vertical">
     <el-row
@@ -33,7 +34,7 @@
 
       <slot
         name="page-table"
-        :openModalEditItemContext="openModalEditItemContext"
+        :openModalEdit="openModalEdit"
         :confirmedActionDeleteItemContext="confirmedActionDeleteItemContext"
         :shrinkText="$options.filters.shrinkText"
       />
@@ -76,14 +77,18 @@ export default {
         btnAddName: { type: String, required: false }
       })
     },
-    modal: {
+    pageBody: {
       type: Object,
       default: () => ({
-        folderRoot: { type: String, required: true },
-        folderName: { type: String, required: true },
-        store: { type: String, required: true },
-        addComponent: { type: String, required: true },
-        editComponent: { type: String, required: true }
+        store: { type: String, required: true }
+      })
+    },
+    modalMain: {
+      type: Object,
+      default: () => ({
+        addComponent: { type: Object, default: () => ({}) },
+        editComponent: { type: Object, default: () => ({}) }
+        // PAGEComponent: { type: Object, default: () => ({}) },
       })
     },
     messageToast: {
@@ -95,9 +100,9 @@ export default {
     filterCriteriaProps: {
       type: Array, default: () => []
     },
-    fitContent: {
-      type: Boolean, default: false
-    }
+    // fitContent: {
+    //   type: Boolean, default: false
+    // }
   },
 
   data () {
@@ -108,10 +113,14 @@ export default {
     }
   },
 
+  mounted () { ///////////////
+    console.warn('modalMain', this.modalMain)
+  },
+
   methods: {
     ...mapActions({
       async deleteItemContext ({}, id) {
-        await this.$store.dispatch(`${this.modal.store}/deleteItemContext`, id)
+        await this.$store.dispatch(`${this.pageBody.store}/deleteItemContext`, id)
       }
     }),
 
@@ -120,8 +129,8 @@ export default {
      * on layouts/default.vue & set his visibility state
      *
      */
-    openModalAddItemContext () {
-      this.setDynamicModalComponent(this.modal.addComponent)
+    openModalAdd () {
+      this.setDynamicComponentAsModalMain(this.modalMain.addComponent)
     },
 
     /**
@@ -131,11 +140,11 @@ export default {
      *
      * @param {Number} id
      */
-    async openModalEditItemContext ({ id }) {
+    async openModalEdit ({ id }) {
       try {
         await this.getItemContext(id)
 
-        this.setDynamicModalComponent(this.modal.editComponent)
+        this.setDynamicComponentAsModalMain(this.modalMain.editComponent)
       }
       catch (e) {}
     },
@@ -154,7 +163,7 @@ export default {
         // getting dataContext again to see updates
         await this.getDataContext()
 
-        let currentPage = this.$store.state[this.modal.store].currentPageOnTable
+        let currentPage = this.$store.state[this.pageBody.store].currentPageOnTable
 
         // if number of pages is minor that the current page, (when delete)
         if (this.dataContext.length / ROWS_PER_PAGE_ON_TABLE <= (currentPage - 1)) {
@@ -162,7 +171,7 @@ export default {
         }
         // setting currentPage before to submit deleteItemContext and getDataContext
         // to set it again as currentPage to prevent go to page 1 when fetch the dataContext
-        this.$store.commit(`${this.modal.store}/${SET_CURRENT_PAGE_ON_TABLE}`, currentPage)
+        this.$store.commit(`${this.pageBody.store}/${SET_CURRENT_PAGE_ON_TABLE}`, currentPage)
       }
       catch (e) {}
     }

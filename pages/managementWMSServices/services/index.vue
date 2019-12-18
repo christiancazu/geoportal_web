@@ -1,13 +1,14 @@
 <template>
 <base-page-actions
   :page-header="pageHeader"
-  :modal="modal"
+  :page-body="pageBody"
+  :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
 >
   <template
     v-slot:page-table="{
-      openModalEditItemContext,
+      openModalEdit,
       confirmedActionDeleteItemContext,
       shrinkText
     }"
@@ -60,7 +61,7 @@
           :item-selected="scope.row"
           dialog-delete-title="Eliminar servicio"
           dialog-delete-body-text="¿Está seguro de eliminar este servicio?"
-          @open-edit-modal="openModalEditItemContext(scope.row)"
+          @open-edit-modal="openModalEdit(scope.row)"
           @confirmed-action="confirmedActionDeleteItemContext"
         />
       </template>
@@ -87,14 +88,23 @@ export default {
         title: 'Servicios externos WMS',
         btnAddName: 'Nuevo servicio WMS'
       },
+      pageBody: {
+        store: 'WMSServices'
+      },
       // main modal settings
-      modal: {
-        type: 'modal',
-        folderRoot: 'components',
-        folderName: 'WMSServices',
-        store: 'WMSServices',
-        addComponent: 'AddService',
-        editComponent: 'EditService'
+      modalMain: {
+        addComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'AddService',
+          store: 'WMSServices'
+        },
+        editComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'EditService',
+          store: 'WMSServices'
+        }
       },
       messageToast: {
         baseName: 'SERVICE'
