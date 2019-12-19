@@ -1,6 +1,6 @@
 <template>
 <el-dialog
-  :title="$store.state[modal.store][modalType].title"
+  :title="title"
   :close-on-click-modal="false"
   :visible="$store.state[modal.store][modalType].visible"
   append-to-body
@@ -24,14 +24,24 @@ export default {
     modal: {
       type: Object,
       default: () => ({
-        store: { type: String, required: true }
+        store: { type: String, required: true },
+        title: { type: String, default: ' ' }
       })
     },
     modalType: { type: String, required: true }
   },
 
+  computed: {
+    title () {
+      return this.modal.title !== ' '
+        ? this.modal.title
+        : this.$store.state[this.modal.store][this.modalType].title
+    }
+  },
+
   methods: {
     closeModal () {
+      this.$emit('close-modal')
       this.$store.commit(`${this.modal.store}/${CLOSE_MODAL}`, this.modalType)
     }
   }

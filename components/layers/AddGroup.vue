@@ -1,123 +1,105 @@
 <template>
-<el-dialog
-  :title="formTitle"
-  :close-on-click-modal="false"
-  :visible="dialogVisible"
-  center
-  class="dialog-responsive"
-  append-to-body
+<base-modal
+  :modal="modal"
+  :modal-type="modalType"
+  @close-modal="closeModal"
 >
-  <el-form
-    ref="form"
-    :model="formAddGroupLayer"
-    :rules="rulesAddGroupLayer"
-    label-width="120px"
-    label-position="top"
-    class="demo-ruleForm"
-    @submit.native.prevent
-  >
-    <slot />
-    <div class="text-xs-center">
-      <el-button
-        size="small"
-        @click="closeModal()"
+  <template slot="modal-content">
+    <el-form
+      ref="form"
+      :model="form"
+      :rules="rules"
+      label-width="120px"
+      label-position="top"
+      class="demo-ruleForm"
+    >
+      <el-form-item
+        label="Título"
+        prop="name"
       >
-        CERRAR
-      </el-button>
-      <el-button
-        type="primary"
-        size="small"
-        native-type="submit"
-        :loading="$store.state.spinners.processingForm"
-        @click="saveGroupLayerName"
-      >
-        GUARDAR
-      </el-button>
-    </div>
-  </el-form>
-</el-dialog>
+        <el-input
+          v-model="form.name"
+          type="text"
+          autocomplete="off"
+          :rules="rules.name"
+          autofocus
+        />
+      </el-form-item>
+
+      <div class="text-xs-center">
+        <el-button
+          size="small"
+          @click="closeModal()"
+        >
+          CERRAR
+        </el-button>
+        <el-button
+          type="primary"
+          size="small"
+          native-type="submit"
+          :loading="$store.state.spinners.processingForm"
+          @click="saveGroupLayerName"
+        >
+          GUARDAR
+        </el-button>
+      </div>
+    </el-form>
+  </template>
+</base-modal>
 </template>
 
 <script>
-// import {
-//   title,
-//   categoryGroupId
-// } from '@/config/form.rules'
+import BaseModal from '@/components/base/BaseModal'
 
-// import treeResolver from '@/helpers/treeResolver'
+import { name } from '@/config/form.rules'
+
+import { CLOSE_MODAL } from '@/types/mutations'
 
 export default {
-  props: {
-    dialogVisible: {
-      type: Boolean,
-      default: false
-    },
-    formAddGroupLayer: {
-      type: Object, required: true
-    },
-    rulesAddGroupLayer: {
-      type: Object, required: true
-    },
+  components: {
+    BaseModal
   },
 
   data () {
+    const
+      dialogTitle = 'Registrar Grupo de capas',
+      storeBaseName = 'groupLayers'
     return {
-      formTitle: 'Registrar nuevo grupo de capas',
+      dialogTitle,
 
-      // context: {
-      //   storeBase: 'groupLayers',
-      //   mountedOn: this.modalBaseActionsMixin_mountedOn,
-      //   storeAction: 'create',
-      // },
-      // messageToast: {
-      //   baseName: 'LAYER',
-      //   action: 'REGISTERED'
-      // },
-      // form: {
-      //   order: 1,
-      //   title: '',
-      //   description: '',
-      //   categoryGroupId: 1
-      // },
-      // rules: {
-      //   title,
-      //   categoryGroupId
-      // },
-      // structureTree: [],
+      modalType: 'modalMain',
+
+      modal: {
+        store: storeBaseName,
+        title: dialogTitle
+      },
+      storeBase: {
+        name: storeBaseName,
+        action: 'update'
+      },
+      form: {
+        name: ''
+      },
+      rules: {
+        name: name('grupo de capas')
+      }
     }
   },
 
-  async created () {
-    // await this.$store.dispatch('groupLayers/getStructureTree')
-
-    // const structureTree = this.$store.state.groupLayers.structureTree
-    // console.warn(structureTree)
-    // // let _structure = JSON.parse(JSON.stringify(this.$store.state.portal.structure.structure))
-
-    // // const x = treeResolver(_structure)
-    // // console.warn('resolver', x)
-    // this.structureTree.push(structureTree)
-  },
-
   methods: {
-    handleNodeClick (node) {
-      this.form.categoryGroupId = node.id
-      console.warn(node.id)
-    },
-
     async saveGroupLayerName () {
       let isFormValid = false
-      console.warn(this.formAddGroupLayer)
       await this.$refs.form.validate(result => isFormValid = result)
 
       if (isFormValid) {
-        this.$emit('set-group-layer-name', this.formAddGroupLayer.name)
+        this.$emit('set-group-layer-name', this.form.name)
         this.$refs.form.resetFields()
       }
     },
 
     closeModal () {
       this.$emit('close-modal')
+      this.$store.commit(`groupLayers/${CLOSE_MODAL}`, 'modalMain')
       this.$refs.form.resetFields()
     }
   }

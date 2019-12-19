@@ -1,10 +1,11 @@
 <template>
 <base-page
   :page-header="pageHeader"
+  :is-mounted-as-page="isMountedAsPage"
 >
   <template slot="btn-header">
     <el-button
-      :loading="$store.state.spinners.loadingTable"
+      :loading="$store.state.spinners.loadingPage"
       size="mini"
       type="primary"
       icon="el-icon-refresh"
@@ -22,86 +23,54 @@
     effect="dark"
   />
 
-  <vue-tree-list
-    ref="tree"
-    class="my-4"
-    :model="dataTree"
-    default-tree-node-name="Nuevo grupo de capas"
-    default-expanded
-    @click="onClick"
-    @change-name="onChangeName"
-    @delete-node="onDel"
-    @add-node="onAddNode"
-    @drop-before="onDropBefore"
-    @drop-after="onDropAfter"
-    @drop="onDrop"
-  >
-    <span
-      slot="addTreeNodeIcon"
-      class="icon-vtl"
-    >➕</span>
-    <span
-      slot="editNodeIcon"
-      class="icon-vtl"
-    >📝</span>
-    <span
-      slot="delNodeIcon"
-      class="icon-vtl"
-    >✂️</span>
-    <span
-      slot="treeNodeIcon"
-      class="icon-vtl"
-    >📂</span>
-  </vue-tree-list>
+  <div v-loading="$store.state.spinners.loadingPage">
 
-  <add-group-layer
-    :dialog-visible="dialogVisible"
-    :form-add-group-layer="formAddGroupLayer"
-    :rules-add-group-layer="rulesAddGroupLayer"
-    @set-group-layer-name="setGroupLayerName"
-    @close-modal="onCancelAddGroupLayer"
-  >
-    <el-form-item
-      label="Título"
-      prop="name"
+    <vue-tree-list
+      class="my-4"
+      style="min-height: 50vh"
+      :model="dataTree"
+      default-tree-node-name="Nuevo grupo de capas"
+      @click="onClick"
+      @change-name="onChangeName"
+      @delete-node="onDel"
+      @add-node="onAddNode"
+      @drop-before="onDropBefore"
+      @drop-after="onDropAfter"
+      @drop="onDrop"
     >
-      <el-input
-        v-model="formAddGroupLayer.name"
-        type="text"
-        autocomplete="off"
-        :rules="rulesAddGroupLayer.name"
-        autofocus
-      />
-    </el-form-item>
-  </add-group-layer>
+      <span
+        slot="addTreeNodeIcon"
+        class="icon-vtl"
+      >➕</span>
+      <span
+        slot="editNodeIcon"
+        class="icon-vtl"
+      >📝</span>
+      <span
+        slot="delNodeIcon"
+        class="icon-vtl"
+      >❌</span>
+      <span
+        slot="treeNodeIcon"
+        class="icon-vtl"
+      >📂</span>
+    </vue-tree-list>
 
-  <!-- <el-dialog
-    title="Tips"
-    :visible.sync="dialogVisible"
-    width="30%"
-    :before-close="handleClose"
-  >
-    <span>This is a message</span>
-    <span
-      slot="footer"
-      class="dialog-footer"
-    >
-      <el-button @click="dialogVisible = false">Cancel</el-button>
+    <add-group-layer
+      @set-group-layer-name="setGroupLayerName"
+      @close-modal="onCancelAddGroupLayer"
+    />
+
+    <div class="text-xs-center mb-0">
       <el-button
+        :loading="$store.state.spinners.processingForm"
         type="primary"
-        @click="dialogVisible = false"
-      >Confirm</el-button>
-    </span>
-  </el-dialog> -->
-  <div class="text-xs-center mb-0">
-    <el-button
-      :loading="$store.state.spinners.processingForm"
-      type="primary"
-      size="small"
-      @click="submitForm"
-    >
-      GUARDAR
-    </el-button>
+        size="small"
+        @click="onSubmit"
+      >
+        GUARDAR
+      </el-button>
+    </div>
   </div>
 
   <pre>{{ backUpTree }}</pre>
@@ -116,7 +85,10 @@ import { VueTreeList, Tree, /*TreeNode*/ } from 'vue-tree-list'
 
 import { $_helper_treeTransform } from '@/helpers/treeManager'
 
-// import { ROOT_GROUP_LAYERS_FOLDER_NAME } from '@/config/constants'
+import {
+  ENABLE_SPINNER,
+  DISABLE_SPINNER
+} from '@/types/mutations'
 
 export default {
   components: {
@@ -125,9 +97,12 @@ export default {
     AddGroupLayer
   },
 
+  props: {
+    storeMounted: { type: Object, default: () => ({}) }
+  },
+
   data () {
     return {
-      dialogVisible: false, //
       pageHeader: {
         title: 'Grupo de capas'
       },
@@ -141,35 +116,31 @@ export default {
       backUpTree: {},
       dataTree: {},
       nodeAdded: {},
-      formAddGroupLayer: {
-        name: ''
-      },
-      rulesAddGroupLayer: {
-        name: [
-          {
-            required: true,
-            message: 'El nombre del grupo de capas es requerido'
-          }
-        ]
-      }
+      isMountedAsPage: true
     }
   },
 
   created () {
     this.init()
+    // used this property only if the page will be used also as modalº
+    // eslint-disable-next-line no-extra-boolean-cast
+    if (!!this.storeMounted.name) this.isMountedAsPage = false
   },
 
   methods: {
     setGroupLayerName (name) {
       this.nodeAdded.name = name
-      this.dialogVisible = false
-      this.formAddGroupLayer.name = ''
+      this.nodeAdded = {}
       this.updateTree()
+      this.$store.commit('groupLayers/CLOSE_MODAL', 'modalMain')
     },
 
     onCancelAddGroupLayer () {
-      this.nodeAdded.remove()
-      this.dialogVisible = false
+      try {
+        this.nodeAdded.remove()
+      } catch (error) {
+
+      }
       this.updateTree()
     },
 
@@ -195,7 +166,8 @@ export default {
       node.addLeafNodeDisabled = true
       this.nodeAdded = node
 
-      this.dialogVisible = true
+      this.$store.commit('groupLayers/OPEN_MODAL', 'modalMain')
+
       node.changeName(this.nodeAdded.name)
     },
 
@@ -253,23 +225,34 @@ export default {
     },
 
     async init () {
-      await this.$store.dispatch('groupLayers/getStructureTree')
+      this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'loadingPage')
+      try {
+        await this.$store.dispatch('groupLayers/getStructureTree')
 
-      // cloning state
-      let data = JSON.parse(JSON.stringify(this.$store.state.groupLayers.structureTree))
+        // cloning state
+        let data = JSON.parse(JSON.stringify(this.$store.state.groupLayers.structureTree))
 
-      // init tree
-      this.backUpTree = $_helper_treeTransform(data)
-      this.dataTree = new Tree([this.backUpTree])
-      this.updateTree()
+        // init tree
+        this.backUpTree = $_helper_treeTransform(data)
+        this.dataTree = new Tree([this.backUpTree])
+        this.updateTree()
+      } catch (error) {}
 
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'loadingPage')
     },
+
     refreshGroupLayers () {
-      console.warn('refresh')
       this.init()
     },
 
-    submitForm () {
+    onSubmit () {
+      this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
+      try {
+        alert('#TODO: SEND TO GROUP_LAYERS PUT ENDPOINT')
+        this.updateTree()
+      } catch (error) {}
+
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
 
     }
   },

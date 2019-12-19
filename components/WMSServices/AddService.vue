@@ -126,19 +126,6 @@
       </template>
     </base-modal>
 
-    <!-- <el-dialog
-      :title="$store.state['WMSServices'].modalMain.title"
-      :close-on-click-modal="false"
-      :visible="visible"
-      append-to-body
-      destroy-on-close
-      top="2vh"
-      class="dialog-responsive"
-      @close="visible = false"
-    >
-      <component :is="dynamicComponent" />
-    </el-dialog> -->
-
   </template>
 </base-form>
 </template>

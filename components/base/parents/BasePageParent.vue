@@ -27,7 +27,7 @@ export default {
     shrinkText (text) {
       if (!text) return ''
       return text.length > 16
-        ? `${text.substring(0, 16)}...`
+        ? `${text.substring(0, 16)}…`
         : text
     }
   },
@@ -126,6 +126,6 @@ export default {
     onChangePageSize (pagesize) {
       this.pagesize = pagesize
     }
-  }
+  },
 }
 </script>

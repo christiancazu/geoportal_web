@@ -1,9 +1,9 @@
 <template>
 <div
-  :class="[
-    { 'page-body-center': fitContent },
-    ['ma-4']
-  ]"
+  :class="{
+    'page-body-center': fitContent,
+    'ma-4': isMountedAsPage
+  }"
 >
   <el-card
     shadow="never"
@@ -53,6 +53,10 @@ export default {
       type: Boolean,
       default: false
     },
+    isMountedAsPage: {
+      type: Boolean,
+      default: true
+    }
   }
 }
 </script>

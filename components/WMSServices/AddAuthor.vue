@@ -80,10 +80,6 @@ export default {
     }
   },
 
-  mounted () {
-    console.warn('mounted author add')
-  },
-
   methods: {
     resetForm () {
       // reset textarea

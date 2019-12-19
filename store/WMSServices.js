@@ -32,7 +32,7 @@ export const state = () => ({
   currentPageOnTable: 1,
 
   modalMain: {
-    title: ' ',
+    title: ' ',
     type: 'component',
     folderPath: 'fallback',
     name: 'Fallback',
@@ -40,7 +40,7 @@ export const state = () => ({
     visible: false
   },
   modalInner: {
-    title: ' ',
+    title: ' ',
     type: 'component',
     folderPath: 'fallback',
     name: 'Fallback',
@@ -79,6 +79,7 @@ export const mutations = {
 
   [CLOSE_MODAL]: (state, payload) => {
     state[payload].visible = false
+    state[payload].title = ' '
     state[payload].type = 'component'
     state[payload].folderPath = 'fallback'
     state[payload].name = 'Fallback'

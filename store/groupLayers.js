@@ -3,14 +3,19 @@ import {
   SET_ITEM_CONTEXT,
   SET_PUBLISHED_ITEM_CONTEXT,
   SET_CURRENT_PAGE_ON_TABLE,
-  SET_STRUCTURE_TREE
+  SET_STRUCTURE_TREE,
+  OPEN_MODAL,
+  CLOSE_MODAL
 } from '@/types/mutations'
 
 export const state = () => ({
   dataContext: [],
   itemContext: {},
   currentPageOnTable: 1,
-  structureTree: {}
+  structureTree: {},
+  modalMain: {
+    visible: false
+  }
 })
 
 export const actions = {
@@ -55,5 +60,9 @@ export const mutations = {
 
   [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload),
 
-  [SET_STRUCTURE_TREE]: (state, payload) => (state.structureTree = payload)
+  [SET_STRUCTURE_TREE]: (state, payload) => (state.structureTree = payload),
+
+  [OPEN_MODAL]: (state, payload) => (state[payload].visible = true),
+
+  [CLOSE_MODAL]: (state, payload) => (state[payload].visible = false)
 }
