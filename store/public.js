@@ -2,7 +2,7 @@ import {
   SET_REGIONS,
   SET_PROVINCES,
   SET_DISTRICTS
-} from '../types/mutation-types'
+} from '@/types/mutations'
 
 export const state = () => ({
   regions: [],

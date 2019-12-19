@@ -54,19 +54,38 @@
     />
 
   </el-container>
+
+  <base-modal
+    :modal="$store.state[storeBase.name].modalMain"
+    modal-type="modalMain"
+  >
+    <template v-slot:modal-content>
+      <component
+        :is="dynamicComponent"
+        :store-mounted="{ name: storeBase.name, typeModal: 'modalMain' }"
+      />
+    </template>
+  </base-modal>
+
 </base-page>
 </template>
 
 <script>
+import BaseModal from '@/components/base/BaseModal'
+
 import BasePageParent from '@/components/base/parents/BasePageParent'
 
 import { mapActions } from 'vuex'
 
-import { SET_CURRENT_PAGE_ON_TABLE } from '@/types/mutation-types'
+import { SET_CURRENT_PAGE_ON_TABLE } from '@/types/mutations'
 
 import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
 
 export default {
+  components: {
+    BaseModal
+  },
+
   extends: BasePageParent,
 
   props: {
@@ -110,6 +129,15 @@ export default {
       pagesize: ROWS_PER_PAGE_ON_TABLE,
       textToSearch: '',
       criteriaLength: 0
+    }
+  },
+
+  computed: {
+    dynamicComponent () {
+      const { type, folderPath, name } = this.$store.state[this.storeBase.name].modalMain
+      return type === 'page'
+        ? () => import(`@/pages/${folderPath}/${name}`)
+        : () => import(`@/components/${folderPath}/${name}`)
     }
   },
 

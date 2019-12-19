@@ -4,7 +4,7 @@ import {
   SET_PUBLISHED_ITEM_CONTEXT,
   SET_CURRENT_PAGE_ON_TABLE,
   SET_STRUCTURE_TREE
-} from '../types/mutation-types'
+} from '@/types/mutations'
 
 export const state = () => ({
   dataContext: [],

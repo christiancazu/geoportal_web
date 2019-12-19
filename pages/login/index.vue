@@ -128,9 +128,9 @@ import { password } from '@/config/form.rules'
 import { AUTH_STRATEGY } from '@/config/constants'
 
 import {
-  ENABLE_PROCESSING_FORM,
-  DISABLE_PROCESSING_FORM
-} from '@/types/mutation-types'
+  ENABLE_SPINNER,
+  DISABLE_SPINNER
+} from '@/types/mutations'
 
 export default {
   data () {
@@ -158,7 +158,7 @@ export default {
       await this.$refs.form.validate(result => (isFormValid = result))
 
       if (isFormValid) {
-        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+        this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
         try {
           await this.$auth.loginWith(AUTH_STRATEGY, {
             data: {
@@ -172,7 +172,7 @@ export default {
       } else {
         this.$toast.error(this.$ERRORS.INVALID_DATA)
       }
-      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
     }
   },
 

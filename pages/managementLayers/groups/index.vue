@@ -1,9 +1,30 @@
 <template>
-<base-pagex
+<base-page
   :page-header="pageHeader"
 >
+  <template slot="btn-header">
+    <el-button
+      :loading="$store.state.spinners.loadingTable"
+      size="mini"
+      type="primary"
+      icon="el-icon-refresh"
+      @click="refreshGroupLayers()"
+    >
+      Reestablecer grupos
+    </el-button>
+  </template>
+
+  <el-alert
+    title="Importante"
+    type="info"
+    description="Recuerde guardar los cambios antes de abandonar la página"
+    show-icon
+    effect="dark"
+  />
+
   <vue-tree-list
     ref="tree"
+    class="my-4"
     :model="dataTree"
     default-tree-node-name="Nuevo grupo de capas"
     default-expanded
@@ -72,13 +93,14 @@
       >Confirm</el-button>
     </span>
   </el-dialog> -->
+  <el-divider />
 
   <pre>{{ backUpTree }}</pre>
-</base-pagex>
+</base-page>
 </template>
 
 <script>
-import BasePagex from '@/components/base/pages/BasePagex'
+import BasePage from '@/components/base/pages/BasePage'
 import AddGroupLayer from '@/components/layers/AddGroup'
 
 import { VueTreeList, Tree, /*TreeNode*/ } from 'vue-tree-list'
@@ -89,7 +111,7 @@ import { $_helper_treeTransform } from '@/helpers/treeManager'
 
 export default {
   components: {
-    BasePagex,
+    BasePage,
     VueTreeList,
     AddGroupLayer
   },
@@ -124,16 +146,8 @@ export default {
     }
   },
 
-  async created () {
-    await this.$store.dispatch('groupLayers/getStructureTree')
-
-    // cloning state
-    let data = JSON.parse(JSON.stringify(this.$store.state.groupLayers.structureTree))
-
-    // init tree
-    this.backUpTree = $_helper_treeTransform(data)
-    this.dataTree = new Tree([this.backUpTree])
-    this.updateTree()
+  created () {
+    this.init()
   },
 
   methods: {
@@ -227,6 +241,23 @@ export default {
       }
 
       vm.backUpTree = _dfs(vm.dataTree)
+    },
+
+    async init () {
+      await this.$store.dispatch('groupLayers/getStructureTree')
+
+      // cloning state
+      let data = JSON.parse(JSON.stringify(this.$store.state.groupLayers.structureTree))
+
+      // init tree
+      this.backUpTree = $_helper_treeTransform(data)
+      this.dataTree = new Tree([this.backUpTree])
+      this.updateTree()
+
+    },
+    refreshGroupLayers () {
+      console.warn('refresh')
+      this.init()
     }
   },
 

@@ -22,29 +22,6 @@
 
       <!-- <store-viewer /> -->
 
-      <!-- dynamic current modals -->
-      <template v-if="loggedIn">
-        <!-- <component
-          :is="mainModalDynamicComponent"
-          modal-base-actions-mixin_mounted-on="mainModal"
-        />
-        <component
-          :is="secondModalDynamicComponent"
-          modal-base-actions-mixin_mounted-on="secondModal"
-        /> -->
-        <!-- <el-dialog
-          :title="'gaaaaaa'"
-          :close-on-click-modal="false"
-          :visible="true"
-          top="2vh"
-          class="dialog-responsive"
-        >
-          <component
-            :is="myComponent"
-          />
-        </el-dialog> -->
-      </template>
-
     </el-main>
   </el-container>
 </div>
@@ -71,34 +48,7 @@ export default {
   computed: {
     ...mapState({
       loggedIn: state => state.auth.loggedIn
-    }),
-
-    myComponent () {
-      return () => import('@/pages/managementLayers/groups')
-    },
-
-    /**
-     * load dynamic main modal component from the state setted
-     * example: @/components/layers/ModalAddVectorialLayer
-     */
-    // mainModalDynamicComponent () {
-    //   const { folderName, component } = this.$store.state.modalsVisibilities.mainModal
-    //   return () => import(`@/components/${folderName}/${component}`)
-    // },
-
-    // /**
-    //  * load dynamic second modal component from the state setted
-    //  * example: @/components/layers/ModalAddVectorialLayer
-    //  */
-    // secondModalDynamicComponent () {
-    //   const { folderRoot, folderName, component } = this.$store.state.modalsVisibilities.secondModal
-    //   console.warn(folderRoot, folderName, component)
-    //   return () => import(`@/components/${folderName}/${component}`)
-    // }
-  },
-
-  async mounted () {
-    // console.warn(await this.$userAPI.get())
+    })
   },
 
   methods: {

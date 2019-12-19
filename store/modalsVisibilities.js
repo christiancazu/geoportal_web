@@ -2,7 +2,7 @@ import {
   OPEN_MODAL,
   CLOSE_MODAL,
   SET_MODAL_VISIBLE
-} from '../types/mutation-types'
+} from '@/types/mutations'
 
 export const state = () => ({
   mainModal: {

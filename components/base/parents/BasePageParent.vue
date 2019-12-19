@@ -3,9 +3,9 @@ import BasePage from '@/components/base/pages/BasePage'
 
 import {
   SET_CURRENT_PAGE_ON_TABLE,
-  DISABLE_LOADING_TABLE,
-  ENABLE_LOADING_TABLE
-} from '@/types/mutation-types'
+  ENABLE_SPINNER,
+  DISABLE_SPINNER
+} from '@/types/mutations'
 
 import {
   mapState,
@@ -91,9 +91,9 @@ export default {
   methods: {
     ...mapActions({
       async getDataContext () {
-        this.$store.commit(`spinners/${ENABLE_LOADING_TABLE}`)
+        this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'loadingTable')
         await this.$store.dispatch(`${this.storeBase.name}/getDataContext`)
-        this.$store.commit(`spinners/${DISABLE_LOADING_TABLE}`)
+        this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'loadingTable')
 
       },
       async getItemContext ({}, id) {
@@ -101,7 +101,6 @@ export default {
       },
 
       setDynamicComponentAsModalMain ({}, component) {
-        console.warn('dynamic component:::::', component.store, this.storeBase.name)
         this.$store.dispatch(`${this.storeBase.name}/openModal`, {
           typeModal: 'modalMain',
           component

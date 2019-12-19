@@ -224,9 +224,9 @@ import {
 } from '@/config/form.rules'
 
 import {
-  ENABLE_PROCESSING_FORM,
-  DISABLE_PROCESSING_FORM
-} from '@/types/mutation-types.js'
+  ENABLE_SPINNER,
+  DISABLE_SPINNER
+} from '@/types/mutations'
 
 import { USER_FILE_MAX_SIZE } from '@/config/constants'
 
@@ -303,7 +303,7 @@ export default {
 
     async fetchContext () {
       try {
-        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+        this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
         await this.getProfile()
 
         this.profileLoaded = true
@@ -315,7 +315,7 @@ export default {
         await this.getDistricts(this.$store.state.users.profile.provinceId)
       }
       catch (error) {}
-      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
     },
 
     assignFormFields () {
@@ -330,7 +330,7 @@ export default {
 
       if (isFormValid) {
         try {
-          this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+          this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
 
           const formData = this.objectToFormData()
 
@@ -356,7 +356,7 @@ export default {
           this.$toast.success(this.$SUCCESS.USER.UPDATED)
         }
         catch (e) {}
-        this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+        this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
       } else {
         this.$toast.error(this.$ERRORS.INVALID_DATA)
       }

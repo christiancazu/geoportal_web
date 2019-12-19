@@ -94,9 +94,9 @@ import BaseBtnConfirm from '@/components/base/BaseBtnConfirm'
 import PieChart from '@/charts/pieChart'
 
 import {
-  ENABLE_PROCESSING_FORM,
-  DISABLE_PROCESSING_FORM
-} from '@/types/mutation-types.js'
+  ENABLE_SPINNER,
+  DISABLE_SPINNER
+} from '@/types/mutations'
 
 import {
   mapState
@@ -183,7 +183,7 @@ export default {
     async cleanSpaces () {
       try {
         this.dataLoaded = false
-        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+        this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
 
         await this.$store.dispatch('temporal/getSpaces', this.um)
         await this.$store.dispatch('temporal/cleanSpaces')
@@ -195,13 +195,13 @@ export default {
 
       } catch (e) {}
 
-      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
     },
 
     async fetchSpaces () {
       try {
         this.dataLoaded = false
-        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+        this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
 
         await this.$store.dispatch('temporal/getSpaces', this.um)
 
@@ -211,7 +211,7 @@ export default {
 
       } catch (e) {}
 
-      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
     }
   },
 

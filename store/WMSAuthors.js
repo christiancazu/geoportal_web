@@ -6,7 +6,7 @@ import {
   OPEN_MODAL,
   SET_MODAL_VISIBLE,
   CLOSE_MODAL
-} from '../types/mutation-types'
+} from '@/types/mutations'
 
 import {
   getDataContext,

@@ -3,7 +3,7 @@ import {
   SET_MODAL_VISIBLE,
   SET_DATA_CONTEXT,
   SET_ITEM_CONTEXT
-} from '@/types/mutation-types'
+} from '@/types/mutations'
 
 // PAGEACTIONS
 export const getDataContext = api => async function ({ commit }) {

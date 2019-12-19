@@ -74,9 +74,9 @@ import BaseBtnConfirm from '@/components/base/BaseBtnConfirm'
 import { mapActions } from 'vuex'
 
 import {
-  ENABLE_LOADING_TABLE,
-  DISABLE_LOADING_TABLE
-} from '@/types/mutation-types'
+  ENABLE_SPINNER,
+  DISABLE_SPINNER
+} from '@/types/mutations'
 
 export default {
   components: {
@@ -107,7 +107,7 @@ export default {
     }),
 
     async submitPublish ({ itemSelected }) {
-      this.$store.commit(`spinners/${ENABLE_LOADING_TABLE}`)
+      this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
 
       try {
         const formData = new FormData()
@@ -118,7 +118,7 @@ export default {
 
         this.$toast.success(this.$SUCCESS.IMAGE.PUBLISHED)
       } catch (e) {}
-      this.$store.commit(`spinners/${DISABLE_LOADING_TABLE}`)
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
     }
   },
 

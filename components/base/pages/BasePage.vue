@@ -27,35 +27,20 @@
           {{ pageHeader.btnAddName }}
         </el-button>
       </template>
+
+      <slot name="btn-header" />
+
     </div>
 
     <slot />
 
   </el-card>
 
-  <base-modal
-    :modal="$store.state[storeBase.name].modalMain"
-    modal-type="modalMain"
-  >
-    <template v-slot:modal-content>
-      <component
-        :is="dynamicComponent"
-        :store-mounted="{ name: storeBase.name, typeModal: 'modalMain' }"
-      />
-    </template>
-  </base-modal>
-
 </div>
 </template>
 
 <script>
-import BaseModal from '@/components/base/BaseModal'
-
 export default {
-  components: {
-    BaseModal
-  },
-
   props: {
     pageHeader: {
       type: Object,
@@ -64,25 +49,10 @@ export default {
         btnAddName: { type: String, required: false }
       })
     },
-    storeBase: {
-      type: Object,
-      default: () => ({
-        name: { type: String, required: false }
-      })
-    },
     fitContent: {
       type: Boolean,
       default: false
     },
-  },
-
-  computed: {
-    dynamicComponent () {
-      const { type, folderPath, name } = this.$store.state[this.storeBase.name].modalMain
-      return type === 'page'
-        ? () => import(`@/pages/${folderPath}/${name}`)
-        : () => import(`@/components/${folderPath}/${name}`)
-    }
   }
 }
 </script>

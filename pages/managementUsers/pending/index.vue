@@ -47,7 +47,7 @@
 
 import BasePageActionsParent from '@/components/base/parents/BasePageActionsParent'
 
-import { SET_ITEM_CONTEXT } from '@/types/mutation-types'
+import { SET_ITEM_CONTEXT } from '@/types/mutations'
 
 export default {
   extends: BasePageActionsParent,
