@@ -15,7 +15,7 @@ import {
   publishItemContext,
   updateItemContext,
   deleteItemContext,
-  openMainModal
+  openModal
 } from '@/use/store.actions'
 
 import {
@@ -36,11 +36,11 @@ export const state = () => ({
   },
 
   modalMain: {
-    title: 'modalMain',
+    title: ' ',
     type: 'component',
     folderPath: 'fallback',
     name: 'Fallback',
-    store: 'WMSCategories',
+    store: 'WMSAuthors',
     visible: false
   }
 })
@@ -58,12 +58,10 @@ export const actions = {
 
   deleteItemContext: deleteItemContext(API),
 
-  openMainModal
+  openModal
 }
 
 export const mutations = {
-  SET_TYPE_MOUNT: state => state.visible,
-
   [SET_DATA_CONTEXT]: setDataContext,
 
   [SET_ITEM_CONTEXT]: setItemContext,
@@ -72,19 +70,18 @@ export const mutations = {
 
   [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
 
-  [OPEN_MODAL]: (state, payload) => Object.assign(state.modalMain, payload),
+  [OPEN_MODAL]: (state, { typeModal, component }) => Object.assign(state[typeModal], component),
 
-  [CLOSE_MODAL]: state => {
-    state.modalMain.visible = false
-    state.modalMain.type = 'component'
-    state.modalMain.folderPath = 'fallback'
-    state.modalMain.name = 'Fallback'
+  [CLOSE_MODAL]: (state, payload) => {
+    state[payload].visible = false
+    state[payload].type = 'component'
+    state[payload].folderPath = 'fallback'
+    state[payload].name = 'Fallback'
   },
 
-  [SET_MODAL_VISIBLE]: state => {
-    console.warn('___setting author modal main visible____');
-    (state.modalMain.visible = true)
-  },
+  [SET_MODAL_VISIBLE]: (state, { typeModal }) => (state[typeModal].visible = true),
 
-  SET_DIALOG_TITLE: (state, payload) => (state.modalMain.title = payload)
+  SET_DIALOG_TITLE: (state, { typeModal, dialogTitle }) => {
+    state[typeModal].title = dialogTitle
+  }
 }

@@ -33,7 +33,7 @@ export const deleteItemContext = api => async function ({}, id) {
 }
 
 // modal
-export const openMainModal = ({ commit }, payload) => {
+export const openModal = ({ commit }, payload) => {
   commit(OPEN_MODAL, payload)
-  setTimeout(() => commit(SET_MODAL_VISIBLE), 250)
+  setTimeout(() => commit(SET_MODAL_VISIBLE, payload), 250)
 }

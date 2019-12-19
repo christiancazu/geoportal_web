@@ -113,10 +113,6 @@ export default {
     }
   },
 
-  mounted () { ///////////////
-    console.warn('modalMain', this.modalMain)
-  },
-
   methods: {
     ...mapActions({
       async deleteItemContext ({}, id) {

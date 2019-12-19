@@ -1,5 +1,5 @@
 <script>
-import BtnOpenInnerModal from '@/components/buttons/BtnOpenInnerModal'
+import BtnOpenModalInner from '@/components/buttons/BtnOpenModalInner'
 
 import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
 
@@ -10,7 +10,7 @@ import {
 
 export default {
   components: {
-    BtnOpenInnerModal
+    BtnOpenModalInner
   },
 
   mixins: [modalBaseActionsMixin],

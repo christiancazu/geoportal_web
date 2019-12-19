@@ -52,8 +52,11 @@
               />
             </el-select>
 
-            <!-- open inner modal -->
-            <btn-open-inner-modal :modal="modalAddAuthor" />
+            <!-- open modal inner-->
+            <btn-open-modal-inner
+              tooltip="Agregar Autor"
+              @open-modal="openModal('modalAddAuthor')"
+            />
           </el-container>
         </el-form-item>
       </el-col>
@@ -78,8 +81,11 @@
               />
             </el-select>
 
-            <!-- open inner modal -->
-            <btn-open-inner-modal :modal="modalAddCategory" />
+            <!-- open modal inner -->
+            <btn-open-modal-inner
+              tooltip="Agregar Categoría"
+              @open-modal="openModal('modalAddCategory')"
+            />
           </el-container>
         </el-form-item>
       </el-col>
@@ -108,14 +114,17 @@
     </el-form-item>
 
     <!-- innerComponent on modal -->
-    <!-- <base-modal :modal="modalAddCategory">
+    <base-modal
+      :modal="$store.state[storeBase.name].modalInner"
+      modal-type="modalInner"
+    >
       <template v-slot:modal-content>
         <component
           :is="dynamicComponent"
-          :store-mounted="$store.state[pageBody.store].modalInner.store"
+          :store-mounted="{ name: storeBase.name, typeModal: 'modalInner' }"
         />
       </template>
-    </base-modal> -->
+    </base-modal>
 
     <!-- <el-dialog
       :title="$store.state['WMSServices'].modalMain.title"
@@ -137,6 +146,8 @@
 <script>
 import BaseService from './BaseService'
 
+import { mapActions } from 'vuex'
+
 import {
   url,
   authorId,
@@ -155,26 +166,38 @@ export default {
         name: 'WMSServices',
         action: 'create'
       },
+      modalInner: {
+        modalAddAuthor: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'AddAuthor'
+        },
+        modalAddCategory: {
+          type: 'page',
+          folderPath: 'managementLayers/groups',
+          name: 'index'
+        }
+      },
 
-      modalAddAuthor: {
-        type: 'modal',
-        folderRoot: 'components',
-        folderName: 'WMSServices',
-        storeParent: 'WMSServices',
-        store: 'WMSAuthors',
-        component: 'AddAuthor',
-        tooltip: 'Agregar autor'
-      },
-      modalAddCategory: {
-        title: 'Add foo',
-        type: 'modal',
-        folderRoot: 'pages',
-        folderName: 'managementWMSServices/categories',
-        storeParent: 'WMSServices',
-        store: 'WMSCategories',
-        component: 'index',
-        tooltip: 'Agregar categoría'
-      },
+      // modalAddAuthor: {
+      //   type: 'modalInner',
+      //   folderRoot: 'components',
+      //   folderName: 'WMSServices',
+      //   storeParent: 'WMSServices',
+      //   store: 'WMSAuthors',
+      //   component: 'AddAuthor',
+      //   tooltip: 'Agregar autor'
+      // },
+      // modalAddCategory: {
+      //   title: 'Add foo',
+      //   type: 'modal',
+      //   folderRoot: 'pages',
+      //   folderName: 'managementWMSServices/categories',
+      //   storeParent: 'WMSServices',
+      //   store: 'WMSCategories',
+      //   component: 'index',
+      //   tooltip: 'Agregar categoría'
+      // },
       // modalAddCategory: {
       //   wrapperBaseModal: true,
       //   folderRoot: 'components',
@@ -208,8 +231,10 @@ export default {
 
   computed: {
     dynamicComponent () {
-      // return () => import(`@/pages/managementWMSServices/categories/index`)
-      return () => import(`@/components/WMSServices/AddAuthor`)
+      const { type, folderPath, name } = this.$store.state[this.storeBase.name].modalInner
+      return type === 'page'
+        ? () => import(`@/pages/${folderPath}/${name}`)
+        : () => import(`@/components/${folderPath}/${name}`)
     },
     // dynamicComponent () {
     //   const { store, folderRoot, folderName, component } = this.$store.state[this.store.name].innerComponent
@@ -228,6 +253,18 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      setDynamicComponentAsModalInner ({}, component) {
+        this.$store.dispatch(`${this.storeBase.name}/openModal`, {
+          typeModal: 'modalInner',
+          component
+        })
+      }
+    }),
+    openModal (component) {
+      this.setDynamicComponentAsModalInner(this.modalInner[component])
+    },
+
     resetForm () {
       // reset textarea
       this.form.description = ''

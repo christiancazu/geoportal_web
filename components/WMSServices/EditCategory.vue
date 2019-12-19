@@ -2,7 +2,7 @@
 <base-form
   :form="form"
   :rules="rules"
-  :store="store"
+  :store-base="storeBase"
   :message-toast="messageToast"
   @close-modal="closeModal"
 >
@@ -49,7 +49,7 @@ export default {
     return {
       dialogTitle: 'Actualizar categoría WMS',
 
-      store: {
+      storeBase: {
         name: 'WMSCategories',
         action: 'update'
       },
@@ -71,7 +71,7 @@ export default {
   computed: {
     ...mapState({
       itemContext () {
-        return this.$store.state[this.store.name].itemContext
+        return this.$store.state[this.storeBase.name].itemContext
       }
     })
   },

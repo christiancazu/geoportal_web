@@ -1,5 +1,5 @@
 <template>
-<base-page
+<base-pagex
   :page-header="pageHeader"
 >
   <vue-tree-list
@@ -74,11 +74,11 @@
   </el-dialog> -->
 
   <pre>{{ backUpTree }}</pre>
-</base-page>
+</base-pagex>
 </template>
 
 <script>
-import BasePage from '@/components/base/pages/BasePage'
+import BasePagex from '@/components/base/pages/BasePagex'
 import AddGroupLayer from '@/components/layers/AddGroup'
 
 import { VueTreeList, Tree, /*TreeNode*/ } from 'vue-tree-list'
@@ -89,7 +89,7 @@ import { $_helper_treeTransform } from '@/helpers/treeManager'
 
 export default {
   components: {
-    BasePage,
+    BasePagex,
     VueTreeList,
     AddGroupLayer
   },
@@ -101,9 +101,11 @@ export default {
         title: 'Grupo de capas'
       },
       modalMain: {
-        storeBase: 'groupLayers',
-        addComponent: 'AddGroup',
-        folderName: 'layers'
+        addComponent: {
+          type: 'component',
+          folderPath: 'layers',
+          name: 'AddGroup'
+        }
       },
       backUpTree: {},
       dataTree: {},

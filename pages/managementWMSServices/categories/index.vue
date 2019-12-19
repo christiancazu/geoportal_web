@@ -71,14 +71,12 @@ export default {
         addComponent: {
           type: 'component',
           folderPath: 'WMSServices',
-          name: 'AddCategory',
-          store: 'WMSCategories'
+          name: 'AddCategory'
         },
         editComponent: {
           type: 'component',
           folderPath: 'WMSServices',
-          name: 'EditCategory',
-          store: 'WMSCategories'
+          name: 'EditCategory'
         }
       },
       messageToast: {

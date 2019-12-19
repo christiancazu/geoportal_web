@@ -102,7 +102,10 @@ export default {
 
       setDynamicComponentAsModalMain ({}, component) {
         console.warn('dynamic component:::::', component.store, this.storeBase.name)
-        this.$store.dispatch(`${this.storeBase.name}/openMainModal`, component)
+        this.$store.dispatch(`${this.storeBase.name}/openModal`, {
+          typeModal: 'modalMain',
+          component
+        })
       }
     }),
 

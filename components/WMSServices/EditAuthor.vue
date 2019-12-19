@@ -2,8 +2,9 @@
 <base-form
   :form="form"
   :rules="rules"
-  :store="store"
+  :store-base="storeBase"
   :message-toast="messageToast"
+  @close-modal="closeModal"
 >
   <template v-slot:form-content>
     <!-- name -->
@@ -60,7 +61,7 @@ export default {
     return {
       dialogTitle: 'Actualizar autor WMS',
 
-      store: {
+      storeBase: {
         name: 'WMSAuthors',
         action: 'update'
       },
@@ -83,7 +84,7 @@ export default {
   computed: {
     ...mapState({
       itemContext () {
-        return this.$store.state[this.store.name].itemContext
+        return this.$store.state[this.storeBase.name].itemContext
       }
     })
   },

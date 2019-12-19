@@ -15,7 +15,7 @@ import {
   publishItemContext,
   updateItemContext,
   deleteItemContext,
-  openMainModal
+  openModal
 } from '@/use/store.actions'
 
 import {
@@ -32,7 +32,7 @@ export const state = () => ({
   currentPageOnTable: 1,
 
   modalMain: {
-    title: 'modalMain',
+    title: ' ',
     type: 'component',
     folderPath: 'fallback',
     name: 'Fallback',
@@ -40,7 +40,7 @@ export const state = () => ({
     visible: false
   },
   modalInner: {
-    title: 'modalInner',
+    title: ' ',
     type: 'component',
     folderPath: 'fallback',
     name: 'Fallback',
@@ -62,15 +62,7 @@ export const actions = {
 
   deleteItemContext: deleteItemContext(API),
 
-  openMainModal,
-
-  openInnerModal: ({ commit }, payload) => {
-    console.warn('dispatch innerModal', payload)
-    commit('OPEN_INNER_MODAL', payload)
-    setTimeout(() => {
-      commit('SET_MODAL_INNER_VISIBLE')
-    }, 250)
-  }
+  openModal,
 }
 
 export const mutations = {
@@ -79,42 +71,22 @@ export const mutations = {
   [SET_ITEM_CONTEXT]: setItemContext,
 
   [SET_CURRENT_PAGE_ON_TABLE]: setCurrentPageOnTable,
+
   [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) =>
     (state.itemContext.isPublished = !payload),
 
-  [OPEN_MODAL]: (state, payload) => Object.assign(state.modalMain, payload),
+  [OPEN_MODAL]: (state, { typeModal, component }) => Object.assign(state[typeModal], component),
 
-  OPEN_INNER_MODAL: (state, payload) => {
-    state.innerComponent.folderRoot = payload.folderRoot
-    state.innerComponent.folderName = payload.folderName
-    state.innerComponent.component = payload.component
-    state.innerComponent.store = payload.store
-    state.innerComponent.title = payload.title || ' '
+  [CLOSE_MODAL]: (state, payload) => {
+    state[payload].visible = false
+    state[payload].type = 'component'
+    state[payload].folderPath = 'fallback'
+    state[payload].name = 'Fallback'
   },
 
-  [CLOSE_MODAL]: state => {
-    state.modalMain.visible = false
-    state.modalMain.type = 'component'
-    state.modalMain.folderPath = 'fallback'
-    state.modalMain.name = 'Fallback'
-  },
+  [SET_MODAL_VISIBLE]: (state, { typeModal }) => (state[typeModal].visible = true),
 
-  CLOSE_INNER_MODAL: state => {
-    console.warn('CLOSE_INNER_MODAL')
-    state.innerComponent.visible = false
-    state.innerComponent.folderRoot = 'components'
-    state.innerComponent.folderName = 'fallback'
-    state.innerComponent.component = 'Fallback'
-  },
-
-  [SET_MODAL_VISIBLE]: state => (state.modalMain.visible = true),
-
-  SET_MODAL_INNER_VISIBLE: state => {
-    console.warn('SET_MODAL_INNER_VISIBLE> innerComponent ', state.innerComponent)
-    state.innerComponent.visible = true
-  },
-
-  SET_DIALOG_TITLE: (state, payload) => {
-    state.modalMain.title = payload
+  SET_DIALOG_TITLE: (state, { typeModal, dialogTitle}) => {
+    state[typeModal].title = dialogTitle
   }
 }

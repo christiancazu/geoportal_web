@@ -15,7 +15,7 @@ import {
   publishItemContext,
   updateItemContext,
   deleteItemContext,
-  openMainModal
+  openModal
 } from '@/use/store.actions'
 
 import {
@@ -54,7 +54,7 @@ export const actions = {
 
   deleteItemContext: deleteItemContext(API),
 
-  openMainModal
+  openModal
 }
 
 export const mutations = {
@@ -67,17 +67,18 @@ export const mutations = {
   [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) =>
     (state.itemContext.isPublished = !payload),
 
-  [OPEN_MODAL]: (state, payload) => Object.assign(state.modalMain, payload),
+  [OPEN_MODAL]: (state, { typeModal, component }) => Object.assign(state[typeModal], component),
 
-  [CLOSE_MODAL]: state => {
-    state.modalMain.visible = false
-    state.modalMain.type = 'component'
-    state.modalMain.folderPath = 'fallback'
-    state.modalMain.name = 'Fallback'
-    state.modalMain.title = ' '
+  [CLOSE_MODAL]: (state, payload) => {
+    state[payload].visible = false
+    state[payload].type = 'component'
+    state[payload].folderPath = 'fallback'
+    state[payload].name = 'Fallback'
   },
 
-  [SET_MODAL_VISIBLE]: state => (state.modalMain.visible = true),
+  [SET_MODAL_VISIBLE]: (state, { typeModal }) => (state[typeModal].visible = true),
 
-  SET_DIALOG_TITLE: (state, payload) => state.modalMain.title = payload
+  SET_DIALOG_TITLE: (state, { typeModal, dialogTitle }) => {
+    state[typeModal].title = dialogTitle
+  }
 }

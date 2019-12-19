@@ -61,13 +61,6 @@ export default {
 
   extends: BasePageActionsParent,
 
-  props: {
-    mountedAs: {
-      type: String,
-      default: 'view'
-    },
-  },
-
   data () {
     return {
       pageHeader: {
@@ -80,16 +73,14 @@ export default {
       // main modal settings
       modalMain: {
         addComponent: {
-          type: 'page',
-          folderPath: 'managementWMSServices/categories',
-          name: 'index',
-          store: 'WMSAuthors'
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'AddAuthor'
         },
         editComponent: {
           type: 'component',
           folderPath: 'WMSServices',
-          name: 'EditAuthor',
-          store: 'WMSAuthors'
+          name: 'EditAuthor'
         }
       },
       messageToast: {

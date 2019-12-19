@@ -1,8 +1,8 @@
 <template>
 <el-dialog
-  :title="$store.state[modalMain.store].modalMain.title"
+  :title="$store.state[modal.store][modalType].title"
   :close-on-click-modal="false"
-  :visible="$store.state[modalMain.store].modalMain.visible"
+  :visible="$store.state[modal.store][modalType].visible"
   append-to-body
   destroy-on-close
   top="2vh"
@@ -21,32 +21,19 @@ import {
 
 export default {
   props: {
-    modalMain: {
+    modal: {
       type: Object,
       default: () => ({
-        store: { type: String, required: true },
-        // type: { type: String, required: false }
+        store: { type: String, required: true }
       })
     },
-    dialogTitle: { type: String, default: 'DIALOG TITLE' },
-  },
-
-  watch: {
-    modal: {
-      handler: 'ttt',
-      immediate: true
-    }
+    modalType: { type: String, required: true }
   },
 
   methods: {
     closeModal () {
-      this.$emit('close-modal')
-      this.$store.commit(`${this.modalMain.store}/${CLOSE_MODAL}`)
-    },
-
-    ttt () {
-      console.log('CURRENT MODAL', this.$store.state[this.modalMain.store].modalMain)
-    },
+      this.$store.commit(`${this.modal.store}/${CLOSE_MODAL}`, this.modalType)
+    }
   }
 
 }

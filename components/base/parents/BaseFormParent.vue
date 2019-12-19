@@ -7,17 +7,20 @@ export default {
   },
 
   props: {
-    storeMounted: { type: String, default: '' }
+    storeMounted: { type: Object, default: () => ({}) }
   },
 
   created () {
-    if (this.storeMounted !== '')
-      this.$store.commit(`${this.storeMounted}/SET_DIALOG_TITLE`, this.dialogTitle)
+    if (this.storeMounted)
+      this.$store.commit(`${this.storeMounted.name}/SET_DIALOG_TITLE`, {
+        typeModal: this.storeMounted.typeModal,
+        dialogTitle: this.dialogTitle
+      })
   },
 
   methods: {
     closeModal () {
-      this.$store.commit(`${this.storeMounted}/CLOSE_MODAL`)
+      this.$store.commit(`${this.storeMounted.name}/CLOSE_MODAL`, this.storeMounted.typeModal)
     }
   }
 }

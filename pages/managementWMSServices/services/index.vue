@@ -96,14 +96,12 @@ export default {
         addComponent: {
           type: 'component',
           folderPath: 'WMSServices',
-          name: 'AddService',
-          store: 'WMSServices'
+          name: 'AddService'
         },
         editComponent: {
           type: 'component',
           folderPath: 'WMSServices',
-          name: 'EditService',
-          store: 'WMSServices'
+          name: 'EditService'
         }
       },
       messageToast: {

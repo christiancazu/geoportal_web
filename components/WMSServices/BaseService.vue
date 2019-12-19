@@ -1,7 +1,7 @@
 <script>
 import BaseFormParent from '@/components/base/parents/BaseFormParent'
 
-import BtnOpenInnerModal from '@/components/buttons/BtnOpenInnerModal'
+import BtnOpenModalInner from '@/components/buttons/BtnOpenModalInner'
 
 import BaseModal from '@/components/base/BaseModal'
 
@@ -15,7 +15,7 @@ import {
 export default {
   components: {
     BaseModal,
-    BtnOpenInnerModal
+    BtnOpenModalInner
   },
 
   extends: BaseFormParent,
