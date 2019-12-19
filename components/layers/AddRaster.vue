@@ -8,7 +8,7 @@
   @clear-form="$_uploadFileMixin_clear()"
 >
   <template v-slot:content>
-    <el-row :gutter="14">
+    <el-row :gutter="10">
       <el-col
         :xs="24"
         :md="{span:12, offset:12}"

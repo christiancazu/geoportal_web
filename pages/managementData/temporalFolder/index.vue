@@ -1,6 +1,12 @@
 <template>
 <base-page :page-header="pageHeader">
-  <div class="my-0">Unidades a mostrar</div>
+  <el-divider
+    content-position="left"
+    class="my-4"
+  >
+    Unidades a mostrar
+  </el-divider>
+
   <div
     class="mb-4 d-flex" style="justify-content: center"
   >
@@ -16,13 +22,17 @@
     </el-radio>
   </div>
 
-  <el-divider />
+  <el-divider
+    content-position="left"
+    class="my-2"
+  >
+    Espacio ocupado
+  </el-divider>
 
   <div
     v-loading="$store.state.spinners.processingForm"
-    class="mt-4"
+    class="my-4"
   >
-    <div>Espacio ocupado</div>
     <el-row>
       <el-col
         :xs="24" :md="8"
@@ -69,18 +79,15 @@
     </el-row>
   </div>
 
-  <el-divider />
-
-  <div class="mt-4">Liberar espacio</div>
   <div
-    class="my-2 d-flex"
+    class="mt-4 d-flex"
     style="justify-content: center"
   >
     <base-btn-confirm
       v-loading="$store.state.spinners.processingForm"
       title="Liberar espacio en disco"
       body-text="¿Está seguro de realizar esta acción?"
-      btn-name="Liberar"
+      btn-name="Liberar espacio"
       @confirmed-action="cleanSpaces"
     />
   </div>
@@ -217,6 +224,6 @@ export default {
 
   head: {
     title: 'Carpeta temporal'
-  },
+  }
 }
 </script>

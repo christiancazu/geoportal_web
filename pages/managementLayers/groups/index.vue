@@ -39,11 +39,11 @@
     <span
       slot="addTreeNodeIcon"
       class="icon-vtl"
-    >📂</span>
+    >➕</span>
     <span
       slot="editNodeIcon"
       class="icon-vtl"
-    >📃</span>
+    >📝</span>
     <span
       slot="delNodeIcon"
       class="icon-vtl"
@@ -93,7 +93,16 @@
       >Confirm</el-button>
     </span>
   </el-dialog> -->
-  <el-divider />
+  <div class="text-xs-center mb-0">
+    <el-button
+      :loading="$store.state.spinners.processingForm"
+      type="primary"
+      size="small"
+      @click="submitForm"
+    >
+      GUARDAR
+    </el-button>
+  </div>
 
   <pre>{{ backUpTree }}</pre>
 </base-page>
@@ -258,6 +267,10 @@ export default {
     refreshGroupLayers () {
       console.warn('refresh')
       this.init()
+    },
+
+    submitForm () {
+
     }
   },
 

@@ -11,25 +11,33 @@
     :disabled="$store.state.spinners.processingForm"
     class="demo-ruleForm"
   >
-    <el-form-item
-      label="Imagen de Perfil"
-      class="text-xs-center"
+    <el-row
+      type="flex"
+      :gutter="10"
+      justify="center"
     >
+      <el-col
+        :xs="24" :md="8"
+      >
+        <el-form-item
+          label="Imagen de Perfil"
+          class="text-xs-center"
+        >
 
-      <upload-file
-        :file="file"
-        type-image
-        avatar-image
-        @on-file-valid="$_uploadFileMixin_valid"
-        @delete-file="$_uploadFileMixin_clear()"
-      />
+          <upload-file
+            :file="file"
+            type-image
+            avatar-image
+            @on-file-valid="$_uploadFileMixin_valid"
+            @delete-file="$_uploadFileMixin_clear()"
+          />
 
-    </el-form-item>
-    <el-row :gutter="10">
+        </el-form-item>
+      </el-col>
+
       <el-col
         :xs="24"
-        :sm="12"
-        :md="12"
+        :md="8"
       >
         <el-form-item
           label="Nombre de Usuario"
@@ -42,12 +50,7 @@
             autocomplete="off"
           />
         </el-form-item>
-      </el-col>
-      <el-col
-        :xs="24"
-        :sm="12"
-        :md="12"
-      >
+
         <el-form-item
           label="Correo Electrónico"
           prop="email"
