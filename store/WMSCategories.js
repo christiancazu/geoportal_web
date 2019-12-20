@@ -5,6 +5,7 @@ import {
   SET_CURRENT_PAGE_ON_TABLE,
   OPEN_MODAL,
   SET_MODAL_VISIBLE,
+  SET_MODAL_TITLE,
   CLOSE_MODAL
 } from '@/types/mutations'
 
@@ -32,7 +33,7 @@ export const state = () => ({
   currentPageOnTable: 1,
 
   modalMain: {
-    title: ' ',
+    title: ' ',
     type: 'component',
     folderPath: 'fallback',
     name: 'Fallback',
@@ -71,6 +72,7 @@ export const mutations = {
 
   [CLOSE_MODAL]: (state, payload) => {
     state[payload].visible = false
+    state[payload].title = ' '
     state[payload].type = 'component'
     state[payload].folderPath = 'fallback'
     state[payload].name = 'Fallback'
@@ -78,7 +80,7 @@ export const mutations = {
 
   [SET_MODAL_VISIBLE]: (state, { typeModal }) => (state[typeModal].visible = true),
 
-  SET_DIALOG_TITLE: (state, { typeModal, dialogTitle }) => {
+  [SET_MODAL_TITLE]: (state, { typeModal, dialogTitle }) => {
     state[typeModal].title = dialogTitle
   }
 }

@@ -14,7 +14,7 @@
       class="demo-ruleForm"
     >
       <el-form-item
-        label="Título"
+        label="Nombre"
         prop="name"
       >
         <el-input

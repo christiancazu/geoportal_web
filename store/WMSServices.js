@@ -5,6 +5,7 @@ import {
   SET_CURRENT_PAGE_ON_TABLE,
   OPEN_MODAL,
   SET_MODAL_VISIBLE,
+  SET_MODAL_TITLE,
   CLOSE_MODAL
 } from '@/types/mutations'
 
@@ -87,7 +88,7 @@ export const mutations = {
 
   [SET_MODAL_VISIBLE]: (state, { typeModal }) => (state[typeModal].visible = true),
 
-  SET_DIALOG_TITLE: (state, { typeModal, dialogTitle}) => {
+  [SET_MODAL_TITLE]: (state, { typeModal, dialogTitle}) => {
     state[typeModal].title = dialogTitle
   }
 }

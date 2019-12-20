@@ -26,6 +26,7 @@ export const SET_DISTRICTS = 'SET_DISTRICTS'
 // modals
 export const OPEN_MODAL = 'OPEN_MODAL'
 export const CLOSE_MODAL = 'CLOSE_MODAL'
+export const SET_MODAL_TITLE = 'SET_MODAL_TITLE'
 
 // spinners
 export const ENABLE_SPINNER = 'ENABLE_SPINNER'
