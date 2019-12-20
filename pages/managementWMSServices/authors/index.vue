@@ -96,7 +96,7 @@ export default {
   },
 
   head: {
-    title: 'AUTORES WMS | GEOVISOR'
+    title: 'Autores WMS | GEOVISOR'
   }
 }
 </script>

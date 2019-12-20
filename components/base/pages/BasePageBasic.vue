@@ -1,6 +1,8 @@
 <template>
 <base-page
   :page-header="pageHeader"
+  :store-base="storeBase"
+  :modal-main="modalMain"
 >
   <el-container direction="vertical">
     <el-row
@@ -50,15 +52,33 @@
     />
 
   </el-container>
+
+  <base-modal
+    :modal="$store.state[storeBase.name].modalMain"
+    modal-type="modalMain"
+  >
+    <template v-slot:modal-content>
+      <component
+        :is="dynamicComponent"
+        :store-mounted="{ name: storeBase.name, typeModal: 'modalMain' }"
+      />
+    </template>
+  </base-modal>
+
 </base-page>
 </template>
 
 <script>
+import BaseModal from '@/components/base/BaseModal'
+
 import BasePageParent from '@/components/base/parents/BasePageParent'
 
 import { ROWS_PER_PAGE_ON_TABLE } from '@/config/constants'
 
 export default {
+  components: {
+    BaseModal
+  },
   extends: BasePageParent,
 
   props: {
@@ -68,12 +88,16 @@ export default {
         title: { type: String, required: true }
       })
     },
+    storeBase: {
+      type: Object,
+      default: () => ({
+        name: { type: String, required: true }
+      })
+    },
     modalMain: {
       type: Object,
       default: () => ({
-        storeBase: { type: String, required: true },
-        viewComponent: { type: String, required: true },
-        folderName: { type: String, required: true }
+        viewComponent: { type: Object, default: () => ({}) },
       })
     },
     filterCriteriaProps: {
@@ -92,6 +116,15 @@ export default {
     }
   },
 
+  computed: {
+    dynamicComponent () {
+      const { type, folderPath, name } = this.$store.state[this.storeBase.name].modalMain
+      return type === 'page'
+        ? () => import(`@/pages/${folderPath}/${name}`)
+        : () => import(`@/components/${folderPath}/${name}`)
+    }
+  },
+
   methods: {
     /**
      * fetching the itemContext by his id
@@ -104,7 +137,7 @@ export default {
       try {
         await this.getItemContext(id)
 
-        this.setDynamicMainModalComponent(this.modalMain.viewComponent)
+        this.setDynamicComponentAsModalMain(this.modalMain.viewComponent)
       }
       catch (e) {}
     }

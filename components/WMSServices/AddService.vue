@@ -165,35 +165,6 @@ export default {
           name: 'index'
         }
       },
-
-      // modalAddAuthor: {
-      //   type: 'modalInner',
-      //   folderRoot: 'components',
-      //   folderName: 'WMSServices',
-      //   storeParent: 'WMSServices',
-      //   store: 'WMSAuthors',
-      //   component: 'AddAuthor',
-      //   tooltip: 'Agregar autor'
-      // },
-      // modalAddCategory: {
-      //   title: 'Add foo',
-      //   type: 'modal',
-      //   folderRoot: 'pages',
-      //   folderName: 'managementWMSServices/categories',
-      //   storeParent: 'WMSServices',
-      //   store: 'WMSCategories',
-      //   component: 'index',
-      //   tooltip: 'Agregar categoría'
-      // },
-      // modalAddCategory: {
-      //   wrapperBaseModal: true,
-      //   folderRoot: 'components',
-      //   folderName: 'WMSServices',
-      //   storeParent: 'WMSServices',
-      //   store: 'WMSCategories',
-      //   component: 'AddCategory',
-      //   tooltip: 'Agregar categoría'
-      // },
       messageToast: {
         baseName: 'SERVICE',
         action: 'REGISTERED'
@@ -222,21 +193,7 @@ export default {
       return type === 'page'
         ? () => import(`@/pages/${folderPath}/${name}`)
         : () => import(`@/components/${folderPath}/${name}`)
-    },
-    // dynamicComponent () {
-    //   const { store, folderRoot, folderName, component } = this.$store.state[this.store.name].innerComponent
-    //   // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-    //   // this.currentStore = store
-    //   console.warn('add service dynamicComponent', store, folderRoot, folderName, component, this.$store.state[this.store.name].innerComponent)
-    //   return folderRoot === 'pages'
-    //     ? () => import(`@/pages/${folderName}/${component}`)
-    //     : () => import(`@/components/${folderName}/${component}`)
-    // },
-
-    // currentModal () {
-    //   console.warn('modalAddAuthor> ', this.$store.state[this.store.name].innerComponent)
-    //   return this.modalAddAuthor
-    // }
+    }
   },
 
   methods: {
@@ -248,6 +205,7 @@ export default {
         })
       }
     }),
+
     openModal (component) {
       this.setDynamicComponentAsModalInner(this.modalInner[component])
     },

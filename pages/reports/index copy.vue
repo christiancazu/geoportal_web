@@ -1,7 +1,6 @@
 <template>
 <base-page-basic
   :page-header="pageHeader"
-  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
 >
@@ -15,10 +14,12 @@
       label="Usuario"
       prop="user"
     />
+
     <el-table-column
       label="Asunto"
       prop="subject"
     />
+
     <el-table-column
       label="Descripción"
       prop="description"
@@ -48,26 +49,23 @@
 </template>
 
 <script>
-import BasePageBasicParent from '@/components/base/parents/BasePageBasicParent'
+import BasePageBasic from '@/components/base/pages/BasePageBasic'
 
 export default {
-  extends: BasePageBasicParent,
+  components: {
+    BasePageBasic
+  },
 
   data () {
     return {
       pageHeader: {
-        title: 'Reportes'
-      },
-      storeBase: {
-        name: 'reports'
-      },
-      // main modal settings
+        title: 'Reportes',
+      },// main modal settings
+
       modalMain: {
-        viewComponent: {
-          type: 'component',
-          folderPath: 'reports',
-          name: 'ViewReport'
-        }
+        storeBase: 'reports',
+        viewComponent: 'ViewReport',
+        folderName: 'reports',
       },
       // criterias to search based on columns of table
       filterCriteriaProps: [
