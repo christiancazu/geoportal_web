@@ -1,7 +1,7 @@
 <script>
 import BtnOpenModalInner from '@/components/buttons/BtnOpenModalInner'
 
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseForm from '@/components/base/BaseForm'
 
 import {
   mapState,
@@ -10,10 +10,9 @@ import {
 
 export default {
   components: {
+    BaseForm,
     BtnOpenModalInner
   },
-
-  mixins: [modalBaseActionsMixin],
 
   computed: {
     ...mapState({

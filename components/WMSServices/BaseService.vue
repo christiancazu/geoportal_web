@@ -1,11 +1,9 @@
 <script>
+import BaseForm from '@/components/base/BaseForm'
+
 import BaseFormParent from '@/components/base/parents/BaseFormParent'
 
-import BtnOpenModalInner from '@/components/buttons/BtnOpenModalInner'
-
-import BaseModal from '@/components/base/BaseModal'
-
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import InnerModalSetupMixin from '@/mixins/InnerModalSetupMixin'
 
 import {
   mapState,
@@ -14,13 +12,12 @@ import {
 
 export default {
   components: {
-    BaseModal,
-    BtnOpenModalInner
+    BaseForm
   },
 
   extends: BaseFormParent,
 
-  mixins: [modalBaseActionsMixin],
+  mixins: [InnerModalSetupMixin],
 
   computed: {
     ...mapState({

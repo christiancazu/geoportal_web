@@ -16,13 +16,18 @@ import {
   publishItemContext,
   updateItemContext,
   deleteItemContext,
-  openModal
+  setDynamicModal
 } from '@/use/store.actions'
 
 import {
   setDataContext,
   setItemContext,
-  setCurrentPageOnTable
+  setCurrentPageOnTable,
+  setPublishItemContext,
+  openModal,
+  closeModal,
+  setModalVisible,
+  setModalTitle
 } from '@/use/store.mutations'
 
 const API = '$WMSServiceAPI'
@@ -63,7 +68,7 @@ export const actions = {
 
   deleteItemContext: deleteItemContext(API),
 
-  openModal,
+  setDynamicModal,
 }
 
 export const mutations = {
@@ -73,22 +78,13 @@ export const mutations = {
 
   [SET_CURRENT_PAGE_ON_TABLE]: setCurrentPageOnTable,
 
-  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) =>
-    (state.itemContext.isPublished = !payload),
+  [SET_PUBLISHED_ITEM_CONTEXT]: setPublishItemContext,
 
-  [OPEN_MODAL]: (state, { typeModal, component }) => Object.assign(state[typeModal], component),
+  [OPEN_MODAL]: openModal,
 
-  [CLOSE_MODAL]: (state, payload) => {
-    state[payload].visible = false
-    state[payload].title = ' '
-    state[payload].type = 'component'
-    state[payload].folderPath = 'fallback'
-    state[payload].name = 'Fallback'
-  },
+  [CLOSE_MODAL]: closeModal,
 
-  [SET_MODAL_VISIBLE]: (state, { typeModal }) => (state[typeModal].visible = true),
+  [SET_MODAL_VISIBLE]: setModalVisible,
 
-  [SET_MODAL_TITLE]: (state, { typeModal, dialogTitle}) => {
-    state[typeModal].title = dialogTitle
-  }
+  [SET_MODAL_TITLE]: setModalTitle
 }

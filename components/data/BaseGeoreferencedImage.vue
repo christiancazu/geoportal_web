@@ -1,18 +1,17 @@
 <script>
 import MarkerGeoJson from '@/components/leafLet/MarkerGeoJson'
 
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseForm from '@/components/base/BaseForm'
+
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 export default {
   components: {
+    BaseForm,
     MarkerGeoJson
   },
 
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  mixins: [uploadFileMixin],
 
   methods: {
     onMarkerLngLat (lngLat) {

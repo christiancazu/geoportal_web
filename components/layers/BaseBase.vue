@@ -1,17 +1,15 @@
 <script>
 import MarkerGeoJson from '@/components/leafLet/MarkerGeoJson'
 
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseForm from '@/components/base/BaseForm'
 
 import { URL_MAP_REG_EX } from '@/config/constants'
 
 export default {
   components: {
+    BaseForm,
     MarkerGeoJson
   },
-
-  mixins: [modalBaseActionsMixin],
-
 
   methods: {
     async previewBaseMap () {

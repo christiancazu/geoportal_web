@@ -4,6 +4,7 @@
   :rules="rules"
   :store-base="storeBase"
   :message-toast="messageToast"
+  @close-modal="closeModal"
 >
   <template v-slot:form-content>
     <!-- name -->
@@ -52,8 +53,11 @@
               />
             </el-select>
 
-            <!-- open inner modal -->
-            <btn-open-inner-modal :modal-second="modalAddAuthor" />
+            <!-- open modal inner-->
+            <btn-open-modal-inner
+              tooltip="Agregar Autor"
+              @open-modal="openModal('modalAddAuthor')"
+            />
           </el-container>
         </el-form-item>
       </el-col>
@@ -79,8 +83,11 @@
               />
             </el-select>
 
-            <!-- open inner modal -->
-            <btn-open-inner-modal :modal-second="modalAddCategory" />
+            <!-- open modal inner -->
+            <btn-open-modal-inner
+              tooltip="Agregar Categoría"
+              @open-modal="openModal('modalAddCategory')"
+            />
           </el-container>
         </el-form-item>
       </el-col>
@@ -99,14 +106,20 @@
         show-word-limit
       />
     </el-form-item>
-    <el-form-item class="text-xs-right">
-      <el-switch
-        v-model="form.isEnabled"
-        :active-value="true"
-        :inactive-value="false"
-        :active-text="form.isEnabled ? 'Servicio Activo' : 'Servicio Inactivo'"
-      />
-    </el-form-item>
+
+    <!-- innerComponent on modal -->
+    <base-modal
+      :modal="$store.state[storeBase.name].modalInner"
+      modal-type="modalInner"
+    >
+      <template v-slot:modal-content>
+        <component
+          :is="dynamicComponent"
+          :store-mounted="{ name: storeBase.name, typeModal: 'modalInner' }"
+        />
+      </template>
+    </base-modal>
+
   </template>
 </base-form>
 </template>
@@ -134,15 +147,17 @@ export default {
         name: 'WMSServices',
         action: 'update'
       },
-      modalAddAuthor: {
-        component: 'ModalAddWMSAuthor',
-        folderName: 'WMSServices',
-        tooltip: 'Agregar autor'
-      },
-      modalAddCategory: {
-        component: 'ModalAddWMSCategory',
-        folderName: 'WMSServices',
-        tooltip: 'Agregar categoría'
+      modalInner: {
+        modalAddAuthor: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'AddAuthor'
+        },
+        modalAddCategory: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'AddCategory'
+        }
       },
       messageToast: {
         baseName: 'SERVICE',
@@ -154,12 +169,12 @@ export default {
         description: '',
         url: '',
         authorId: null,
-        isEnabled: false,
+        isEnabled: true,
         categoryId: null
       },
       rules: {
         name: name('servicio'),
-        url,
+        url: url('servicio'),
         authorId,
         categoryId
       }
@@ -174,7 +189,7 @@ export default {
     })
   },
 
-  watch: {
+  watch: { // smart watcher
     itemContext: {
       handler: 'assignFormFields',
       immediate: true

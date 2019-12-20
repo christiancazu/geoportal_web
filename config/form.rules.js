@@ -66,10 +66,10 @@ export const categoryGroupId = [
   }
 ]
 
-export const url = [
+export const url = url => [
   {
     required: true,
-    message: 'La url del mapa base es requerido'
+    message: `La url del ${url} es requerido`
   },
   {
     // eslint-disable-next-line no-unused-vars

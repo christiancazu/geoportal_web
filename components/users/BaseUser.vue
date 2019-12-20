@@ -1,5 +1,6 @@
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseForm from '@/components/base/BaseForm'
+
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
@@ -10,10 +11,11 @@ import {
 import { USER_FILE_MAX_SIZE } from '@/config/constants'
 
 export default {
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  components: {
+    BaseForm
+  },
+
+  mixins: [uploadFileMixin],
 
   data: () => ({
     file: {

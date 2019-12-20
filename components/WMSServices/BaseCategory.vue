@@ -1,7 +1,9 @@
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseForm from '@/components/base/BaseForm'
 
 export default {
-  mixins: [modalBaseActionsMixin]
+  components: {
+    BaseForm
+  }
 }
 </script>

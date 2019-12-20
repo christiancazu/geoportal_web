@@ -104,14 +104,6 @@
         :show-word-limit="true"
       />
     </el-form-item>
-    <el-form-item class="text-xs-right">
-      <el-switch
-        v-model="form.isEnabled"
-        :active-value="true"
-        :inactive-value="false"
-        :active-text="form.isEnabled ? 'Servicio Activo' : 'Servicio Inactivo'"
-      />
-    </el-form-item>
 
     <!-- innerComponent on modal -->
     <base-modal
@@ -133,13 +125,11 @@
 <script>
 import BaseService from './BaseService'
 
-import { mapActions } from 'vuex'
-
 import {
+  name,
   url,
   authorId,
-  categoryId,
-  name
+  categoryId
 } from '@/config/form.rules'
 
 export default {
@@ -160,9 +150,9 @@ export default {
           name: 'AddAuthor'
         },
         modalAddCategory: {
-          type: 'page',
-          folderPath: 'managementLayers/groups',
-          name: 'index'
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'AddCategory'
         }
       },
       messageToast: {
@@ -174,42 +164,20 @@ export default {
         description: '',
         url: '',
         authorId: null,
-        isEnabled: false,
+        isEnabled: true,
         categoryId: null,
         isPublic: true
       },
       rules: {
         name: name('servicio'),
-        url,
+        url: url('servicio'),
         authorId,
         categoryId
       }
     }
   },
 
-  computed: {
-    dynamicComponent () {
-      const { type, folderPath, name } = this.$store.state[this.storeBase.name].modalInner
-      return type === 'page'
-        ? () => import(`@/pages/${folderPath}/${name}`)
-        : () => import(`@/components/${folderPath}/${name}`)
-    }
-  },
-
   methods: {
-    ...mapActions({
-      setDynamicComponentAsModalInner ({}, component) {
-        this.$store.dispatch(`${this.storeBase.name}/openModal`, {
-          typeModal: 'modalInner',
-          component
-        })
-      }
-    }),
-
-    openModal (component) {
-      this.setDynamicComponentAsModalInner(this.modalInner[component])
-    },
-
     resetForm () {
       // reset textarea
       this.form.description = ''

@@ -1,7 +1,6 @@
 import {
   SET_DATA_CONTEXT,
   SET_ITEM_CONTEXT,
-  SET_PUBLISHED_ITEM_CONTEXT,
   SET_CURRENT_PAGE_ON_TABLE,
   OPEN_MODAL,
   SET_MODAL_VISIBLE,
@@ -16,13 +15,17 @@ import {
   publishItemContext,
   updateItemContext,
   deleteItemContext,
-  openModal
+  setDynamicModal
 } from '@/use/store.actions'
 
 import {
   setDataContext,
   setItemContext,
-  setCurrentPageOnTable
+  setCurrentPageOnTable,
+  openModal,
+  closeModal,
+  setModalVisible,
+  setModalTitle
 } from '@/use/store.mutations'
 
 const API = '$WMSCategoryAPI'
@@ -55,7 +58,7 @@ export const actions = {
 
   deleteItemContext: deleteItemContext(API),
 
-  openModal
+  setDynamicModal
 }
 
 export const mutations = {
@@ -65,22 +68,11 @@ export const mutations = {
 
   [SET_CURRENT_PAGE_ON_TABLE]: setCurrentPageOnTable,
 
-  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) =>
-    (state.itemContext.isPublished = !payload),
+  [OPEN_MODAL]: openModal,
 
-  [OPEN_MODAL]: (state, { typeModal, component }) => Object.assign(state[typeModal], component),
+  [CLOSE_MODAL]: closeModal,
 
-  [CLOSE_MODAL]: (state, payload) => {
-    state[payload].visible = false
-    state[payload].title = ' '
-    state[payload].type = 'component'
-    state[payload].folderPath = 'fallback'
-    state[payload].name = 'Fallback'
-  },
+  [SET_MODAL_VISIBLE]: setModalVisible,
 
-  [SET_MODAL_VISIBLE]: (state, { typeModal }) => (state[typeModal].visible = true),
-
-  [SET_MODAL_TITLE]: (state, { typeModal, dialogTitle }) => {
-    state[typeModal].title = dialogTitle
-  }
+  [SET_MODAL_TITLE]: setModalTitle
 }
