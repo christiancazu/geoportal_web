@@ -9,6 +9,7 @@ export const setPublishItemContext = (state, payload) => (state.itemContext.isPu
 export const openModal = (state, { typeModal, component }) => Object.assign(state[typeModal], component)
 
 export const closeModal = (state, payload) => {
+  console.warn(payload)
   state[payload].visible = false
   state[payload].title = ' '
   state[payload].type = 'component'

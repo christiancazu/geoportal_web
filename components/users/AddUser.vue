@@ -1,14 +1,13 @@
 <template>
 <base-form
-  :form-title="formTitle"
-  :rules="rules"
   :form="form"
-  :context="context"
+  :rules="rules"
+  :store-base="storeBase"
   :message-toast="messageToast"
   @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
-  @clear-form="clearForm"
+  @close-modal="closeModal"
 >
-  <template v-slot:content>
+  <template v-slot:form-content>
 
     <el-row
       :gutter="10"
@@ -313,12 +312,11 @@ export default {
 
   data () {
     return {
-      formTitle: 'Registrar usuario',
+      dialogTitle: 'Registrar usuario',
 
-      context: {
-        storeBase: 'users',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'create',
+      storeBase: {
+        name: 'users',
+        action: 'create'
       },
       messageToast: {
         baseName: 'USER',
@@ -370,7 +368,7 @@ export default {
   },
 
   methods: {
-    clearForm () {
+    closeModal () {
       this.form.image = null
       this.file.selected = ''
     }
@@ -379,7 +377,7 @@ export default {
 </script>
 
 <style lang="scss">
-.el-icon-view.password{
+.el-icon-view.password {
   cursor: pointer;
   font-size: 1.5rem;
   line-height: 3;

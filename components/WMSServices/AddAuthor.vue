@@ -4,7 +4,6 @@
   :rules="rules"
   :store-base="storeBase"
   :message-toast="messageToast"
-  @reset-form="resetForm"
   @close-modal="closeModal"
 >
   <template v-slot:form-content>
@@ -49,12 +48,12 @@
 </template>
 
 <script>
-import BaseFormParent from '@/components/base/parents/BaseFormParent'
+import BaseAuthor from './BaseAuthor'
 
 import { name } from '@/config/form.rules'
 
 export default {
-  extends: BaseFormParent,
+  extends: BaseAuthor,
 
   data () {
     return {
@@ -81,7 +80,7 @@ export default {
   },
 
   methods: {
-    resetForm () {
+    closeModal () {
       // reset textarea
       this.form.description = ''
     }

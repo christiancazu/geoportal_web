@@ -1,13 +1,12 @@
 <template>
 <base-form
-  :form-title="formTitle"
-  :rules="rules"
   :form="form"
-  :context="context"
+  :rules="rules"
+  :store-base="storeBase"
   :message-toast="messageToast"
   @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
 >
-  <template v-slot:content>
+  <template v-slot:form-content>
 
     <el-row
       :gutter="10"
@@ -238,12 +237,11 @@ export default {
 
   data () {
     return {
-      formTitle: 'Actualizar datos de usuario',
+      dialogTitle: 'Actualizar datos de usuario',
 
-      context: {
-        storeBase: 'users',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'update',
+      storeBase: {
+        name: 'users',
+        action: 'update'
       },
       messageToast: {
         baseName: 'USER',
@@ -277,19 +275,16 @@ export default {
   computed: {
     ...mapState({
       itemContext (state) {
-        return state[this.context.storeBase].itemContext
+        return state[this.storeBase.name].itemContext
       }
     })
   },
 
   watch: {
-    itemContext () {
-      this.assignFormFields()
+    itemContext: { // smart watcher
+      handler: 'assignFormFields',
+      immediate: true
     }
-  },
-
-  created () {
-    this.assignFormFields()
   },
 
   methods: {

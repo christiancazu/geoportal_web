@@ -1,14 +1,15 @@
 <template>
 <base-page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
 >
   <template
     v-slot:page-table="{
-      openModalEditItemContext,
-      confirmedActionDeleteItemContext,
+      openModalEdit,
+      confirmedActionDeleteItemContext
     }"
   >
     <el-table-column
@@ -44,7 +45,7 @@
           :item-selected="scope.row"
           dialog-delete-title="¿Desabilitar usuario?"
           dialog-delete-body-text="Esta acción no se podra revertir ¿Esta seguro de continuar?"
-          @open-edit-modal="openModalEditItemContext(scope.row)"
+          @open-edit-modal="openModalEdit(scope.row)"
           @confirmed-action="confirmedActionDeleteItemContext"
         />
       </template>
@@ -71,15 +72,26 @@ export default {
         title: 'Gestión de usuarios',
         btnAddName: 'Nuevo usuario'
       },
+      storeBase: {
+        name: 'users'
+      },
+      // main modal settings
       modalMain: {
-        storeBase: 'users',
-        addComponent: 'AddUser',
-        editComponent: 'EditUser',
-        folderName: 'users'
+        addComponent: {
+          type: 'component',
+          folderPath: 'users',
+          name: 'AddUser'
+        },
+        editComponent: {
+          type: 'component',
+          folderPath: 'users',
+          name: 'EditUser'
+        }
       },
       messageToast: {
         baseName: 'USER'
       },
+      // criterias to search based on columns of table
       filterCriteriaProps: [
         'fullName',
         'email',
