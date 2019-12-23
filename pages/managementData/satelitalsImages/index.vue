@@ -1,5 +1,5 @@
 <template>
-<page-basic
+<page-actions
   :page-header="pageHeader"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
@@ -64,12 +64,11 @@
       </template>
     </el-table-column>
   </template>
-</page-basic>
+</page-actions>
 </template>
 
 <script>
-import PageBasic from '@/components/base/pages/PageBasic'
-import BaseBtnConfirm from '@/components/base/BaseBtnConfirm'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 import { mapActions } from 'vuex'
 
@@ -79,10 +78,7 @@ import {
 } from '@/types/mutations'
 
 export default {
-  components: {
-    PageBasic,
-    BaseBtnConfirm
-  },
+  extends: PageActionsSetup,
 
   data () {
     return {

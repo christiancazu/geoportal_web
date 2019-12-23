@@ -1,5 +1,5 @@
 <script>
-import BaseFormParent from '@/components/base/parents/BaseFormParent'
+import BaseFormSetup from '@/components/base/setup/BaseFormSetup'
 
 import BaseForm from '@/components/base/BaseForm'
 
@@ -8,6 +8,6 @@ export default {
     BaseForm
   },
 
-  extends: BaseFormParent
+  extends: BaseFormSetup
 }
 </script>

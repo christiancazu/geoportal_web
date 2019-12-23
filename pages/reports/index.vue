@@ -1,5 +1,5 @@
 <template>
-<page-basic
+<page-actions
   :page-header="pageHeader"
   :store-base="storeBase"
   :modal-main="modalMain"
@@ -44,24 +44,25 @@
       </template>
     </el-table-column>
   </template>
-</page-basic>
+</page-actions>
 </template>
 
 <script>
-import PageBasicParent from '@/components/base/parents/PageBasicParent'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 export default {
-  extends: PageBasicParent,
+  extends: PageActionsSetup,
 
   data () {
     return {
+      /**SETTINGS PARENT START */
       pageHeader: {
         title: 'Reportes'
       },
       storeBase: {
         name: 'reports'
       },
-      // main modal settings
+      // modal main settings
       modalMain: {
         viewComponent: {
           type: 'component',
@@ -75,6 +76,7 @@ export default {
         'subject',
         'description'
       ]
+      /**SETTINGS PARENT END */
     }
   },
 

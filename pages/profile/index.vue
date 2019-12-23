@@ -212,6 +212,7 @@
 
 <script>
 import BasePage from '@/components/base/pages/BasePage'
+
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {

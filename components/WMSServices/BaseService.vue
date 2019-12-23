@@ -1,7 +1,7 @@
 <script>
 import BaseForm from '@/components/base/BaseForm'
 
-import BaseFormParent from '@/components/base/parents/BaseFormParent'
+import BaseFormSetup from '@/components/base/setup/BaseFormSetup'
 
 import InnerModalSetupMixin from '@/mixins/InnerModalSetupMixin'
 
@@ -15,7 +15,7 @@ export default {
     BaseForm
   },
 
-  extends: BaseFormParent,
+  extends: BaseFormSetup,
 
   mixins: [InnerModalSetupMixin],
 

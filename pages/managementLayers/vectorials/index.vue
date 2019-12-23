@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import PageActionsParent from '@/components/base/parents/PageActionsParent'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -82,7 +82,7 @@ export default {
     GroupActionsButtons
   },
 
-  extends: PageActionsParent,
+  extends: PageActionsSetup,
 
   data () {
     return {

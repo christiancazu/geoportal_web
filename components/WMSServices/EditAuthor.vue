@@ -48,14 +48,14 @@
 </template>
 
 <script>
-import BaseFormParent from '@/components/base/parents/BaseFormParent'
+import BaseFormSetup from '@/components/base/setup/BaseFormSetup'
 
 import { mapState } from 'vuex'
 
 import { name } from '@/config/form.rules'
 
 export default {
-  extends: BaseFormParent,
+  extends: BaseFormSetup,
 
   data () {
     return {

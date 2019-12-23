@@ -8,8 +8,8 @@
 >
   <template
     v-slot:page-table="{
-      openModalEdit,
-      confirmedActionDeleteItemContext,
+      openModalEditItemContext,
+      deleteItemContext,
       shrinkText
     }"
   >
@@ -36,8 +36,8 @@
           :item-selected="scope.row"
           dialog-delete-title="Eliminar categoría"
           dialog-delete-body-text="¿Está seguro de eliminar esta categoría?"
-          @open-edit-modal="openModalEdit(scope.row)"
-          @confirmed-action="confirmedActionDeleteItemContext"
+          @open-edit-modal="openModalEditItemContext(scope.row)"
+          @confirmed-action="deleteItemContext"
         />
       </template>
     </el-table-column>
@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import PageActionsParent from '@/components/base/parents/PageActionsParent'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -55,7 +55,7 @@ export default {
     GroupActionsButtons
   },
 
-  extends: PageActionsParent,
+  extends: PageActionsSetup,
 
   data () {
     return {

@@ -45,12 +45,12 @@
 
 <script>
 
-import PageActionsParent from '@/components/base/parents/PageActionsParent'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 import { SET_ITEM_CONTEXT } from '@/types/mutations'
 
 export default {
-  extends: PageActionsParent,
+  extends: PageActionsSetup,
 
   data () {
     return {
