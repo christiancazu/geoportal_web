@@ -1,5 +1,5 @@
 <template>
-<base-page-actions
+<page-actions
   :page-header="pageHeader"
   :store-base="storeBase"
   :modal-main="modalMain"
@@ -42,11 +42,11 @@
       </template>
     </el-table-column>
   </template>
-</base-page-actions>
+</page-actions>
 </template>
 
 <script>
-import BasePageActionsParent from '@/components/base/parents/BasePageActionsParent'
+import PageActionsParent from '@/components/base/parents/PageActionsParent'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -55,7 +55,7 @@ export default {
     GroupActionsButtons
   },
 
-  extends: BasePageActionsParent,
+  extends: PageActionsParent,
 
   data () {
     return {

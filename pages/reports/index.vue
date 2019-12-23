@@ -1,5 +1,5 @@
 <template>
-<base-page-basic
+<page-basic
   :page-header="pageHeader"
   :store-base="storeBase"
   :modal-main="modalMain"
@@ -44,14 +44,14 @@
       </template>
     </el-table-column>
   </template>
-</base-page-basic>
+</page-basic>
 </template>
 
 <script>
-import BasePageBasicParent from '@/components/base/parents/BasePageBasicParent'
+import PageBasicParent from '@/components/base/parents/PageBasicParent'
 
 export default {
-  extends: BasePageBasicParent,
+  extends: PageBasicParent,
 
   data () {
     return {

@@ -1,5 +1,5 @@
 <template>
-<base-page-basic
+<page-basic
   :page-header="pageHeader"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
@@ -45,15 +45,15 @@
       </template>
     </el-table-column>
   </template>
-</base-page-basic>
+</page-basic>
 </template>
 
 <script>
-import BasePageBasic from '@/components/base/pages/BasePageBasic'
+import PageBasic from '@/components/base/pages/PageBasic'
 
 export default {
   components: {
-    BasePageBasic
+    PageBasic
   },
 
   data () {

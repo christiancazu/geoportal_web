@@ -1,5 +1,5 @@
 <template>
-<base-page-actions
+<page-actions
   :page-header="pageHeader"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
@@ -40,17 +40,17 @@
       </template>
     </el-table-column>
   </template>
-</base-page-actions>
+</page-actions>
 </template>
 
 <script>
 
-import BasePageActionsParent from '@/components/base/parents/BasePageActionsParent'
+import PageActionsParent from '@/components/base/parents/PageActionsParent'
 
 import { SET_ITEM_CONTEXT } from '@/types/mutations'
 
 export default {
-  extends: BasePageActionsParent,
+  extends: PageActionsParent,
 
   data () {
     return {

@@ -1,10 +1,10 @@
 <script>
-import BasePageBasic from '@/components/base/pages/BasePageBasic'
+import PageBasic from '@/components/base/pages/PageBasic'
 // import BaseBtnConfirm from '@/components/base/BaseBtnConfirm'
 
 export default {
   components: {
-    BasePageBasic,
+    PageBasic,
     // BaseBtnConfirm
   }
 }
