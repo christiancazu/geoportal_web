@@ -6,6 +6,10 @@ export default {
   },
 
   methods: {
+    /**
+     * clear file from form
+     *
+     */
     $_uploadFileMixin_clear () {
       this.form[this.file.type] = null
       this.file.selected = null

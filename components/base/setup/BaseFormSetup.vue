@@ -16,6 +16,9 @@ export default {
   },
 
   created () {
+    /**
+     * Setting title on modal if storeMounted prop is passed
+     */
     if (this.storeMounted)
       this.$store.commit(`${this.storeMounted.name}/${SET_MODAL_TITLE}`, {
         typeModal: this.storeMounted.typeModal,
@@ -24,6 +27,9 @@ export default {
   },
 
   methods: {
+    /**
+     * mutating CLOSE_MODAL on his storeMounted when close btn is clicked
+     */
     closeModal () {
       this.$store.commit(`${this.storeMounted.name}/${CLOSE_MODAL}`, this.storeMounted.typeModal)
     }

@@ -4,7 +4,6 @@
   :rules="rules"
   :store-base="storeBase"
   :message-toast="messageToast"
-  @reset-form="resetForm"
   @close-modal="closeModal"
 >
   <template v-slot:form-content>
@@ -46,9 +45,10 @@ export default {
     return {
       dialogTitle: 'Registrar categoría WMS',
 
+      // base-form component settings
       storeBase: {
         name: 'WMSCategories',
-        action: 'create',
+        action: 'createItemContext',
       },
       messageToast: {
         baseName: 'CATEGORY',
@@ -62,13 +62,6 @@ export default {
       rules: {
         name: name('la categoría')
       }
-    }
-  },
-
-  methods: {
-    resetForm () {
-      // reset textarea
-      this.form.description = ''
     }
   }
 }

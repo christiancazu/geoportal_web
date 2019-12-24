@@ -143,9 +143,10 @@ export default {
     return {
       dialogTitle: 'Actualizar servicio WMS',
 
+      // base-form component settings
       storeBase: {
         name: 'WMSServices',
-        action: 'update'
+        action: 'updateItemContext'
       },
       modalInner: {
         modalAddAuthor: {

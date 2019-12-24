@@ -49,9 +49,10 @@ export default {
     return {
       dialogTitle: 'Actualizar categoría WMS',
 
+      // base-form component settings
       storeBase: {
         name: 'WMSCategories',
-        action: 'update'
+        action: 'updateItemContext'
       },
       messageToast: {
         baseName: 'CATEGORY',
@@ -77,7 +78,7 @@ export default {
   },
 
   watch: {
-    itemContext: {
+    itemContext: { // smart watcher
       handler: 'assignFormFields',
       immediate: true
     }

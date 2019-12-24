@@ -10,12 +10,12 @@
   :disabled="$store.state.spinners.processingForm"
   autocomplete="off"
 >
-
   <slot name="form-content" />
 
   <!-- actions -->
   <div class="text-xs-center">
     <el-button
+      v-if="!isMountedAsPage"
       size="small"
       @click="closeModal()"
     >
@@ -41,7 +41,6 @@
         PUBLICAR
       </el-button>
     </template>
-
   </div>
 
 </el-form>
@@ -77,6 +76,9 @@ export default {
         baseName: { type: String, required: true },
         action: { type: String, required: true }
       })
+    },
+    isMountedAsPage: {
+      type: Boolean, default: false
     }
   },
 
@@ -98,11 +100,11 @@ export default {
         await this.$store.dispatch(`${this.storeBase.name}/getDataContext`)
       },
       async submitItemContext ({}, formData) {
-        await this.$store.dispatch(`${this.storeBase.name}/${this.storeBase.action}ItemContext`, formData)
+        await this.$store.dispatch(`${this.storeBase.name}/${this.storeBase.action}`, formData)
       },
       async publishItemContext ({}, formData) {
         await this.$store.dispatch(`${this.storeBase.name}/publishItemContext`, formData)
-      },
+      }
     }),
 
     async submitForm () {
@@ -116,17 +118,19 @@ export default {
         const formData = this.objectToFormData()
 
         // used when need to apply custom functionality/fix on formData before to be sends
-        this.$emit('apply-custom-functionality-to-form', formData)
+        this.$emit('apply-before-submit-form', formData)
         try {
           await this.submitItemContext(formData)
 
-          if (this.storeBase.action === 'create') {
+          if (this.storeBase.action === 'createItemContext') {
             this.resetForm()
           }
 
           this.$toast.success(this.$SUCCESS[this.messageToast.baseName][this.messageToast.action])
 
           await this.getDataContext()
+
+          this.$emit('apply-after-submit-form')
         }
         catch (e) {}
         this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
@@ -152,23 +156,25 @@ export default {
       this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
     },
 
+    /**
+     * parse current object form to FormData
+     */
     objectToFormData () {
       const formData = new FormData()
 
-      Object.keys(this.form).forEach(key => {
-        formData.append(key, this.form[key])
-      })
+      Object.keys(this.form).forEach(key => formData.append(key, this.form[key]))
 
       return formData
     },
 
     closeModal () {
+      this.resetForm()
       this.$emit('close-modal')
+
     },
 
     resetForm () {
       this.$refs.form.resetFields()
-      this.$emit('reset-form')
     }
   }
 }

@@ -61,9 +61,10 @@ export default {
     return {
       dialogTitle: 'Actualizar autor WMS',
 
+      // base-form component settings
       storeBase: {
         name: 'WMSAuthors',
-        action: 'update'
+        action: 'updateItemContext'
       },
       messageToast: {
         baseName: 'AUTHOR',
@@ -90,7 +91,7 @@ export default {
   },
 
   watch: {
-    itemContext: {
+    itemContext: { // smart watcher
       handler: 'assignFormFields',
       immediate: true
     }

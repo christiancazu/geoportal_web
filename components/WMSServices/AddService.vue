@@ -4,7 +4,6 @@
   :rules="rules"
   :store-base="storeBase"
   :message-toast="messageToast"
-  @reset-form="resetForm"
   @close-modal="closeModal"
 >
   <template v-slot:form-content>
@@ -139,9 +138,10 @@ export default {
     return {
       dialogTitle: 'Registrar servicio WMS',
 
+      // base-form component settings
       storeBase: {
         name: 'WMSServices',
-        action: 'create'
+        action: 'createItemContext'
       },
       modalInner: {
         modalAddAuthor: {
@@ -174,13 +174,6 @@ export default {
         authorId,
         categoryId
       }
-    }
-  },
-
-  methods: {
-    resetForm () {
-      // reset textarea
-      this.form.description = ''
     }
   }
 }

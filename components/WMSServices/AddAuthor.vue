@@ -59,9 +59,10 @@ export default {
     return {
       dialogTitle: 'Registrar autor WMS',
 
+      // base-form component settings
       storeBase: {
         name: 'WMSAuthors',
-        action: 'create'
+        action: 'createItemContext'
       },
       messageToast: {
         baseName: 'AUTHOR',
@@ -76,13 +77,6 @@ export default {
       rules: {
         name: name('autor')
       }
-    }
-  },
-
-  methods: {
-    closeModal () {
-      // reset textarea
-      this.form.description = ''
     }
   }
 }

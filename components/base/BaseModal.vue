@@ -15,9 +15,7 @@
 </template>
 
 <script>
-import {
-  CLOSE_MODAL
-} from '@/types/mutations'
+import { CLOSE_MODAL } from '@/types/mutations'
 
 export default {
   props: {

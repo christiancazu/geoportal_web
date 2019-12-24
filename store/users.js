@@ -67,6 +67,7 @@ export const actions = {
   deleteItemContext: deleteItemContext(API),
 
   async updateProfile ({}, form) {
+    console.warn('form', form)
     await this.$userAPI.updateProfile(form)
   },
 
