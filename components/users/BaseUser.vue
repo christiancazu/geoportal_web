@@ -1,6 +1,8 @@
 <script>
 import BaseForm from '@/components/base/BaseForm'
 
+import BaseFormSetup from '@/components/base/setup/BaseFormSetup'
+
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
@@ -15,9 +17,12 @@ export default {
     BaseForm
   },
 
+  extends: BaseFormSetup,
+
   mixins: [uploadFileMixin],
 
   data: () => ({
+    /** UPLOADFILE SETTINGS */
     file: {
       type: 'image', // it's property name file inside form
       availableExtensions: [
@@ -75,7 +80,7 @@ export default {
      *
      * @param {Object} formData
      */
-    ApplyCustomFunctionalityToForm (formData) {
+    applyBeforeSubmitForm (formData) {
       if (formData.get(this.file.type) === null || typeof formData.get(this.file.type) === 'string')
         formData.delete(this.file.type)
     }

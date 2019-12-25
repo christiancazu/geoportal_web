@@ -4,7 +4,8 @@
   :rules="rules"
   :store-base="storeBase"
   :message-toast="messageToast"
-  @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
+  @apply-before-submit-form="applyBeforeSubmitForm"
+  @close-modal="closeModal"
 >
   <template v-slot:form-content>
 
@@ -16,7 +17,7 @@
       <el-col :md="12">
         <!-- image -->
         <el-form-item
-          label="Imagen de Perfil"
+          label="Imagen de perfil"
           class="text-xs-center"
         >
 
@@ -32,7 +33,7 @@
       </el-col>
       <el-col :md="12">
         <!-- username -->
-        <el-form-item label="Nombre de Usuario">
+        <el-form-item label="Nombre de usuario">
           <el-input
             v-model="form.username"
             type="text"
@@ -42,7 +43,7 @@
         </el-form-item>
 
         <!-- email -->
-        <el-form-item label="Correo Electrónico">
+        <el-form-item label="Correo electrónico">
           <el-input
             v-model="form.email"
             disabled
@@ -239,9 +240,10 @@ export default {
     return {
       dialogTitle: 'Actualizar datos de usuario',
 
+      /** BASEFORM SETTINGS */
       storeBase: {
         name: 'users',
-        action: 'update'
+        action: 'updateItemContext'
       },
       messageToast: {
         baseName: 'USER',
@@ -289,9 +291,7 @@ export default {
 
   methods: {
     assignFormFields () {
-      Object.keys(this.form).forEach(key => {
-        this.form[key] = this.itemContext[key]
-      })
+      Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
       this.file.imageUrl = this.form[this.file.type]
 
       this.getProvinces(this.form['regionId'])

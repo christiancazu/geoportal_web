@@ -217,12 +217,17 @@ export default {
     ...mapActions({
       async getDataContext () {
         this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'loadingTable')
-        await this.$store.dispatch(`${this.storeBase.name}/getDataContext`)
-        this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'loadingTable')
 
+        await this.$store.dispatch(`${this.storeBase.name}/getDataContext`)
+
+        this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'loadingTable')
       },
       async getItemContext ({}, id) {
+        this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'loadingTable')
+
         await this.$store.dispatch(`${this.storeBase.name}/getItemContext`, id)
+
+        this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'loadingTable')
       },
 
       setDynamicComponentAsModalMain ({}, component) {

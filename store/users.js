@@ -43,7 +43,7 @@ export const state = () => ({
     name: 'Fallback',
     store: 'users',
     visible: false
-  },
+  }
 })
 
 export const actions = {
@@ -57,17 +57,16 @@ export const actions = {
 
   getItemContext: getItemContext(API),
 
+  updateItemContext: updateItemContext(API),
+
+  deleteItemContext: deleteItemContext(API),
+
   async getProfile ({ commit }) {
     const data = await this.$userAPI.getProfile()
     commit(SET_PROFILE, data)
   },
 
-  updateItemContext: updateItemContext(API),
-
-  deleteItemContext: deleteItemContext(API),
-
   async updateProfile ({}, form) {
-    console.warn('form', form)
     await this.$userAPI.updateProfile(form)
   },
 

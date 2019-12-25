@@ -84,6 +84,7 @@ export default {
 
   data () {
     return {
+      /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Servicios externos WMS',
         btnAddName: 'Nuevo servicio WMS'
@@ -91,8 +92,7 @@ export default {
       storeBase: {
         name: 'WMSServices'
       },
-      // main modal settings
-      modalMain: {
+      modalMain: { // main modal settings
         addComponent: {
           type: 'component',
           folderPath: 'WMSServices',
@@ -107,8 +107,7 @@ export default {
       messageToast: {
         baseName: 'SERVICE'
       },
-      // criterias to search based on columns of table
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'url',
         'name',
         'author.name',

@@ -63,6 +63,7 @@ export default {
 
   data () {
     return {
+      /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Autores de servicios WMS',
         btnAddName: 'Nuevo autor WMS'
@@ -70,8 +71,7 @@ export default {
       storeBase: {
         name: 'WMSAuthors'
       },
-      // main modal settings
-      modalMain: {
+      modalMain: { // main modal settings
         addComponent: {
           type: 'component',
           folderPath: 'WMSServices',
@@ -86,8 +86,7 @@ export default {
       messageToast: {
         baseName: 'AUTHOR'
       },
-      // criterias to search based on columns of table
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'name',
         'webUrl',
         'description'

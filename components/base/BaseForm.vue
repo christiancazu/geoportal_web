@@ -170,7 +170,6 @@ export default {
     closeModal () {
       this.resetForm()
       this.$emit('close-modal')
-
     },
 
     resetForm () {

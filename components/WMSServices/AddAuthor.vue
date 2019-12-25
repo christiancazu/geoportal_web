@@ -59,7 +59,7 @@ export default {
     return {
       dialogTitle: 'Registrar autor WMS',
 
-      // base-form component settings
+      /** BASEFORM SETTINGS */
       storeBase: {
         name: 'WMSAuthors',
         action: 'createItemContext'

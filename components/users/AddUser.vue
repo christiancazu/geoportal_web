@@ -4,7 +4,8 @@
   :rules="rules"
   :store-base="storeBase"
   :message-toast="messageToast"
-  @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
+  @apply-before-submit-form="applyBeforeSubmitForm"
+  @apply-after-submit-form="applyAfterSubmitForm"
   @close-modal="closeModal"
 >
   <template v-slot:form-content>
@@ -314,9 +315,10 @@ export default {
     return {
       dialogTitle: 'Registrar usuario',
 
+      /** BASEFORM SETTINGS */
       storeBase: {
         name: 'users',
-        action: 'create'
+        action: 'createItemContext'
       },
       messageToast: {
         baseName: 'USER',
@@ -362,13 +364,12 @@ export default {
           }
         ]
       },
-
       passwordVisible: false
     }
   },
 
   methods: {
-    closeModal () {
+    applyAfterSubmitForm () { // clear image
       this.form.image = null
       this.file.selected = ''
     }

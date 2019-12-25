@@ -37,10 +37,6 @@ export const state = () => ({
   itemContext: {},
   currentPageOnTable: 1,
 
-  page: {
-    visible: false
-  },
-
   modalMain: {
     title: ' ',
     type: 'component',

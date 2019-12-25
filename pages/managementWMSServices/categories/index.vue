@@ -59,6 +59,7 @@ export default {
 
   data () {
     return {
+      /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Categorias de servicios WMS',
         btnAddName: 'Nueva categoría WMS'
@@ -66,8 +67,7 @@ export default {
       storeBase: {
         name: 'WMSCategories'
       },
-      // main modal settings
-      modalMain: {
+      modalMain: { // main modal settings
         addComponent: {
           type: 'component',
           folderPath: 'WMSServices',
@@ -82,8 +82,7 @@ export default {
       messageToast: {
         baseName: 'CATEGORY'
       },
-      // criterias to search based on columns of table
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'name',
         'description'
       ]
