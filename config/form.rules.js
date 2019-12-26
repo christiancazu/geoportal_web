@@ -46,7 +46,7 @@ export const title = [
 export const groupLayerId = [
   {
     required: true,
-    message: 'Seleccione un grupo de capa'
+    message: 'Seleccione un grupo de capas'
   }
 ]
 

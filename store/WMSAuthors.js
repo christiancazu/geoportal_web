@@ -13,7 +13,6 @@ import {
   getDataContext,
   getItemContext,
   createItemContext,
-  publishItemContext,
   updateItemContext,
   deleteItemContext,
   setDynamicModal
@@ -53,8 +52,6 @@ export const actions = {
   getDataContext: getDataContext(API),
 
   getItemContext: getItemContext(API),
-
-  publishItemContext: publishItemContext(API),
 
   updateItemContext: updateItemContext(API),
 

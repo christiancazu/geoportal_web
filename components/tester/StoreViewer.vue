@@ -8,7 +8,7 @@
 export default {
   computed: {
     currentStore () {
-      return this.$store.state.requests.modalMain
+      return this.$store.state.auth
     },
   }
 }

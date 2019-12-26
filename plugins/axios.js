@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 import { AUTH_STRATEGY } from '@/config/constants'
 
-export default async ({ $axios, redirect, app }) => {
+export default async ({ store, $axios, redirect, app }) => {
   // $axios.defaults.timeout = 30000 // timeout for request in miliseconds
 
   $axios.onRequest((/*config*/) => {
@@ -28,6 +28,7 @@ export default async ({ $axios, redirect, app }) => {
       // deleting tokens
       $axios.setToken(null)
       app.$auth.setToken(AUTH_STRATEGY, null)
+      store.commit('auth/SET', { key: 'user', value: null })
       redirect('/login')
 
       break
@@ -39,9 +40,9 @@ export default async ({ $axios, redirect, app }) => {
       break
     default:
       errorMessage =
-          typeof error.response !== 'undefined'
-            ? error.response.data
-            : Vue.prototype.$ERRORS.ERROR_TRY_LATER
+        typeof error.response !== 'undefined'
+          ? error.response.data.message || error.response.data
+          : Vue.prototype.$ERRORS.ERROR_TRY_LATER
     }
     Vue.prototype.$toasted.error(errorMessage)
   })

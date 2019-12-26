@@ -19,12 +19,15 @@
       <img
         class="img-profile-sidebar"
         :src="user.image"
+        style="border-radius: 50%"
       >
-      <span class="font-weight-bold">{{ user.username }}
+
+      <span class="font-weight-bold ml-1">{{ user.username }}
         <el-badge
           type="warning"
           :value="user.userType.id === 'AD' ? 'ADMIN' : ''"
-        /></span>
+        />
+      </span>
     </el-menu-item>
 
     <el-divider />
@@ -156,6 +159,7 @@ export default {
 
       try {
         this.$store.commit('auth/SET', { key: 'loggedIn', value: false })
+        this.$store.commit('auth/SET', { key: 'user', value: null })
         await this.$store.dispatch('users/logout')
         await this.$router.push('/login')
         this.$toast.success(this.$SUCCESS.LOGOUT)

@@ -68,7 +68,7 @@ export const actions = {
 
   deleteItemContext: deleteItemContext(API),
 
-  setDynamicModal,
+  setDynamicModal
 }
 
 export const mutations = {

@@ -1,7 +1,7 @@
 <template>
 <div
   id="app"
-  style="height:100vh;"
+  style="min-height:100vh;"
 >
   <el-container
     :class="isCollapse ? 'isCollapse' : 'openSidebar'"

@@ -13,14 +13,19 @@
 
     <img
       v-if="file.imageUrl"
-      :class="avatarImage ? 'avatar' : 'image-input'"
+      :class="[
+        {},
+        [
+          avatarImage ? 'avatar' : typeImage ? 'image-input' : 'archive-input'
+        ]
+      ]"
       :src="file.imageUrl"
     >
 
     <template v-else>
       <div
         class="px-2"
-        :class="avatarImage ? 'avatar' : 'image-input'"
+        :class="avatarImage ? 'avatar' : 'archive-input'"
       >
         <i
           class="avatar-uploader-icon my-0"

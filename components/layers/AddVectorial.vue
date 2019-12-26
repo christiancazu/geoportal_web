@@ -1,46 +1,15 @@
 <template>
 <base-form
-  :form-title="formTitle"
   :form="form"
   :rules="rules"
-  :context="context"
+  :store-base="storeBase"
   :message-toast="messageToast"
-  @clear-form="$_uploadFileMixin_clear()"
+  @apply-after-submit-form="applyAfterSubmitForm"
+  @close-modal="closeModal"
 >
-  <template v-slot:content>
-    <el-row :gutter="14">
-      <el-col
-        :xs="24"
-        :md="{span:12, offset:12}"
-        :sm="24"
-        :lg="{span:12, offset:12}"
-        class="text-xs-center"
-      >
-        <el-form-item
-          prop="order"
-          size="mini"
-          :inline-message="true"
-        >
-          <label
-            class="pr-2"
-            for=""
-          >
-            N° de orden:
-          </label>
-          <el-input-number
-            v-model="form.order"
-            size="mini"
-            controls-position="right"
-            :min="1"
-            type="number"
-          />
-        </el-form-item>
-      </el-col>
-    </el-row>
+  <template v-slot:form-content>
     <el-row
       :gutter="10"
-      align="bottom"
-      justify="center"
     >
       <el-col :md="12">
         <!-- file -->
@@ -82,7 +51,7 @@
             type="text"
           />
         </el-form-item>
-        <el-form-item
+        <!-- <el-form-item
           label="Grupo"
           prop="groupLayerId"
         >
@@ -101,13 +70,61 @@
               />
             </el-select>
 
-            <!-- open second modal -->
-            <btn-open-second-modal :modal-second="modalSecond" />
-
+            open modal inner
+            <btn-open-modal-inner
+              tooltip="Agregar Categoría"
+              @open-modal="openModal('modalAddGroupLayers')"
+            />
           </el-container>
-        </el-form-item>
+        </el-form-item> -->
       </el-col>
     </el-row>
+
+    <el-row
+      :gutter="10"
+      type="flex"
+    >
+      <el-col
+        :xs="22" :md="22"
+      >
+        <el-input
+          v-model="filterGroupLayerName"
+          clearable
+          placeholder="Filtrar capas"
+          class="my-2"
+        />
+      </el-col>
+
+      <el-col
+        :xs="2" :md="2"
+      >
+        <!-- open modal inner -->
+        <btn-open-modal-inner
+          icon="el-icon-edit"
+          tooltip="Editar Grupo de capas"
+          class="my-2"
+          @open-modal="openModal('modalAddGroupLayers')"
+        />
+      </el-col>
+    </el-row>
+
+    <!-- group layers tree -->
+    <el-form-item
+      label="Grupo de Capas"
+      prop="groupLayerId"
+    >
+      <el-tree
+        ref="tree"
+        v-loading="$store.state.spinners.loadingPage"
+        :data="dataTree"
+        :props="defaultProps"
+        :filter-node-method="filterNode"
+        default-expand-all
+        class="my-2"
+        @node-click="onSelectedGroupLayer"
+      />
+    </el-form-item>
+
     <!-- Descripción -->
     <el-form-item
       label="Descripción"
@@ -121,6 +138,20 @@
         :maxlength="300"
         :show-word-limit="true"
       />
+
+      <!-- innerComponent on modal -->
+      <base-modal
+        :modal="$store.state[storeBase.name].modalInner"
+        modal-type="modalInner"
+      >
+        <template v-slot:modal-content>
+          <component
+            :is="dynamicComponent"
+            :store-mounted="{ name: storeBase.name, typeModal: 'modalInner' }"
+          />
+        </template>
+      </base-modal>
+
     </el-form-item>
   </template>
 </base-form>
@@ -134,7 +165,6 @@ import uploadFileMixin from '@/mixins/uploadFileMixin'
 import {
   title,
   groupLayerId,
-  order,
   shapeFile,
   nameAlpha
 } from '@/config/form.rules'
@@ -146,44 +176,60 @@ export default {
 
   data () {
     return {
-      formTitle: 'Registrar capa vectorial',
+      dialogTitle: 'Registrar capa vectorial',
 
-      context: {
-        storeBase: 'vectorialLayers',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'create',
+      /** BASEFORM SETTINGS */
+      storeBase: {
+        name: 'vectorialLayers',
+        action: 'createItemContext'
       },
-      modalSecond: {
-        wrapperBaseModal: true, // if true will use BaseModal as Wrapper
-        folderRoot: 'pages',
-        folderName: 'managementLayers/groups',
-        component: 'index',
-        tooltip: 'Agregar grupo de capas'
+      modalInner: {
+        modalAddGroupLayers: {
+          type: 'page',
+          folderPath: 'managementLayers/groups',
+          name: 'index'
+        }
       },
       messageToast: {
         baseName: 'LAYER',
         action: 'REGISTERED'
+      },
+      form: {
+        title: '',
+        name: '',
+        order: null,
+        shapeFile: null,
+        groupLayerId: null,
+        description: ''
+      },
+      rules: {
+        title,
+        groupLayerId,
+        shapeFile,
+        name: nameAlpha
       },
       file: {
         type: 'shapeFile',
         availableExtensions: ['zip'],
         selected: null
       },
-      form: {
-        title: '',
-        order: 0,
-        name: '',
-        shapeFile: null,
-        groupLayerId: '',
-        description: ''
-      },
-      rules: {
-        title,
-        groupLayerId,
-        order,
-        shapeFile,
-        name: nameAlpha
+
+      // tree context
+      dataTree: [],
+      filterGroupLayerName: '',
+      defaultProps: {
+        children: 'children',
+        label: 'label'
       }
+    }
+  },
+
+  methods: {
+    applyAfterSubmitForm () { // clear file
+      this.form.shapeFile = null
+      this.file.selected = ''
+      // call again init (tree structure reset & fetch TreeStructure)
+      this.init()
     }
   }
 }
