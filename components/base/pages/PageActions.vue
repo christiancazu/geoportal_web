@@ -57,7 +57,9 @@
 
   </el-container>
 
+  <!-- ES7 object empty validation on modalMain -->
   <base-modal
+    v-if="existsModalMain"
     :modal="$store.state[storeBase.name].modalMain"
     modal-type="modalMain"
   >
@@ -206,6 +208,13 @@ export default {
       return type === 'page'
         ? () => import(`@/pages/${folderPath}/${name}`)
         : () => import(`@/components/${folderPath}/${name}`)
+    },
+
+    /**
+     * checking if modalMain prop is passed
+     */
+    existsModalMain () {
+      return typeof Object.entries(this.modalMain)[0][1].type === 'string'
     }
   },
 

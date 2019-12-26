@@ -43,7 +43,7 @@ export const SUCCESS = {
   },
   REQUEST: {
     APPROVED: 'La solicitud ha sido aprobado con éxito',
-    REJECT: 'La solicitud ha sido rechazado con éxito'
+    REJECTED: 'La solicitud ha sido rechazado con éxito'
   },
   SERVICE: {
     REGISTERED: 'El servicio se registro con éxito',

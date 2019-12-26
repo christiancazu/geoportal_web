@@ -28,10 +28,10 @@
 </template>
 
 <script>
+import SideBar from '@/components/SideBar'
 // import StoreViewer from '@/components/tester/StoreViewer'
 
 import { mapState } from 'vuex'
-import SideBar from '@/components/SideBar'
 
 export default {
   components: {

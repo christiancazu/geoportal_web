@@ -21,26 +21,32 @@
     >
       CERRAR
     </el-button>
-    <el-button
-      type="primary"
-      size="small"
-      native-type="submit"
-      :loading="$store.state.spinners.processingForm"
-      @click.prevent="submitForm"
-    >
-      GUARDAR
-    </el-button>
 
-    <template v-if="canPublish">
+    <template v-if="!customActions">
       <el-button
-        type="success"
+        type="primary"
         size="small"
+        native-type="submit"
         :loading="$store.state.spinners.processingForm"
-        @click.prevent="submitPublish"
+        @click.prevent="submitForm"
       >
-        PUBLICAR
+        GUARDAR
       </el-button>
+
+      <template v-if="canPublish">
+        <el-button
+          type="success"
+          size="small"
+          :loading="$store.state.spinners.processingForm"
+          @click.prevent="submitPublish"
+        >
+          PUBLICAR
+        </el-button>
+      </template>
     </template>
+
+    <slot name="form-custom-actions" />
+
   </div>
 
 </el-form>
@@ -61,8 +67,11 @@ export default {
       type: Object, required: true
     },
     rules: {
-      type: Object, required: true
+      type: Object, default: () => ({})
     },
+    /**
+     * store settings to apply actions when submiting
+     */
     storeBase: {
       type: Object,
       default: () => ({
@@ -70,6 +79,9 @@ export default {
         action: { type: String, required: true }
       })
     },
+    /**
+     * TOAST MESSAGE TO SHOW AFTER SUBMIT SUCCESS
+     */
     messageToast: {
       type: Object,
       default: () => ({
@@ -77,12 +89,24 @@ export default {
         action: { type: String, required: true }
       })
     },
+    /**
+     * USED TO SHOW CLOSE MODAL BUTTON IF IS MOUNTED AS PAGE
+     */
     isMountedAsPage: {
+      type: Boolean, default: false
+    },
+    /**
+     * working on slot:form-custom-actions if the parent have custom actions buttons
+     */
+    customActions: {
       type: Boolean, default: false
     }
   },
 
   computed: {
+    /**
+     * only apply if the itemContext can be published
+     */
     canPublish: {
       get () {
         if (typeof this.$store.state[this.storeBase.name].itemContext.isPublished === 'undefined') return false
@@ -96,17 +120,30 @@ export default {
 
   methods: {
     ...mapActions({
+      /**
+       * getting dataContext of the currentPage depeding of storeBase
+       */
       async getDataContext () {
         await this.$store.dispatch(`${this.storeBase.name}/getDataContext`)
       },
+      /**
+       * submit post/update the current ItemContext depeding of storeBase & his action
+       */
       async submitItemContext ({}, formData) {
         await this.$store.dispatch(`${this.storeBase.name}/${this.storeBase.action}`, formData)
       },
+      /**
+       * publish the current ItemContext depeding of storeBase
+       */
       async publishItemContext ({}, formData) {
         await this.$store.dispatch(`${this.storeBase.name}/publishItemContext`, formData)
       }
     }),
 
+    /**
+     * submitForm will take the current store settings to send the current form as request
+     *
+     */
     async submitForm () {
       let isFormValid = false
 
@@ -122,14 +159,13 @@ export default {
         try {
           await this.submitItemContext(formData)
 
-          if (this.storeBase.action === 'createItemContext') {
-            this.resetForm()
-          }
+          if (this.storeBase.action === 'createItemContext') this.resetForm()
 
           this.$toast.success(this.$SUCCESS[this.messageToast.baseName][this.messageToast.action])
 
           await this.getDataContext()
 
+          // used when need to apply custom functionality/fix on formData after to be sends
           this.$emit('apply-after-submit-form')
         }
         catch (e) {}

@@ -8,7 +8,7 @@
 export default {
   computed: {
     currentStore () {
-      return this.$store.state.WMSServices.modalInner
+      return this.$store.state.requests.modalMain
     },
   }
 }

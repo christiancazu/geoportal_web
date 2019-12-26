@@ -55,28 +55,25 @@ export default {
 
   data () {
     return {
-      /**SETTINGS PARENT START */
+      /** PAGE ACTIONS SETTINGS */
       pageHeader: {
         title: 'Reportes'
       },
       storeBase: {
         name: 'reports'
       },
-      // modal main settings
-      modalMain: {
+      modalMain: { // modal main settings
         viewComponent: {
           type: 'component',
           folderPath: 'reports',
           name: 'ViewReport'
         }
       },
-      // criterias to search based on columns of table
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'user',
         'subject',
         'description'
       ]
-      /**SETTINGS PARENT END */
     }
   },
 

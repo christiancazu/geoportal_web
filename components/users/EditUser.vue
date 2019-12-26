@@ -302,7 +302,7 @@ export default {
 </script>
 
 <style lang="scss">
-// cuenta activa color switch active
+// active account color switch
 .label-success {
   .el-switch__label.is-active {
     color: #67c23a;

@@ -47,10 +47,6 @@ export const state = () => ({
 })
 
 export const actions = {
-  async getUserInfo () {
-    return await this.$userAPI.info()
-  },
-
   createItemContext: createItemContext(API),
 
   getDataContext: getDataContext(API),
@@ -60,6 +56,10 @@ export const actions = {
   updateItemContext: updateItemContext(API),
 
   deleteItemContext: deleteItemContext(API),
+
+  async getUserInfo () {
+    return await this.$userAPI.info()
+  },
 
   async getProfile ({ commit }) {
     const data = await this.$userAPI.getProfile()

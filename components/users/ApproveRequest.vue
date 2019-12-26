@@ -1,90 +1,111 @@
 <template>
-<el-dialog
-  title="Aprobar solicitud de registro"
-  :close-on-click-modal="false"
-  :visible="$store.state.modalsVisibilities[context.mountedOn].visibility"
-  top="2vh"
-  @close="closeModal()"
->
+<div>
   <div class="text-request">
-    <label class="text-uppercase">
+    <label>Nombres y apellidos: </label>
+    <p>
       {{ `${itemContext.name} ${itemContext.lastName} ${itemContext.lastNameAditional}` }}
-    </label>
-    <p class="ma-0">{{ `${itemContext.email}` }}</p>
-    <p class="text-uppercase ma-0">{{ `${itemContext.institute}` }}</p>
+    </p>
+
+    <label>Email: </label>
+    <p>{{ itemContext.email }}</p>
+
+    <label>Institución: </label>
+    <p>{{ itemContext.institute }}</p>
+
+    <label>Motivo de uso: </label>
+    <p>{{ itemContext.subject }}</p>
   </div>
-  <div class="my-3 text-request">
-    <label class="text-uppercase">Motivo de uso: </label>
-    <p class="text-capitalize ma-0"> {{ `${itemContext.subject}` }}</p>
-  </div>
-  <div v-if="isRejectRequest">
-    <el-form
-      ref="form"
-      label-position="top"
-      status-icon
-      :model="form"
-      :rules="rules"
-      label-width="120px"
-      class="demo-ruleForm"
-      :disabled="$store.state.spinners.processingForm"
-    >
+
+  <base-form
+    :form="form"
+    :rules="rules"
+    :store-base="storeBase"
+    :message-toast="messageToast"
+    custom-actions
+    @close-modal="closeModal"
+  >
+    <template v-slot:form-content>
       <el-form-item
-        label="¿Cual es la razón para denegar esta solicitud?"
+        label="¿Cuál es la razón para denegar esta solicitud?"
         prop="observation"
       >
         <el-input
           v-model="form.observation"
           type="textarea"
+          :rows="3"
           autocomplete="off"
+          :maxlength="300"
+          show-word-limit
         />
       </el-form-item>
-    </el-form>
-  </div>
-  <div class="text-xs-center">
-    <el-button
-      class="ma-2"
-      type="danger"
-      size="small"
-      native-type="submit"
-      :disabled="$store.state.spinners.processingForm"
-      :loading="isRejectRequest && $store.state.spinners.processingForm"
-      @click.prevent="submitFormReject"
-    >
-      RECHAZAR SOLICITUD
-    </el-button>
-    <el-button
-      class="ma-2"
-      type="success"
-      size="small"
-      native-type="submit"
-      :disabled="$store.state.spinners.processingForm"
-      :loading="!isRejectRequest && $store.state.spinners.processingForm"
-      @click.prevent="acceptRequest"
-    >
-      APROBAR SOLICITUD
-    </el-button>
-  </div>
-</el-dialog>
+    </template>
+
+    <template v-slot:form-custom-actions>
+      <el-button
+        type="danger"
+        size="small"
+        :disabled="$store.state.spinners.processingForm"
+        :loading="$store.state.spinners.processingForm"
+        @click.prevent="submitForm('rejectItemContext')"
+      >
+        RECHAZAR
+      </el-button>
+      <el-button
+        type="success"
+        size="small"
+        :disabled="$store.state.spinners.processingForm"
+        :loading="$store.state.spinners.processingForm"
+        @click.prevent="submitForm('approveItemContext')"
+      >
+        APROBAR
+      </el-button>
+    </template>
+  </base-form>
+</div>
 </template>
 
 <script>
-import { observation } from '@/config/form.rules'
+import BaseForm from '@/components/base/BaseForm'
 
-import { mapState, mapActions } from 'vuex'
+import BaseFormSetup from '@/components/base/setup/BaseFormSetup'
+
+import {
+  mapState,
+  mapActions
+} from 'vuex'
+
+import {
+  observation
+} from '@/config/form.rules'
+
+import {
+  ENABLE_SPINNER,
+  DISABLE_SPINNER
+} from "@/types/mutations"
 
 export default {
+  components: {
+    BaseForm
+  },
+
+  extends: BaseFormSetup,
+
   data () {
     return {
-      context: {
-        storeBase: 'requests',
-        mountedOn: 'mainModal',
-        storeAction: 'approve'
+      dialogTitle: 'Solicitud pendiente',
+
+      storeBase: {
+        name: 'requests'
+      },
+      messageToast: {
+        baseName: 'TODO',
+        action: 'TODO'
       },
 
-      isRejectRequest: false,
       form: {
         observation: ''
       },
+
       rules: {
         observation
       }
@@ -99,66 +120,36 @@ export default {
 
   methods: {
     ...mapActions({
-      getDataContext: 'requests/getDataContext',
-      approveItemContext: 'requests/approveItemContext',
-      rejectItemContext: 'requests/rejectItemContext'
+      getDataContext: 'requests/getDataContext'
     }),
 
-    async submitFormReject () {
-      if (!this.isRejectRequest) {
-        this.isRejectRequest = true
-        return false
-      }
-
-      let isFormValid = false
+    /**
+     * getting the actions of the current store to send the submit request
+     * @param {String} action
+     *
+     */
+    async submitForm (action) {
+      this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
 
       const formData = new FormData()
       formData.append('observation', this.form.observation)
       formData.append('id', this.itemContext.id)
 
-      await this.$refs.form.validate(valid => isFormValid = valid)
-
-      if (isFormValid) {
-        try {
-          await this.rejectItemContext(formData)
-          this.$toast.info(this.$SUCCESS.REQUEST.REJECT)
-          await this.getDataContext()
-          this.closeModal()
-        }
-        catch (e) {}
-      }
-    },
-
-    async acceptRequest () {
-      if (this.isRejectRequest) {
-        this.isRejectRequest = false
-        return false
-      }
-      const formData = new FormData()
-      formData.append('id', this.itemContext.id)
-
       try {
-        await this.approveItemContext(formData)
+        await this.$store.dispatch(`${this.storeBase.name}/${action}`, formData)
 
-        this.$toast.success(this.$SUCCESS.REQUEST.APPROVED)
+        if (action === 'rejectItemContext') {
+          this.$toast.info(this.$SUCCESS.REQUEST.REJECTED)
+        } else {
+          this.$toast.success(this.$SUCCESS.REQUEST.APPROVED)
+        }
 
         await this.getDataContext()
-
         this.closeModal()
       }
-      catch (e) { }
-    },
+      catch (e) {}
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
 
-    resetForm () {
-      if (this.isRejectRequest) {
-        this.$refs.form.resetFields()
-        this.isRejectRequest = false
-      }
-    },
-
-    closeModal () {
-      this.resetForm()
-      this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
     }
   }
 }
@@ -166,7 +157,8 @@ export default {
 
 <style lang="scss">
 .text-request {
-  line-height: 1.2rem;
-  letter-spacing: 0.4px;
+  & label {
+    font-weight: 900
+  }
 }
 </style>
