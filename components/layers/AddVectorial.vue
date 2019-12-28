@@ -51,32 +51,6 @@
             type="text"
           />
         </el-form-item>
-        <!-- <el-form-item
-          label="Grupo"
-          prop="groupLayerId"
-        >
-          <el-container>
-            <el-select
-              v-model="form.groupLayerId"
-              value-key="id"
-              :loading="$store.state.spinners.loadingTable"
-              filterable
-              placeholder="Select"
-            >
-              <el-option
-                v-for="item in groupLayers" :key="item.id"
-                :label="item.title"
-                :value="item.id"
-              />
-            </el-select>
-
-            open modal inner
-            <btn-open-modal-inner
-              tooltip="Agregar Categoría"
-              @open-modal="openModal('modalAddGroupLayers')"
-            />
-          </el-container>
-        </el-form-item> -->
       </el-col>
     </el-row>
 
@@ -85,7 +59,7 @@
       type="flex"
     >
       <el-col
-        :xs="22" :md="22"
+        :xs="22" :sm="22" :md="22"
       >
         <el-input
           v-model="filterGroupLayerName"
@@ -96,7 +70,7 @@
       </el-col>
 
       <el-col
-        :xs="2" :md="2"
+        :xs="2" :sm="2" :md="2"
       >
         <!-- open modal inner -->
         <btn-open-modal-inner

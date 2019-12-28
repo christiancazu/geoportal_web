@@ -30,6 +30,8 @@ import {
   setModalTitle
 } from '@/use/store.mutations'
 
+const API = '$vectorialLayerAPI'
+
 export const state = () => ({
   dataContext: [],
   itemContext: {},
@@ -52,8 +54,6 @@ export const state = () => ({
     visible: false
   }
 })
-
-const API = '$vectorialLayerAPI'
 
 export const actions = {
   createItemContext: createItemContext(API),

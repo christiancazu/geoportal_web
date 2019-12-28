@@ -36,6 +36,7 @@
 
       <l-marker
         v-if="!!marker"
+        ref="marker"
         :visible="marker.visible"
         :lat-lng="marker.latLng"
         draggable
@@ -66,6 +67,24 @@ export default {
     }
   },
 
+  data: () => ({
+    currentMarkerLatLng: []
+  }),
+
+  // watch: {
+  //   'marker' (val) {
+  //     console.warn('marker.latLng', val)
+  //     this.currentMarkerLatLng = val.latLng
+  //   }
+  // },
+
+  mounted () {
+    console.warn('marker', this.currentMarkerLatLng)
+    this.updateCurrentMarkerLatLng(this.marker.latLng)
+    console.warn('marker', this.currentMarkerLatLng)
+    this.$emit('on-marker-lng-lat', this.marker.latLng)
+  },
+
   methods: {
     onCenterUpdated ({ lat, lng }) {
       this.map.latLng = [lat, lng]
@@ -73,6 +92,7 @@ export default {
 
     onUpdateMarker ({ lat, lng }) {
       this.$emit('on-marker-lng-lat', [lng, lat])
+      this.updateCurrentMarkerLatLng([lng, lat])
     },
 
     onClickBtnMarker () {
@@ -80,10 +100,23 @@ export default {
       this.marker.visible = true
       this.marker.latLng = [lat, lng]
       this.$emit('on-marker-lng-lat', [lng, lat])
+      this.updateCurrentMarkerLatLng([lng, lat])
     },
 
     onTileError () {
       this.$emit('on-tile-error')
+    },
+
+    setLatLng () {
+      // console.warn('---------')
+      // console.warn(this.$refs.marker.latLng)
+      // // console.warn('---------')
+      this.$refs.marker.setLatLng(this.currentMarkerLatLng.reverse())
+      // return this.$refs.marker.latLng
+    },
+
+    updateCurrentMarkerLatLng ([lng, lat]) {
+      this.currentMarkerLatLng = [lng, lat]
     }
   }
 }

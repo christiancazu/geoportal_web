@@ -1,6 +1,7 @@
 <template>
 <page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
@@ -8,7 +9,7 @@
   <template
     v-slot:page-table="{
       openModalEditItemContext,
-      confirmedActionDeleteItemContext,
+      deleteItemContext,
       shrinkText
     }"
   >
@@ -37,7 +38,7 @@
           dialog-delete-title="Eliminar Capa Vectorial"
           dialog-delete-body-text="¿Está seguro de eliminar esta capa?"
           @open-edit-modal="openModalEditItemContext(scope.row)"
-          @confirmed-action="confirmedActionDeleteItemContext"
+          @confirmed-action="deleteItemContext"
         />
       </template>
     </el-table-column>
@@ -59,22 +60,30 @@ export default {
 
   data () {
     return {
+      /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Puntos Georeferenciados',
         btnAddName: 'Nueva imagen georeferencial'
       },
-      // main modal settings
-      modalMain: {
-        storeBase: 'georeferencedImages',
-        addComponent: 'AddGeoreferencedImage',
-        editComponent: 'EditGeoreferencedImage',
-        folderName: 'data',
+      storeBase: {
+        name: 'georeferencedImages'
+      },
+      modalMain: { // main modal settings
+        addComponent: {
+          type: 'component',
+          folderPath: 'data',
+          name: 'AddGeoreferencedImage'
+        },
+        editComponent: {
+          type: 'component',
+          folderPath: 'data',
+          name: 'EditGeoreferencedImage'
+        }
       },
       messageToast: {
         baseName: 'IMAGE'
       },
-      // criterias to search based on columns of table
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'title',
         'description'
       ]
@@ -82,7 +91,7 @@ export default {
   },
 
   head: {
-    title: 'Capas vectoriales | GEOVISOR',
+    title: 'Capas vectoriales | GEOVISOR'
   }
 }
 </script>

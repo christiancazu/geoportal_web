@@ -48,6 +48,10 @@ export const actions = {
   async getStructureTree ({ commit }) {
     const data = await this.$groupLayerAPI.getStructure()
     commit(SET_STRUCTURE_TREE, data)
+  },
+
+  async updateStructure ({}, form) {
+    await this.$groupLayerAPI.updateStructure(form)
   }
 }
 

@@ -69,7 +69,7 @@ export default {
 
     onSelectedGroupLayer (data) {
       this.form.order = data.order + 1
-      this.form.groupLayerId = data.categoryGroupId
+      this.form.groupLayerId = data.id
     }
   }
 }

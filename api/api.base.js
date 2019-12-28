@@ -40,5 +40,10 @@ export default $axios => resource => ({
   reject: data => $axios.$post(`${resource}/reject/`, data),
 
   // group_layer
-  getStructure: () => $axios.$get(`${resource}/structure/`)
+  getStructure: () => $axios.$get(`${resource}/structure/`),
+
+  updateStructure: data => {
+    console.warn('data', data)
+    $axios.$put(`${resource}/update_structure/`, data)
+  }
 })

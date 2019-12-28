@@ -1,13 +1,13 @@
 <template>
 <base-form
-  :form-title="formTitle"
   :form="form"
   :rules="rules"
-  :context="context"
+  :store-base="storeBase"
   :message-toast="messageToast"
-  @clear-form="clearForm"
+  @apply-after-submit-form="applyAfterSubmitForm"
+  @close-modal="closeModal"
 >
-  <template v-slot:content>
+  <template v-slot:form-content>
     <el-row :gutter="10">
 
       <!-- tooltip -->
@@ -28,7 +28,7 @@
       >
         <!-- base map name -->
         <el-form-item
-          label="Nombre del Mapa Base"
+          label="Nombre del mapa base"
           prop="name"
         >
           <el-input
@@ -167,12 +167,12 @@ export default {
 
   data () {
     return {
-      formTitle: 'Registrar mapa base',
+      dialogTitle: 'Registrar mapa base',
 
-      context: {
-        storeBase: 'baseLayers',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'create',
+      /** BASEFORM SETTINGS */
+      storeBase: {
+        name: 'baseLayers',
+        action: 'createItemContext'
       },
       messageToast: {
         baseName: 'LAYER',
@@ -241,9 +241,11 @@ export default {
   },
 
   methods: {
-    clearForm () {
+    applyAfterSubmitForm () { // clear form
       this.validUrlToPreviewMap = false
+      this.needAuthentication = false
+      this.tileLayer.url = ''
     }
-  },
+  }
 }
 </script>

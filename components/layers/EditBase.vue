@@ -1,12 +1,12 @@
 <template>
 <base-form
-  :form-title="formTitle"
   :form="form"
   :rules="rules"
-  :context="context"
+  :store-base="storeBase"
   :message-toast="messageToast"
+  @close-modal="closeModal"
 >
-  <template v-slot:content>
+  <template v-slot:form-content>
     <el-row :gutter="10">
 
       <!-- tooltip -->
@@ -169,12 +169,12 @@ export default {
 
   data () {
     return {
-      formTitle: 'Editar mapa base',
+      dialogTitle: 'Editar mapa base',
 
-      context: {
-        storeBase: 'baseLayers',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'update',
+      /** BASEFORM SETTINGS */
+      storeBase: {
+        name: 'baseLayers',
+        action: 'updateItemContext'
       },
       messageToast: {
         baseName: 'LAYER',
@@ -237,7 +237,7 @@ export default {
   computed: {
     ...mapState({
       itemContext (state) {
-        return state[this.context.storeBase].itemContext
+        return state[this.storeBase.name].itemContext
       }
     })
   },

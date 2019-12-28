@@ -144,13 +144,20 @@ export default {
       this.updateTree()
     },
 
-    onDel (node) {
+    async onDel (node) {
       // prevent to delete if have children nodes
       if (node.children !== null && node.children.length) {
         this.$toast.info(this.$INFO.GROUP_LAYER.INVALID_DELETE)
       } else {
-        node.remove()
-        this.updateTree()
+        try {
+          this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'loadingPage')
+          await this.$store.dispatch('groupLayers/deleteItemContext', node.id)
+          node.remove()
+          this.updateTree()
+        } catch (error) {
+
+        }
+        this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'loadingPage')
       }
     },
 
@@ -248,8 +255,14 @@ export default {
     onSubmit () {
       this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
       try {
-        alert('#TODO: SEND TO GROUP_LAYERS PUT ENDPOINT')
         this.updateTree()
+        // console.warn(this.backUpTree.children[0])
+        // const formData = new FormData()
+        // formData.append('data', this.backUpTree.children[0])
+        this.backUpTree.children[0].label = "TODAS LAS CAPASX"
+        this.backUpTree.children[0].name = "TODAS LAS CAPASX"
+        this.$store.dispatch(`groupLayers/updateStructure`, this.backUpTree.children[0])
+        console.warn('gaaaaaaaaaa')
       } catch (error) {}
 
       this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')

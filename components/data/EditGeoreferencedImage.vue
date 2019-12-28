@@ -1,13 +1,13 @@
 <template>
 <base-form
-  :form-title="formTitle"
   :form="form"
   :rules="rules"
-  :context="context"
+  :store-base="storeBase"
   :message-toast="messageToast"
-  @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
+  @apply-before-submit-form="applyBeforeSubmitForm"
+  @close-modal="closeModal"
 >
-  <template v-slot:content>
+  <template v-slot:form-content>
     <el-row
       :gutter="10"
       align="bottom"
@@ -20,6 +20,8 @@
         >
 
           <marker-geo-json
+            v-if="$store.state[storeBase.name].modalMain.visible"
+            ref="markerGeoJson"
             :map="map"
             :marker="marker"
             @on-marker-lng-lat="onMarkerLngLat"
@@ -100,12 +102,12 @@ export default {
 
   data () {
     return {
-      formTitle: 'Actualizar punto georeferenciado',
+      dialogTitle: 'Actualizar punto georeferenciado',
 
-      context: {
-        storeBase: 'georeferencedImages',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'update'
+      /** BASEFORM SETTINGS */
+      storeBase: {
+        name: 'georeferencedImages',
+        action: 'updateItemContext'
       },
       messageToast: {
         baseName: 'IMAGE',
@@ -155,19 +157,16 @@ export default {
   computed: {
     ...mapState({
       itemContext (state) {
-        return state[this.context.storeBase].itemContext
+        return state[this.storeBase.name].itemContext
       }
     })
   },
 
   watch: {
-    itemContext () {
-      this.assignFormFields()
+    itemContext: { // smart watcher
+      handler: 'assignFormFields',
+      immediate: true
     }
-  },
-
-  created () {
-    this.assignFormFields()
   },
 
   methods: {
@@ -200,13 +199,20 @@ export default {
      *
      * @param {Object} formData
      */
-    ApplyCustomFunctionalityToForm (formData) {
+    applyBeforeSubmitForm (formData) {
       if (formData.get(this.file.type) === null || typeof formData.get(this.file.type) === 'string')
         formData.delete(this.file.type)
 
       try {
+        // console.warn(this.form.geometry.geometry.coordinates)
+        // this.$refs.markerGeoJson.setLatLng()
+        // console.warn(lat, lng)
+        // this.form.geometry.geometry.coordinates = [lng, lat]
+        this.form.geometry.geometry.coordinates = this.form.geometry.geometry.coordinates.reverse()
+        // console.warn(this.form.geometry.geometry.coordinates)
         formData.set('geometry', JSON.stringify(this.form.geometry))
       } catch (e) {
+        console.warn(e)
         this.$toast.error('El GeoJSON es inválido')
       }
     }

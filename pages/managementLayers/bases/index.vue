@@ -1,6 +1,7 @@
 <template>
 <page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
@@ -8,7 +9,7 @@
   <template
     v-slot:page-table="{
       openModalEditItemContext,
-      confirmedActionDeleteItemContext,
+      deleteItemContext,
       shrinkText
     }"
   >
@@ -50,7 +51,7 @@
           dialog-delete-title="Eliminar Mapa Base"
           dialog-delete-body-text="¿Está seguro de eliminar este mapa base?"
           @open-edit-modal="openModalEditItemContext(scope.row)"
-          @confirmed-action="confirmedActionDeleteItemContext"
+          @confirmed-action="deleteItemContext"
         />
 
       </template>
@@ -73,22 +74,30 @@ export default {
 
   data () {
     return {
+      /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Capas base',
         btnAddName: 'Nuevo Mapa Base'
       },
-      // main modal settings
-      modalMain: {
-        storeBase: 'baseLayers',
-        addComponent: 'AddBase',
-        editComponent: 'EditBase',
-        folderName: 'layers'
+      storeBase: {
+        name: 'baseLayers'
+      },
+      modalMain: { // main modal settings
+        addComponent: {
+          type: 'component',
+          folderPath: 'layers',
+          name: 'AddBase'
+        },
+        editComponent: {
+          type: 'component',
+          folderPath: 'layers',
+          name: 'EditBase'
+        }
       },
       messageToast: {
         baseName: 'LAYER'
       },
-      // criterias to search based on columns of table
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'name',
         'author',
         'url'

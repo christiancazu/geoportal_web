@@ -1,14 +1,14 @@
 <template>
 <base-form
-  :form-title="formTitle"
   :form="form"
   :rules="rules"
-  :context="context"
+  :store-base="storeBase"
   :message-toast="messageToast"
-  @apply-custom-functionality-to-form="ApplyCustomFunctionalityToForm"
-  @clear-form="clearForm"
+  @apply-before-submit-form="applyBeforeSubmitForm"
+  @apply-after-submit-form="applyAfterSubmitForm"
+  @close-modal="closeModal"
 >
-  <template v-slot:content>
+  <template v-slot:form-content>
     <el-row
       :gutter="10"
       align="bottom"
@@ -21,6 +21,7 @@
         >
 
           <marker-geo-json
+            v-if="$store.state[storeBase.name].modalMain.visible"
             :map="map"
             :marker="marker"
             @on-marker-lng-lat="onMarkerLngLat"
@@ -102,12 +103,12 @@ export default {
 
   data () {
     return {
-      formTitle: 'Registrar punto georeferenciado',
+      dialogTitle: 'Registrar punto georeferenciado',
 
-      context: {
-        storeBase: 'georeferencedImages',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'create',
+      /** BASEFORM SETTINGS */
+      storeBase: {
+        name: 'georeferencedImages',
+        action: 'createItemContext'
       },
       messageToast: {
         baseName: 'IMAGE',
@@ -152,13 +153,18 @@ export default {
       },
       marker: {
         latLng: [
-          -9.190481498666669,
-          -74.61914062500001
+          -74.61914062500001,
+          -9.190481498666669
         ],
         visible: false
       }
     }
   },
+
+  mounted () {
+    console.warn(this.map.latLng)
+  },
+
   methods: {
     /**
      * getting formData by reference from BaseForm component
@@ -166,7 +172,7 @@ export default {
      *
      * @param {Object} formData
      */
-    ApplyCustomFunctionalityToForm (formData) {
+    applyBeforeSubmitForm (formData) {
       try {
         formData.set('geometry', JSON.stringify(this.form.geometry))
       } catch (e) {
@@ -174,7 +180,10 @@ export default {
       }
     },
 
-    clearForm () {
+    /**
+     * clearing special form items
+     */
+    applyAfterSubmitForm () {
       this.form.image = null
       this.form.geometry.geometry.coordinates = [0, 0]
       this.file.selected = ''

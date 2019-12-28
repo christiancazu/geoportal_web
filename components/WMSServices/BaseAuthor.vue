@@ -1,6 +1,5 @@
 <script>
 import BaseForm from '@/components/base/BaseForm'
-
 import BaseFormSetup from '@/components/base/setup/BaseFormSetup'
 
 export default {
