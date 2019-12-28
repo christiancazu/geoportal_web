@@ -111,7 +111,7 @@
         :rows="3"
         autocomplete="off"
         :maxlength="300"
-        :show-word-limit="true"
+        show-word-limit
       />
     </el-form-item>
 
@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import BaseVectorial from './BaseVectorial'
+import BaseVectorialAndRaster from './BaseVectorialAndRaster'
 
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
@@ -145,7 +145,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  extends: BaseVectorial,
+  extends: BaseVectorialAndRaster,
 
   mixins: [uploadFileMixin],
 
@@ -187,13 +187,6 @@ export default {
         type: 'shapeFile',
         availableExtensions: ['zip'],
         selected: null
-      },
-      // tree context
-      dataTree: [],
-      filterGroupLayerName: '',
-      defaultProps: {
-        children: 'children',
-        label: 'label'
       }
     }
   },

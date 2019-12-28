@@ -1,41 +1,12 @@
 <template>
 <base-form
-  :form-title="formTitle"
   :form="form"
   :rules="rules"
-  :context="context"
+  :store-base="storeBase"
   :message-toast="messageToast"
+  @close-modal="closeModal"
 >
-  <template v-slot:content>
-    <el-row :gutter="14">
-      <el-col
-        :xs="24"
-        :md="{span:12, offset:12}"
-        :sm="24"
-        :lg="{span:12, offset:12}"
-        class="text-xs-center"
-      >
-        <el-form-item
-          prop="order"
-          size="mini"
-          :inline-message="true"
-        >
-          <label
-            class="pr-2"
-            for=""
-          >
-            N° de orden:
-          </label>
-          <el-input-number
-            v-model="form.order"
-            size="mini"
-            controls-position="right"
-            :min="1"
-            type="number"
-          />
-        </el-form-item>
-      </el-col>
-    </el-row>
+  <template v-slot:form-content>
     <el-form-item
       label="Título"
       prop="title"
@@ -47,30 +18,54 @@
         :rules="rules.title"
       />
     </el-form-item>
+
+    <el-row
+      :gutter="10"
+      type="flex"
+    >
+      <el-col
+        :xs="22" :sm="22" :md="22"
+      >
+        <el-input
+          v-model="filterGroupLayerName"
+          clearable
+          placeholder="Filtrar capas"
+          class="my-2"
+        />
+      </el-col>
+
+      <el-col
+        :xs="2" :sm="2" :md="2"
+      >
+        <!-- open modal inner -->
+        <btn-open-modal-inner
+          icon="el-icon-edit"
+          tooltip="Editar Grupo de capas"
+          class="my-2"
+          @open-modal="openModal('modalAddGroupLayers')"
+        />
+      </el-col>
+    </el-row>
+
+    <!-- group layers tree -->
     <el-form-item
-      label="Grupo"
+      label="Grupo de Capas"
       prop="groupLayerId"
     >
-      <el-container>
-        <el-select
-          v-model="form.groupLayerId"
-          value-key="id"
-          :loading="$store.state.spinners.loadingTable"
-          filterable
-          placeholder="Select"
-        >
-          <el-option
-            v-for="item in groupLayers" :key="item.id"
-            :label="item.title"
-            :value="item.id"
-          />
-        </el-select>
-
-        <!-- open second modal -->
-        <btn-open-second-modal :modal-second="modalSecond" />
-
-      </el-container>
+      <el-tree
+        ref="tree"
+        v-loading="$store.state.spinners.loadingPage"
+        node-key="id"
+        :data="dataTree"
+        :props="defaultProps"
+        :filter-node-method="filterNode"
+        default-expand-all
+        highlight-current
+        class="my-2"
+        @node-click="onSelectedGroupLayer"
+      />
     </el-form-item>
+
     <!-- Descripción -->
     <el-form-item
       label="Descripción"
@@ -90,7 +85,7 @@
 </template>
 
 <script>
-import BaseRaster from './BaseRaster'
+import BaseVectorialAndRaster from './BaseVectorialAndRaster'
 
 import { mapState} from 'vuex'
 
@@ -101,21 +96,23 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  extends: BaseRaster,
+  extends: BaseVectorialAndRaster,
 
   data () {
     return {
-      formTitle: 'Actualizar capa raster',
+      dialogTitle: 'Actualizar capa raster',
 
-      context: {
-        storeBase: 'rasterLayers',
-        mountedOn: this.modalBaseActionsMixin_mountedOn,
-        storeAction: 'update',
+      /** BASEFORM SETTINGS */
+      storeBase: {
+        name: 'rasterLayers',
+        action: 'updateItemContext'
       },
-      modalSecond: {
-        component: 'AddGroup',
-        folderName: 'layers',
-        tooltip: 'Agregar grupo de capas'
+      modalInner: {
+        modalAddGroupLayers: {
+          type: 'page',
+          folderPath: 'managementLayers/groups',
+          name: 'index'
+        }
       },
       messageToast: {
         baseName: 'LAYER',
@@ -141,24 +138,28 @@ export default {
   computed: {
     ...mapState({
       itemContext (state) {
-        return state[this.context.storeBase].itemContext
+        return state[this.storeBase.name].itemContext
       }
     })
   },
 
   watch: {
-    itemContext () {
-      this.assignFormFields()
+    itemContext: { // smart watcher
+      handler: 'assignFormFields',
+      immediate: true
     }
-  },
-
-  created () {
-    this.assignFormFields()
   },
 
   methods: {
     assignFormFields () {
       Object.keys(this.form).forEach(key => this.form[key] = this.itemContext[key])
+    },
+
+    /**
+     * apply same delay that modal visible
+     */
+    setParentNodeHighLigth () {
+      setTimeout(() => this.$refs.tree.setCurrentKey({id: this.itemContext.groupLayerId}), 260)
     }
   }
 }

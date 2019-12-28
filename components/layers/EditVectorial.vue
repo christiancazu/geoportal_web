@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import BaseVectorial from './BaseVectorial'
+import BaseVectorialAndRaster from './BaseVectorialAndRaster'
 
 import { mapState } from 'vuex'
 
@@ -109,7 +109,7 @@ import {
 } from '@/config/form.rules'
 
 export default {
-  extends: BaseVectorial,
+  extends: BaseVectorialAndRaster,
 
   data () {
     return {
@@ -144,13 +144,6 @@ export default {
         title,
         name: nameAlpha,
         order
-      },
-      // tree context
-      dataTree: [],
-      filterGroupLayerName: '',
-      defaultProps: {
-        children: 'children',
-        label: 'label'
       }
     }
   },

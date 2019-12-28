@@ -407,3 +407,16 @@ p,
   height: 0.5rem;
   width: 1rem;
 }
+
+// adding folder icon on el-tree component
+.el-tree-node {
+  &__label:before {
+    content: "📂 ";
+  }
+
+  &.is-current {
+    &>div:first-child {
+      border: 1px solid #6376f7;
+    }
+  }
+}

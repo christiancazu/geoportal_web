@@ -114,17 +114,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-/** apply folder icon */
-.el-tree-node {
-  &__label:before {
-    content: "📂 ";
-  }
-  &.is-current {
-    & > div:first-child {
-      border: 1px solid #6376f7;
-    }
-  }
-}
-</style>

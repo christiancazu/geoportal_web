@@ -72,7 +72,7 @@ export default {
 
   data () {
     return {
-      formTitle: 'Actualizar grupo de capas',
+      dialogTitle: 'Actualizar grupo de capas',
 
       context: {
         storeBase: 'groupLayers',

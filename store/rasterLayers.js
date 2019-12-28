@@ -42,7 +42,7 @@ export const state = () => ({
     type: 'component',
     folderPath: 'fallback',
     name: 'Fallback',
-    store: 'vectorialLayers',
+    store: 'rasterLayers',
     visible: false
   },
   modalInner: {

@@ -24,6 +24,16 @@ export default {
 
   mixins: [InnerModalSetupMixin],
 
+  data: () => ({
+    // tree context
+    dataTree: [],
+    filterGroupLayerName: '',
+    defaultProps: {
+      children: 'children',
+      label: 'label'
+    }
+  }),
+
   computed: {
     ...mapState({
       structureTree: state => state.groupLayers.structureTree
