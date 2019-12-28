@@ -1,6 +1,7 @@
 <template>
 <page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
 >
@@ -82,14 +83,19 @@ export default {
 
   data () {
     return {
+      /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Imágenes satelitales'
       },
-      // main modal settings
-      modalMain: {
-        storeBase: 'satelitalsImages',
-        viewComponent: 'ViewSatelitalImage',
-        folderName: 'data'
+      storeBase: {
+        name: 'satelitalsImages'
+      },
+      modalMain: { // main modal settings
+        viewComponent: {
+          type: 'component',
+          folderPath: 'data',
+          name: 'ViewSatelitalImage'
+        }
       },
       // criterias to search based on columns of table
       filterCriteriaProps: ['identificator']
