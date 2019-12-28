@@ -18,7 +18,6 @@ export default {
 
   methods: {
     onMarkerLngLat (lngLat) {
-      console.warn('emiting onMarkerLngLat')
       this.form.geometry.geometry.coordinates = lngLat
     }
   }

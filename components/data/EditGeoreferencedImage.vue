@@ -25,6 +25,7 @@
             :map="map"
             :marker="marker"
             @on-marker-lng-lat="onMarkerLngLat"
+            @update-marker-lng-lat="onMarkerLngLat"
           />
 
         </el-form-item>
@@ -150,7 +151,9 @@ export default {
       marker: {
         latLng: [],
         visible: true
-      }
+      },
+
+      initialMarkerLatLng: []
     }
   },
 
@@ -171,9 +174,6 @@ export default {
 
   methods: {
     assignFormFields () {
-      // receiving diferent properties from api to set current form(geometry ~ marker)
-      // Object.keys(this.form).forEach(key => (this.form[key] = this.itemContext[key]))
-
       this.form.id = this.itemContext.id
       this.form.title = this.itemContext.title
       this.form.description = this.itemContext.description
@@ -188,6 +188,7 @@ export default {
       this.form.geometry.geometry.coordinates = [lat, lng]
 
       this.marker.latLng = [lat, lng]
+      this.initialMarkerLatLng = [lat, lng]
 
       // setting image src
       this.file.imageUrl = this.form[this.file.type]
@@ -204,15 +205,14 @@ export default {
         formData.delete(this.file.type)
 
       try {
-        // console.warn(this.form.geometry.geometry.coordinates)
-        // this.$refs.markerGeoJson.setLatLng()
-        // console.warn(lat, lng)
-        // this.form.geometry.geometry.coordinates = [lng, lat]
-        this.form.geometry.geometry.coordinates = this.form.geometry.geometry.coordinates.reverse()
-        // console.warn(this.form.geometry.geometry.coordinates)
+        // if try to update with the same initial marker coordinates
+        if (JSON.stringify(this.initialMarkerLatLng) === JSON.stringify(this.form.geometry.geometry.coordinates)) {
+          this.form.geometry.geometry.coordinates = this.form.geometry.geometry.coordinates.reverse()
+          this.marker.latLng = this.initialMarkerLatLng
+        }
         formData.set('geometry', JSON.stringify(this.form.geometry))
+
       } catch (e) {
-        console.warn(e)
         this.$toast.error('El GeoJSON es inválido')
       }
     }

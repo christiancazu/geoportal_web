@@ -19,7 +19,7 @@
   "author": "veox",
   "license": "ISC",
   "dependencies": {
-    "@nuxtjs/auth": "^4.8.4",
+    "@nuxtjs/auth": "^4.8.5",
     "@nuxtjs/axios": "^5.9.0",
     "@nuxtjs/font-awesome": "^1.0.4",
     "@nuxtjs/toast": "^3.3.0",
@@ -35,7 +35,7 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^6.8.0",
     "eslint-loader": "^3.0.3",
-    "eslint-plugin-vue": "^6.0.2",
+    "eslint-plugin-vue": "^6.1.1",
     "node-sass": "^4.13.0",
     "pug": "^2.0.4",
     "pug-plain-loader": "^1.0.0",

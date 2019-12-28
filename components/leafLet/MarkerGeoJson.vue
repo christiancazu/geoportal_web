@@ -1,10 +1,10 @@
 <template>
 <div
   style="height: 36vh"
+  class="my-1"
 >
   <client-only>
     <l-map
-      ref="map"
       :zoom="map.zoom"
       :center="map.latLng"
       @update:center="onCenterUpdated"
@@ -35,9 +35,7 @@
       </l-control>
 
       <l-marker
-        v-if="!!marker"
-        ref="marker"
-        :visible="marker.visible"
+        v-if="marker.visible"
         :lat-lng="marker.latLng"
         draggable
         @update:latLng="onUpdateMarker"
@@ -54,11 +52,14 @@ export default {
   props: {
     map: {
       type: Object, default: () => ({
-        zoom: 5
+        zoom: { type: Number, default: 4 }
       })
     },
     marker: {
-      type: Object, default: () => {}
+      type: Object, default: () => ({
+        latLng: { type: Array, default: () => [] },
+        visible: { type: Boolean, default: false },
+      })
     },
     tileLayer: {
       type: Object, default: () => ({
@@ -67,32 +68,21 @@ export default {
     }
   },
 
-  data: () => ({
-    currentMarkerLatLng: []
-  }),
-
-  // watch: {
-  //   'marker' (val) {
-  //     console.warn('marker.latLng', val)
-  //     this.currentMarkerLatLng = val.latLng
-  //   }
-  // },
-
   mounted () {
-    console.warn('marker', this.currentMarkerLatLng)
-    this.updateCurrentMarkerLatLng(this.marker.latLng)
-    console.warn('marker', this.currentMarkerLatLng)
-    this.$emit('on-marker-lng-lat', this.marker.latLng)
+    this.$emit('update-marker-lng-lat', this.marker.latLng)
   },
 
   methods: {
+    setMarkerInvisible () {
+      this.marker.visible = false
+    },
+
     onCenterUpdated ({ lat, lng }) {
       this.map.latLng = [lat, lng]
     },
 
     onUpdateMarker ({ lat, lng }) {
       this.$emit('on-marker-lng-lat', [lng, lat])
-      this.updateCurrentMarkerLatLng([lng, lat])
     },
 
     onClickBtnMarker () {
@@ -100,23 +90,10 @@ export default {
       this.marker.visible = true
       this.marker.latLng = [lat, lng]
       this.$emit('on-marker-lng-lat', [lng, lat])
-      this.updateCurrentMarkerLatLng([lng, lat])
     },
 
     onTileError () {
       this.$emit('on-tile-error')
-    },
-
-    setLatLng () {
-      // console.warn('---------')
-      // console.warn(this.$refs.marker.latLng)
-      // // console.warn('---------')
-      this.$refs.marker.setLatLng(this.currentMarkerLatLng.reverse())
-      // return this.$refs.marker.latLng
-    },
-
-    updateCurrentMarkerLatLng ([lng, lat]) {
-      this.currentMarkerLatLng = [lng, lat]
     }
   }
 }

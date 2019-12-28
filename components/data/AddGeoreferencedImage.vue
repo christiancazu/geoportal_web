@@ -22,6 +22,7 @@
 
           <marker-geo-json
             v-if="$store.state[storeBase.name].modalMain.visible"
+            ref="markerGeoJson"
             :map="map"
             :marker="marker"
             @on-marker-lng-lat="onMarkerLngLat"
@@ -123,10 +124,7 @@ export default {
           properties: {},
           geometry: {
             type: "Point",
-            coordinates: [
-              0,
-              0
-            ]
+            coordinates: [0, 0]
           }
         }
       },
@@ -161,10 +159,6 @@ export default {
     }
   },
 
-  mounted () {
-    console.warn(this.map.latLng)
-  },
-
   methods: {
     /**
      * getting formData by reference from BaseForm component
@@ -187,7 +181,8 @@ export default {
       this.form.image = null
       this.form.geometry.geometry.coordinates = [0, 0]
       this.file.selected = ''
-      this.marker.visible = false
+      // setting marker visible to false
+      this.$refs.markerGeoJson.setMarkerInvisible()
     }
   }
 }
