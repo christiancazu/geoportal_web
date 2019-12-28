@@ -17,6 +17,9 @@ export default {
   mixins: [uploadFileMixin],
 
   methods: {
+    /**
+     * updating lng & lat
+     */
     onMarkerLngLat (lngLat) {
       this.form.geometry.geometry.coordinates = lngLat
     }

@@ -55,6 +55,8 @@ export default {
         await this.getStructureTree()
         this.dataTree = []
         this.dataTree.push(this.structureTree)
+        // seting as hightlight groupLayerId (apply only on EditVectorial component)
+        this.setParentNodeHighLigth()
       } catch (error) {
       }
       this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'loadingPage')

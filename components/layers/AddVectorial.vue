@@ -94,6 +94,7 @@
         :props="defaultProps"
         :filter-node-method="filterNode"
         default-expand-all
+        highlight-current
         class="my-2"
         @node-click="onSelectedGroupLayer"
       />
@@ -112,21 +113,21 @@
         :maxlength="300"
         :show-word-limit="true"
       />
-
-      <!-- innerComponent on modal -->
-      <base-modal
-        :modal="$store.state[storeBase.name].modalInner"
-        modal-type="modalInner"
-      >
-        <template v-slot:modal-content>
-          <component
-            :is="dynamicComponent"
-            :store-mounted="{ name: storeBase.name, typeModal: 'modalInner' }"
-          />
-        </template>
-      </base-modal>
-
     </el-form-item>
+
+    <!-- innerComponent on modal -->
+    <base-modal
+      :modal="$store.state[storeBase.name].modalInner"
+      modal-type="modalInner"
+    >
+      <template v-slot:modal-content>
+        <component
+          :is="dynamicComponent"
+          :store-mounted="{ name: storeBase.name, typeModal: 'modalInner' }"
+        />
+      </template>
+    </base-modal>
+
   </template>
 </base-form>
 </template>
@@ -187,7 +188,6 @@ export default {
         availableExtensions: ['zip'],
         selected: null
       },
-
       // tree context
       dataTree: [],
       filterGroupLayerName: '',

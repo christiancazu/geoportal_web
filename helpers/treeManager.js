@@ -16,15 +16,13 @@ function transform (data) {
     data['children'] = []
   }
   if (data['children'].length) {
-    data['children'].forEach(ch => {
-      transform(ch)
-    })
+    data['children'].forEach(ch => transform(ch))
   } else return
 
   return data
 }
 
-// VueTreeList props settings for ROOT_GROUP_LAYERS_FOLDER_NAME
+// VueTreeList props settings
 const mainNodeSettings = {
   dragDisabled: true,
   addLeafNodeDisabled: true,

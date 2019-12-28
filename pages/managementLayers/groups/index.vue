@@ -29,7 +29,7 @@
       class="my-4"
       style="min-height: 50vh"
       :model="dataTree"
-      default-tree-node-name="Nuevo grupo de capas"
+      default-tree-node-name=""
       @click="onClick"
       @change-name="onChangeName"
       @delete-node="onDel"
@@ -154,6 +154,7 @@ export default {
           await this.$store.dispatch('groupLayers/deleteItemContext', node.id)
           node.remove()
           this.updateTree()
+          this.$toast.success(this.$SUCCESS.GROUP_LAYER.DELETED)
         } catch (error) {
 
         }
@@ -178,15 +179,9 @@ export default {
       node.changeName(this.nodeAdded.name)
     },
 
-    onClick (node) {
-      console.log(node)
+    onClick (/*node*/) {
+      // console.log(node)
     },
-
-    // addNode () {
-    //   var node = new TreeNode({ name: 'new node', isLeaf: false })
-    //   if (!this.dataTree.children) this.dataTree.children = []
-    //   this.dataTree.addChildren(node)
-    // },
 
     onDropBefore ({target}) {
       this.preventDropOnRootLevel(target)
@@ -209,11 +204,11 @@ export default {
     },
 
     updateTree () {
-      var vm = this
+      const vm = this
       function _dfs (oldNode) {
-        var newNode = {}
+        const newNode = {}
 
-        for (var k in oldNode) {
+        for (let k in oldNode) {
           if (k !== 'children' && k !== 'parent') {
             newNode[k] = oldNode[k]
           }
@@ -221,7 +216,7 @@ export default {
 
         if (oldNode.children && oldNode.children.length > 0) {
           newNode.children = []
-          for (var i = 0, len = oldNode.children.length; i < len; i++) {
+          for (let i = 0, len = oldNode.children.length; i < len; i++) {
             newNode.children.push(_dfs(oldNode.children[i]))
           }
         }
@@ -256,13 +251,8 @@ export default {
       this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
       try {
         this.updateTree()
-        // console.warn(this.backUpTree.children[0])
-        // const formData = new FormData()
-        // formData.append('data', this.backUpTree.children[0])
-        this.backUpTree.children[0].label = "TODAS LAS CAPASX"
-        this.backUpTree.children[0].name = "TODAS LAS CAPASX"
         this.$store.dispatch(`groupLayers/updateStructure`, this.backUpTree.children[0])
-        console.warn('gaaaaaaaaaa')
+
       } catch (error) {}
 
       this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
@@ -271,7 +261,7 @@ export default {
   },
 
   head: {
-    title: 'Grupo de Capas | GEOVISOR'
+    title: 'Grupo de capas | GEOVISOR'
   }
 }
 </script>

@@ -77,7 +77,7 @@ export default {
       /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Capas base',
-        btnAddName: 'Nuevo Mapa Base'
+        btnAddName: 'Nuevo mapa base'
       },
       storeBase: {
         name: 'baseLayers'
