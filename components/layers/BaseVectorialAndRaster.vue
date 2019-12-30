@@ -43,6 +43,14 @@ export default {
   watch: {
     filterGroupLayerName (val) {
       this.$refs.tree.filter(val)
+    },
+
+    /**
+     * re-resolve structure if change state
+     */
+    structureTree () {
+      this.dataTree = []
+      this.dataTree.push(this.structureTree)
     }
   },
 
@@ -65,8 +73,8 @@ export default {
         await this.getStructureTree()
         this.dataTree = []
         this.dataTree.push(this.structureTree)
-        // seting as hightlight groupLayerId (apply only on EditVectorial component)
-        this.setParentNodeHighLigth()
+        // seting as hightlight groupLayerId (apply only on Edits component)
+        this.setParentNodeHighLight()
       } catch (error) {
       }
       this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'loadingPage')

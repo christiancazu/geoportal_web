@@ -20,7 +20,7 @@
       <!-- pages routing -->
       <nuxt />
 
-      <!-- <store-viewer /> -->
+      <store-viewer />
 
     </el-main>
   </el-container>
@@ -29,14 +29,14 @@
 
 <script>
 import SideBar from '@/components/SideBar'
-// import StoreViewer from '@/components/tester/StoreViewer'
+import StoreViewer from '@/components/tester/StoreViewer'
 
 import { mapState } from 'vuex'
 
 export default {
   components: {
     SideBar,
-    // StoreViewer
+    StoreViewer
   },
 
   data () {

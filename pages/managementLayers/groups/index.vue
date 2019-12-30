@@ -72,8 +72,6 @@
       </el-button>
     </div>
   </div>
-
-  <pre>{{ backUpTree }}</pre>
 </base-page>
 </template>
 
@@ -153,7 +151,7 @@ export default {
           this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'loadingPage')
           await this.$store.dispatch('groupLayers/deleteItemContext', node.id)
           node.remove()
-          this.updateTree()
+          this.refreshGroupLayers()
           this.$toast.success(this.$SUCCESS.GROUP_LAYER.DELETED)
         } catch (error) {
 
@@ -232,8 +230,7 @@ export default {
         await this.$store.dispatch('groupLayers/getStructureTree')
 
         // cloning state
-        let data = JSON.parse(JSON.stringify(this.$store.state.groupLayers.structureTree))
-
+        let data = Object.assign({}, this.$store.state.groupLayers.structureTree)
         // init tree
         this.backUpTree = $_helper_treeTransform(data)
         this.dataTree = new Tree([this.backUpTree])
@@ -247,16 +244,15 @@ export default {
       this.init()
     },
 
-    onSubmit () {
+    async onSubmit () {
       this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
       try {
-        this.updateTree()
-        this.$store.dispatch(`groupLayers/updateStructure`, this.backUpTree.children[0])
-
+        // this.updateTree()
+        await this.$store.dispatch(`groupLayers/updateStructure`, this.backUpTree.children[0])
+        this.$toast.success(this.$SUCCESS.GROUP_LAYER.UPDATED)
+        this.refreshGroupLayers()
       } catch (error) {}
-
       this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
-
     }
   },
 

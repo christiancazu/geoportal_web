@@ -193,7 +193,7 @@ export default {
 
   methods: {
     applyAfterSubmitForm () { // clear file
-      this.form.shapeFile = null
+      this.form[this.file.type] = null
       this.file.selected = ''
       // call again init (tree structure reset & fetch TreeStructure)
       this.init()

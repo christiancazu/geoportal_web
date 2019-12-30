@@ -42,7 +42,8 @@ export const SUCCESS = {
     DELETED: 'La capa se eliminó con éxito'
   },
   GROUP_LAYER: {
-    DELETED: 'El Grupo de capas se eliminó con éxito'
+    DELETED: 'El Grupo de capas se eliminó con éxito',
+    UPDATED: 'El Grupo de capas se actualizó con éxito',
   },
   REQUEST: {
     APPROVED: 'La solicitud ha sido aprobado con éxito',

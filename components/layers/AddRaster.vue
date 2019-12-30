@@ -140,7 +140,6 @@ import uploadFileMixin from '@/mixins/uploadFileMixin'
 import {
   title,
   groupLayerId,
-  order,
   rasterFile,
   nameAlpha
 } from '@/config/form.rules'
@@ -172,16 +171,15 @@ export default {
       },
       form: {
         title: '',
-        order: 0,
         name: '',
+        order: null,
         rasterFile: null,
-        groupLayerId: '',
+        groupLayerId: null,
         description: ''
       },
       rules: {
         title,
         groupLayerId,
-        order,
         rasterFile,
         name: nameAlpha
       },
@@ -195,7 +193,7 @@ export default {
 
   methods: {
     applyAfterSubmitForm () { // clear file
-      this.form.shapeFile = null
+      this.form[this.file.type] = null
       this.file.selected = ''
       // call again init (tree structure reset & fetch TreeStructure)
       this.init()

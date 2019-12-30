@@ -158,7 +158,7 @@ export default {
     /**
      * apply same delay that modal visible
      */
-    setParentNodeHighLigth () {
+    setParentNodeHighLight () {
       setTimeout(() => this.$refs.tree.setCurrentKey({id: this.itemContext.groupLayerId}), 260)
     }
   }

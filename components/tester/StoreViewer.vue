@@ -8,7 +8,7 @@
 export default {
   computed: {
     currentStore () {
-      return this.$store.state.auth
+      return this.$store.state.groupLayers.structureTree
     },
   }
 }
