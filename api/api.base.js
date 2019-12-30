@@ -19,6 +19,8 @@ export default $axios => resource => ({
 
   updateProfile: data => $axios.$put(`${resource}/profile_update/`, data),
 
+  upload: data => $axios.$post(`${resource}/upload/`, data),
+
   info: () => $axios.$get(`${resource}/info/`),
 
   logout: () => $axios.$post(`${resource}/logout/`),
@@ -37,5 +39,10 @@ export default $axios => resource => ({
 
   approve: data => $axios.$post(`${resource}/approve/`, data),
 
-  reject: data => $axios.$post(`${resource}/reject/`, data)
+  reject: data => $axios.$post(`${resource}/reject/`, data),
+
+  // group_layer
+  getStructure: () => $axios.$get(`${resource}/structure/`),
+
+  updateStructure: data => $axios.$put(`${resource}/update_structure/`, data)
 })

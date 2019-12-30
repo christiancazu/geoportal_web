@@ -2,13 +2,20 @@ import {
   SET_DATA_CONTEXT,
   SET_ITEM_CONTEXT,
   SET_PUBLISHED_ITEM_CONTEXT,
-  SET_CURRENT_PAGE_ON_TABLE
-} from '../types/mutation-types'
+  SET_CURRENT_PAGE_ON_TABLE,
+  SET_STRUCTURE_TREE,
+  OPEN_MODAL,
+  CLOSE_MODAL
+} from '@/types/mutations'
 
 export const state = () => ({
   dataContext: [],
   itemContext: {},
-  currentPageOnTable: 1
+  currentPageOnTable: 1,
+  structureTree: {},
+  modalMain: {
+    visible: false
+  }
 })
 
 export const actions = {
@@ -36,6 +43,15 @@ export const actions = {
 
   async deleteItemContext ({}, id) {
     await this.$groupLayerAPI.delete(id)
+  },
+
+  async getStructureTree ({ commit }) {
+    const data = await this.$groupLayerAPI.getStructure()
+    commit(SET_STRUCTURE_TREE, data)
+  },
+
+  async updateStructure ({}, form) {
+    await this.$groupLayerAPI.updateStructure(form)
   }
 }
 
@@ -46,5 +62,11 @@ export const mutations = {
 
   [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
 
-  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
+  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload),
+
+  [SET_STRUCTURE_TREE]: (state, payload) => (state.structureTree = payload),
+
+  [OPEN_MODAL]: (state, payload) => (state[payload].visible = true),
+
+  [CLOSE_MODAL]: (state, payload) => (state[payload].visible = false)
 }

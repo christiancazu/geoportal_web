@@ -1,14 +1,28 @@
 <template>
-<base-page-actions
+<page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
 >
+
+  <template slot="btn-header">
+    <el-button
+      :loading="$store.state.spinners.loadingPage"
+      size="mini"
+      type="primary"
+      icon="el-icon-upload"
+      @click="openModalAddFileUser('addFileComponent')"
+    >
+      Cargar Archivo
+    </el-button>
+  </template>
+
   <template
     v-slot:page-table="{
       openModalEditItemContext,
-      confirmedActionDeleteItemContext,
+      deleteItemContext
     }"
   >
     <el-table-column
@@ -45,16 +59,16 @@
           dialog-delete-title="¿Desabilitar usuario?"
           dialog-delete-body-text="Esta acción no se podra revertir ¿Esta seguro de continuar?"
           @open-edit-modal="openModalEditItemContext(scope.row)"
-          @confirmed-action="confirmedActionDeleteItemContext"
+          @confirmed-action="deleteItemContext"
         />
       </template>
     </el-table-column>
   </template>
-</base-page-actions>
+</page-actions>
 </template>
 
 <script>
-import BasePageActions from '@/pages/base/BasePageActions'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -63,28 +77,55 @@ export default {
     GroupActionsButtons
   },
 
-  extends: BasePageActions,
+  extends: PageActionsSetup,
 
   data () {
     return {
+      /** PAGE ACTIONS SETTINGS */
       pageHeader: {
-        title: 'Usuarios',
+        title: 'Gestión de usuarios',
         btnAddName: 'Nuevo usuario'
       },
-      modalMain: {
-        storeBase: 'users',
-        addComponent: 'ModalAddUser',
-        editComponent: 'ModalEditUser',
-        folderName: 'users'
+      storeBase: {
+        name: 'users'
+      },
+      modalMain: { // main modal settings
+        addComponent: {
+          type: 'component',
+          folderPath: 'users',
+          name: 'AddUser'
+        },
+        editComponent: {
+          type: 'component',
+          folderPath: 'users',
+          name: 'EditUser'
+        },
+        addFileComponent: {
+          type: 'component',
+          folderPath: 'users',
+          name: 'AddFileUser'
+        }
       },
       messageToast: {
         baseName: 'USER'
       },
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'fullName',
         'email',
         'username'
       ]
+    }
+  },
+
+  methods: {
+    /**
+     * custom function to open approveRequestComponent modal
+     */
+    openModalAddFileUser (component) {
+      this.$store.dispatch(`${this.storeBase.name}/setDynamicModal`, {
+        typeModal: 'modalMain',
+        component: this.modalMain[component]
+      })
     }
   },
 

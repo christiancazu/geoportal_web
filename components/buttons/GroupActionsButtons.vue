@@ -43,7 +43,7 @@ export default {
   props: {
     dialogDeleteTitle: { type: String, required: true },
     dialogDeleteBodyText: { type: String, required: true },
-    itemSelected: { type: Object, default: () => {} }
+    itemSelected: { type: Object, default: () => ({}) }
   }
 }
 </script>

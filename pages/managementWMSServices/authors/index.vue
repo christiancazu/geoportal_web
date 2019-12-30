@@ -1,6 +1,7 @@
 <template>
-<base-page-actions
+<page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
@@ -8,7 +9,7 @@
   <template
     v-slot:page-table="{
       openModalEditItemContext,
-      confirmedActionDeleteItemContext,
+      deleteItemContext,
       shrinkText
     }"
   >
@@ -16,12 +17,10 @@
       label="Nombre"
       prop="name"
     />
-
     <el-table-column
       label="URL"
       prop="webUrl"
     />
-
     <el-table-column
       label="Descripción"
       prop="description"
@@ -42,16 +41,16 @@
           dialog-delete-title="Eliminar autor"
           dialog-delete-body-text="¿Está seguro de eliminar este autor?"
           @open-edit-modal="openModalEditItemContext(scope.row)"
-          @confirmed-action="confirmedActionDeleteItemContext"
+          @confirmed-action="deleteItemContext"
         />
       </template>
     </el-table-column>
   </template>
-</base-page-actions>
+</page-actions>
 </template>
 
 <script>
-import BasePageActions from '@/pages/base/BasePageActions'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -60,26 +59,34 @@ export default {
     GroupActionsButtons
   },
 
-  extends: BasePageActions,
+  extends: PageActionsSetup,
 
   data () {
     return {
+      /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Autores de servicios WMS',
         btnAddName: 'Nuevo autor WMS'
       },
-      // main modal settings
-      modalMain: {
-        storeBase: 'WMSAuthors',
-        addComponent: 'ModalAddWMSAuthor',
-        editComponent: 'ModalEditWMSAuthor',
-        folderName: 'WMSServices'
+      storeBase: {
+        name: 'WMSAuthors'
+      },
+      modalMain: { // main modal settings
+        addComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'AddAuthor'
+        },
+        editComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'EditAuthor'
+        }
       },
       messageToast: {
         baseName: 'AUTHOR'
       },
-      // criterias to search based on columns of table
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'name',
         'webUrl',
         'description'
@@ -88,7 +95,7 @@ export default {
   },
 
   head: {
-    title: 'AUTORES WMS | GEOVISOR'
+    title: 'Autores WMS | GEOVISOR'
   }
 }
 </script>

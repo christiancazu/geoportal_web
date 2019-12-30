@@ -1,6 +1,7 @@
 <template>
-<base-page-actions
+<page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
@@ -8,7 +9,7 @@
   <template
     v-slot:page-table="{
       openModalEditItemContext,
-      confirmedActionDeleteItemContext,
+      deleteItemContext,
       shrinkText
     }"
   >
@@ -50,17 +51,17 @@
           dialog-delete-title="Eliminar Mapa Base"
           dialog-delete-body-text="¿Está seguro de eliminar este mapa base?"
           @open-edit-modal="openModalEditItemContext(scope.row)"
-          @confirmed-action="confirmedActionDeleteItemContext"
+          @confirmed-action="deleteItemContext"
         />
 
       </template>
     </el-table-column>
   </template>
-</base-page-actions>
+</page-actions>
 </template>
 
 <script>
-import BasePageActions from '@/pages/base/BasePageActions'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -69,26 +70,34 @@ export default {
     GroupActionsButtons
   },
 
-  extends: BasePageActions,
+  extends: PageActionsSetup,
 
   data () {
     return {
+      /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Capas base',
-        btnAddName: 'Nuevo Mapa Base'
+        btnAddName: 'Nuevo mapa base'
       },
-      // main modal settings
-      modalMain: {
-        storeBase: 'baseLayers',
-        addComponent: 'ModalAddBaseLayer',
-        editComponent: 'ModalEditBaseLayer',
-        folderName: 'layers',
+      storeBase: {
+        name: 'baseLayers'
+      },
+      modalMain: { // main modal settings
+        addComponent: {
+          type: 'component',
+          folderPath: 'layers',
+          name: 'AddBase'
+        },
+        editComponent: {
+          type: 'component',
+          folderPath: 'layers',
+          name: 'EditBase'
+        }
       },
       messageToast: {
         baseName: 'LAYER'
       },
-      // criterias to search based on columns of table
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'name',
         'author',
         'url'

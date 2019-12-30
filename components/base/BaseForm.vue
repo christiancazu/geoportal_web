@@ -1,70 +1,65 @@
 <template>
-<el-dialog
-  :title="formTitle"
-  :close-on-click-modal="false"
-  :visible="$store.state.modalsVisibilities[context.mountedOn].visibility"
-  top="2vh"
-  class="dialog-responsive"
-  @close="closeModal()"
+<el-form
+  ref="form"
+  label-position="top"
+  status-icon
+  :model="form"
+  :rules="rules"
+  label-width="120px"
+  class="demo-ruleForm"
+  :disabled="$store.state.spinners.processingForm"
+  autocomplete="off"
 >
-  <el-form
-    ref="form"
-    label-position="top"
-    status-icon
-    :model="form"
-    :rules="rules"
-    label-width="120px"
-    class="demo-ruleForm"
-    :disabled="$store.state.spinners.processingForm"
-    autocomplete="off"
-  >
-
-    <slot name="content" />
-
-  </el-form>
+  <slot name="form-content" />
 
   <!-- actions -->
   <div class="text-xs-center">
     <el-button
+      v-if="!isMountedAsPage"
       size="small"
       @click="closeModal()"
     >
       CERRAR
     </el-button>
-    <el-button
-      type="primary"
-      size="small"
-      native-type="submit"
-      :loading="$store.state.spinners.processingForm"
-      @click="submitForm"
-    >
-      GUARDAR
-    </el-button>
 
-    <template v-if="canPublish">
+    <template v-if="!customActions">
       <el-button
-        type="success"
+        type="primary"
         size="small"
+        native-type="submit"
         :loading="$store.state.spinners.processingForm"
-        @click="submitPublish"
+        @click.prevent="submitForm"
       >
-        PUBLICAR
+        GUARDAR
       </el-button>
+
+      <template v-if="canPublish">
+        <el-button
+          type="success"
+          size="small"
+          :loading="$store.state.spinners.processingForm"
+          @click.prevent="submitPublish"
+        >
+          PUBLICAR
+        </el-button>
+      </template>
     </template>
 
+    <slot name="form-custom-actions" />
+
   </div>
-</el-dialog>
+
+</el-form>
 </template>
 
 <script>
-/* eslint-disable no-unused-vars */
 import { mapActions } from 'vuex'
 
 import {
   SET_PUBLISHED_ITEM_CONTEXT,
-  ENABLE_PROCESSING_FORM,
-  DISABLE_PROCESSING_FORM
-} from '@/types/mutation-types'
+  ENABLE_SPINNER,
+  DISABLE_SPINNER
+} from '@/types/mutations'
 
 export default {
   props: {
@@ -72,86 +67,116 @@ export default {
       type: Object, required: true
     },
     rules: {
-      type: Object, required: true
+      type: Object, default: () => ({})
     },
-    formTitle: {
-      type: String, default: ''
-    },
-    context: {
+    /**
+     * store settings to apply actions when submiting
+     */
+    storeBase: {
       type: Object,
       default: () => ({
-        storeBase: { type: String, required: true },
-        mountedOn: { type: String, required: true },
-        storeAction: { type: String, required: true }
+        name: { type: String, required: true },
+        action: { type: String, required: true }
       })
     },
+    /**
+     * TOAST MESSAGE TO SHOW AFTER SUBMIT SUCCESS
+     */
     messageToast: {
       type: Object,
       default: () => ({
         baseName: { type: String, required: true },
         action: { type: String, required: true }
       })
+    },
+    /**
+     * USED TO SHOW CLOSE MODAL BUTTON IF IS MOUNTED AS PAGE
+     */
+    isMountedAsPage: {
+      type: Boolean, default: false
+    },
+    /**
+     * working on slot:form-custom-actions if the parent have custom actions buttons
+     */
+    customActions: {
+      type: Boolean, default: false
     }
   },
 
   computed: {
+    /**
+     * only apply if the itemContext can be published
+     */
     canPublish: {
       get () {
-        if (typeof this.$store.state[this.context.storeBase].itemContext.isPublished === 'undefined') return false
-        return !this.$store.state[this.context.storeBase].itemContext.isPublished && this.context.storeAction === 'update'
+        if (typeof this.$store.state[this.storeBase.name].itemContext.isPublished === 'undefined') return false
+        return !this.$store.state[this.storeBase.name].itemContext.isPublished && this.storeBase.action === 'update'
       },
       set (value) {
-        this.$store.commit(`${this.context.storeBase}/${SET_PUBLISHED_ITEM_CONTEXT}`, value)
+        this.$store.commit(`${this.storeBase.name}/${SET_PUBLISHED_ITEM_CONTEXT}`, value)
       }
     }
   },
 
   methods: {
     ...mapActions({
+      /**
+       * getting dataContext of the currentPage depeding of storeBase
+       */
       async getDataContext () {
-        await this.$store.dispatch(`${this.context.storeBase}/getDataContext`)
+        await this.$store.dispatch(`${this.storeBase.name}/getDataContext`)
       },
-      async submitItemContext (store, formData) {
-        await this.$store.dispatch(`${this.context.storeBase}/${this.context.storeAction}ItemContext`, formData)
+      /**
+       * submit post/update the current ItemContext depeding of storeBase & his action
+       */
+      async submitItemContext ({}, formData) {
+        await this.$store.dispatch(`${this.storeBase.name}/${this.storeBase.action}`, formData)
       },
-      async publishItemContext (store, formData) {
-        await this.$store.dispatch(`${this.context.storeBase}/publishItemContext`, formData)
-      },
+      /**
+       * publish the current ItemContext depeding of storeBase
+       */
+      async publishItemContext ({}, formData) {
+        await this.$store.dispatch(`${this.storeBase.name}/publishItemContext`, formData)
+      }
     }),
 
+    /**
+     * submitForm will take the current store settings to send the current form as request
+     *
+     */
     async submitForm () {
       let isFormValid = false
 
       await this.$refs.form.validate(result => isFormValid = result)
 
       if (isFormValid) {
-        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+        this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
 
         const formData = this.objectToFormData()
 
-        // used when need to apply custom functionality/fix on formData
-        // before to be sends
-        this.$emit('apply-custom-functionality-to-form', formData)
+        // used when need to apply custom functionality/fix on formData before to be sends
+        this.$emit('apply-before-submit-form', formData)
         try {
           await this.submitItemContext(formData)
 
-          if (this.context.storeAction === 'create') {
-            this.resetForm()
-          }
+          if (this.storeBase.action === 'createItemContext') this.resetForm()
 
           this.$toast.success(this.$SUCCESS[this.messageToast.baseName][this.messageToast.action])
 
           await this.getDataContext()
+
+          // used when need to apply custom functionality/fix on formData after to be sends
+          this.$emit('apply-after-submit-form')
         }
         catch (e) {}
-        this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+        this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
       } else {
         this.$toast.error(this.$ERRORS.INVALID_DATA)
       }
     },
 
     async submitPublish () {
-      this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+      this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
       try {
         const formData = new FormData()
         formData.append('pk', this.form.id)
@@ -164,26 +189,26 @@ export default {
         await this.getDataContext()
       }
       catch (e) {}
-      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
     },
 
+    /**
+     * parse current object form to FormData
+     */
     objectToFormData () {
       const formData = new FormData()
 
-      Object.keys(this.form).forEach(key => {
-        formData.append(key, this.form[key])
-      })
+      Object.keys(this.form).forEach(key => formData.append(key, this.form[key]))
 
       return formData
     },
 
     closeModal () {
       this.resetForm()
-      this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
+      this.$emit('close-modal')
     },
 
     resetForm () {
-      this.$emit('clear-form')
       this.$refs.form.resetFields()
     }
   }

@@ -1,6 +1,7 @@
 <template>
-<base-page-basic
+<page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
 >
@@ -64,36 +65,37 @@
       </template>
     </el-table-column>
   </template>
-</base-page-basic>
+</page-actions>
 </template>
 
 <script>
-import BasePageBasic from '@/components/base/pages/BasePageBasic'
-import BaseBtnConfirm from '@/components/base/BaseBtnConfirm'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 import { mapActions } from 'vuex'
 
 import {
-  ENABLE_LOADING_TABLE,
-  DISABLE_LOADING_TABLE
-} from '@/types/mutation-types'
+  ENABLE_SPINNER,
+  DISABLE_SPINNER
+} from '@/types/mutations'
 
 export default {
-  components: {
-    BasePageBasic,
-    BaseBtnConfirm
-  },
+  extends: PageActionsSetup,
 
   data () {
     return {
+      /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Imágenes satelitales'
       },
-      // main modal settings
-      modalMain: {
-        storeBase: 'satelitalsImages',
-        viewComponent: 'ModalViewSatelitalImage',
-        folderName: 'data'
+      storeBase: {
+        name: 'satelitalsImages'
+      },
+      modalMain: { // main modal settings
+        viewComponent: {
+          type: 'component',
+          folderPath: 'data',
+          name: 'ViewSatelitalImage'
+        }
       },
       // criterias to search based on columns of table
       filterCriteriaProps: ['identificator']
@@ -107,7 +109,7 @@ export default {
     }),
 
     async submitPublish ({ itemSelected }) {
-      this.$store.commit(`spinners/${ENABLE_LOADING_TABLE}`)
+      this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
 
       try {
         const formData = new FormData()
@@ -118,7 +120,7 @@ export default {
 
         this.$toast.success(this.$SUCCESS.IMAGE.PUBLISHED)
       } catch (e) {}
-      this.$store.commit(`spinners/${DISABLE_LOADING_TABLE}`)
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
     }
   },
 

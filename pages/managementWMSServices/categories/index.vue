@@ -1,6 +1,7 @@
 <template>
-<base-page-actions
+<page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
@@ -8,7 +9,7 @@
   <template
     v-slot:page-table="{
       openModalEditItemContext,
-      confirmedActionDeleteItemContext,
+      deleteItemContext,
       shrinkText
     }"
   >
@@ -16,7 +17,6 @@
       label="Nombre"
       prop="name"
     />
-
     <el-table-column
       label="Descripción"
       prop="description"
@@ -37,16 +37,16 @@
           dialog-delete-title="Eliminar categoría"
           dialog-delete-body-text="¿Está seguro de eliminar esta categoría?"
           @open-edit-modal="openModalEditItemContext(scope.row)"
-          @confirmed-action="confirmedActionDeleteItemContext"
+          @confirmed-action="deleteItemContext"
         />
       </template>
     </el-table-column>
   </template>
-</base-page-actions>
+</page-actions>
 </template>
 
 <script>
-import BasePageActions from '@/pages/base/BasePageActions'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -55,26 +55,34 @@ export default {
     GroupActionsButtons
   },
 
-  extends: BasePageActions,
+  extends: PageActionsSetup,
 
   data () {
     return {
+      /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Categorias de servicios WMS',
         btnAddName: 'Nueva categoría WMS'
       },
-      // main modal settings
-      modalMain: {
-        storeBase: 'WMSCategories',
-        addComponent: 'ModalAddWMSCategory',
-        editComponent: 'ModalEditWMSCategory',
-        folderName: 'WMSServices'
+      storeBase: {
+        name: 'WMSCategories'
+      },
+      modalMain: { // main modal settings
+        addComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'AddCategory'
+        },
+        editComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'EditCategory'
+        }
       },
       messageToast: {
         baseName: 'CATEGORY'
       },
-      // criterias to search based on columns of table
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'name',
         'description'
       ]

@@ -1,5 +1,5 @@
 
-import { SET_CURRENT_PAGE_ON_TABLE } from '@/types/mutation-types'
+import { SET_CURRENT_PAGE_ON_TABLE } from '@/types/mutations'
 
 export default {
   methods: {

@@ -1,4 +1,8 @@
-<template>
-<span />
-<!-- used as default to initilize dynamic component  -->
-</template>
+<script>
+/**
+ * fallback component rendered as dynamic component used as default
+ */
+export default {
+  render: () => ({})
+}
+</script>

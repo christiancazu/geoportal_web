@@ -46,7 +46,7 @@ export const title = [
 export const groupLayerId = [
   {
     required: true,
-    message: 'Seleccione un grupo de capa'
+    message: 'Seleccione un grupo de capas'
   }
 ]
 
@@ -58,10 +58,18 @@ export const order = [
   }
 ]
 
-export const url = [
+export const categoryGroupId = [
   {
     required: true,
-    message: 'La url del mapa base es requerido'
+    type: 'number',
+    message: 'Debe indicar un grupo de capas'
+  }
+]
+
+export const url = url => [
+  {
+    required: true,
+    message: `La url del ${url} es requerido`
   },
   {
     // eslint-disable-next-line no-unused-vars
@@ -123,6 +131,13 @@ export const shapeFile = [
 ]
 
 export const rasterFile = [
+  {
+    required: true,
+    message: 'El archivo es requerido'
+  }
+]
+
+export const file = [
   {
     required: true,
     message: 'El archivo es requerido'

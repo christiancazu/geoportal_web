@@ -1,46 +1,46 @@
 <template>
 <el-dialog
-  :title="formTitle"
+  :title="title"
   :close-on-click-modal="false"
-  :visible="$store.state.modalsVisibilities[context.mountedOn].visibility"
+  :visible="$store.state[modal.store][modalType].visible"
+  append-to-body
+  destroy-on-close
   top="2vh"
   class="dialog-responsive"
   @close="closeModal()"
 >
-  <slot name="content" />
-
-  <!-- actions -->
-  <div class="text-xs-center">
-    <el-button
-      size="small"
-      @click="closeModal()"
-    >
-      CERRAR
-    </el-button>
-  </div>
+  <slot name="modal-content" />
 
 </el-dialog>
 </template>
 
 <script>
+import { CLOSE_MODAL } from '@/types/mutations'
+
 export default {
   props: {
-    formTitle: {
-      type: String, default: ''
-    },
-    context: {
+    modal: {
       type: Object,
       default: () => ({
-        storeBase: { type: String, required: true },
-        mountedOn: { type: String, required: true },
-        storeAction: { type: String, required: true }
+        store: { type: String, required: true },
+        title: { type: String, default: ' ' }
       })
     },
+    modalType: { type: String, required: true }
+  },
+
+  computed: {
+    title () {
+      return this.modal.title !== ' '
+        ? this.modal.title
+        : this.$store.state[this.modal.store][this.modalType].title
+    }
   },
 
   methods: {
     closeModal () {
-      this.$store.commit('modalsVisibilities/CLOSE_MODAL', this.context.mountedOn)
+      this.$emit('close-modal')
+      this.$store.commit(`${this.modal.store}/${CLOSE_MODAL}`, this.modalType)
     }
   }
 

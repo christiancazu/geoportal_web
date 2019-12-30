@@ -2,8 +2,7 @@
 <base-page
   :page-header="pageHeader"
 >
-  <!-- <template v-slot:itemsActions>
-    </template> -->
+
   <el-container
     direction="vertical"
     class="card-dashboard"

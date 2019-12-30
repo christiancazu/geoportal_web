@@ -1,6 +1,7 @@
 <template>
-<base-page-actions
+<page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
@@ -8,7 +9,7 @@
   <template
     v-slot:page-table="{
       openModalEditItemContext,
-      confirmedActionDeleteItemContext,
+      deleteItemContext,
       shrinkText
     }"
   >
@@ -61,16 +62,16 @@
           dialog-delete-title="Eliminar servicio"
           dialog-delete-body-text="¿Está seguro de eliminar este servicio?"
           @open-edit-modal="openModalEditItemContext(scope.row)"
-          @confirmed-action="confirmedActionDeleteItemContext"
+          @confirmed-action="deleteItemContext"
         />
       </template>
     </el-table-column>
   </template>
-</base-page-actions>
+</page-actions>
 </template>
 
 <script>
-import BasePageActions from '@/pages/base/BasePageActions'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 import GroupActionsButtons from '@/components/buttons/GroupActionsButtons'
 
@@ -79,26 +80,34 @@ export default {
     GroupActionsButtons
   },
 
-  extends: BasePageActions,
+  extends: PageActionsSetup,
 
   data () {
     return {
+      /** PAGE ACTIONS COMPONENT SETTINGS */
       pageHeader: {
         title: 'Servicios externos WMS',
         btnAddName: 'Nuevo servicio WMS'
       },
-      // main modal settings
-      modalMain: {
-        storeBase: 'WMSServices',
-        addComponent: 'ModalAddWMSService',
-        editComponent: 'ModalEditWMSService',
-        folderName: 'WMSServices'
+      storeBase: {
+        name: 'WMSServices'
+      },
+      modalMain: { // main modal settings
+        addComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'AddService'
+        },
+        editComponent: {
+          type: 'component',
+          folderPath: 'WMSServices',
+          name: 'EditService'
+        }
       },
       messageToast: {
         baseName: 'SERVICE'
       },
-      // criterias to search based on columns of table
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'url',
         'name',
         'author.name',

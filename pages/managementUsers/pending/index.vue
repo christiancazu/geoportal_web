@@ -1,22 +1,22 @@
 <template>
-<base-page-actions
+<page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
-  :message-toast="messageToast"
 >
   <template v-slot:page-table>
     <el-table-column
       label="Institución"
       prop="institute"
     />
-    <el-table-column label="Nombres y Apellidos">
+    <el-table-column label="Nombres y apellidos">
       <template slot-scope="scope">
         {{ `${scope.row.name} ${scope.row.lastName} ${scope.row.lastNameAditional}` }}
       </template>
     </el-table-column>
     <el-table-column
-      label="Correo Electrónico"
+      label="Correo electrónico"
       prop="email"
     />
     <el-table-column
@@ -40,34 +40,34 @@
       </template>
     </el-table-column>
   </template>
-</base-page-actions>
+</page-actions>
 </template>
 
 <script>
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
-import BasePageActions from '@/pages/base/BasePageActions'
-
-import { SET_ITEM_CONTEXT } from '@/types/mutation-types'
+import { SET_ITEM_CONTEXT } from '@/types/mutations'
 
 export default {
-  extends: BasePageActions,
+  extends: PageActionsSetup,
 
   data () {
     return {
+      /** PAGE ACTIONS SETTINGS */
       pageHeader: {
-        title: 'Solicitudes pendientes',
+        title: 'Solicitudes pendientes'
       },
-      modalMain: {
-        storeBase: 'requests',
-        approveComponent: 'ModalApproveRequest',
-        folderName: 'users'
+      storeBase: {
+        name: 'requests'
       },
-
-      messageToast: {
-        baseName: 'REQUEST'
+      modalMain: { // main modal settings
+        approveRequestComponent: {
+          type: 'component',
+          folderPath: 'users',
+          name: 'ApproveRequest'
+        }
       },
-
-      filterCriteriaProps: [
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'name',
         'lastName',
         'lastNameAditional',
@@ -78,19 +78,21 @@ export default {
   },
 
   methods: {
+    /**
+     * custom function to open approveRequestComponent modal
+     */
     onLoadModalApproveItem (item) {
-      this.$store.commit(`${this.modalMain.storeBase}/${SET_ITEM_CONTEXT}`, item)
+      this.$store.commit(`${this.storeBase.name}/${SET_ITEM_CONTEXT}`, item)
 
-      this.$store.dispatch('modalsVisibilities/openModal', {
-        modalType: 'mainModal',
-        component: this.modalMain.approveComponent,
-        folderName: this.modalMain.folderName
+      this.$store.dispatch(`${this.storeBase.name}/setDynamicModal`, {
+        typeModal: 'modalMain',
+        component: this.modalMain.approveRequestComponent
       })
     }
   },
 
   head: {
     title: 'Solicitudes | GEOVISOR'
-  },
+  }
 }
 </script>

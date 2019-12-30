@@ -1,21 +1,23 @@
 <template>
-<div
+<el-card
+  shadow="never"
   :class="[
-    { 'page-body-center': fitContent },
-    ['ma-4']
+    {
+      'pa-4': isMountedAsPage
+    },
+    ['border-none']
   ]"
 >
-  <el-card
-    shadow="never"
-    style="border: none"
+  <div
+    slot="header"
+    class="space-between"
   >
-    <div
-      slot="header"
-      class="space-between"
-    >
-      <p class="mt-1 mb-0 font-weight-bold text-uppercase">
-        {{ pageHeader.title }}
-      </p>
+    <span class="my-0 font-weight-bold text-uppercase">
+      {{ pageHeader.title }}
+    </span>
+
+    <div>
+      <slot name="btn-header" />
 
       <template v-if="pageHeader.btnAddName">
         <el-button
@@ -29,10 +31,12 @@
       </template>
     </div>
 
-    <slot />
 
-  </el-card>
-</div>
+  </div>
+
+  <slot />
+
+</el-card>
 </template>
 
 <script>
@@ -45,16 +49,9 @@ export default {
         btnAddName: { type: String, required: false }
       })
     },
-    fitContent: {
-      type: Boolean,
-      default: false
+    isMountedAsPage: {
+      type: Boolean, default: true
     }
   }
 }
 </script>
-
-<style lang="scss">
-.fit-content{
-  width: fit-content;
-}
-</style>

@@ -1,6 +1,7 @@
 <template>
-<base-page-basic
+<page-actions
   :page-header="pageHeader"
+  :store-base="storeBase"
   :modal-main="modalMain"
   :filter-criteria-props="filterCriteriaProps"
 >
@@ -14,12 +15,10 @@
       label="Usuario"
       prop="user"
     />
-
     <el-table-column
       label="Asunto"
       prop="subject"
     />
-
     <el-table-column
       label="Descripción"
       prop="description"
@@ -45,30 +44,32 @@
       </template>
     </el-table-column>
   </template>
-</base-page-basic>
+</page-actions>
 </template>
 
 <script>
-import BasePageBasic from '@/components/base/pages/BasePageBasic'
+import PageActionsSetup from '@/components/base/setup/PageActionsSetup'
 
 export default {
-  components: {
-    BasePageBasic
-  },
+  extends: PageActionsSetup,
 
   data () {
     return {
+      /** PAGE ACTIONS SETTINGS */
       pageHeader: {
-        title: 'Reportes',
-      },// main modal settings
-
-      modalMain: {
-        storeBase: 'reports',
-        viewComponent: 'ModalViewReport',
-        folderName: 'reports',
+        title: 'Reportes'
       },
-      // criterias to search based on columns of table
-      filterCriteriaProps: [
+      storeBase: {
+        name: 'reports'
+      },
+      modalMain: { // modal main settings
+        viewComponent: {
+          type: 'component',
+          folderPath: 'reports',
+          name: 'ViewReport'
+        }
+      },
+      filterCriteriaProps: [ // criterias to search based on columns of table
         'user',
         'subject',
         'description'
@@ -77,7 +78,7 @@ export default {
   },
 
   head: {
-    title: 'Reportes | GEOVISOR',
-  },
+    title: 'Reportes | GEOVISOR'
+  }
 }
 </script>

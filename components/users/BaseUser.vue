@@ -1,5 +1,8 @@
 <script>
-import modalBaseActionsMixin from '@/mixins/modalBaseActionsMixin'
+import BaseForm from '@/components/base/BaseForm'
+
+import BaseFormSetup from '@/components/base/setup/BaseFormSetup'
+
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
 import {
@@ -10,12 +13,16 @@ import {
 import { USER_FILE_MAX_SIZE } from '@/config/constants'
 
 export default {
-  mixins: [
-    modalBaseActionsMixin,
-    uploadFileMixin
-  ],
+  components: {
+    BaseForm
+  },
+
+  extends: BaseFormSetup,
+
+  mixins: [uploadFileMixin],
 
   data: () => ({
+    /** UPLOADFILE SETTINGS */
     file: {
       type: 'image', // it's property name file inside form
       availableExtensions: [
@@ -73,7 +80,7 @@ export default {
      *
      * @param {Object} formData
      */
-    ApplyCustomFunctionalityToForm (formData) {
+    applyBeforeSubmitForm (formData) {
       if (formData.get(this.file.type) === null || typeof formData.get(this.file.type) === 'string')
         formData.delete(this.file.type)
     }

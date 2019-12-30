@@ -1,6 +1,12 @@
 <template>
 <base-page :page-header="pageHeader">
-  <div class="my-0">Unidades a mostrar</div>
+  <el-divider
+    content-position="left"
+    class="my-4"
+  >
+    Unidades a mostrar
+  </el-divider>
+
   <div
     class="mb-4 d-flex" style="justify-content: center"
   >
@@ -16,13 +22,17 @@
     </el-radio>
   </div>
 
-  <el-divider />
+  <el-divider
+    content-position="left"
+    class="my-2"
+  >
+    Espacio ocupado
+  </el-divider>
 
   <div
     v-loading="$store.state.spinners.processingForm"
-    class="mt-4"
+    class="my-4"
   >
-    <div>Espacio ocupado</div>
     <el-row>
       <el-col
         :xs="24" :md="8"
@@ -69,18 +79,15 @@
     </el-row>
   </div>
 
-  <el-divider />
-
-  <div class="mt-4">Liberar espacio</div>
   <div
-    class="my-2 d-flex"
+    class="mt-4 d-flex"
     style="justify-content: center"
   >
     <base-btn-confirm
       v-loading="$store.state.spinners.processingForm"
       title="Liberar espacio en disco"
       body-text="¿Está seguro de realizar esta acción?"
-      btn-name="Liberar"
+      btn-name="Liberar espacio"
       @confirmed-action="cleanSpaces"
     />
   </div>
@@ -94,9 +101,9 @@ import BaseBtnConfirm from '@/components/base/BaseBtnConfirm'
 import PieChart from '@/charts/pieChart'
 
 import {
-  ENABLE_PROCESSING_FORM,
-  DISABLE_PROCESSING_FORM
-} from '@/types/mutation-types.js'
+  ENABLE_SPINNER,
+  DISABLE_SPINNER
+} from '@/types/mutations'
 
 import {
   mapState
@@ -183,7 +190,7 @@ export default {
     async cleanSpaces () {
       try {
         this.dataLoaded = false
-        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+        this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
 
         await this.$store.dispatch('temporal/getSpaces', this.um)
         await this.$store.dispatch('temporal/cleanSpaces')
@@ -195,13 +202,13 @@ export default {
 
       } catch (e) {}
 
-      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
     },
 
     async fetchSpaces () {
       try {
         this.dataLoaded = false
-        this.$store.commit(`spinners/${ENABLE_PROCESSING_FORM}`)
+        this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
 
         await this.$store.dispatch('temporal/getSpaces', this.um)
 
@@ -211,12 +218,12 @@ export default {
 
       } catch (e) {}
 
-      this.$store.commit(`spinners/${DISABLE_PROCESSING_FORM}`)
+      this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
     }
   },
 
   head: {
     title: 'Carpeta temporal'
-  },
+  }
 }
 </script>

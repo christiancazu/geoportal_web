@@ -1,7 +1,7 @@
 <template>
 <div
   id="app"
-  style="height:100vh;"
+  style="min-height:100vh;"
 >
   <el-container
     :class="isCollapse ? 'isCollapse' : 'openSidebar'"
@@ -20,29 +20,23 @@
       <!-- pages routing -->
       <nuxt />
 
-      <!-- dynamic current modals -->
-      <template v-if="loggedIn">
-        <component
-          :is="mainModalDynamicComponent"
-          modal-base-actions-mixin_mounted-on="mainModal"
-        />
-        <component
-          :is="secondModalDynamicComponent"
-          modal-base-actions-mixin_mounted-on="secondModal"
-        />
-      </template>
+      <!-- <store-viewer /> -->
 
     </el-main>
   </el-container>
 </div>
 </template>
+
 <script>
-import { mapState } from 'vuex'
 import SideBar from '@/components/SideBar'
+// import StoreViewer from '@/components/tester/StoreViewer'
+
+import { mapState } from 'vuex'
 
 export default {
   components: {
-    SideBar
+    SideBar,
+    // StoreViewer
   },
 
   data () {
@@ -54,29 +48,7 @@ export default {
   computed: {
     ...mapState({
       loggedIn: state => state.auth.loggedIn
-    }),
-
-    /**
-     * load dynamic main modal component from the state setted
-     * example: @/components/layers/ModalAddVectorialLayer
-     */
-    mainModalDynamicComponent () {
-      const { folderName, component } = this.$store.state.modalsVisibilities.mainModal
-      return () => import(`@/components/${folderName}/${component}`)
-    },
-
-    /**
-     * load dynamic second modal component from the state setted
-     * example: @/components/layers/ModalAddVectorialLayer
-     */
-    secondModalDynamicComponent () {
-      const { folderName, component } = this.$store.state.modalsVisibilities.secondModal
-      return () => import(`@/components/${folderName}/${component}`)
-    }
-  },
-
-  async mounted () {
-    // console.warn(await this.$userAPI.get())
+    })
   },
 
   methods: {

@@ -1,38 +1,73 @@
 import {
   SET_DATA_CONTEXT,
   SET_ITEM_CONTEXT,
+  SET_PUBLISHED_ITEM_CONTEXT,
   SET_CURRENT_PAGE_ON_TABLE,
-  SET_PUBLISHED_ITEM_CONTEXT
-} from '../types/mutation-types'
+  OPEN_MODAL,
+  SET_MODAL_VISIBLE,
+  SET_MODAL_TITLE,
+  CLOSE_MODAL
+} from '@/types/mutations'
+
+import {
+  getDataContext,
+  getItemContext,
+  publishItemContext,
+  setDynamicModal
+} from '@/use/store.actions'
+
+import {
+  setDataContext,
+  setItemContext,
+  setCurrentPageOnTable,
+  setPublishItemContext,
+  openModal,
+  closeModal,
+  setModalVisible,
+  setModalTitle
+} from '@/use/store.mutations'
+
+const API = '$satelitalImageAPI'
 
 export const state = () => ({
   dataContext: [],
   itemContext: {},
-  currentPageOnTable: 1
+  currentPageOnTable: 1,
+
+  modalMain: {
+    title: ' ',
+    type: 'component',
+    folderPath: 'fallback',
+    name: 'Fallback',
+    store: 'satelitalsImages',
+    visible: false
+  },
 })
 
 export const actions = {
-  async getDataContext ({ commit }) {
-    const data = await this.$satelitalImageAPI.get()
-    commit(SET_DATA_CONTEXT, data)
-  },
+  getDataContext: getDataContext(API),
 
-  async getItemContext ({ commit }, id) {
-    const data = await this.$satelitalImageAPI.getById(id)
-    commit(SET_ITEM_CONTEXT, data)
-  },
+  getItemContext: getItemContext(API),
 
-  async publishItemContext ({}, form) {
-    await this.$satelitalImageAPI.publish(form)
-  }
+  publishItemContext: publishItemContext(API),
+
+  setDynamicModal
 }
 
 export const mutations = {
-  [SET_DATA_CONTEXT]: (state, payload) => (state.dataContext = payload),
+  [SET_DATA_CONTEXT]: setDataContext,
 
-  [SET_ITEM_CONTEXT]: (state, payload) => (state.itemContext = payload),
+  [SET_ITEM_CONTEXT]: setItemContext,
 
-  [SET_PUBLISHED_ITEM_CONTEXT]: (state, payload) => (state.itemContext.isPublished = !payload),
+  [SET_CURRENT_PAGE_ON_TABLE]: setCurrentPageOnTable,
 
-  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload)
+  [SET_PUBLISHED_ITEM_CONTEXT]: setPublishItemContext,
+
+  [OPEN_MODAL]: openModal,
+
+  [CLOSE_MODAL]: closeModal,
+
+  [SET_MODAL_VISIBLE]: setModalVisible,
+
+  [SET_MODAL_TITLE]: setModalTitle
 }

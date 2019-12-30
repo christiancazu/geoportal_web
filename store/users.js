@@ -1,34 +1,64 @@
 import {
   SET_DATA_CONTEXT,
   SET_ITEM_CONTEXT,
-  SET_PROFILE,
-  SET_CURRENT_PAGE_ON_TABLE
-} from '../types/mutation-types'
+  SET_CURRENT_PAGE_ON_TABLE,
+  OPEN_MODAL,
+  SET_MODAL_VISIBLE,
+  SET_MODAL_TITLE,
+  CLOSE_MODAL,
+  SET_PROFILE
+} from '@/types/mutations'
+
+import {
+  getDataContext,
+  getItemContext,
+  createItemContext,
+  updateItemContext,
+  deleteItemContext,
+  setDynamicModal
+} from '@/use/store.actions'
+
+import {
+  setDataContext,
+  setItemContext,
+  setCurrentPageOnTable,
+  openModal,
+  closeModal,
+  setModalVisible,
+  setModalTitle
+} from '@/use/store.mutations'
+
+const API = '$userAPI'
 
 export const state = () => ({
   dataContext: [],
   itemContext: {},
+  currentPageOnTable: 1,
   profile: {},
-  currentPageOnTable: 1
+
+  modalMain: {
+    title: ' ',
+    type: 'component',
+    folderPath: 'fallback',
+    name: 'Fallback',
+    store: 'users',
+    visible: false
+  }
 })
 
 export const actions = {
+  createItemContext: createItemContext(API),
+
+  getDataContext: getDataContext(API),
+
+  getItemContext: getItemContext(API),
+
+  updateItemContext: updateItemContext(API),
+
+  deleteItemContext: deleteItemContext(API),
+
   async getUserInfo () {
     return await this.$userAPI.info()
-  },
-
-  async createItemContext ({}, form) {
-    await this.$userAPI.create(form)
-  },
-
-  async getDataContext ({ commit }) {
-    const data = await this.$userAPI.get()
-    commit(SET_DATA_CONTEXT, data)
-  },
-
-  async getItemContext ({ commit }, id) {
-    const data = await this.$userAPI.getById(id)
-    commit(SET_ITEM_CONTEXT, data)
   },
 
   async getProfile ({ commit }) {
@@ -36,30 +66,35 @@ export const actions = {
     commit(SET_PROFILE, data)
   },
 
-  async updateItemContext ({}, form) {
-    await this.$userAPI.update(form)
-  },
-
-  async deleteItemContext ({}, id) {
-    await this.$userAPI.delete(id)
-  },
-
   async updateProfile ({}, form) {
     await this.$userAPI.updateProfile(form)
   },
 
+  async uploadFileUser ({}, form) {
+    await this.$userAPI.upload(form)
+  },
+
   async logout () {
     await this.$userAPI.logout()
-  }
+  },
+
+  setDynamicModal
 }
 
 export const mutations = {
-  [SET_DATA_CONTEXT]: (state, payload) => (state.dataContext = payload),
+  [SET_DATA_CONTEXT]: setDataContext,
 
-  [SET_ITEM_CONTEXT]: (state, payload) => (state.itemContext = payload),
+  [SET_ITEM_CONTEXT]: setItemContext,
 
-  [SET_PROFILE]: (state, payload) => (state.profile = payload),
+  [SET_CURRENT_PAGE_ON_TABLE]: setCurrentPageOnTable,
 
-  [SET_CURRENT_PAGE_ON_TABLE]: (state, payload) => (state.currentPageOnTable = payload),
+  [OPEN_MODAL]: openModal,
 
+  [CLOSE_MODAL]: closeModal,
+
+  [SET_MODAL_VISIBLE]: setModalVisible,
+
+  [SET_MODAL_TITLE]: setModalTitle,
+
+  [SET_PROFILE]: (state, payload) => (state.profile = payload)
 }

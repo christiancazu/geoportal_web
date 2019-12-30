@@ -1,10 +1,10 @@
 <template>
 <div
   style="height: 36vh"
+  class="my-1"
 >
   <client-only>
     <l-map
-      ref="map"
       :zoom="map.zoom"
       :center="map.latLng"
       @update:center="onCenterUpdated"
@@ -17,7 +17,7 @@
       />
 
       <l-control
-        v-if="!!marker"
+        v-if="controlBtn"
         position="bottomleft"
       >
         <el-tooltip
@@ -35,8 +35,7 @@
       </l-control>
 
       <l-marker
-        v-if="!!marker"
-        :visible="marker.visible"
+        v-if="marker.visible"
         :lat-lng="marker.latLng"
         draggable
         @update:latLng="onUpdateMarker"
@@ -53,20 +52,34 @@ export default {
   props: {
     map: {
       type: Object, default: () => ({
-        zoom: 5
+        zoom: 4
       })
     },
     marker: {
-      type: Object, default: () => {}
+      type: Object, default: () => ({
+        latLng: [],
+        visible: false
+      })
     },
     tileLayer: {
       type: Object, default: () => ({
         url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
       })
+    },
+    controlBtn: {
+      type: Boolean, default: false
     }
   },
 
+  mounted () {
+    this.$emit('update-marker-lng-lat', this.marker.latLng)
+  },
+
   methods: {
+    setMarkerInvisible () {
+      this.marker.visible = false
+    },
+
     onCenterUpdated ({ lat, lng }) {
       this.map.latLng = [lat, lng]
     },

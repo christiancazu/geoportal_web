@@ -8,7 +8,11 @@ export const ERRORS = {
 }
 
 export const INFO = {
-  INVALID_URL: 'la URL no es válida'
+  INVALID_URL: 'la URL no es válida',
+  GROUP_LAYER: {
+    INVALID_DROP: 'No puede colocar un grupo de capas en ese nivel',
+    INVALID_DELETE: 'Para poder eliminar no debe tener grupos de capas dentro'
+  }
 }
 
 export const SUCCESS = {
@@ -25,6 +29,9 @@ export const SUCCESS = {
     UPDATED: 'La categoría se actualizó con éxito',
     DELETED: 'La categoría se eliminó con éxito'
   },
+  FILE: {
+    REGISTERED: 'El archivo se cargó con éxito'
+  },
   IMAGE: {
     DELETED: 'La imagen se eliminó con éxito',
     PUBLISHED: 'La imagen se publicó con éxito',
@@ -37,9 +44,13 @@ export const SUCCESS = {
     UPDATED: 'La capa se actualizó con éxito',
     DELETED: 'La capa se eliminó con éxito'
   },
+  GROUP_LAYER: {
+    DELETED: 'El Grupo de capas se eliminó con éxito',
+    UPDATED: 'El Grupo de capas se actualizó con éxito'
+  },
   REQUEST: {
     APPROVED: 'La solicitud ha sido aprobado con éxito',
-    REJECT: 'La solicitud ha sido rechazado con éxito'
+    REJECTED: 'La solicitud ha sido rechazado con éxito'
   },
   SERVICE: {
     REGISTERED: 'El servicio se registro con éxito',

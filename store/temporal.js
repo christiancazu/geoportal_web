@@ -1,6 +1,6 @@
 import {
   SET_SPACES
-} from '../types/mutation-types'
+} from '@/types/mutations'
 
 export const state = () => ({
   spaces: [
