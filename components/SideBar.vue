@@ -13,21 +13,24 @@
   >
     <el-menu-item
       v-if="user"
+      style="padding: 1px 0"
       index="1"
       :route="{ path: '/' }"
     >
-      <img
-        class="img-profile-sidebar"
-        :src="user.image"
-        style="border-radius: 50%"
-      >
+      <div class="content-center align-center">
+        <img
+          class="img-profile-sidebar"
+          :src="user.image"
+          style="border-radius: 50%"
+        >
 
-      <span class="font-weight-bold ml-1">{{ user.username }}
-        <el-badge
-          type="warning"
-          :value="user.userType.id === 'AD' ? 'ADMIN' : ''"
-        />
-      </span>
+        <span class="font-weight-bold ml-1">{{ user.username }}
+          <el-badge
+            type="warning"
+            :value="user.userType.id === 'AD' ? 'ADMIN' : ''"
+          />
+        </span>
+      </div>
     </el-menu-item>
 
     <el-divider />
