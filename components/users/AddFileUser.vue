@@ -41,8 +41,6 @@ import BaseFormSetup from '@/components/base/setup/BaseFormSetup'
 
 import uploadFileMixin from '@/mixins/uploadFileMixin'
 
-import { USER_FILE_MAX_SIZE } from '@/config/constants'
-
 import {
   file
 } from '@/config/form.rules'
