@@ -25,6 +25,7 @@
             ref="markerGeoJson"
             :map="map"
             :marker="marker"
+            control-btn
             @on-marker-lng-lat="onMarkerLngLat"
           />
 

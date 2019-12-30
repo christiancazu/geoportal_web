@@ -243,18 +243,15 @@ export default {
   },
 
   watch: {
-    itemContext () {
-      this.assignFormFields()
+    itemContext: {
+      handler: 'assignFormFields',
+      immediate: true
     },
 
     rangeZoom () {
       this.form.minZoom = this.rangeZoom[0]
       this.form.maxZoom = this.rangeZoom[1]
     }
-  },
-
-  created () {
-    this.assignFormFields()
   },
 
   methods: {

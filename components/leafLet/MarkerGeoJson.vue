@@ -17,7 +17,7 @@
       />
 
       <l-control
-        v-if="!!marker"
+        v-if="controlBtn"
         position="bottomleft"
       >
         <el-tooltip
@@ -52,19 +52,22 @@ export default {
   props: {
     map: {
       type: Object, default: () => ({
-        zoom: { type: Number, default: 4 }
+        zoom: 4
       })
     },
     marker: {
       type: Object, default: () => ({
-        latLng: { type: Array, default: () => [] },
-        visible: { type: Boolean, default: false },
+        latLng: [],
+        visible: false
       })
     },
     tileLayer: {
       type: Object, default: () => ({
         url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
       })
+    },
+    controlBtn: {
+      type: Boolean, default: false
     }
   },
 
