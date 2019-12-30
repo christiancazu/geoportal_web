@@ -63,6 +63,13 @@
 
     <div class="text-xs-center mb-0">
       <el-button
+        v-if="!!storeMounted.name"
+        size="small"
+        @click="closeModal()"
+      >
+        CERRAR
+      </el-button>
+      <el-button
         :loading="$store.state.spinners.processingForm"
         type="primary"
         size="small"
@@ -247,12 +254,18 @@ export default {
     async onSubmit () {
       this.$store.commit(`spinners/${ENABLE_SPINNER}`, 'processingForm')
       try {
-        // this.updateTree()
         await this.$store.dispatch(`groupLayers/updateStructure`, this.backUpTree.children[0])
         this.$toast.success(this.$SUCCESS.GROUP_LAYER.UPDATED)
         this.refreshGroupLayers()
       } catch (error) {}
       this.$store.commit(`spinners/${DISABLE_SPINNER}`, 'processingForm')
+    },
+
+    /**
+     * mutating CLOSE_MODAL on his storeMounted when close btn is clicked
+     */
+    closeModal () {
+      this.$store.commit(`${this.storeMounted.name}/CLOSE_MODAL`, this.storeMounted.typeModal)
     }
   },
 
