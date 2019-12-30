@@ -101,11 +101,9 @@ export default {
         baseName: 'TODO',
         action: 'TODO'
       },
-
       form: {
         observation: ''
       },
-
       rules: {
         observation
       }

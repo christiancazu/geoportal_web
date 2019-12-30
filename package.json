@@ -28,7 +28,7 @@
     "leaflet": "^1.6.0",
     "nuxt": "^2.11.0",
     "vue-chartjs": "^3.5.0",
-    "vue-tree-list": "^1.4.0",
+    "vue-tree-list": "^1.4.1",
     "vue2-leaflet": "^2.4.1"
   },
   "devDependencies": {

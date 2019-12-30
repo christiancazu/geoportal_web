@@ -90,7 +90,8 @@ export default {
   data () {
     return {
       extensionsString: '',
-      zipImageFallback : '/image/zip.jpg'
+      zipImageFallback : '/image/zip.jpg',
+      excelImageFallback : '/image/excel.png',
     }
   },
 
@@ -134,8 +135,12 @@ export default {
           return isImageSizeValid
         }
       }
+
+      // #TODO: callback for current extension fallback image
       // assign preview zip image fallback when have zip extension
       if (currentExtension === 'zip') this.file.imageUrl = this.zipImageFallback
+      // eslint-disable-next-line array-element-newline, array-bracket-newline
+      if (['xls', 'xlsx'].includes(currentExtension)) this.file.imageUrl = this.excelImageFallback
 
       return true
     },

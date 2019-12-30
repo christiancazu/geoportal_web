@@ -4,6 +4,11 @@
   :store-base="storeBase"
   @open-add-modal="openModalAddItemContext()"
 >
+
+  <template slot="btn-header">
+    <slot name="btn-header" />
+  </template>
+
   <el-container direction="vertical">
     <!-- input filter table -->
     <el-row

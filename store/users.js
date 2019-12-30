@@ -70,6 +70,10 @@ export const actions = {
     await this.$userAPI.updateProfile(form)
   },
 
+  async uploadFileUser ({}, form) {
+    await this.$userAPI.upload(form)
+  },
+
   async logout () {
     await this.$userAPI.logout()
   },

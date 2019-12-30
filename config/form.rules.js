@@ -137,6 +137,13 @@ export const rasterFile = [
   }
 ]
 
+export const file = [
+  {
+    required: true,
+    message: 'El archivo es requerido'
+  }
+]
+
 export const image = [
   {
     required: true,

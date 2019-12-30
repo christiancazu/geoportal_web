@@ -6,6 +6,19 @@
   :filter-criteria-props="filterCriteriaProps"
   :message-toast="messageToast"
 >
+
+  <template slot="btn-header">
+    <el-button
+      :loading="$store.state.spinners.loadingPage"
+      size="mini"
+      type="primary"
+      icon="el-icon-upload"
+      @click="openModalAddFileUser('addFileComponent')"
+    >
+      Cargar Archivo
+    </el-button>
+  </template>
+
   <template
     v-slot:page-table="{
       openModalEditItemContext,
@@ -86,6 +99,11 @@ export default {
           type: 'component',
           folderPath: 'users',
           name: 'EditUser'
+        },
+        addFileComponent: {
+          type: 'component',
+          folderPath: 'users',
+          name: 'AddFileUser'
         }
       },
       messageToast: {
@@ -96,6 +114,18 @@ export default {
         'email',
         'username'
       ]
+    }
+  },
+
+  methods: {
+    /**
+     * custom function to open approveRequestComponent modal
+     */
+    openModalAddFileUser (component) {
+      this.$store.dispatch(`${this.storeBase.name}/setDynamicModal`, {
+        typeModal: 'modalMain',
+        component: this.modalMain[component]
+      })
     }
   },
 

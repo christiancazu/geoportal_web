@@ -30,7 +30,6 @@ export default async ({ store, $axios, redirect, app }) => {
       app.$auth.setToken(AUTH_STRATEGY, null)
       store.commit('auth/SET', { key: 'user', value: null })
       redirect('/login')
-
       break
     case 404:
       errorMessage = Vue.prototype.$ERRORS.ROUTE_NOT_FOUND

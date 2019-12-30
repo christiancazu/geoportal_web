@@ -161,7 +161,7 @@ export default {
       modalInner: {
         modalAddGroupLayers: {
           type: 'page',
-          folderPath: 'managementLayers/groups',
+          folderPath: 'managementUsers/users',
           name: 'index'
         }
       },

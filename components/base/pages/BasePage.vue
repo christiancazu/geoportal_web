@@ -16,18 +16,21 @@
       {{ pageHeader.title }}
     </span>
 
-    <template v-if="pageHeader.btnAddName">
-      <el-button
-        size="mini"
-        type="primary"
-        icon="el-icon-plus"
-        @click="$emit('open-add-modal')"
-      >
-        {{ pageHeader.btnAddName }}
-      </el-button>
-    </template>
+    <div>
+      <slot name="btn-header" />
 
-    <slot name="btn-header" />
+      <template v-if="pageHeader.btnAddName">
+        <el-button
+          size="mini"
+          type="primary"
+          icon="el-icon-plus"
+          @click="$emit('open-add-modal')"
+        >
+          {{ pageHeader.btnAddName }}
+        </el-button>
+      </template>
+    </div>
+
 
   </div>
 

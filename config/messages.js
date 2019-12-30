@@ -29,6 +29,9 @@ export const SUCCESS = {
     UPDATED: 'La categoría se actualizó con éxito',
     DELETED: 'La categoría se eliminó con éxito'
   },
+  FILE: {
+    REGISTERED: 'El archivo se cargó con éxito'
+  },
   IMAGE: {
     DELETED: 'La imagen se eliminó con éxito',
     PUBLISHED: 'La imagen se publicó con éxito',
@@ -43,7 +46,7 @@ export const SUCCESS = {
   },
   GROUP_LAYER: {
     DELETED: 'El Grupo de capas se eliminó con éxito',
-    UPDATED: 'El Grupo de capas se actualizó con éxito',
+    UPDATED: 'El Grupo de capas se actualizó con éxito'
   },
   REQUEST: {
     APPROVED: 'La solicitud ha sido aprobado con éxito',
