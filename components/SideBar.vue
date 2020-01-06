@@ -158,17 +158,16 @@ export default {
 
   methods: {
     async logout () {
-      this.$auth.setToken(AUTH_STRATEGY, null)
 
       try {
-        this.$store.commit('auth/SET', { key: 'loggedIn', value: false })
-        this.$store.commit('auth/SET', { key: 'user', value: null })
-        await this.$store.dispatch('users/logout')
-        await this.$router.push('/login')
+        await this.$auth.logout()
         this.$toast.success(this.$SUCCESS.LOGOUT)
       } catch (err) {
         this.$toast.error(this.$ERRORS.ERROR_TRY_LATER)
       }
+      this.$auth.setToken(AUTH_STRATEGY, null)
+      this.$store.commit('auth/SET', { key: 'loggedIn', value: false })
+      this.$store.commit('auth/SET', { key: 'user', value: null })
     }
   },
 }

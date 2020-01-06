@@ -117,6 +117,19 @@
       />
     </el-form-item>
 
+    <el-form-item
+      class="text-xs-left"
+      label="Capa habilitada"
+    >
+      <el-switch
+        v-model="form.enabled"
+        inactive-color="#6376f7"
+        active-color="#6376f7"
+        inactive-text="No"
+        active-text="Si"
+      />
+    </el-form-item>
+
     <!-- innerComponent on modal -->
     <base-modal
       :modal="$store.state[storeBase.name].modalInner"
@@ -175,6 +188,7 @@ export default {
         order: null,
         rasterFile: null,
         groupLayerId: null,
+        enabled: true,
         description: ''
       },
       rules: {

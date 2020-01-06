@@ -80,6 +80,20 @@
         :show-word-limit="true"
       />
     </el-form-item>
+
+    <el-form-item
+      class="text-xs-left"
+      label="Capa habilitada"
+    >
+      <el-switch
+        v-model="form.enabled"
+        inactive-color="#6376f7"
+        active-color="#6376f7"
+        inactive-text="No"
+        active-text="Si"
+      />
+    </el-form-item>
+
   </template>
 </base-form>
 </template>
@@ -125,7 +139,8 @@ export default {
         name: '',
         groupLayerId: '',
         description: '',
-        status: true
+        status: true,
+        enabled: null
       },
       rules: {
         title,

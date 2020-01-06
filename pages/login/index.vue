@@ -133,6 +133,8 @@ import {
 } from '@/types/mutations'
 
 export default {
+  layout: 'login',
+
   data () {
     return {
       form: {

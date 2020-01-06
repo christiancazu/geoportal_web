@@ -119,7 +119,13 @@ export default {
         }
       },
       backUpTree: {},
-      dataTree: {},
+      dataTree: new Tree([
+        {
+          name: '',
+          id: 1,
+          children: []
+        }
+      ]),
       nodeAdded: {},
       isMountedAsPage: true
     }
@@ -275,14 +281,3 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.icon-vtl {
-  font-family: 'Roboto', sans-serif !important;
-  padding-right: .25rem;
-  padding-left: .25rem;
-  text-shadow: -1px 0 gray, 0 1px gray, 1px 0 gray, 0 -1px gray;
-    &:hover {
-    cursor: pointer;
-  }
-}
-</style>

@@ -8,7 +8,6 @@
     style="min-height:100%"
   >
     <side-bar
-      v-if="loggedIn"
       @is-collapse="onChangeCollapse"
     />
     <el-main
@@ -20,8 +19,6 @@
       <!-- pages routing -->
       <nuxt />
 
-      <!-- <store-viewer /> -->
-
     </el-main>
   </el-container>
 </div>
@@ -29,14 +26,12 @@
 
 <script>
 import SideBar from '@/components/SideBar'
-// import StoreViewer from '@/components/tester/StoreViewer'
 
 import { mapState } from 'vuex'
 
 export default {
   components: {
-    SideBar,
-    // StoreViewer
+    SideBar
   },
 
   data () {

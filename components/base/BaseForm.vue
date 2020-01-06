@@ -110,7 +110,7 @@ export default {
     canPublish: {
       get () {
         if (typeof this.$store.state[this.storeBase.name].itemContext.isPublished === 'undefined') return false
-        return !this.$store.state[this.storeBase.name].itemContext.isPublished && this.storeBase.action === 'update'
+        return !this.$store.state[this.storeBase.name].itemContext.isPublished && this.storeBase.action === 'updateItemContext'
       },
       set (value) {
         this.$store.commit(`${this.storeBase.name}/${SET_PUBLISHED_ITEM_CONTEXT}`, value)

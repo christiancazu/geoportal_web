@@ -71,16 +71,16 @@ export default {
     baseURL:
       process.env.NODE_ENV === 'production'
         ? 'http://104.197.114.116:9100/api/'
-        : 'http://104.197.114.116:9100/api/' // http://192.168.1.103:8300/api/
+        : 'http://35.238.229.238:8000/api/' // http://192.168.1.103:8300/api/
   },
 
   auth: {
     plugins: [],
     redirect: {
       login: '/login',
-      logout: '/',
-      callback: '/login',
-      home: '/'
+      logout: '/login',
+      home: '/',
+      callback: '/login'
     },
     strategies: {
       local: {
